@@ -1,6 +1,5 @@
 ---
 layout: page
-title: PGP key
 permalink: /pgp/
 ---
 -----BEGIN PGP PUBLIC KEY BLOCK-----
