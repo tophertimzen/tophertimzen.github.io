@@ -9,4 +9,4 @@ Studying Computer Science with an emphasis in Security and Information Systems a
 
 ### Contact me
 
-[email@domain.com](mailto:timzenc@sou.edu)
+[timzenc@sou.edu](mailto:timzenc@sou.edu)
