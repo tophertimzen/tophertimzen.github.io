@@ -2,8 +2,8 @@
 layout: page
 title: PGP key
 permalink: /pgp/
-
---------BEGIN PGP PUBLIC KEY BLOCK-----
+---
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 xsBNBFQzchwBB/9umt1doyxO63G/jOihUapqRCG6SybcEWGhhK29hIfE0rKB
 UZMfZJh/oPgu6nOZ01lRNy+re1t3K2d1lOAhz8U+veCXEpwAhj81VZraqcpr
