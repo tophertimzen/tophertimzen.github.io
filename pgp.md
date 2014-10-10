@@ -4,7 +4,7 @@ permalink: /pgp/
 ---
 
 -----BEGIN PGP PUBLIC KEY BLOCK-----
-<p style="font-size: 20px;">
+
 xsBNBFQzchwBB/9umt1doyxO63G/jOihUapqRCG6SybcEWGhhK29hIfE0rKB
 UZMfZJh/oPgu6nOZ01lRNy+re1t3K2d1lOAhz8U+veCXEpwAhj81VZraqcpr
 QN4Go+Z1X5dvzGt4laK4y8Of88qyW30bQhWpsWqCEwUn2WDOsMZQqldhBQox
@@ -33,7 +33,6 @@ KTSpOhHDVJjAX9QgDGDMF4rVLCFJLZcKwdH7xEuTEG3c3010s3lgAuznnWWF
 lDZhGIWkycXVbQwtFqDAZn5Pm2jwzJrEp6+9YbcM/imGB9nJeDeOTv1mMDXf
 G/kybjOR9f2e
 =2Gnk
-</p>
 
 -----END PGP PUBLIC KEY BLOCK-----
-</p>
+
