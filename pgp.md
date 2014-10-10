@@ -2,7 +2,7 @@
 layout: page
 permalink: /pgp/
 ---
-<p style="font-size: 1.2em;">
+<p style="font-size: .7em;">
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
 xsBNBFQzchwBB/9umt1doyxO63G/jOihUapqRCG6SybcEWGhhK29hIfE0rKB
