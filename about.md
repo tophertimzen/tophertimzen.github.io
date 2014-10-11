@@ -11,4 +11,4 @@ Studying Computer Science with an emphasis in Security and Information Systems a
 
 [c.timzen@gmail.com](mailto:c.timzen@gmail.com)
 
-[Linkedin](https://www.linkedin.com/in/tophertimzen)
+[LinkedIn](https://www.linkedin.com/in/tophertimzen)
