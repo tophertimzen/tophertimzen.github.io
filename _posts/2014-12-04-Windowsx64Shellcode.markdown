@@ -19,7 +19,7 @@ categories: shellcode, windows, x64, 64bit, win64
  ---
 
 ### Registers
-## x86:
+## x86
  
  Normally on a x86 processer, there are 8 general purpose registers that are all 32 bits wide. 
  
@@ -144,14 +144,19 @@ Open your favorite text editor, mine is Notepad++ for windows, and start typing!
 
 1.) Declare the NASM directives. 
 
+``` nasm 
 	bits 64 
 	section .text
 	global start
-  
+``` 
+
 2.) Set up the stack
+
+``` nasm 
 	start: 
 		sub rsp, 28h				;reserve stack space for called functions
 		and rsp, 0fffffffffffffff0h ;make sure stack 16-byte aligned   
+```
 
 3.) Let's get the base address of Kernel32.dll. 
 
@@ -306,6 +311,7 @@ Output from dependency walker showing that ExitProcess simply points to Ntdll.Rt
 
 Now to assembly!
 
+``` nasm 
 	mov r12, [gs:60h]       	;peb
     mov r12, [r12 + 0x18]		;Peb --> LDR
 	mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
@@ -313,6 +319,7 @@ Now to assembly!
 	mov r15, [r12 + 0x20]		;ntdll.dll base address!
 	mov r12, [r12]				;3nd entry
 	mov r12, [r12 + 0x20]		;kernel32.dll base address! 
+```
 
 Notice I put Kernel32 into r12, which is not a clobber register! This address needs to be kept for the duration of the execution of the shellcode.
 
@@ -333,11 +340,13 @@ In order to use the LoadLibraryA function, it must be found in kernel32.dll. . .
 
 This function takes two arguments, the handle to the module that contains the function we want and the function name. 
 
+``` nasm 
 	;find address of loadLibraryA from kernel32.dll which was found above. 
     mov rdx, 0xec0e4e8e		;lpProcName (loadLibraryA hash from rot13)
     mov rcx, r12    		;hModule
     call GetProcessAddress        
-  
+```
+ 
 Once we know where LoadLibraryA lives, we can use it to load user32.dll.
 
 The " 0xec0e4e8e" number and following numbers that are moved into rdx before the call to GetProcessAddress are hashed forms of function names. 
@@ -351,19 +360,24 @@ The " 0xec0e4e8e" number and following numbers that are moved into rdx before th
 
 Now load User32.dll
 
+``` nasm 
 	;import user32
     lea rcx, [user32_dll]
     call rax                ;load user32.dll
 	user_32dll: db 'user32.dll', 0
+```
 
 Now we can get the address of the MessageBox function that was described before. 
 	
+``` nasm 
 	mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
 	mov rcx, rax
 	call GetProcessAddress
+```
 
 and call it
 	
+``` nasm 
 	;messageBox
     xor r9, r9              ;uType
     lea r8, [title_str]     ;lpCaptopn
@@ -372,6 +386,7 @@ and call it
     call rax                ;display message box	
 	title_str: 	db  '0xdeadbeef', 0
 	hello_str:        db  'This is fun!', 0
+```
 
 and exit the process cleanly with the ExitProcess syscall. 
 
@@ -381,17 +396,20 @@ and exit the process cleanly with the ExitProcess syscall.
 
 Note that this is the header for the Kernel32 call, but we are going to use RtlExitUserProcess.
 
+``` nasm 
 	;ExitProcess
 	mov rdx, 0x2d3fcd70				
     mov rcx, r15 			;base address of ntdll
     call GetProcessAddress
     xor  rcx, rcx 			;uExitCode
     call rax             		   
+```
 
 The finished shellcode with the GetProcAddress function I keep calling:
 
 Note: I have adjusted all of the "lea" instructions with call/pop implementations for the final form. I simply used "lea" above for demonstration. 
 
+``` nasm 
 	bits 64
 	section .text
 	global start
@@ -502,7 +520,7 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		
 	find_function_finished:
 		ret 
-	
+```	
 
 For information on the magic of the GetProcAddress function, refer to Skape's paper.
 
