@@ -4,13 +4,13 @@ title: "Windows x64 Shellcode"
 date: 2014-12-04
 categories: shellcode, windows, x64, 64bit, win64
 ---
-###Introduction
+### Introduction
  Recently I have been rewriting several pieces of shellcode that I have implemented for x86 Windows into x64 and have had a hard time finding resources online that aided in my endeavors. I wanted to write a blog post (my first one) in order to hopefully help someone that is or will be in the position that I was in while trying to port over shellcode. 
 
  There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. Nor am I going to touch much on the basics of assembly, although I will. 
 
  refer to papers such as [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
- or resources like [*project-shellcode*] (http://www.projectshellcode.com) for those.
+ or resources like [*project-shellcode*](http://www.projectshellcode.com) for those.
 
  What I will go over however is the differences between 32 and 64 bit assembly that I have noticed and how to overcome them as well as some of the structures windows uses that are useful to know about for shellcode in the 64bit environment. I will also introduce two tools that I have created in helping my exploit development process.
 
@@ -19,7 +19,7 @@ categories: shellcode, windows, x64, 64bit, win64
  ---
 
 ### Registers
-##x86:
+## x86:
  
  Normally on a x86 processer, there are 8 general purpose registers that are all 32 bits wide. 
  
@@ -74,6 +74,7 @@ Also introduced are 8 new registers. r8, r9, r10, r11, r12, r13, r14 and r15. Th
  Unfortunately, unlike being able to address the high 8 bits of the low 16 bits in registers such as eax, this is not possible with these extended registers. 
  
 ---
+
 ### Clobber Registers
 
 Clobber registers are registers that can be overwritten in a function (such as those in the Windows API). These registers are volatile and should not be relied on, although can still be used if the API function of interest is tested to see which registers are actually clobbered. 
@@ -84,7 +85,9 @@ In the Win64 API . . . RBP, RBX, RDI, RSI, R12, R13, R14 and R15 are not clobber
 RAX and EAX are used to return parameters from a function for both x86 and x64. 
  
 ---
+
 ### Calling Convention
+
 ## x86
 
 Win32 uses the stdcall calling convection and passes arguments on the stack backwards. 
@@ -299,13 +302,12 @@ So far we know that we need to
 
 ![alt text](http://www.tophertimzen.com/images/win64BlogPost/depens.jpg "Depens Output")
 
- 
 Output from dependency walker showing that ExitProcess simply points to Ntdll.RtlExitUserProcess.
 
 Now to assembly!
 
-	mov r12, [gs:60h]       	 ;peb
-    mov r12, [r12 + 0x18]		 ;Peb --> LDR
+	mov r12, [gs:60h]       	;peb
+    mov r12, [r12 + 0x18]		;Peb --> LDR
 	mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
 	mov r12, [r12]				;2st entry
 	mov r15, [r12 + 0x20]		;ntdll.dll base address!
@@ -356,7 +358,7 @@ Now load User32.dll
 
 Now we can get the address of the MessageBox function that was described before. 
 	
-	mov rdx, 0xbc4da2a8 ; hash for MessageBoxA from rot13
+	mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
 	mov rcx, rax
 	call GetProcessAddress
 
@@ -364,8 +366,8 @@ and call it
 	
 	;messageBox
     xor r9, r9              ;uType
-    lea r8, [title_str]       ;lpCaptopn
-    lea rdx, [hello_str]      ;lpText
+    lea r8, [title_str]     ;lpCaptopn
+    lea rdx, [hello_str]    ;lpText
     xor rcx, rcx			;hWnd
     call rax                ;display message box	
 	title_str: 	db  '0xdeadbeef', 0
@@ -381,7 +383,7 @@ Note that this is the header for the Kernel32 call, but we are going to use RtlE
 
 	;ExitProcess
 	mov rdx, 0x2d3fcd70				
-    mov rcx, r15 ;base address of ntdll
+    mov rcx, r15 			;base address of ntdll
     call GetProcessAddress
     xor  rcx, rcx 			;uExitCode
     call rax             		   
