@@ -144,7 +144,7 @@ Open your favorite text editor, mine is Notepad++ for windows, and start typing!
 
 1.) Declare the NASM directives. 
 
-``` nasm 
+```nasm 
 	bits 64 
 	section .text
 	global start
@@ -152,7 +152,7 @@ Open your favorite text editor, mine is Notepad++ for windows, and start typing!
 
 2.) Set up the stack
 
-``` nasm 
+```nasm 
 	start: 
 		sub rsp, 28h				;reserve stack space for called functions
 		and rsp, 0fffffffffffffff0h ;make sure stack 16-byte aligned   
@@ -311,7 +311,7 @@ Output from dependency walker showing that ExitProcess simply points to Ntdll.Rt
 
 Now to assembly!
 
-``` nasm 
+```nasm 
 	mov r12, [gs:60h]       	;peb
     mov r12, [r12 + 0x18]		;Peb --> LDR
 	mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
@@ -340,7 +340,7 @@ In order to use the LoadLibraryA function, it must be found in kernel32.dll. . .
 
 This function takes two arguments, the handle to the module that contains the function we want and the function name. 
 
-``` nasm 
+```nasm 
 	;find address of loadLibraryA from kernel32.dll which was found above. 
     mov rdx, 0xec0e4e8e		;lpProcName (loadLibraryA hash from rot13)
     mov rcx, r12    		;hModule
@@ -360,7 +360,7 @@ The " 0xec0e4e8e" number and following numbers that are moved into rdx before th
 
 Now load User32.dll
 
-``` nasm 
+```nasm 
 	;import user32
     lea rcx, [user32_dll]
     call rax                ;load user32.dll
@@ -369,7 +369,7 @@ Now load User32.dll
 
 Now we can get the address of the MessageBox function that was described before. 
 	
-``` nasm 
+```nasm 
 	mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
 	mov rcx, rax
 	call GetProcessAddress
@@ -377,7 +377,7 @@ Now we can get the address of the MessageBox function that was described before.
 
 and call it
 	
-``` nasm 
+```nasm 
 	;messageBox
     xor r9, r9              ;uType
     lea r8, [title_str]     ;lpCaptopn
@@ -396,7 +396,8 @@ and exit the process cleanly with the ExitProcess syscall.
 
 Note that this is the header for the Kernel32 call, but we are going to use RtlExitUserProcess.
 
-``` nasm 
+```nasm 
+
 	;ExitProcess
 	mov rdx, 0x2d3fcd70				
     mov rcx, r15 			;base address of ntdll
@@ -409,7 +410,8 @@ The finished shellcode with the GetProcAddress function I keep calling:
 
 Note: I have adjusted all of the "lea" instructions with call/pop implementations for the final form. I simply used "lea" above for demonstration. 
 
-``` nasm 
+```nasm 
+
 	bits 64
 	section .text
 	global start
@@ -520,6 +522,7 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		
 	find_function_finished:
 		ret 
+		
 ```	
 
 For information on the magic of the GetProcAddress function, refer to Skape's paper.
