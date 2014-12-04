@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "introduction"
+title: "About this Blog"
 date: 2014-12-03
 categories: Introduction
 ---
