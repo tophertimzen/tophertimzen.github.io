@@ -361,23 +361,28 @@ The " 0xec0e4e8e" number and following numbers that are moved into rdx before th
 Now load User32.dll
 
 ```nasm 
+
 	;import user32
     lea rcx, [user32_dll]
     call rax                ;load user32.dll
 	user_32dll: db 'user32.dll', 0
+	
 ```
 
 Now we can get the address of the MessageBox function that was described before. 
 	
 ```nasm 
+
 	mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
 	mov rcx, rax
 	call GetProcessAddress
+	
 ```
 
 and call it
 	
 ```nasm 
+
 	;messageBox
     xor r9, r9              ;uType
     lea r8, [title_str]     ;lpCaptopn
@@ -386,6 +391,7 @@ and call it
     call rax                ;display message box	
 	title_str: 	db  '0xdeadbeef', 0
 	hello_str:        db  'This is fun!', 0
+	
 ```
 
 and exit the process cleanly with the ExitProcess syscall. 
@@ -404,6 +410,7 @@ Note that this is the header for the Kernel32 call, but we are going to use RtlE
     call GetProcessAddress
     xor  rcx, rcx 			;uExitCode
     call rax             		   
+	
 ```
 
 The finished shellcode with the GetProcAddress function I keep calling:
