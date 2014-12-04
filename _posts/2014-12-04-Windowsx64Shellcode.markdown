@@ -539,7 +539,7 @@ Now that our shellcode is complete, let's assemble it and test it.
 
 	nasm -f win64 messageBox64bit.asm -o messageBox64bit.obj  
 	golink /console messageBox64bit.obj
-	./messageBoxTophers64bit.exe
+	./messageBox64bit.exe
 	
 ![alt text](http://www.tophertimzen.com/images/win64BlogPost/funButton.jpg "MessageBox output")
  
@@ -547,8 +547,8 @@ This ran our shellcode as a binary.. we want to use it as pure shellcode.
 
 	nasm -f bin messageBox64bit.asm -o messageBox64bit.sc 
 	xxd -i messageBox64bit.sc
-	xxd -i messageBoxTophers64bit.sc
-	unsigned char messageBoxTophers64bit_sc[] = {
+	xxd -i messageBox64bit.sc
+	unsigned char messageBox64bit_sc[] = {
 	  0x48, 0x83, 0xec, 0x28, 0x48, 0x83, 0xe4, 0xf0, 0x65, 0x4c, 0x8b, 0x24,
 	  0x25, 0x60, 0x00, 0x00, 0x00, 0x4d, 0x8b, 0x64, 0x24, 0x18, 0x4d, 0x8b,
 	  0x64, 0x24, 0x20, 0x4d, 0x8b, 0x24, 0x24, 0x4d, 0x8b, 0x7c, 0x24, 0x20,
@@ -572,7 +572,7 @@ This ran our shellcode as a binary.. we want to use it as pure shellcode.
 	  0x66, 0x67, 0x42, 0x8b, 0x0c, 0x53, 0x67, 0x41, 0x8b, 0x5e, 0x1c, 0x44,
 	  0x01, 0xeb, 0x67, 0x8b, 0x04, 0x8b, 0x44, 0x01, 0xe8, 0xc3
 	};
-	unsigned int messageBoxTophers64bit_sc_len = 258;
+	unsigned int messageBox64bit_sc_len = 258;
 
 Taking all of the hex bytes returned, let's go to another little program I wrote because I wanted to be able to fire shellcode against a target, calc, so make sure it would work in a remote process. Please note this application is still in more or less of a beta form and I mostly wrote it because I wanted to play around with an open source disassembly project, BeaEngine <html>http://www.beaengine.org/home</html>.
  
