@@ -1,0 +1,12 @@
+---
+layout: post
+title: "introduction"
+date: 2014-12-03
+categories: Introduction
+---
+
+I am a Computer Security student at Southern Oregon University graduating in June and am interested in malware, reverse engineering and exploitation development.
+
+The purpose of this blog will be to talk about what I am currently up to as well as giving me an outlet to put documentation that I find useful for the community to know about. I have spent many hours reading other blogs and feel it is time I gave back. 
+
+I do not have much experience writing technical papers and this blog will give me an opportunity to practice, so please excuse any mistakes and let me know if you find any by contacting me :). 
