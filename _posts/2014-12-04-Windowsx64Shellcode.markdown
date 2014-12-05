@@ -9,12 +9,12 @@ categories: shellcode, windows, x64, 64bit, win64
 
  There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. I not going to touch much on the basics of assembly, although I will talk about calling conventions, register clobbering and registers. 
 
- Refer to papers such as [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
+ Refer to papers such as Skape's [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
  or resources like [*project-shellcode*](http://www.projectshellcode.com) for indepth shellcode writing tutorials.
 
  I will go over the differences between 32 and 64 bit assembly that I have noticed and how to work with them as well as some of the structures windows uses that are useful to know about for shellcode in the 64bit environment. I will also introduce two tools that I have created in helping my exploit development process.
 
- Lastly before I get started I want to mention that I am still in the beginning stages (somewhat) of shellcode development and for the purpose of this tutorial I am only going to rely on needing to target Windows 7 x64 machines.  I am also going to use the phrases Win32 to refer to x86 windows builds and Win64 to refer to x64 builds. 
+ Lastly before I get started I want to mention that I am still in the somewhat beginning stages of exploitation development and for the purpose of this tutorial I am only going to rely on needing to target Windows 7 x64 machines.  I am also going to use the phrases Win32 to refer to x86 windows builds and Win64 to refer to x64 builds. 
 
  ---
 
@@ -432,15 +432,15 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 	start:
 	;get dll base addresses
 		sub rsp, 28h					;reserve stack space for called functions
-		and rsp, 0fffffffffffffff0h 	;make sure stack 16-byte aligned   
+		and rsp, 0fffffffffffffff0h 			;make sure stack 16-byte aligned   
 	 
-		mov r12, [gs:60h]       		 ;peb
-		mov r12, [r12 + 0x18]			 ;Peb --> LDR
-		mov r12, [r12 + 0x20]			;Peb.Ldr.InMemoryOrderModuleList
+		mov r12, [gs:60h]       			 ;peb
+		mov r12, [r12 + 0x18]				 ;Peb --> LDR
+		mov r12, [r12 + 0x20]				;Peb.Ldr.InMemoryOrderModuleList
 		mov r12, [r12]					;2st entry
-		mov r15, [r12 + 0x20]			;ntdll.dll base address!
+		mov r15, [r12 + 0x20]				;ntdll.dll base address!
 		mov r12, [r12]					;3nd entry
-		mov r12, [r12 + 0x20]			;kernel32.dll base address!
+		mov r12, [r12 + 0x20]				;kernel32.dll base address!
 	 
 	;find address of loadLibraryA from kernel32.dll which was found above. 
 		mov rdx, 0xec0e4e8e
@@ -451,7 +451,7 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		jmp getUser32
 	returnGetUser32:
 		pop rcx
-		call rax               		   ;load user32.dll
+		call rax               				 ;load user32.dll
 		
 	;get messageBox address
 		mov rdx, 0xbc4da2a8
@@ -460,15 +460,15 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		mov rbx, rax
 
 	;messageBox
-		xor r9, r9            		    ;uType
+		xor r9, r9            				  ;uType
 		jmp getText
 	returnGetText:
 		pop r8	        				;lpCaption
 		jmp getTitle
 	returnGetTitle:
-		pop rdx							;lpTitle
+		pop rdx						;lpTitle
 		xor rcx, rcx					;hWnd
-		call rbx                		;display message box	
+		call rbx                			;display message box	
 		
 	;ExitProcess
 		mov rdx, 0x2d3fcd70				
@@ -494,18 +494,18 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 	;Hashing section to resolve a function address	
 	GetProcessAddress:		
 		mov r13, rcx					;base address of dll loaded 
-		mov eax, [r13d + 0x3c]			;skip DOS header and go to PE header
-		mov r14d, [r13d + eax + 0x88] 	;0x88 offset from the PE header is the export table. 
+		mov eax, [r13d + 0x3c]				;skip DOS header and go to PE header
+		mov r14d, [r13d + eax + 0x88] 			;0x88 offset from the PE header is the export table. 
 
 		add r14d, r13d  				;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
-		mov r10d, [r14d + 0x18]			;go into the export table and get the numberOfNames ;http://fumalwareanalysis.blogspot.com/2011/12/malware-analysis-tutorial-8-pe-header.html
-		mov ebx, [r14d + 0x20]			;get the AddressOfNames offset. 
+		mov r10d, [r14d + 0x18]				;go into the export table and get the numberOfNames 
+		mov ebx, [r14d + 0x20]				;get the AddressOfNames offset. 
 		add ebx, r13d					;AddressofNames base. 
 		
 	find_function_loop:	
-		jecxz find_function_finished	;if ecx is zero, quit :( nothing found. 
-		dec r10d						;dec ECX by one for the loop until no matches are found or until one is. 
-		mov esi, [ebx + r10d * 4]		;get a name to play with from the export table. 
+		jecxz find_function_finished			;if ecx is zero, quit :( nothing found. 
+		dec r10d					;dec ECX by one for the loop until a match/none are found
+		mov esi, [ebx + r10d * 4]			;get a name to play with from the export table. 
 		add esi, r13d					;esi is now the current name to search on. 
 		
 	find_hashes:
@@ -514,8 +514,8 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		cld			
 		
 	continue_hashing:	
-		lodsb							;get into al from esi
-		test al, al						;is the end of string resarched?
+		lodsb						;get into al from esi
+		test al, al					;is the end of string resarched?
 		jz compute_hash_finished
 		ror dword edi, 0xd				;ROR13 for hash calculation!
 		add edi, eax		
@@ -523,14 +523,14 @@ Note: I have adjusted all of the "lea" instructions with call/pop implementation
 		
 	compute_hash_finished:
 		cmp edi, edx					;edx has the function hash
-		jnz find_function_loop			;didn't match, keep trying!
-		mov ebx, [r14d + 0x24]			;put the address of the ordinal table and put it in ebx. 
+		jnz find_function_loop				;didn't match, keep trying!
+		mov ebx, [r14d + 0x24]				;put the address of the ordinal table and put it in ebx. 
 		add ebx, r13d					;absolute address
 		xor ecx, ecx					;ensure ecx is 0'd. 
-		mov cx, [ebx + 2 * r10d]		;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
-		mov ebx, [r14d + 0x1c]			;extract the address table offset
+		mov cx, [ebx + 2 * r10d]			;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
+		mov ebx, [r14d + 0x1c]				;extract the address table offset
 		add ebx, r13d					;put absolute address in EBX.
-		mov eax, [ebx + 4 * ecx]		;relative address
+		mov eax, [ebx + 4 * ecx]			;relative address
 		add eax, r13d	
 		
 	find_function_finished:
