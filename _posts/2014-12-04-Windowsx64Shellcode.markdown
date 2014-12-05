@@ -7,12 +7,12 @@ categories: shellcode, windows, x64, 64bit, win64
 ### Introduction
  Recently I have been rewriting several pieces of shellcode that I have implemented for x86 Windows into x64 and have had a hard time finding resources online that aided in my endeavors. I wanted to write a blog post (my first one) in order to hopefully help someone that is or will be in the position that I was in while trying to port over shellcode. 
 
- There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. Nor am I going to touch much on the basics of assembly, although I will. 
+ There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. I not going to touch much on the basics of assembly, although I will talk about calling conventions, register clobbering and registers. 
 
- refer to papers such as [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
- or resources like [*project-shellcode*](http://www.projectshellcode.com) for those.
+ Refer to papers such as [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
+ or resources like [*project-shellcode*](http://www.projectshellcode.com) for indepth shellcode writing tutorials.
 
- What I will go over however is the differences between 32 and 64 bit assembly that I have noticed and how to overcome them as well as some of the structures windows uses that are useful to know about for shellcode in the 64bit environment. I will also introduce two tools that I have created in helping my exploit development process.
+ I will go over the differences between 32 and 64 bit assembly that I have noticed and how to work with them as well as some of the structures windows uses that are useful to know about for shellcode in the 64bit environment. I will also introduce two tools that I have created in helping my exploit development process.
 
  Lastly before I get started I want to mention that I am still in the beginning stages (somewhat) of shellcode development and for the purpose of this tutorial I am only going to rely on needing to target Windows 7 x64 machines.  I am also going to use the phrases Win32 to refer to x86 windows builds and Win64 to refer to x64 builds. 
 
@@ -39,6 +39,10 @@ categories: shellcode, windows, x64, 64bit, win64
 - esi - Source Index
  
 - edi - Destination Index
+
+and the instruction pointer . . .
+
+- eip - Instruction Pointer
 
  Because of backwards compatibility reasons, 4 of those registers {eax. ebx, ecx and edx} can be broken down into 16 bit and 8 bit varieties.  
  
@@ -125,7 +129,10 @@ In the Win64 convention the arguments would be:
 	rdx = lpText
 
 	rcx = hWnd
+	
+---
 
+### Shellcode
 
 Let's Get Started
 
@@ -133,15 +140,13 @@ Now that the key differences have been established for Win64 shellcode, let's wr
 
 In order to demonstrate the ability to run Win64 shellcode, I am going to pop a MessageBox. Once I have the code base written to display a MessageBox, I will inject the code into calc with a tool I wrote to ensure that it works within another process.
 
-Notes:
+## Notes:
 
 I am using NASM for my assembler. Also, for linking Win64 object files I am using golink, written by Jeremy Gordon. 
 
----
-
-### Shellcode
-
 Open your favorite text editor, mine is Notepad++ for windows, and start typing!
+
+## Starting
 
 1.) Declare the NASM directives. 
 
