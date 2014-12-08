@@ -172,9 +172,7 @@ In Win32, the PEB lives at [fs:30h] whereas in Win64 the PEB is at [gs:60h].
 
 While the PEB struct has changed dramatically, 
 
-Show the pebs side by side 
-
-we only care about the LDR list.
+we only care about the LDR list which can be seen by using the "!peb" command in Windbg. 
 
 Notice how in the Windbg output of the PEB, the Ldr.InMemoryOrderModuleList contained kernel32.dll and it was the third entry. This list shows where PE files are in memory (consisting of both executables and dynamically linked libraries).
   
