@@ -10,7 +10,7 @@ Topher has a research emphasis on reverse engineering, malware, exploitation dev
 
 Outside of working on research or course material Topher enjoys hiking, playing guitar and discovering new music. 
 
-### Contact me
+### Contact
 
 [c.timzen@gmail.com](mailto:c.timzen@gmail.com)
 
