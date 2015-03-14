@@ -625,8 +625,8 @@ unsigned int messageBox64bit_sc_len = 258;
 &lt;p&gt;To download the applications I used I have zipped them up here: &lt;a href=&quot;http://www.tophertimzen.com/resources/win64BlogPost/Windows-x64-Shellcode-resources.zip&quot;&gt;Resources&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 04 Dec 2014 00:00:00 -0800</pubDate>
-        <link>http://www.tophertimzen.com/Windowsx64Shellcode/</link>
-        <guid isPermaLink="true">http://www.tophertimzen.com/Windowsx64Shellcode/</guid>
+        <link>http://www.tophertimzen.com/shellcode,/windows,/x64,/64bit,/win64/2014/12/04/Windowsx64Shellcode/</link>
+        <guid isPermaLink="true">http://www.tophertimzen.com/shellcode,/windows,/x64,/64bit,/win64/2014/12/04/Windowsx64Shellcode/</guid>
       </item>
     
       <item>
@@ -638,8 +638,8 @@ unsigned int messageBox64bit_sc_len = 258;
 &lt;p&gt;I do not have much experience writing technical papers and this blog will give me an opportunity to practice, so please excuse any mistakes and let me know if you find any by contacting me :).&lt;/p&gt;
 </description>
         <pubDate>Wed, 03 Dec 2014 00:00:00 -0800</pubDate>
-        <link>http://www.tophertimzen.com/Intro/</link>
-        <guid isPermaLink="true">http://www.tophertimzen.com/Intro/</guid>
+        <link>http://www.tophertimzen.com/introduction/2014/12/03/Intro/</link>
+        <guid isPermaLink="true">http://www.tophertimzen.com/introduction/2014/12/03/Intro/</guid>
       </item>
     
   </channel>

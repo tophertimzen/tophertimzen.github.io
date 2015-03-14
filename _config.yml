@@ -12,9 +12,11 @@ include:
  - _markdowns
 
 exclude:
-    - Gemfile
-    - Gemfile.lock
-    - LICENSE
-    - README.md
-
+ - Gemfile
+ - Gemfile.lock
+ - LICENSE
+ - README.md
+ - _includes
 permalink: pretty
+
+enable_disqus: false
