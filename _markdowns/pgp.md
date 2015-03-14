@@ -1,7 +1,7 @@
 ---
 layout: page
 title: PGP
-permalink: /pgp/pgp.html
+permalink: /pgp/
 ---
 
 -----BEGIN PGP PUBLIC KEY BLOCK-----

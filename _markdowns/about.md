@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-permalink: /about/about.html
+permalink: /about/
 ---
 
 Topher is currently studying Computer Science with an emphasis in Security and Information Assurance at Southern Oregon University. With a graduation date of June 2015, he is currently working on finishing the final year of his undergrad. In the Spring Topher will be assisting in teaching Windows internals and memory forensics using the Volatility framework by going over malware techniques, important Windows kernel strucutres, and using the framework to conduct incident response.
