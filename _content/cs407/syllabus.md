@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Syllabus
-permalink: /Syllabus/
+permalink: /cs407/syllabus.html
 ---
 
 #CS 407 - CF III: Memory Forensics
