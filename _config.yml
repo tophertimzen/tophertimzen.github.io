@@ -17,6 +17,6 @@ exclude:
  - LICENSE
  - README.md
  - _includes
-permalink: pretty
+#permalink: pretty
 
 enable_disqus: false
