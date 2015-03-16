@@ -60,10 +60,12 @@ permalink: /cs407/syllabus.html
 6.	Time line events through a raw memory dump
          
 ###Working Rules:
+
 - Attendance:
 Attendance is not required.  However to learn something outside of class takes about 10 times the effort as in class.  Anything presented in class is your sole responsibility to know.  If you miss a class, it is your responsibility to obtain the material presented, either on your own or from me.
-Incomplete:
+- Incomplete:
 In general an incomplete will not be given.  If 75% of the course-work has been successfully completed, an incomplete grade may be given for special cases.
+
 - Assignments:
 	- There will be approximately 7 lab assignments.
 	- Labs will be due approximately one week after assign date.  
