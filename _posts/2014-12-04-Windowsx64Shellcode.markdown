@@ -597,3 +597,5 @@ Success!
 I hope that this blog post has helped in aiding the development of Win64 shellcode... I am just getting started with writing what I have learned in my research and am hopefully going to continue to write/document on my website. 
 
 To download the applications I used I have zipped them up here: [Resources](http://www.tophertimzen.com/resources/win64BlogPost/Windows-x64-Shellcode-resources.zip)
+
+Update 3/18/2015: I have open sourced my Shellcode Tester and put the repository on my github page [*here*](https://github.com/tophertimzen/shellcodeTester).
