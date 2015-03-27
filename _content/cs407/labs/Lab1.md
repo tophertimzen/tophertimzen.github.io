@@ -4,7 +4,6 @@ title: Memory Forensics Lab 1: Learning the Toolset
 permalink: /cs407/labs/lab1.html
 ---
 
-
 Assigned: April 2nd
 
 Due: April 9th 
