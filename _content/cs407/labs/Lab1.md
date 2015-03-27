@@ -1,8 +1,10 @@
 ---
 layout: page
-title: Memory Forensics Lab 1: Learning the Toolset
+title: Lab1
 permalink: /cs407/labs/lab1.html
 ---
+
+#Learning the Toolset
 
 Assigned: April 2nd
 
