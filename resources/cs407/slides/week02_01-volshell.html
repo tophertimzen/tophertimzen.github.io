@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>VOLSHELL</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>VOLSHELL</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Volatility Python Shell</h1></header>
+            
+            
+            <section><p>Allows you to use the full Volatility name space to </p>
+<ul>
+<li>Interactively explore a memory image</li>
+<li>write your own scripts </li>
+<li>Display structure layouts</li>
+<li>Fill in structures at a memory offset</li>
+<li>Read memory</li>
+<li>List processes</li>
+<li>Switch process context</li>
+<li>Walk linked lists</li>
+<li>Disassemble code at a memory offset</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-3">
+          <div class="inner">
+            
+            <header><h1>Getting into Volshell</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 volshell</span>
+Volatility Foundation Volatility Framework 2.4
+Current context: System @ 0x84138bb0, <span class="nv">pid</span><span class="o">=</span>4, <span class="nv">ppid</span><span class="o">=</span><span class="m">0</span> <span class="nv">DTB</span><span class="o">=</span>0x185000
+Welcome to volshell! Current memory image is:
+file:///root/amf/windows/Win7.bin
+To get <span class="nb">help</span>, <span class="nb">type</span> <span class="s1">&#39;hh()&#39;</span>
+&gt;&gt;&gt;
+&gt;&gt;&gt;&gt; print<span class="o">(</span><span class="s2">&quot;HELLO WORLD FROM VOLSHELL&quot;</span><span class="o">)</span>
+HELLO WORLD FROM VOLSHELL
+</pre></div>
+
+<p>Notice Volshell auto places your context to "System"</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">sc</span><span class="p">()</span>
+<span class="n">Current</span> <span class="n">context</span><span class="p">:</span> <span class="n">System</span> <span class="err">@</span> <span class="mh">0x84138bb0</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ppid</span><span class="o">=</span><span class="mi">0</span> <span class="n">DTB</span><span class="o">=</span><span class="mh">0x185000</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-4">
+          <div class="inner">
+            
+            <header><h1>Help</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">hh</span><span class="p">()</span>
+
+<span class="n">Use</span> <span class="n">addrspace</span><span class="p">()</span> <span class="k">for</span> <span class="n">Kernel</span><span class="o">/</span><span class="n">Virtual</span> <span class="n">AS</span>
+<span class="n">Use</span> <span class="n">addrspace</span><span class="p">()</span><span class="o">.</span><span class="n">base</span> <span class="k">for</span> <span class="n">Physical</span> <span class="n">AS</span>
+<span class="n">Use</span> <span class="n">proc</span><span class="p">()</span> <span class="n">to</span> <span class="n">get</span> <span class="n">the</span> <span class="n">current</span> <span class="n">process</span> <span class="nb">object</span>
+  <span class="ow">and</span> <span class="n">proc</span><span class="p">()</span><span class="o">.</span><span class="n">get_process_address_space</span><span class="p">()</span> <span class="k">for</span> <span class="n">the</span> <span class="n">current</span> <span class="n">process</span> <span class="n">AS</span>
+  <span class="ow">and</span> <span class="n">proc</span><span class="p">()</span><span class="o">.</span><span class="n">get_load_modules</span><span class="p">()</span> <span class="k">for</span> <span class="n">the</span> <span class="n">current</span> <span class="n">process</span> <span class="n">DLLs</span>
+
+<span class="n">addrspace</span><span class="p">()</span>                              <span class="p">:</span> <span class="n">Get</span> <span class="n">the</span> <span class="n">current</span> <span class="n">kernel</span><span class="o">/</span><span class="n">virtual</span> <span class="n">address</span> <span class="n">space</span><span class="o">.</span>
+<span class="n">cc</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">physical</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="p">:</span> <span class="n">Change</span> <span class="n">current</span> <span class="n">shell</span> <span class="n">context</span><span class="o">.</span>
+<span class="n">db</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>      <span class="p">:</span> <span class="n">Print</span> <span class="nb">bytes</span> <span class="k">as</span> <span class="n">canonical</span> <span class="n">hexdump</span><span class="o">.</span>
+<span class="n">dd</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>      <span class="p">:</span> <span class="n">Print</span> <span class="n">dwords</span> <span class="n">at</span> <span class="n">address</span><span class="o">.</span>
+<span class="n">dis</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="p">:</span> <span class="n">Disassemble</span> <span class="n">code</span> <span class="n">at</span> <span class="n">a</span> <span class="n">given</span> <span class="n">address</span><span class="o">.</span>
+<span class="n">dq</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>      <span class="p">:</span> <span class="n">Print</span> <span class="n">qwords</span> <span class="n">at</span> <span class="n">address</span><span class="o">.</span>
+<span class="n">dt</span><span class="p">(</span><span class="n">objct</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="p">:</span> <span class="n">Describe</span> <span class="n">an</span> <span class="nb">object</span> <span class="ow">or</span> <span class="n">show</span> <span class="nb">type</span> <span class="n">info</span><span class="o">.</span>
+<span class="n">getmods</span><span class="p">()</span>                                <span class="p">:</span> <span class="n">Generator</span> <span class="k">for</span> <span class="n">kernel</span> <span class="n">modules</span> <span class="p">(</span><span class="n">scripting</span><span class="p">)</span><span class="o">.</span>
+<span class="n">getprocs</span><span class="p">()</span>                               <span class="p">:</span> <span class="n">Generator</span> <span class="n">of</span> <span class="n">process</span> <span class="n">objects</span> <span class="p">(</span><span class="n">scripting</span><span class="p">)</span><span class="o">.</span>
+<span class="n">hh</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>                             <span class="p">:</span> <span class="n">Get</span> <span class="n">help</span> <span class="n">on</span> <span class="n">a</span> <span class="n">command</span><span class="o">.</span>
+<span class="n">list_entry</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">objname</span><span class="p">,</span> <span class="n">offset</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">fieldname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="p">:</span> <span class="n">Traverse</span> <span class="n">a</span> <span class="n">_LIST_ENTRY</span><span class="o">.</span>
+<span class="n">modules</span><span class="p">()</span>                                <span class="p">:</span> <span class="n">Print</span> <span class="n">loaded</span> <span class="n">modules</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">table</span> <span class="n">view</span><span class="o">.</span>
+<span class="n">proc</span><span class="p">()</span>                                   <span class="p">:</span> <span class="n">Get</span> <span class="n">the</span> <span class="n">current</span> <span class="n">process</span> <span class="nb">object</span><span class="o">.</span>
+<span class="n">ps</span><span class="p">()</span>                                     <span class="p">:</span> <span class="n">Print</span> <span class="n">active</span> <span class="n">processes</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">table</span> <span class="n">view</span><span class="o">.</span>
+<span class="n">sc</span><span class="p">()</span>                                     <span class="p">:</span> <span class="n">Show</span> <span class="n">the</span> <span class="n">current</span> <span class="n">context</span><span class="o">.</span>
+
+<span class="n">For</span> <span class="n">help</span> <span class="n">on</span> <span class="n">a</span> <span class="n">specific</span> <span class="n">command</span><span class="p">,</span> <span class="nb">type</span> <span class="s">&#39;hh(&lt;command&gt;)&#39;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>Exploring a Structure</h1></header>
+            
+            
+            <section><p>dt(objct, address=None, space=None, recursive=False, depth=0) : Describe an object or show type info.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_LIST_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_LIST_ENTRY&#39;</span> <span class="p">(</span><span class="mi">8</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Flink</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Blink</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+</pre></div>
+
+<h1>Can use an address to overlay the structure</h1>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">()</span>
+<span class="p">[</span><span class="n">_EPROCESS</span> <span class="n">_EPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x84138BB0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span> <span class="p">,</span><span class="mh">0x84138BB0</span><span class="p">)</span>
+<span class="p">[</span><span class="n">_EPROCESS</span> <span class="n">_EPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x84138BB0</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Pcb</span>                            <span class="mi">2215873456</span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">ProcessLock</span>                    <span class="mi">2215873608</span>
+<span class="mh">0xa0</span>  <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">51</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="mh">0xa8</span>  <span class="p">:</span> <span class="n">ExitTime</span>                       <span class="mi">1970</span><span class="o">-</span><span class="mo">01</span><span class="o">-</span><span class="mo">01</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="mh">0xb0</span>  <span class="p">:</span> <span class="n">RundownProtect</span>                 <span class="mi">2215873632</span>
+<span class="mh">0xb4</span>  <span class="p">:</span> <span class="n">UniqueProcessId</span>                <span class="mi">4</span>
+<span class="mh">0xb8</span>  <span class="p">:</span> <span class="n">ActiveProcessLinks</span>             <span class="mi">2215873640</span>
+<span class="mh">0xc0</span>  <span class="p">:</span> <span class="n">ProcessQuotaUsage</span>              <span class="o">-</span>
+<span class="mh">0xc8</span>  <span class="p">:</span> <span class="n">ProcessQuotaPeak</span>               <span class="o">-</span>
+<span class="mh">0xd0</span>  <span class="p">:</span> <span class="n">CommitCharge</span>                   <span class="mi">12</span>
+<span class="mh">0xd4</span>  <span class="p">:</span> <span class="n">QuotaBlock</span>                     <span class="mi">2190711296</span>
+<span class="mh">0xd8</span>  <span class="p">:</span> <span class="n">CpuQuotaBlock</span>                  <span class="mi">0</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">PeakVirtualSize</span>                <span class="mi">7577600</span>
+<span class="mh">0xe0</span>  <span class="p">:</span> <span class="n">VirtualSize</span>                    <span class="mi">1966080</span>
+<span class="mh">0xe4</span>  <span class="p">:</span> <span class="n">SessionProcessLinks</span>            <span class="mi">2215873684</span>
+<span class="mh">0xec</span>  <span class="p">:</span> <span class="n">DebugPort</span>                      <span class="mi">0</span>
+<span class="mh">0xf0</span>  <span class="p">:</span> <span class="n">ExceptionPortData</span>              <span class="mi">0</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>PS()</h1></header>
+            
+            
+            <section><p>Print active processes in a table view.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ps</span><span class="p">()</span>
+<span class="n">Name</span>             <span class="n">PID</span>    <span class="n">PPID</span>   <span class="n">Offset</span>
+<span class="n">System</span>           <span class="mi">4</span>      <span class="mi">0</span>      <span class="mh">0x84138bb0</span>
+<span class="n">smss</span><span class="o">.</span><span class="n">exe</span>         <span class="mi">260</span>    <span class="mi">4</span>      <span class="mh">0x852d95b0</span>
+<span class="n">csrss</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">348</span>    <span class="mi">340</span>    <span class="mh">0x853f7490</span>
+<span class="n">wininit</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">400</span>    <span class="mi">340</span>    <span class="mh">0x859c2d40</span>
+<span class="n">csrss</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">412</span>    <span class="mi">392</span>    <span class="mh">0x859c2030</span>
+<span class="n">winlogon</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">468</span>    <span class="mi">392</span>    <span class="mh">0x85a11030</span>
+<span class="n">services</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">504</span>    <span class="mi">400</span>    <span class="mh">0x85a1e410</span>
+<span class="n">lsass</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">520</span>    <span class="mi">400</span>    <span class="mh">0x85a2d308</span>
+<span class="n">lsm</span><span class="o">.</span><span class="n">exe</span>          <span class="mi">528</span>    <span class="mi">400</span>    <span class="mh">0x85a315a8</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">632</span>    <span class="mi">504</span>    <span class="mh">0x85ad6530</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">700</span>    <span class="mi">504</span>    <span class="mh">0x85e22530</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">748</span>    <span class="mi">504</span>    <span class="mh">0x85e60530</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">868</span>    <span class="mi">504</span>    <span class="mh">0x85f07648</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">908</span>    <span class="mi">504</span>    <span class="mh">0x85ef03c8</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">948</span>    <span class="mi">504</span>    <span class="mh">0x85eeb328</span>
+<span class="n">audiodg</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1000</span>   <span class="mi">748</span>    <span class="mh">0x85f03648</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1204</span>   <span class="mi">504</span>    <span class="mh">0x85f8c630</span>
+<span class="n">spoolsv</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1304</span>   <span class="mi">504</span>    <span class="mh">0x86019b48</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1340</span>   <span class="mi">504</span>    <span class="mh">0x860621a8</span>
+<span class="n">vmtoolsd</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">1504</span>   <span class="mi">504</span>    <span class="mh">0x85e2cb38</span>
+<span class="n">TPAutoConnSvc</span><span class="o">.</span>   <span class="mi">1668</span>   <span class="mi">504</span>    <span class="mh">0x8617ab90</span>
+<span class="n">dllhost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1804</span>   <span class="mi">504</span>    <span class="mh">0x8538b030</span>
+<span class="n">dllhost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">1868</span>   <span class="mi">504</span>    <span class="mh">0x85e008c8</span>
+<span class="n">msdtc</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">1980</span>   <span class="mi">504</span>    <span class="mh">0x8613ad40</span>
+<span class="n">VSSVC</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">580</span>    <span class="mi">504</span>    <span class="mh">0x862007d0</span>
+<span class="n">taskhost</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">320</span>    <span class="mi">504</span>    <span class="mh">0x86144030</span>
+<span class="n">dwm</span><span class="o">.</span><span class="n">exe</span>          <span class="mi">1916</span>   <span class="mi">868</span>    <span class="mh">0x86256858</span>
+<span class="n">explorer</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">352</span>    <span class="mi">1848</span>   <span class="mh">0x8625b420</span>
+<span class="n">vmtoolsd</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">2060</span>   <span class="mi">352</span>    <span class="mh">0x8628e6d0</span>
+<span class="n">TPAutoConnect</span><span class="o">.</span>   <span class="mi">2176</span>   <span class="mi">1668</span>   <span class="mh">0x862ba8c8</span>
+<span class="n">conhost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">2184</span>   <span class="mi">412</span>    <span class="mh">0x862ba248</span>
+<span class="n">iexplore</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">2364</span>   <span class="mi">352</span>    <span class="mh">0x85e56828</span>
+<span class="n">SearchIndexer</span><span class="o">.</span>   <span class="mi">2436</span>   <span class="mi">504</span>    <span class="mh">0x8633ad40</span>
+<span class="n">iexplore</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">2468</span>   <span class="mi">2364</span>   <span class="mh">0x8634a380</span>
+<span class="n">mstsc</span><span class="o">.</span><span class="n">exe</span>        <span class="mi">2704</span>   <span class="mi">352</span>    <span class="mh">0x862f63a0</span>
+<span class="n">devenv</span><span class="o">.</span><span class="n">exe</span>       <span class="mi">2876</span>   <span class="mi">352</span>    <span class="mh">0x863f63b8</span>
+<span class="n">StikyNot</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">2972</span>   <span class="mi">352</span>    <span class="mh">0x86452d40</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">exe</span>         <span class="mi">3032</span>   <span class="mi">352</span>    <span class="mh">0x86480530</span>
+<span class="n">WFS</span><span class="o">.</span><span class="n">exe</span>          <span class="mi">3056</span>   <span class="mi">352</span>    <span class="mh">0x8533ad40</span>
+<span class="n">FXSSVC</span><span class="o">.</span><span class="n">exe</span>       <span class="mi">3092</span>   <span class="mi">504</span>    <span class="mh">0x86485030</span>
+<span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3196</span>   <span class="mi">352</span>    <span class="mh">0x86499d40</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3232</span>   <span class="mi">504</span>    <span class="mh">0x864ada20</span>
+<span class="n">SnippingTool</span><span class="o">.</span><span class="n">e</span>   <span class="mi">3276</span>   <span class="mi">352</span>    <span class="mh">0x864b5d40</span>
+<span class="n">wisptis</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3364</span>   <span class="mi">868</span>    <span class="mh">0x86487d40</span>
+<span class="n">mobsync</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3444</span>   <span class="mi">632</span>    <span class="mh">0x85358d40</span>
+<span class="n">sidebar</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3544</span>   <span class="mi">352</span>    <span class="mh">0x86250770</span>
+<span class="n">msra</span><span class="o">.</span><span class="n">exe</span>         <span class="mi">3676</span>   <span class="mi">352</span>    <span class="mh">0x84a35030</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3712</span>   <span class="mi">504</span>    <span class="mh">0x8526ad00</span>
+<span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3744</span>   <span class="mi">504</span>    <span class="mh">0x861abd40</span>
+<span class="n">ProcessHacker</span><span class="o">.</span>   <span class="mi">1108</span>   <span class="mi">352</span>    <span class="mh">0x863cc540</span>
+<span class="n">dllhost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">884</span>    <span class="mi">632</span>    <span class="mh">0x84355d40</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">exe</span>          <span class="mi">3912</span>   <span class="mi">1504</span>   <span class="mh">0x842424b8</span>
+<span class="n">conhost</span><span class="o">.</span><span class="n">exe</span>      <span class="mi">3880</span>   <span class="mi">348</span>    <span class="mh">0x8426ad40</span>
+<span class="n">ipconfig</span><span class="o">.</span><span class="n">exe</span>     <span class="mi">968</span>    <span class="mi">3912</span>   <span class="mh">0x8426aa50</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>Switching contexts and using them</h1></header>
+            
+            
+            <section><p>cc = change context</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="p">(</span><span class="mh">0x86480530</span><span class="p">)</span>
+<span class="n">Current</span> <span class="n">context</span><span class="p">:</span> <span class="n">calc</span><span class="o">.</span><span class="n">exe</span> <span class="err">@</span> <span class="mh">0x86480530</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">3032</span><span class="p">,</span> <span class="n">ppid</span><span class="o">=</span><span class="mi">352</span> <span class="n">DTB</span><span class="o">=</span><span class="mh">0x3ecec540</span>
+</pre></div>
+
+<p>You are now in that processes virtual memory</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">modules</span><span class="p">()</span>
+<span class="n">Offset</span>     <span class="n">Base</span>       <span class="n">Name</span>
+<span class="mh">0x84131c98</span> <span class="mh">0x82804000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">ntkrnlpa</span><span class="o">.</span><span class="n">exe</span>
+<span class="mh">0x84131c20</span> <span class="mh">0x82c17000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">halmacpi</span><span class="o">.</span><span class="n">dll</span>
+<span class="mh">0x84131ba0</span> <span class="mh">0x80bb8000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">kdcom</span><span class="o">.</span><span class="n">dll</span>
+<span class="mh">0x84131b20</span> <span class="mh">0x82e35000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">mcupdate_GenuineIntel</span><span class="o">.</span><span class="n">dll</span>
+<span class="mh">0x84131aa0</span> <span class="mh">0x82eba000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">PSHED</span><span class="o">.</span><span class="n">dll</span>
+<span class="mh">0x84131a20</span> <span class="mh">0x82ecb000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">BOOTVID</span><span class="o">.</span><span class="n">dll</span>
+<span class="mh">0x841319a8</span> <span class="mh">0x82ed3000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">CLFS</span><span class="o">.</span><span class="n">SYS</span>
+<span class="mh">0x84131930</span> <span class="mh">0x82f15000</span> \<span class="n">SystemRoot</span>\<span class="n">system32</span>\<span class="n">CI</span><span class="o">.</span><span class="n">dll</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>More</h1></header>
+            
+            
+            <section><p>Let's find the PE header!</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span><span class="p">,</span> <span class="mh">0x86480530</span><span class="p">)</span>
+<span class="p">[</span><span class="n">_EPROCESS</span> <span class="n">_EPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x86480530</span>
+<span class="mh">0x1a8</span> <span class="p">:</span> <span class="n">Peb</span>                            <span class="mi">2147319808</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_PEB&quot;</span><span class="p">,</span><span class="mi">2147319808</span><span class="p">)</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ImageBaseAddress</span>               <span class="mi">1179648</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">db</span><span class="p">(</span><span class="mi">1179648</span><span class="p">)</span>
+<span class="mh">0x00120000</span>  <span class="mi">4</span><span class="n">d</span> <span class="mi">5</span><span class="n">a</span> <span class="mi">90</span> <span class="mo">00</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">04</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="n">ff</span> <span class="n">ff</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="n">MZ</span><span class="o">..............</span>
+<span class="mh">0x00120010</span>  <span class="n">b8</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">40</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="o">........</span><span class="nd">@.......</span>
+<span class="mh">0x00120020</span>  <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="o">................</span>
+<span class="mh">0x00120030</span>  <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="n">d8</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="o">................</span>
+<span class="mh">0x00120040</span>  <span class="mi">0</span><span class="n">e</span> <span class="mi">1</span><span class="n">f</span> <span class="n">ba</span> <span class="mi">0</span><span class="n">e</span> <span class="mo">00</span> <span class="n">b4</span> <span class="mi">09</span> <span class="n">cd</span> <span class="mi">21</span> <span class="n">b8</span> <span class="mo">01</span> <span class="mi">4</span><span class="n">c</span> <span class="n">cd</span> <span class="mi">21</span> <span class="mi">54</span> <span class="mi">68</span>   <span class="o">........</span><span class="err">!</span><span class="o">..</span><span class="n">L</span><span class="o">.</span><span class="err">!</span><span class="n">Th</span>
+<span class="mh">0x00120050</span>  <span class="mi">69</span> <span class="mi">73</span> <span class="mi">20</span> <span class="mi">70</span> <span class="mi">72</span> <span class="mi">6</span><span class="n">f</span> <span class="mi">67</span> <span class="mi">72</span> <span class="mi">61</span> <span class="mi">6</span><span class="n">d</span> <span class="mi">20</span> <span class="mi">63</span> <span class="mi">61</span> <span class="mi">6</span><span class="n">e</span> <span class="mi">6</span><span class="n">e</span> <span class="mi">6</span><span class="n">f</span>   <span class="ow">is</span><span class="o">.</span><span class="n">program</span><span class="o">.</span><span class="n">canno</span>
+<span class="mh">0x00120060</span>  <span class="mi">74</span> <span class="mi">20</span> <span class="mi">62</span> <span class="mi">65</span> <span class="mi">20</span> <span class="mi">72</span> <span class="mi">75</span> <span class="mi">6</span><span class="n">e</span> <span class="mi">20</span> <span class="mi">69</span> <span class="mi">6</span><span class="n">e</span> <span class="mi">20</span> <span class="mi">44</span> <span class="mi">4</span><span class="n">f</span> <span class="mi">53</span> <span class="mi">20</span>   <span class="n">t</span><span class="o">.</span><span class="n">be</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="ow">in</span><span class="o">.</span><span class="n">DOS</span><span class="o">.</span>
+<span class="mh">0x00120070</span>  <span class="mi">6</span><span class="n">d</span> <span class="mi">6</span><span class="n">f</span> <span class="mi">64</span> <span class="mi">65</span> <span class="mi">2</span><span class="n">e</span> <span class="mi">0</span><span class="n">d</span> <span class="mi">0</span><span class="n">d</span> <span class="mi">0</span><span class="n">a</span> <span class="mi">24</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="n">mode</span><span class="o">....</span><span class="err">$</span><span class="o">.......</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>Disassemble</h1></header>
+            
+            
+            <section><p>dis() is useful to disassemble instructions at some memory location</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="mi">1179648</span> <span class="o">+</span> <span class="mh">0x2506</span><span class="p">)</span>
+<span class="mh">0x122506</span> <span class="mi">2500000089</span>                       <span class="n">AND</span> <span class="n">EAX</span><span class="p">,</span> <span class="mh">0x89000000</span>
+<span class="mh">0x12250b</span> <span class="mi">45</span>                               <span class="n">INC</span> <span class="n">EBP</span>
+<span class="mh">0x12250c</span> <span class="n">fc</span>                               <span class="n">CLD</span>
+<span class="mh">0x12250d</span> <span class="mi">8</span><span class="n">bcb</span>                             <span class="n">MOV</span> <span class="n">ECX</span><span class="p">,</span> <span class="n">EBX</span>
+<span class="mh">0x12250f</span> <span class="mi">85</span><span class="n">c0</span>                             <span class="n">TEST</span> <span class="n">EAX</span><span class="p">,</span> <span class="n">EAX</span>
+<span class="mh">0x122511</span> <span class="mi">0</span><span class="n">f853b190100</span>                     <span class="n">JNZ</span> <span class="mh">0x133e52</span>
+<span class="mh">0x122517</span> <span class="n">e8e1fcffff</span>                       <span class="n">CALL</span> <span class="mh">0x1221fd</span>
+<span class="mh">0x12251c</span> <span class="mi">8</span><span class="n">b45f8</span>                           <span class="n">MOV</span> <span class="n">EAX</span><span class="p">,</span> <span class="p">[</span><span class="n">EBP</span><span class="o">-</span><span class="mh">0x8</span><span class="p">]</span>
+<span class="mh">0x12251f</span> <span class="mi">8</span><span class="n">b08</span>                             <span class="n">MOV</span> <span class="n">ECX</span><span class="p">,</span> <span class="p">[</span><span class="n">EAX</span><span class="p">]</span>
+<span class="mh">0x122521</span> <span class="mi">50</span>                               <span class="n">PUSH</span> <span class="n">EAX</span>
+<span class="mh">0x122522</span> <span class="n">ff5108</span>                           <span class="n">CALL</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">ECX</span><span class="o">+</span><span class="mh">0x8</span><span class="p">]</span>
+</pre></div>
+
+<p>Could just hit random memory and get jibberish, but you could use it on something discovered by<strong> malfind()</strong> <em>(discussed later in course)</em></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-volshell.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>TL;DR</h1></header>
+            
+            
+            <section><p>Volshell lets you do a whole lot</p>
+<p>I will be using it a lot to display structures and just did not want confusion!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-volshell.md">week02_01-volshell.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/10
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">VOLSHELL</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Volatility Python Shell</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Getting into Volshell</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Help</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Exploring a Structure</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">PS()</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Switching contexts and using them</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">More</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Disassemble</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">TL;DR</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
