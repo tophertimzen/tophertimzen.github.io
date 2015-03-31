@@ -1,0 +1,3366 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Process Memory Internals</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Process Memory Internals</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What is in Memory?</h1></header>
+            
+            
+            <section><ul>
+<li>Kernel Pool Allocations</li>
+<li>Passwords</li>
+<li>E-mails</li>
+<li>Encryption Keys</li>
+<li>User inputted data</li>
+<li>Process information</li>
+<li>SQL Objects</li>
+<li>Credit cards</li>
+<li>Documents</li>
+<li>Chat Logs</li>
+<li>EVERYTHING (Unless on disk and not open)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Process Memory Range</h1></header>
+            
+            
+            <section><p>Each process has its own private address space.</p>
+<p>32 Bit Windows (Without altering it)</p>
+<ul>
+<li>Low 2GB (0x00000000 through 0x7FFFFFFF)   Used by the process.</li>
+<li>High 2GB (0x80000000 through 0xFFFFFFFF)  Used by the system</li>
+</ul>
+<p>64 Bit Windows</p>
+<ul>
+<li>8 Terabytes of private memory</li>
+<li>Can be reduced to 2GB like 32 Bit if requested. </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Memory Range</h1></header>
+            
+            
+            <section><p><img alt="memory internals" src="../slideResources/internals/memoryLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>User Land</h1></header>
+            
+            
+            <section><p>DLLs</p>
+<p>Envionmental Variables</p>
+<p>PEB</p>
+<p>Process Heaps</p>
+<p>Thread Stacks</p>
+<p>Mapped Files</p>
+<p>Application Data</p>
+<p>Executable</p>
+<p>PE Space</p>
+<p>Command Arguments</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>System Land</h1></header>
+            
+            
+            <section><p>The high 2GB (0x80000000 through 0xFFFFFFFF)    used by the system is shared through all processes. </p>
+<p>Processes don't really mess with it as it could be catastrophic.</p>
+<p>Symbols are here for items of interest such as PsActiveProcessList. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Processes</h1></header>
+            
+            
+            <section><p><img alt="process internals" src="../slideResources/internals/processLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Process of Processes</h1></header>
+            
+            
+            <section><p>Source Code → Compile → Link → Produce PECOFF file.</p>
+<ul>
+<li>exe = executable</li>
+<li>.dll = dynamically linked library</li>
+</ul>
+<p>PECOFF = Portable Executable and Common Object File Format.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>Process Layout</h1></header>
+            
+            
+            <section><p><img alt="process internals" src="../slideResources/internals/procMemLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>Note: Memory addresses change with ASLR (Address Space Layout Randomization) and could appear differently</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>Memory Sections</h1></header>
+            
+            
+            <section><p>.Text/.Code = rx portions of program. Assembly code that CPU will run.</p>
+<p>.rdata = r only data</p>
+<ul>
+<li>Export data  </li>
+</ul>
+<p>.data = rw initialized data</p>
+<ul>
+<li>Static variables initialized, global variables, strings,  </li>
+</ul>
+<p>.bss = rw un-initliaized data</p>
+<ul>
+<li>Static variables set to 0, reduces stack size, assures variables have space. </li>
+</ul>
+<p>.rsrc = r resources</p>
+<ul>
+<li>Images, additional binaries, etc. Anything can be here. </li>
+</ul>
+<p>Stack = rw</p>
+<p>Heap = rw</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>OllyDbg layout</h1></header>
+            
+            
+            <section><p><img alt="ollyDbg" src="../slideResources/internals/ollyDbg.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>Portable Executable and Common Object File Format  (PECOFF)</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>PECOFF</h1></header>
+            
+            
+            <section><p>PE introduced in Windows NT 3.1 in 1993.</p>
+<p>Modified from Unix COFF. </p>
+<p>Portable Executable (PE) is the file format for executables and dlls. </p>
+<ul>
+<li>Encapsulated info for the windows os loader</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>PE</h1></header>
+            
+            
+            <section><p>All Windows binaries, dll's and device drivers use the PE header to encapsulate the information the OS loader needs to manage the executable code.</p>
+<p>M$ has kept backwards compatbility in the 20+ years of PE despite the format changing</p>
+<p>Several sections that tell the dynamic linker which shared libraries are needed for the processes. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>PE Cont</h1></header>
+            
+            
+            <section><p>Characteristics of executable</p>
+<p>Pointer to portions in executable</p>
+<p>Import/Export Fields</p>
+<p>Debugging information</p>
+<p>Sizes</p>
+<p>Permissions of memory sections</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>General PE-COFF Layout</h1></header>
+            
+            
+            <section><p><img alt="peLayout" src="../slideResources/internals/peLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>IMAGE_DOS_HEADER</h1></header>
+            
+            
+            <section><p>DOS Stub.. Nothing important here.. just remnants of DOS</p>
+<p>e_lfanew at offset 0x3C has file offset of PE header, IMAGE_NT_HEADERS. It must be 4 byte aligned</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_DOS_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_DOS_HEADER&#39;</span> <span class="p">(</span><span class="mi">64</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">e_magic</span>                        <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span> <span class="c">#Magic bytes 4D5A → “MZ”</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">e_cblp</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">e_cp</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x6</span>   <span class="p">:</span> <span class="n">e_crlc</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">e_cparhdr</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xa</span>   <span class="p">:</span> <span class="n">e_minalloc</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">e_maxalloc</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe</span>   <span class="p">:</span> <span class="n">e_ss</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">e_sp</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x12</span>  <span class="p">:</span> <span class="n">e_csum</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">e_ip</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x16</span>  <span class="p">:</span> <span class="n">e_cs</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">e_lfarlc</span>                       <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x1a</span>  <span class="p">:</span> <span class="n">e_ovno</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">e_res</span>                          <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">e_oemid</span>                        <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x26</span>  <span class="p">:</span> <span class="n">e_oeminfo</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">e_res2</span>                         <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">e_lfanew</span>                       <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p><br></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>IMAGE_NT_HEADERS</h1></header>
+            
+            
+            <section><p>PE Header</p>
+<p>Contains </p>
+<ul>
+<li>IMAGE_FILE_HEADER </li>
+<li>IMAGE_OPTIONAL_HEADERS</li>
+</ul>
+<p>Magic Bytes ("Signature") 5045 → “PE”</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_NT_HEADERS&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_NT_HEADERS&#39;</span> <span class="p">(</span><span class="mi">248</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Signature</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">FileHeader</span>                     <span class="p">[</span><span class="s">&#39;_IMAGE_FILE_HEADER&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">OptionalHeader</span>                 <span class="p">[</span><span class="s">&#39;_IMAGE_OPTIONAL_HEADER&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h1>IMAGE_FILE_HEADER</h1></header>
+            
+            
+            <section><p>Compile time</p>
+<ul>
+<li>100-nanoseconds from 1/1/1601</li>
+</ul>
+<p>Number of Sections</p>
+<p>Size of Optional Header</p>
+<p>Characteristics of IMAGE_FILE</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_FILE_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_FILE_HEADER&#39;</span> <span class="p">(</span><span class="mi">20</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Machine</span>                        <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">NumberOfSections</span>               <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">TimeDateStamp</span>                  <span class="p">[</span><span class="s">&#39;UnixTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">PointerToSymbolTable</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">NumberOfSymbols</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">SizeOfOptionalHeader</span>           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x12</span>  <span class="p">:</span> <span class="n">Characteristics</span>                <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>IMAGE_OPTIONAL_HEADER</h1></header>
+            
+            
+            <section><p>Not really "optional" for DLL and EXE</p>
+<p>Magic bytes 0x10b or 0x107</p>
+<p>Address of Entry</p>
+<p>Initial entry point of program</p>
+<p>Base of Code</p>
+<p>Relative Virtual Address (RVA) of .code</p>
+<p>Image Base</p>
+<p>Virtual Address of Image Base</p>
+<p>Data Directorys and RVAs to them - 16 IMAGE_DATA_DIRECTORY </p>
+<p>Size of Sections</p>
+<p>Size of Image When Loaded and on disk</p>
+<p>Good for Malware investigations</p>
+<p>Stack sizes</p>
+<p>File and Section Alignment</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_OPTIONAL_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_OPTIONAL_HEADER&#39;</span> <span class="p">(</span><span class="mi">224</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Magic</span>                          <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">MajorLinkerVersion</span>             <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">MinorLinkerVersion</span>             <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">SizeOfCode</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">SizeOfInitializedData</span>          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">SizeOfUninitializedData</span>        <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">AddressOfEntryPoint</span>            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">BaseOfCode</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">BaseOfData</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">ImageBase</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">SectionAlignment</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">FileAlignment</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">MajorOperatingSystemVersion</span>    <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2a</span>  <span class="p">:</span> <span class="n">MinorOperatingSystemVersion</span>    <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">MajorImageVersion</span>              <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2e</span>  <span class="p">:</span> <span class="n">MinorImageVersion</span>              <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">MajorSubsystemVersion</span>          <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x32</span>  <span class="p">:</span> <span class="n">MinorSubsystemVersion</span>          <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">Win32VersionValue</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">SizeOfImage</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">SizeOfHeaders</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">CheckSum</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">Subsystem</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x46</span>  <span class="p">:</span> <span class="n">DllCharacteristics</span>             <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">SizeOfStackReserve</span>             <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">SizeOfStackCommit</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">SizeOfHeapReserve</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x54</span>  <span class="p">:</span> <span class="n">SizeOfHeapCommit</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">LoaderFlags</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">NumberOfRvaAndSizes</span>            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">DataDirectory</span>                  <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_IMAGE_DATA_DIRECTORY&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Data Directories</h1></header>
+            
+            
+            <section><p>Array of Struts that contain a VirtualAddress to a directory.</p>
+<p>If the VirtualAddress and Size are 0, it is not used.</p>
+<p>**IMAGE_DIRECTORY_ENTRY_EXPORT (0)The directory of exported symbols. mostly used for DLLs.</p>
+<p>**IMAGE_DIRECTORY_ENTRY_IMPORT (1) The directory of imported symbols.</p>
+<p>**IMAGE_DIRECTORY_ENTRY_RESOURCE (2) Directory of resources.</p>
+<p>IMAGE_DIRECTORY_ENTRY_BASERELOC (5) Base relocation table. Necessary for DLLs.</p>
+<p>**IMAGE_DIRECTORY_ENTRY_TLS (9) Thread local storage directory - structure unknown; contains variables that are declared "__declspec(thread)", i.e. per-thread global variable</p>
+<p>IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT (11) Bound import directory - see description of import directory.</p>
+<p>IMAGE_DIRECTORY_ENTRY_IAT (12) Import Address Table - see description of import directory.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_DATA_DIRECTORY&quot;</span><span class="p">)</span>
+     <span class="s">&#39;_IMAGE_DATA_DIRECTORY&#39;</span> <span class="p">(</span><span class="mi">8</span> <span class="nb">bytes</span><span class="p">)</span>
+    <span class="mh">0x0</span>   <span class="p">:</span> <span class="n">VirtualAddress</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+    <span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Size</span>                           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Relative Virtual Addresses</h1></header>
+            
+            
+            <section><p>An address relative to the ImageBase.</p>
+<p>ImageBase is an actual virtual addresses to the IMAGE_DOS_HEADER</p>
+<p>VirtualAddress = ImageBase + RVA</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-24">
+          <div class="inner">
+            
+            <header><h1>File Offset vs RVA</h1></header>
+            
+            
+            <section><p>RVA are not the same as File offsets.</p>
+<p>File offsets differ from memory due to file alignment and memory alignment differences</p>
+<p>Alignment is specified in the optional header</p>
+<p>File sections are on 512 byte boundaries</p>
+<p>Memory has page aligned sections (usually)</p>
+<p>FileOffset = RVA – VirtualAddress + PointerToRawData (from IMAGE_SECTION_HEADER)</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-25">
+          <div class="inner">
+            
+            <header><h1>IMAGE_SECTION_HEADER</h1></header>
+            
+            
+            <section><p>Our memory sections... data, text/code, reloc, etc. </p>
+<p>Array of section Headers defined in IMAGE_FILE_HEADER</p>
+<p>IMAGE_NT_HEADERS + SizeOfOptionalHeader</p>
+<p>Contain</p>
+<ul>
+<li>Name</li>
+<li>RVA</li>
+<li>Virtual Size (Memory)</li>
+<li>SizeOfRawData (file size)</li>
+<li>PointerToRawData</li>
+<li>Characteristics in memory (rwx)</li>
+</ul>
+<p>Gets us to the SECTION</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_SECTION_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_SECTION_HEADER&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Name</span>                           <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Misc</span>                           <span class="p">[</span><span class="s">&#39;__unnamed_1f6c&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">VirtualAddress</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">SizeOfRawData</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">PointerToRawData</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">PointerToRelocations</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">PointerToLinenumbers</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">NumberOfRelocations</span>            <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x22</span>  <span class="p">:</span> <span class="n">NumberOfLinenumbers</span>            <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Characteristics</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>FIN PE</h1></header>
+            
+            
+            <section><p><img alt="fullPE" src="../slideResources/internals/fullPE.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>Tools to parse PE</h1></header>
+            
+            
+            <section><p>Volatility.py </p>
+<p>PEView</p>
+<p>PEiD</p>
+<p>Dependency Walker</p>
+<p>Debuggers</p>
+<p>IDA</p>
+<p>Pefile.py</p>
+<p>Write your own</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-29">
+          <div class="inner">
+            
+            <header><h1>PEView</h1></header>
+            
+            
+            <section><p>Old software but still works and is used often</p>
+<p>Easily view the contents of a PE binary</p>
+<p><img alt="peView" src="../slideResources/internals/peView.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>Dependency Walker</h1></header>
+            
+            
+            <section><p>Scans binaries and builds a tree of dependent modules. </p>
+<p><img alt="depens" src="../slideResources/internals/depens.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-31">
+          <div class="inner">
+            
+            <header><h1>Writing your own PE parser</h1></header>
+            
+            
+            <section><p>WinAPI in <Windows.h> already provides all of the structures you need to fill with a file. </p>
+<div class="highlight"><pre><span class="c1">//Error checking omitted</span>
+<span class="cp">#include &lt;Windows.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">PIMAGE_DOS_HEADER</span> <span class="n">dos_header</span><span class="p">;</span>
+    <span class="n">PIMAGE_NT_HEADERS</span> <span class="n">nt_headers</span><span class="p">;</span>
+    <span class="n">PIMAGE_SECTION_HEADER</span> <span class="n">section_header</span><span class="p">;</span>
+    <span class="n">LPBYTE</span> <span class="n">peFile</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">peSize</span><span class="p">;</span>
+    <span class="n">DWORD</span> <span class="n">bytes_read</span><span class="p">;</span>
+
+    <span class="n">HANDLE</span> <span class="n">hFile</span> <span class="o">=</span> <span class="n">CreateFileA</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">GENERIC_READ</span><span class="p">,</span> <span class="n">FILE_SHARE_READ</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">OPEN_EXISTING</span><span class="p">,</span> <span class="n">FILE_ATTRIBUTE_NORMAL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">peSize</span> <span class="o">=</span> <span class="n">GetFileSize</span><span class="p">(</span><span class="n">hFile</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">peFile</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPBYTE</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">peSize</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">LPBYTE</span><span class="p">));</span>
+    <span class="n">ReadFile</span><span class="p">(</span><span class="n">hFile</span><span class="p">,</span> <span class="n">peFile</span><span class="p">,</span> <span class="n">peSize</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bytes_read</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">//Set dos and nt header structures</span>
+    <span class="n">dos_header</span> <span class="o">=</span> <span class="p">(</span><span class="n">PIMAGE_DOS_HEADER</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">peFile</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">nt_headers</span> <span class="o">=</span> <span class="p">(</span><span class="n">PIMAGE_NT_HEADERS</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">peFile</span><span class="p">[</span><span class="n">dos_header</span><span class="o">-&gt;</span><span class="n">e_lfanew</span><span class="p">]);</span>
+
+    <span class="c1">//Go through each section and print the name of it</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nt_headers</span><span class="o">-&gt;</span><span class="n">FileHeader</span><span class="p">.</span><span class="n">NumberOfSections</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">section_offset</span> <span class="o">=</span> <span class="n">dos_header</span><span class="o">-&gt;</span><span class="n">e_lfanew</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">IMAGE_NT_HEADERS</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">IMAGE_SECTION_HEADER</span><span class="p">)</span><span class="o">*</span> <span class="n">i</span><span class="p">);</span>
+        <span class="n">section_header</span> <span class="o">=</span> <span class="p">(</span><span class="n">PIMAGE_SECTION_HEADER</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">peFile</span><span class="p">[</span><span class="n">section_offset</span><span class="p">]);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;section: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">section_header</span><span class="p">);</span>
+    <span class="p">}</span>              
+    <span class="n">free</span><span class="p">(</span><span class="n">peFile</span><span class="p">);</span>                
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="nl">C</span><span class="p">:</span><span class="err">\</span><span class="n">bin</span><span class="o">&gt;</span><span class="n">peReader</span><span class="p">.</span><span class="n">exe</span> <span class="nl">c</span><span class="p">:</span><span class="err">\</span><span class="n">windows</span><span class="err">\</span><span class="n">System32</span><span class="err">\</span><span class="n">calc</span><span class="p">.</span><span class="n">exe</span>
+<span class="nl">section</span><span class="p">:</span> <span class="p">.</span><span class="n">text</span>
+<span class="nl">section</span><span class="p">:</span> <span class="p">.</span><span class="n">data</span>
+<span class="nl">section</span><span class="p">:</span> <span class="p">.</span><span class="n">rsrc</span>
+<span class="nl">section</span><span class="p">:</span> <span class="p">.</span><span class="n">reloc</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-32">
+          <div class="inner">
+            
+            <header><h1>Memory Allocation</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-33">
+          <div class="inner">
+            
+            <header><h1>API's</h1></header>
+            
+            
+            <section><p><img alt="apiAllocation" src="../slideResources/internals/apiAllocation.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-34">
+          <div class="inner">
+            
+            <header><h1>Export Forwarding</h1></header>
+            
+            
+            <section><p>Notice that HeapAlloc was forwarded to RtlAllocHeap</p>
+<p>In the PE Export Address Table, you can forward an export to another DLLs import. 
+IF the RVA is inside the exports section, it gets forwarded.</p>
+<p>The RVA in turn points to the ASCII sting of the dll and symbol name it gets forwarded to. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-35">
+          <div class="inner">
+            
+            <header><h1>Example</h1></header>
+            
+            
+            <section><div class="highlight"><pre>LPVOID WINAPI VirtualAllocEx(
+  _In_      HANDLE hProcess<span class="p">,</span>
+  _In_opt_  LPVOID lpAddress<span class="p">,</span>
+  _In_      SIZE_T dwSize<span class="p">,</span>
+  _In_      DWORD flAllocationType<span class="p">,</span>
+  _In_      DWORD flProtect
+);
+
+
+LPVOID WINAPI VirtualAlloc(
+  _In_opt_  LPVOID lpAddress<span class="p">,</span>
+  _In_      SIZE_T dwSize<span class="p">,</span>
+  _In_      DWORD flAllocationType<span class="p">,</span>
+  _In_      DWORD flProtect
+);
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Memmap</h1></header>
+            
+            
+            <section><p>Shows which pages are memory resident given a specific process DTB </p>
+<p>Kernel DTB if you use this plugin on the Idle or System process</p>
+<p>Displays the virtual address of the page, the corresponding physical offset of the page, and the size of the page</p>
+<p>DumpFileOffset correlates the output of memmap with the dump file produced by the memdump plugin</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Memmap</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 -p 352 memmap  </span>
+Volatility Foundation Volatility Framework 2.4
+explorer.exe pid:    352
+Virtual    Physical         Size DumpFileOffset
+---------- ---------- ---------- --------------
+0x00010000 0x127e9000     0x1000            0x0
+0x00020000 0x1cd3f000     0x1000         0x1000
+0x00021000 0x0f800000     0x1000         0x2000
+0x00030000 0x0fc9c000     0x1000         0x3000
+0x00031000 0x0f5dd000     0x1000         0x4000
+0x00032000 0x0f31e000     0x1000         0x5000
+0x00033000 0x0f05f000     0x1000         0x6000
+0x00040000 0x12527000     0x1000         0x7000
+0x00041000 0x122e8000     0x1000         0x8000
+0x00050000 0x0f9d5000     0x1000         0x9000
+0x00060000 0x1f5a9000     0x1000         0xa000
+0x00061000 0x1f6aa000     0x1000         0xb000
+0x00062000 0x1f7ab000     0x1000         0xc000
+0x00063000 0x1faac000     0x1000         0xd000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-38">
+          <div class="inner">
+            
+            <header><h1>Memdump</h1></header>
+            
+            
+            <section><p>Similar to memap except it dumps all pages to disk for analysis. </p>
+<p>-D OUTDIR</p>
+<p>Use tools such as AV, disasm, etc. </p>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 -p 352 memdump -D dumpedExplorer/</span>
+Volatility Foundation Volatility Framework 2.4
+************************************************************************
+Writing explorer.exe <span class="o">[</span>   352<span class="o">]</span> to 352.dmp
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-39">
+          <div class="inner">
+            
+            <header><h1>Graphical Memdump</h1></header>
+            
+            
+            <section><p><img alt="memdumpGraphical" src="../slideResources/internals/memdumpGraphical.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-40">
+          <div class="inner">
+            
+            <header><h1>Virtual Address Descriptors (VAD)</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-41">
+          <div class="inner">
+            
+            <header><h1>VAD</h1></header>
+            
+            
+            <section><p>Layout of memory segments</p>
+<p>Used by the Windows Kernel to track contiguous ranges of process memory</p>
+<p>DLLs and files mapped</p>
+<p>Contains protection levels (rwx)</p>
+<p>Pages committed vs reserved</p>
+<p>Shared/Private Pages</p>
+<p>Useful to scan for detecting code injection!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>VAD</h1></header>
+            
+            
+            <section><p>Self-balanced binary tree using AVL.</p>
+<p>Each node is a range in process virtual memory.</p>
+<p>Lower memory = Left </p>
+<p>Higher memory = Right</p>
+<p>More efficient O than linked lists.</p>
+<p>Populated when memory is allocated</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-43">
+          <div class="inner">
+            
+            <header><h1>VADs are Lazy!</h1></header>
+            
+            
+            <section><p>Combined with page tables VADs make use of lazy evaluation</p>
+<ul>
+<li>
+<p>Creating page tables takes time</p>
+</li>
+<li>
+<p>VADs are quickly allocated and allow memory reservations.</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>lazy evaluation is delaying the evaluation of an expression until it is needed. </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-44">
+          <div class="inner">
+            
+            <header><h1>VAD vs Pages</h1></header>
+            
+            
+            <section><p>VAD trees contain allocated memory</p>
+<p>Page tables are not created until the process tries to reference the memory</p>
+<p><img alt="vadLayout" src="../slideResources/internals/vadLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-45">
+          <div class="inner">
+            
+            <header><h1>_EPROCESS.VadRoot</h1></header>
+            
+            
+            <section><p>VadRoot is contained in EPROCESS object.</p>
+<p>Follow left and right subtrees. </p>
+<p>Page directory is needed as address are virtual.</p>
+<p>For _EPROCESS Win7SP1</p>
+<div class="highlight"><pre>dt<span class="o">(</span><span class="s2">&quot;_EPROCESS&quot;</span><span class="o">)</span>
+0x278 : VadRoot                 <span class="o">[</span><span class="s1">&#39;_MM_AVL_TABLE&#39;</span><span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-46">
+          <div class="inner">
+            
+            <header><h1>Nodes</h1></header>
+            
+            
+            <section><p>VAD Nodes differ based on API function used to allocate them.</p>
+<p><img alt="vadNodes" src="../slideResources/internals/vadNodes.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-47">
+          <div class="inner">
+            
+            <header><h1>_MMADDRESS_NODE</h1></header>
+            
+            
+            <section><p>Alias to a _MMVAD* structure</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MMADDRESS_NODE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MMADDRESS_NODE&#39;</span> <span class="p">(</span><span class="mi">20</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="o">-</span><span class="mh">0x4</span>  <span class="p">:</span> <span class="n">Tag</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">u1</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_158e&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">LeftChild</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMADDRESS_NODE&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">RightChild</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMADDRESS_NODE&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">StartingVpn</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">EndingVpn</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>Volatility uses pool tags to determine which tag to use by going -0xc or -0x4 bytes back from the node to see the PoolTag member of the _POOL_HEADER. </p>
+<ul>
+<li>Vadl -&gt; Long </li>
+<li>Vadm -&gt; Long</li>
+<li>Vad -&gt; Long</li>
+<li>VadS -&gt; Short</li>
+<li>VadF -&gt; Short</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-48">
+          <div class="inner">
+            
+            <header><h1>MMVAD*</h1></header>
+            
+            
+            <section><p>Represents VAD and are used to describe memory.</p>
+<p>One per allocation</p>
+<p>Allocation from a non-paged pool</p>
+<p>Each MMVAD builds off of one before it
+_MMVAD_SHORT → MMVAD → _MMVAD_LONG</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-49">
+          <div class="inner">
+            
+            <header><h1>MMVAD_SHORT</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MMVAD_SHORT&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MMVAD_SHORT&#39;</span> <span class="p">(</span><span class="mi">32</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="o">-</span><span class="mh">0x4</span>  <span class="p">:</span> <span class="n">Tag</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">u1</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1580&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">LeftChild</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">RightChild</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">StartingVpn</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">EndingVpn</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">u</span>                              <span class="p">[</span><span class="s">&#39;__unnamed_1583&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">PushLock</span>                       <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">u5</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1586&#39;</span><span class="p">]</span>
+</pre></div>
+
+<h1>MMVAD</h1>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MMVAD&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MMVAD&#39;</span> <span class="p">(</span><span class="mi">60</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="o">-</span><span class="mh">0x4</span>  <span class="p">:</span> <span class="n">Tag</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">u1</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1580&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">LeftChild</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">RightChild</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">StartingVpn</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">EndingVpn</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">u</span>                              <span class="p">[</span><span class="s">&#39;__unnamed_1583&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">PushLock</span>                       <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">u5</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1586&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">u2</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1593&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">MappedSubsection</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MSUBSECTION&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Subsection</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SUBSECTION&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">FirstPrototypePte</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMPTE&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">LastContiguousPte</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMPTE&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">ViewLinks</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">VadsProcess</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EPROCESS&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-50">
+          <div class="inner">
+            
+            <header><h1>MMVAD_LONG</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MMVAD_LONG&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MMVAD_LONG&#39;</span> <span class="p">(</span><span class="mi">72</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="o">-</span><span class="mh">0x4</span>  <span class="p">:</span> <span class="n">Tag</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">u1</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1580&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">LeftChild</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">RightChild</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMVAD&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">StartingVpn</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">EndingVpn</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">u</span>                              <span class="p">[</span><span class="s">&#39;__unnamed_1583&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">PushLock</span>                       <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">u5</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1586&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">u2</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1593&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Subsection</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SUBSECTION&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">FirstPrototypePte</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMPTE&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">LastContiguousPte</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMPTE&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">ViewLinks</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">VadsProcess</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EPROCESS&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">u3</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1c3f&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">u4</span>                             <span class="p">[</span><span class="s">&#39;__unnamed_1c45&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-51">
+          <div class="inner">
+            
+            <header><h1>MMVAD* Continued</h1></header>
+            
+            
+            <section><p>MMVAD and LONG Contains a _SUBSECTION  pointer</p>
+<ul>
+<li>_CONTROL_AREA Ptr to Corresponding _FILE_OBJECT structure can be referenced.</li>
+</ul>
+<p>Injected code has no backed file</p>
+<ul>
+<li>Found from MMVAD_SHORT</li>
+</ul>
+<p>Each MMVAD contain Flags.. MMVAD*.u.Flags</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-52">
+          <div class="inner">
+            
+            <header><h1>MMVAD*.u.Flags</h1></header>
+            
+            
+            <section><p>CommitCharge → Number of pages committed in region</p>
+<h2>- Useful for detecting injection</h2>
+<p>If CommitCharge and MemCommit are 0, memory is reserved and not commited. </p>
+<p>Protection → Memory access to allow in region</p>
+<p>Only initial access is shown in VAD</p>
+<div class="highlight"><pre><span class="na">[Flags()]</span>
+<span class="k">public</span> <span class="k">enum</span> <span class="n">MemoryProtection</span> <span class="p">:</span> <span class="kt">uint</span>
+<span class="p">{</span>
+    <span class="n">EXECUTE</span> <span class="p">=</span> <span class="m">0</span><span class="n">x10</span><span class="p">,</span>
+    <span class="n">EXECUTE_READ</span> <span class="p">=</span> <span class="m">0</span><span class="n">x20</span><span class="p">,</span>
+    <span class="n">EXECUTE_READWRITE</span> <span class="p">=</span> <span class="m">0</span><span class="n">x40</span><span class="p">,</span>
+    <span class="n">EXECUTE_WRITECOPY</span> <span class="p">=</span> <span class="m">0</span><span class="n">x80</span><span class="p">,</span>
+    <span class="n">NOACCESS</span> <span class="p">=</span> <span class="m">0</span><span class="n">x01</span><span class="p">,</span>
+    <span class="n">READONLY</span> <span class="p">=</span> <span class="m">0</span><span class="n">x02</span><span class="p">,</span>
+    <span class="n">READWRITE</span> <span class="p">=</span> <span class="m">0</span><span class="n">x04</span><span class="p">,</span>
+    <span class="n">WRITECOPY</span> <span class="p">=</span> <span class="m">0</span><span class="n">x08</span>
+<span class="p">}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-53">
+          <div class="inner">
+            
+            <header><h1>MMVAD*.u.Flags</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MMVAD_FLAGS&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MMVAD_FLAGS&#39;</span> <span class="p">(</span><span class="mi">4</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">CommitCharge</span>                   <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">MemCommit</span>                      <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">NoChange</span>                       <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">PrivateMemory</span>                  <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Protection</span>                     <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Spare</span>                          <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">VadType</span>                        <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              53/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-54">
+          <div class="inner">
+            
+            <header><h1>Volatility VAD</h1></header>
+            
+            
+            <section><p>VadInfo</p>
+<p>VadDump</p>
+<p>VadTree</p>
+<p>VadWalk</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              54/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-55">
+          <div class="inner">
+            
+            <header><h1>VadInfo</h1></header>
+            
+            
+            <section><p>Information about a process's VAD nodes</p>
+<p>The address of the MMVAD structure in kernel memory</p>
+<p>The starting and ending virtual addresses in process memory that the MMVAD structure pertains to</p>
+<p>The VAD Tag</p>
+<p>The VAD flags, control flags, etc</p>
+<p>The name of the memory mapped file (if one exists)</p>
+<p>Memory protection</p>
+<p>Verbose output... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              55/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-56">
+          <div class="inner">
+            
+            <header><h1>Vadinfo</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 pslist</span>
+0x863cc540 ProcessHacker.         <span class="m">1108</span>    <span class="m">352</span>      <span class="m">9</span>      <span class="m">215</span>      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:47:10 UTC+0000
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 vadinfo -p 1108</span>
+Volatility Foundation Volatility Framework 2.4
+************************************************************************
+Pid:   1108
+VAD node @ 0x85a98f50 Start 0x02230000 End 0x0232ffff Tag VadS
+Flags: CommitCharge: 3, PrivateMemory: 1, Protection: 4
+Protection: PAGE_READWRITE
+Vad Type: VadNone
+
+VAD node @ 0x85e2bf08 Start 0x01220000 End 0x01344fff Tag Vadm
+Flags: CommitCharge: 11, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+Vad Type: VadImageMap
+ControlArea @8637acd0 Segment a1843008
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:         198
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          2
+Control Flags: Accessed: 1, File: 1, Image: 1
+FileObject @85ad4958, Name: <span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86<span class="se">\P</span>rocessHacker.exe
+First prototype PTE: a1843038 Last contiguous PTE: fffffffc
+Flags2: Inherit: 1, LongVad: 1
+
+VAD node @ 0x863c3530 Start 0x002f0000 End 0x002f1fff Tag Vad
+Flags: NoChange: 1, Protection: 1
+Protection: PAGE_READONLY
+Vad Type: VadNone
+ControlArea @85ebde18 Segment 8a83ef30
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:           0
+NumberOfMappedViews:               <span class="m">21</span> NumberOfUserReferences:         22
+Control Flags: Commit: 1
+First prototype PTE: 8a83ef60 Last contiguous PTE: 8a83ef68
+Flags2: Inherit: 1, SecNoChange: 1
+
+VAD node @ 0x86363fc0 Start 0x75a20000 End 0x75a54fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+Vad Type: VadImageMap
+ControlArea @853e9150 Segment 88dfe880
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:          46
+NumberOfMappedViews:               <span class="m">28</span> NumberOfUserReferences:         29
+Control Flags: Accessed: 1, File: 1, Image: 1
+FileObject @853e9340, Name: <span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\w</span>s2_32.dll
+First prototype PTE: 88dfe8b0 Last contiguous PTE: fffffffc
+Flags2: Inherit: 1
+
+VAD node @ 0x86390228 Start 0x73d10000 End 0x73d2cfff Tag Vad
+Flags: CommitCharge: 5, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+Vad Type: VadImageMap
+ControlArea @8433fb60 Segment a3c596a8
+NumberOfSectionReferences:          <span class="m">0</span> NumberOfPfnReferences:          24
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          1
+Control Flags: File: 1, Image: 1
+FileObject @843244c8, Name: <span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86<span class="se">\p</span>lugins<span class="se">\D</span>otNetTools.dll
+First prototype PTE: a3c596d8 Last contiguous PTE: fffffffc
+Flags2: Inherit: 1
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              56/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-57">
+          <div class="inner">
+            
+            <header><h1>PAGE_EXECUTE_WRITECOPY</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 vadinfo -p 1108 | grep EXECUTE -B 3</span>
+
+Volatility Foundation Volatility Framework 2.4
+
+VAD node @ 0x85e2bf08 Start 0x01220000 End 0x01344fff Tag Vadm
+Flags: CommitCharge: 11, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x853c88f8 Start 0x74b00000 End 0x74b08fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8643ef30 Start 0x633c0000 End 0x633eafff Tag Vad
+Flags: CommitCharge: 5, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x85296ee8 Start 0x630a0000 End 0x630bbfff Tag Vad
+Flags: CommitCharge: 5, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8532cd40 Start 0x630e0000 End 0x630f8fff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x86284438 Start 0x630c0000 End 0x630d6fff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x85a3f610 Start 0x63120000 End 0x63136fff Tag Vad
+Flags: CommitCharge: 7, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8639f008 Start 0x63100000 End 0x6311ffff Tag Vad
+Flags: CommitCharge: 5, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x863c54e8 Start 0x633a0000 End 0x633b8fff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x862fede0 Start 0x72220000 End 0x72238fff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x84408130 Start 0x720f0000 End 0x72101fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x85f3e0c0 Start 0x71ae0000 End 0x71b2efff Tag Vad
+Flags: CommitCharge: 11, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x842bc0d8 Start 0x70df0000 End 0x70df5fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8610dae8 Start 0x70ba0000 End 0x70ba7fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x853c0600 Start 0x71330000 End 0x71389fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x84d09b20 Start 0x71b30000 End 0x71b87fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8429a0b8 Start 0x71db0000 End 0x71db5fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x862c5070 Start 0x721e0000 End 0x721f3fff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x86452298 Start 0x72110000 End 0x7211cfff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x842ae340 Start 0x72130000 End 0x72167fff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8639b928 Start 0x72200000 End 0x7221afff Tag Vad
+Flags: CommitCharge: 4, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x84d0d3c0 Start 0x73f80000 End 0x740affff Tag Vad
+Flags: CommitCharge: 3, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+--
+
+VAD node @ 0x8432b098 Start 0x73860000 End 0x7386ffff Tag Vad
+Flags: CommitCharge: 2, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              57/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-58">
+          <div class="inner">
+            
+            <header><h1>Exploring</h1></header>
+            
+            
+            <section><div class="highlight"><pre>VAD node @ 0x85e2bf08 Start 0x01220000 End 0x01344fff Tag Vadm
+Flags: CommitCharge: 11, Protection: 7, VadType: 2
+Protection: PAGE_EXECUTE_WRITECOPY
+Vad Type: VadImageMap
+ControlArea @8637acd0 Segment a1843008
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:         198
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          2
+Control Flags: Accessed: 1, File: 1, Image: 1
+FileObject @85ad4958, Name: <span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86<span class="se">\P</span>rocessHacker.exe
+First prototype PTE: a1843038 Last contiguous PTE: fffffffc
+Flags2: Inherit: 1, LongVad: 1
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 -p 1108 volshell</span>
+&gt;&gt;&gt; dt<span class="o">(</span><span class="s2">&quot;_FILE_OBJECT&quot;</span>, 0x85ad4958<span class="o">)</span>
+<span class="o">[</span>_FILE_OBJECT _FILE_OBJECT<span class="o">]</span> @ 0x85AD4958
+0x0   : Type                           5
+0x2   : Size                           128
+0x4   : DeviceObject                   2228297248
+0x8   : Vpb                            2228234896
+0xc   : FsContext                      2706235640
+0x10  : FsContext2                     2706466952
+0x14  : SectionObjectPointer           2242594952
+0x18  : PrivateCacheMap                0
+0x1c  : FinalStatus                    0
+0x20  : RelatedFileObject              0
+0x24  : LockOperation                  0
+0x25  : DeletePending                  0
+0x26  : ReadAccess                     1
+0x27  : WriteAccess                    0
+0x28  : DeleteAccess                   0
+0x29  : SharedRead                     1
+0x2a  : SharedWrite                    0
+0x2b  : SharedDelete                   1
+0x2c  : Flags                          278594
+0x30  : FileName                       <span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86<span class="se">\P</span>rocessHacker.exe
+0x38  : CurrentByteOffset              2242726288
+0x40  : Waiters                        0
+0x44  : Busy                           0
+0x48  : LastLock                       0
+0x4c  : Lock                           2242726308
+0x5c  : Event                          2242726324
+0x6c  : CompletionContext              0
+0x70  : IrpListLock                    0
+0x74  : IrpList                        2242726348
+0x7c  : FileObjectExtension            0
+&gt;&gt;&gt;
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              58/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-59">
+          <div class="inner">
+            
+            <header><h1>vaddump</h1></header>
+            
+            
+            <section><p>Dumps out the vad sections to a file</p>
+<div class="highlight"><pre>-o OFFSET, --offset<span class="o">=</span>OFFSET
+                EPROCESS offset <span class="o">(</span>in hex<span class="o">)</span> in the physical address space
+-p PID, --pid<span class="o">=</span>PID     Operate on these Process IDs <span class="o">(</span>comma-separated<span class="o">)</span>
+-n NAME, --name<span class="o">=</span>NAME  Operate on these process names <span class="o">(</span>regex<span class="o">)</span>
+-D DUMP_DIR, --dump-dir<span class="o">=</span>DUMP_DIR
+                Directory in which to dump the VAD files
+-b BASE, --base<span class="o">=</span>BASE  Dump VAD with BASE address <span class="o">(</span>in hex<span class="o">)</span>
+</pre></div>
+
+<p>No base = dump all nodes to disk.</p>
+<p>Each node gets a .dmp file</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              59/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-60">
+          <div class="inner">
+            
+            <header><h1>graphical</h1></header>
+            
+            
+            <section><p><img alt="vaddump" src="../slideResources/internals/vaddump.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              60/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-61">
+          <div class="inner">
+            
+            <header><h1>vaddump plugin</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 pslist</span>
+<span class="mh">0x86499d40</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>            <span class="mi">3196</span>    <span class="mi">352</span>      <span class="mi">8</span>      <span class="mi">119</span>      <span class="mi">1</span>      <span class="mi">0</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mi">16</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#mkdir dumpedVad</span>
+<span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 vaddump -p 3196  -D dumpedVad/</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="n">Pid</span>        <span class="n">Process</span>              <span class="n">Start</span>      <span class="n">End</span>        <span class="n">Result</span>
+<span class="o">----------</span> <span class="o">--------------------</span> <span class="o">----------</span> <span class="o">----------</span> <span class="o">------</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x02970000</span> <span class="mh">0x029affff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x02970000</span><span class="o">-</span><span class="mh">0x029affff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x02630000</span> <span class="mh">0x02630fff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x02630000</span><span class="o">-</span><span class="mh">0x02630fff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x00610000</span> <span class="mh">0x0064ffff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x00610000</span><span class="o">-</span><span class="mh">0x0064ffff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x00110000</span> <span class="mh">0x0014ffff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x00110000</span><span class="o">-</span><span class="mh">0x0014ffff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x00040000</span> <span class="mh">0x00041fff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x00040000</span><span class="o">-</span><span class="mh">0x00041fff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x00020000</span> <span class="mh">0x0002ffff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x00020000</span><span class="o">-</span><span class="mh">0x0002ffff</span><span class="o">.</span><span class="n">dmp</span>
+      <span class="mi">3196</span> <span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span>          <span class="mh">0x00010000</span> <span class="mh">0x0001ffff</span> <span class="n">dumpedVad</span><span class="o">/</span><span class="n">mspaint</span><span class="o">.</span><span class="n">exe</span><span class="o">.</span><span class="mi">3</span><span class="n">da99d40</span><span class="o">.</span><span class="mh">0x00010000</span><span class="o">-</span><span class="mh">0x0001ffff</span><span class="o">.</span><span class="n">dmp</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              61/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-62">
+          <div class="inner">
+            
+            <header><h1>VADWALK</h1></header>
+            
+            
+            <section><p>Vadinfo in table form</p>
+<p>Less information </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 vadwalk -p 3196</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="o">************************************************************************</span>
+<span class="n">Pid</span><span class="p">:</span>   <span class="mi">3196</span>
+<span class="n">Address</span>    <span class="n">Parent</span>     <span class="n">Left</span>       <span class="n">Right</span>      <span class="n">Start</span>      <span class="n">End</span>        <span class="n">Tag</span>
+<span class="o">----------</span> <span class="o">----------</span> <span class="o">----------</span> <span class="o">----------</span> <span class="o">----------</span> <span class="o">----------</span> <span class="o">----</span>
+<span class="mh">0x8649dd60</span> <span class="mh">0x86499fb8</span> <span class="mh">0x8533bf68</span> <span class="mh">0x864b4bf0</span> <span class="mh">0x02970000</span> <span class="mh">0x029affff</span> <span class="n">VadS</span>
+<span class="mh">0x8533bf68</span> <span class="mh">0x8649dd60</span> <span class="mh">0x862e8350</span> <span class="mh">0x864ae460</span> <span class="mh">0x02630000</span> <span class="mh">0x02630fff</span> <span class="n">Vadm</span>
+<span class="mh">0x862e8350</span> <span class="mh">0x8533bf68</span> <span class="mh">0x86487c20</span> <span class="mh">0x85e23f78</span> <span class="mh">0x00610000</span> <span class="mh">0x0064ffff</span> <span class="n">VadS</span>
+<span class="mh">0x86487c20</span> <span class="mh">0x862e8350</span> <span class="mh">0x8642bab0</span> <span class="mh">0x85e2d9b0</span> <span class="mh">0x00110000</span> <span class="mh">0x0014ffff</span> <span class="n">Vadm</span>
+<span class="mh">0x8642bab0</span> <span class="mh">0x86487c20</span> <span class="mh">0x862e4c18</span> <span class="mh">0x85a186c8</span> <span class="mh">0x00040000</span> <span class="mh">0x00041fff</span> <span class="n">Vad</span>
+<span class="mh">0x862e4c18</span> <span class="mh">0x8642bab0</span> <span class="mh">0x864927a8</span> <span class="mh">0x864990c8</span> <span class="mh">0x00020000</span> <span class="mh">0x0002ffff</span> <span class="n">VadS</span>
+<span class="mh">0x864927a8</span> <span class="mh">0x862e4c18</span> <span class="mh">0x00000000</span> <span class="mh">0x00000000</span> <span class="mh">0x00010000</span> <span class="mh">0x0001ffff</span> <span class="n">Vad</span>
+<span class="mh">0x864990c8</span> <span class="mh">0x862e4c18</span> <span class="mh">0x00000000</span> <span class="mh">0x00000000</span> <span class="mh">0x00030000</span> <span class="mh">0x00033fff</span> <span class="n">Vad</span>
+<span class="mh">0x85a186c8</span> <span class="mh">0x8642bab0</span> <span class="mh">0x853bbac8</span> <span class="mh">0x85a18428</span> <span class="mh">0x000e0000</span> <span class="mh">0x000e1fff</span> <span class="n">Vad</span>
+<span class="mh">0x853bbac8</span> <span class="mh">0x85a186c8</span> <span class="mh">0x85aa19d0</span> <span class="mh">0x85a18710</span> <span class="mh">0x00060000</span> <span class="mh">0x000c6fff</span> <span class="n">Vad</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              62/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-63">
+          <div class="inner">
+            
+            <header><h1>VADTREE</h1></header>
+            
+            
+            <section><p>Display VAD nodes in a visual tree</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 vadtree -p 3196</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="o">************************************************************************</span>
+<span class="n">Pid</span><span class="p">:</span>   <span class="mi">3196</span>
+ <span class="mh">0x02970000</span> <span class="o">-</span> <span class="mh">0x029affff</span>
+  <span class="mh">0x02630000</span> <span class="o">-</span> <span class="mh">0x02630fff</span>
+   <span class="mh">0x00610000</span> <span class="o">-</span> <span class="mh">0x0064ffff</span>
+    <span class="mh">0x00110000</span> <span class="o">-</span> <span class="mh">0x0014ffff</span>
+     <span class="mh">0x00040000</span> <span class="o">-</span> <span class="mh">0x00041fff</span>
+      <span class="mh">0x00020000</span> <span class="o">-</span> <span class="mh">0x0002ffff</span>
+       <span class="mh">0x00010000</span> <span class="o">-</span> <span class="mh">0x0001ffff</span>
+       <span class="mh">0x00030000</span> <span class="o">-</span> <span class="mh">0x00033fff</span>
+      <span class="mh">0x000e0000</span> <span class="o">-</span> <span class="mh">0x000e1fff</span>
+       <span class="mh">0x00060000</span> <span class="o">-</span> <span class="mh">0x000c6fff</span>
+        <span class="mh">0x00050000</span> <span class="o">-</span> <span class="mh">0x00050fff</span>
+        <span class="mh">0x000d0000</span> <span class="o">-</span> <span class="mh">0x000d6fff</span>
+       <span class="mh">0x000f0000</span> <span class="o">-</span> <span class="mh">0x000fdfff</span>
+        <span class="mh">0x00100000</span> <span class="o">-</span> <span class="mh">0x00100fff</span>
+     <span class="mh">0x004f0000</span> <span class="o">-</span> <span class="mh">0x004fffff</span>
+      <span class="mh">0x00320000</span> <span class="o">-</span> <span class="mh">0x00420fff</span>
+       <span class="mh">0x00250000</span> <span class="o">-</span> <span class="mh">0x00317fff</span>
+        <span class="mh">0x00150000</span> <span class="o">-</span> <span class="mh">0x0024ffff</span>
+       <span class="mh">0x00440000</span> <span class="o">-</span> <span class="mh">0x004bffff</span>
+        <span class="mh">0x00430000</span> <span class="o">-</span> <span class="mh">0x00430fff</span>
+        <span class="mh">0x004d0000</span> <span class="o">-</span> <span class="mh">0x004d1fff</span>
+         <span class="mh">0x004c0000</span> <span class="o">-</span> <span class="mh">0x004c0fff</span>
+         <span class="mh">0x004e0000</span> <span class="o">-</span> <span class="mh">0x004e0fff</span>
+      <span class="mh">0x00560000</span> <span class="o">-</span> <span class="mh">0x0059ffff</span>
+       <span class="mh">0x00520000</span> <span class="o">-</span> <span class="mh">0x00530fff</span>
+        <span class="mh">0x00500000</span> <span class="o">-</span> <span class="mh">0x00510fff</span>
+        <span class="mh">0x00540000</span> <span class="o">-</span> <span class="mh">0x00550fff</span>
+       <span class="mh">0x005c0000</span> <span class="o">-</span> <span class="mh">0x005c6fff</span>
+        <span class="mh">0x005a0000</span> <span class="o">-</span> <span class="mh">0x005b0fff</span>
+        <span class="mh">0x005d0000</span> <span class="o">-</span> <span class="mh">0x0060ffff</span>
+    <span class="mh">0x023d0000</span> <span class="o">-</span> <span class="mh">0x0240ffff</span>
+     <span class="mh">0x02380000</span> <span class="o">-</span> <span class="mh">0x0238ffff</span>
+      <span class="mh">0x00e90000</span> <span class="o">-</span> <span class="mh">0x014a6fff</span>
+       <span class="mh">0x00d30000</span> <span class="o">-</span> <span class="mh">0x00d60fff</span>
+        <span class="mh">0x00850000</span> <span class="o">-</span> <span class="mh">0x00c4ffff</span>
+         <span class="mh">0x00650000</span> <span class="o">-</span> <span class="mh">0x00844fff</span>
+         <span class="mh">0x00c50000</span> <span class="o">-</span> <span class="mh">0x00d2efff</span>
+        <span class="mh">0x00e70000</span> <span class="o">-</span> <span class="mh">0x00e7ffff</span>
+         <span class="mh">0x00d70000</span> <span class="o">-</span> <span class="mh">0x00e6ffff</span>
+         <span class="mh">0x00e80000</span> <span class="o">-</span> <span class="mh">0x00e82fff</span>
+       <span class="mh">0x020b0000</span> <span class="o">-</span> <span class="mh">0x0237efff</span>
+        <span class="mh">0x014b0000</span> <span class="o">-</span> <span class="mh">0x020affff</span>
+      <span class="mh">0x023a0000</span> <span class="o">-</span> <span class="mh">0x023a1fff</span>
+       <span class="mh">0x02390000</span> <span class="o">-</span> <span class="mh">0x02390fff</span>
+       <span class="mh">0x023b0000</span> <span class="o">-</span> <span class="mh">0x023b0fff</span>
+        <span class="mh">0x023c0000</span> <span class="o">-</span> <span class="mh">0x023c0fff</span>
+     <span class="mh">0x02540000</span> <span class="o">-</span> <span class="mh">0x0257ffff</span>
+      <span class="mh">0x02470000</span> <span class="o">-</span> <span class="mh">0x02470fff</span>
+       <span class="mh">0x02440000</span> <span class="o">-</span> <span class="mh">0x0244ffff</span>
+        <span class="mh">0x02420000</span> <span class="o">-</span> <span class="mh">0x0243ffff</span>
+         <span class="mh">0x02410000</span> <span class="o">-</span> <span class="mh">0x02414fff</span>
+        <span class="mh">0x02460000</span> <span class="o">-</span> <span class="mh">0x02460fff</span>
+         <span class="mh">0x02450000</span> <span class="o">-</span> <span class="mh">0x02450fff</span>
+       <span class="mh">0x02510000</span> <span class="o">-</span> <span class="mh">0x02510fff</span>
+        <span class="mh">0x02490000</span> <span class="o">-</span> <span class="mh">0x024cffff</span>
+         <span class="mh">0x02480000</span> <span class="o">-</span> <span class="mh">0x02480fff</span>
+        <span class="mh">0x02520000</span> <span class="o">-</span> <span class="mh">0x02520fff</span>
+         <span class="mh">0x02530000</span> <span class="o">-</span> <span class="mh">0x02530fff</span>
+      <span class="mh">0x02600000</span> <span class="o">-</span> <span class="mh">0x02600fff</span>
+       <span class="mh">0x025d0000</span> <span class="o">-</span> <span class="mh">0x025d0fff</span>
+        <span class="mh">0x02590000</span> <span class="o">-</span> <span class="mh">0x025cffff</span>
+         <span class="mh">0x02580000</span> <span class="o">-</span> <span class="mh">0x02580fff</span>
+        <span class="mh">0x025f0000</span> <span class="o">-</span> <span class="mh">0x025f0fff</span>
+         <span class="mh">0x025e0000</span> <span class="o">-</span> <span class="mh">0x025e0fff</span>
+       <span class="mh">0x02620000</span> <span class="o">-</span> <span class="mh">0x02620fff</span>
+        <span class="mh">0x02610000</span> <span class="o">-</span> <span class="mh">0x02610fff</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              63/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-64">
+          <div class="inner">
+            
+            <header><h1>More</h1></header>
+            
+            
+            <section><p>VAD Tree is useful and is used by many volatility commands</p>
+<p>Contains injected code</p>
+<p>Command histories with cmdscan</p>
+<p>Can find executable images (“MZ”)</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              64/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-65">
+          <div class="inner">
+            
+            <header><h1>Having fun with it</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 pslist | grep explore</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="mh">0x8625b420</span> <span class="n">explorer</span><span class="o">.</span><span class="n">exe</span>            <span class="mi">352</span>   <span class="mi">1848</span>     <span class="mi">43</span>      <span class="mi">904</span>      <span class="mi">1</span>      <span class="mi">0</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">59</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 -p 352 volshell</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="n">Current</span> <span class="n">context</span><span class="p">:</span> <span class="n">explorer</span><span class="o">.</span><span class="n">exe</span> <span class="err">@</span> <span class="mh">0x8625b420</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">352</span><span class="p">,</span> <span class="n">ppid</span><span class="o">=</span><span class="mi">1848</span> <span class="n">DTB</span><span class="o">=</span><span class="mh">0x3ecec3e0</span>
+<span class="n">Welcome</span> <span class="n">to</span> <span class="n">volshell</span><span class="err">!</span> <span class="n">Current</span> <span class="n">memory</span> <span class="n">image</span> <span class="ow">is</span><span class="p">:</span>
+<span class="nb">file</span><span class="p">:</span><span class="o">///</span><span class="n">root</span><span class="o">/</span><span class="n">amf</span><span class="o">/</span><span class="n">windows</span><span class="o">/</span><span class="n">Win7</span><span class="o">.</span><span class="n">bin</span>
+<span class="n">To</span> <span class="n">get</span> <span class="n">help</span><span class="p">,</span> <span class="nb">type</span> <span class="s">&#39;hh()&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">process</span><span class="o">=</span><span class="n">proc</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">process_space</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">get_process_address_space</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">vad</span> <span class="ow">in</span> <span class="n">process</span><span class="o">.</span><span class="n">VadRoot</span><span class="o">.</span><span class="n">traverse</span><span class="p">():</span>
+<span class="o">...</span>   <span class="n">data</span> <span class="o">=</span> <span class="n">process_space</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">vad</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">found</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;MZ&quot;</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">if</span> <span class="n">found</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">print</span><span class="s">&quot;Found signature in VAD&quot;</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">vad</span><span class="o">.</span><span class="n">Start</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x6f670000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x990000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x1e30000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x3520000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x3dd0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x3e20000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x3ea0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x50d0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x5470000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x6aaa0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x633f0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x75c0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x70c0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x7000000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x62b90000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x8cd0000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x63140000</span><span class="n">L</span>
+<span class="n">Found</span> <span class="n">signature</span> <span class="ow">in</span> <span class="n">VAD</span> <span class="mh">0x63380000</span><span class="n">L</span>
+</pre></div>
+
+<p>Multiply address by size of page to get Vaddr</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              65/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-66">
+          <div class="inner">
+            
+            <header><h1>Other uses of VAD</h1></header>
+            
+            
+            <section><p>Finding</p>
+<ul>
+<li>Encryption Keys</li>
+<li>Passwords</li>
+<li>. . .</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              66/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03_01-MemoryInternals.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-67">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03_01-MemoryInternals.md">week03_01-MemoryInternals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              67/67
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Process Memory Internals</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What is in Memory?</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Process Memory Range</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Memory Range</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">User Land</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">System Land</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Processes</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Process of Processes</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Process Layout</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Memory Sections</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">OllyDbg layout</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Portable Executable and Common Object File Format  (PECOFF)</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">PECOFF</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">PE</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">PE Cont</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">General PE-COFF Layout</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">IMAGE_DOS_HEADER</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">IMAGE_NT_HEADERS</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">IMAGE_FILE_HEADER</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">IMAGE_OPTIONAL_HEADER</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">-</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Data Directories</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Relative Virtual Addresses</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">File Offset vs RVA</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">IMAGE_SECTION_HEADER</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">-</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">FIN PE</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Tools to parse PE</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">PEView</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Dependency Walker</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Writing your own PE parser</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Memory Allocation</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">API's</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Export Forwarding</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Example</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Memmap</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Memmap</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Memdump</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Graphical Memdump</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Virtual Address Descriptors (VAD)</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">VAD</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">VAD</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">VADs are Lazy!</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">VAD vs Pages</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">_EPROCESS.VadRoot</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Nodes</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">_MMADDRESS_NODE</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">MMVAD*</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">MMVAD_SHORT</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">MMVAD_LONG</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">MMVAD* Continued</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">MMVAD*.u.Flags</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-53">
+        <th><a href="#slide53">MMVAD*.u.Flags</a></th>
+        <td><a href="#slide53">53</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-54">
+        <th><a href="#slide54">Volatility VAD</a></th>
+        <td><a href="#slide54">54</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-55">
+        <th><a href="#slide55">VadInfo</a></th>
+        <td><a href="#slide55">55</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-56">
+        <th><a href="#slide56">Vadinfo</a></th>
+        <td><a href="#slide56">56</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-57">
+        <th><a href="#slide57">PAGE_EXECUTE_WRITECOPY</a></th>
+        <td><a href="#slide57">57</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-58">
+        <th><a href="#slide58">Exploring</a></th>
+        <td><a href="#slide58">58</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-59">
+        <th><a href="#slide59">vaddump</a></th>
+        <td><a href="#slide59">59</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-60">
+        <th><a href="#slide60">graphical</a></th>
+        <td><a href="#slide60">60</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-61">
+        <th><a href="#slide61">vaddump plugin</a></th>
+        <td><a href="#slide61">61</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-62">
+        <th><a href="#slide62">VADWALK</a></th>
+        <td><a href="#slide62">62</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-63">
+        <th><a href="#slide63">VADTREE</a></th>
+        <td><a href="#slide63">63</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-64">
+        <th><a href="#slide64">More</a></th>
+        <td><a href="#slide64">64</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-65">
+        <th><a href="#slide65">Having fun with it</a></th>
+        <td><a href="#slide65">65</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-66">
+        <th><a href="#slide66">Other uses of VAD</a></th>
+        <td><a href="#slide66">66</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-67">
+        <th><a href="#slide67">EOF</a></th>
+        <td><a href="#slide67">67</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>

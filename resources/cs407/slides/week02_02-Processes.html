@@ -1,0 +1,3005 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Processes, Handles and Tokens</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Processes, Handles and Tokens</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>What processes are “normal” in Windows.</p>
+<p>What an application has access to.</p>
+<p>Security Contexts/Privilege Levels</p>
+<p>Hidden Processes</p>
+<p>Evasive Techniques </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Process / Thread</h1></header>
+            
+            
+            <section><p>A process is a running program with a set of resources.</p>
+<ul>
+<li>Process ID</li>
+<li>Security Context</li>
+<li>At least 1 thread</li>
+<li>Table of handles</li>
+<li>Private virtual address space </li>
+</ul>
+<p>A thread is an entity within a process that is scheduled for execution. </p>
+<p>All processes have at least 1 thread. </p>
+<ul>
+<li>CPU Registers/State of registers</li>
+<li>Thread ID</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Threads</h1></header>
+            
+            
+            <section><p>A small sequence of programmed instructions </p>
+<p>Can be managed independently by a scheduler</p>
+<p>Executes within a process</p>
+<p>Share data with other threads in the process</p>
+<p>A process's threads shares its context</p>
+<p>Also shares memory</p>
+<p>Takes advantage of multiple cores in the processor</p>
+<p>Can run on a single core processor</p>
+<h1>Handles</h1>
+<p>Reference to a windows object.</p>
+<p>Stored in a table for easy lookup.  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Privilege Separation</h1></header>
+            
+            
+            <section><p>Protection rings separate user and kernel and is enforced at a hardware level. </p>
+<p>Ring 0 = Kernel <br>Ring 3 = User</p>
+<p>Uses system calls and interrupts to switch between rings </p>
+<ul>
+<li>NT &lt; XP: Ntdll.dll taps into ring 0 with software interrupt 'Int 0x2e'</li>
+<li>New system call dispatcher is sysenter<ul>
+<li>Eax = ordinal value of system call</li>
+<li>Edx = Argument array of system call with return address</li>
+<li>DIsables interrupts and switches thread to Kernel Mode</li>
+</ul>
+</li>
+</ul>
+<p><img alt="cpu rings" src="../slideResources/processes/rings.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>_EPROCESS</h1></header>
+            
+            
+            <section><p>Each process contains an executive EPROCESS data structure.</p>
+<p>Exists in Kernel space.</p>
+<p>Points to several lists</p>
+<ul>
+<li>Handle Table</li>
+<li>Security Identifiers </li>
+<li>Loaded Modules</li>
+<li>Threads</li>
+<li>Virtual Address Descriptors</li>
+</ul>
+<p>Kernel equivalent of the PEB in user space.  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>_EPROCESS in Memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span> <span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_EPROCESS&#39;</span> <span class="p">(</span><span class="mi">704</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Pcb</span>                            <span class="p">[</span><span class="s">&#39;_KPROCESS&#39;</span><span class="p">]</span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">ProcessLock</span>                    <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0xa0</span>  <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0xa8</span>  <span class="p">:</span> <span class="n">ExitTime</span>                       <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0xb0</span>  <span class="p">:</span> <span class="n">RundownProtect</span>                 <span class="p">[</span><span class="s">&#39;_EX_RUNDOWN_REF&#39;</span><span class="p">]</span>
+<span class="mh">0xb4</span>  <span class="p">:</span> <span class="n">UniqueProcessId</span>                <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0xb8</span>  <span class="p">:</span> <span class="n">ActiveProcessLinks</span>             <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0xc0</span>  <span class="p">:</span> <span class="n">ProcessQuotaUsage</span>              <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x13c</span> <span class="p">:</span> <span class="n">Win32WindowStation</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span> <span class="c">#Clipboard and desktop objects</span>
+<span class="mh">0x198</span> <span class="p">:</span> <span class="n">ActiveThreads</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1a8</span> <span class="p">:</span> <span class="n">Peb</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_PEB&#39;</span><span class="p">]]</span>
+<span class="mh">0x278</span> <span class="p">:</span> <span class="n">VadRoot</span>                        <span class="p">[</span><span class="s">&#39;_MM_AVL_TABLE&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>What is important in that huge structure?</h1></header>
+            
+            
+            <section><p>PCB: _KPROCESS structure. (Process Control Block)</p>
+<ul>
+<li>Contains critical fields such as the DirectoryTableBase (DTB) for address translation.</li>
+</ul>
+<p>Create time, Exit Time</p>
+<p>PID (Unique)</p>
+<p>ActiveProcessLinks </p>
+<ul>
+<li>doubly linked list of processes</li>
+</ul>
+<p>Parent PID</p>
+<p>Session </p>
+<p>ImageFileName</p>
+<p>ThreadList</p>
+<p>VadRoot</p>
+<p>Processes memory segments</p>
+<p>Process Environment Block</p>
+<ul>
+<li>More in malware discussion. </li>
+<li>Dll lists, env variables</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>_KPROCESS</h1></header>
+            
+            
+            <section><p>Used by the Kernel to track a process.</p>
+<p>Related to scheduling and book-keeping of the process.</p>
+<p>_EPROCESS is Executive Subsystem object that holds the _KPROCESS block. </p>
+<p>Just a lower level view of the process than _EPROCESS. </p>
+<p>What ImageInfo uses to discover what operating system profile to output</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-10">
+          <div class="inner">
+            
+            
+            <section><div class="highlight"><pre> <span class="s">&#39;_KPROCESS&#39;</span> <span class="p">(</span><span class="mi">152</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Header</span>                         <span class="p">[</span><span class="s">&#39;_DISPATCHER_HEADER&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DirectoryTableBase</span>             <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">LdtDescriptor</span>                  <span class="p">[</span><span class="s">&#39;_KGDTENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Int21Descriptor</span>                <span class="p">[</span><span class="s">&#39;_KIDTENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">ThreadListHead</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">ProcessLock</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">Affinity</span>                       <span class="p">[</span><span class="s">&#39;_KAFFINITY_EX&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">ReadyListHead</span>                  <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">SwapListEntry</span>                  <span class="p">[</span><span class="s">&#39;_SINGLE_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">ActiveProcessors</span>               <span class="p">[</span><span class="s">&#39;_KAFFINITY_EX&#39;</span><span class="p">]</span>
+<span class="mh">0x74</span>  <span class="p">:</span> <span class="n">StackCount</span>                     <span class="p">[</span><span class="s">&#39;_KSTACK_COUNT&#39;</span><span class="p">]</span>
+<span class="mh">0x78</span>  <span class="p">:</span> <span class="n">ProcessListEntry</span>               <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x80</span>  <span class="p">:</span> <span class="n">CycleTime</span>                      <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x88</span>  <span class="p">:</span> <span class="n">KernelTime</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x8c</span>  <span class="p">:</span> <span class="n">UserTime</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>Active Process Links</h1></header>
+            
+            
+            <section><p>Doubly linked list of processes in a _LIST_ENTRY struct contained within other structs such as _EPROCESS.</p>
+<p>_LIST_ENTRY is common in Windows and is also used for loaded modules in the PEB.</p>
+<p>Contains a forward, Flink, and a back pointer, Blink, to entries. </p>
+<p><img alt="active processes" src="../slideResources/processes/activeProcesses.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>Linked List of Processes</h1></header>
+            
+            
+            <section><p><img alt="linked processes" src="../slideResources/processes/linkedListProcesses.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Normal Windows System <br> What is abnormal?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>Tools</h1></header>
+            
+            
+            <section><p>Task Manager – Windows native</p>
+<p>Pslist – Sysinternals, volatility</p>
+<p>Procexp – Sysinternals</p>
+<p>Process Hacker</p>
+<p>Several API calls walk lists</p>
+<ul>
+<li>NtQuerySystemInformation</li>
+<li>CreateToolSnapshot</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>System and Idle</h1></header>
+            
+            
+            <section><p>Created by Ntoskrnl.exe </p>
+<h2>System</h2>
+<p>PPID: None</p>
+<p>PID: 4</p>
+<p>Creates session manager process, smss.exe.</p>
+<p>Starts at boot and is what Volshell context switches into by default. </p>
+<p>Holds kernel-mode threads and drivers. </p>
+<p>Uses PsCreateSystemThread to create system threads from kernel mode. </p>
+<h2>Idle</h2>
+<p>container for CPU. </p>
+<p>PID: 0</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Session Manger (SSMS)</h1></header>
+            
+            
+            <section><p>Created by System</p>
+<p>PPID: 4/System</p>
+<p>Location: %SYSTEMROOT%\System32</p>
+<p>First user mode process</p>
+<p>Creates crss and winlogon and then exits.</p>
+<p>Creates sessions that isolate OS services.</p>
+<p><strong>One</strong> is always running as one exits after creating its children. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            <header><h1>Client/Server Runtime Subsystem (CSRSS)</h1></header>
+            
+            
+            <section><p>Creates and deletes processes/Threads, temp files, etc.</p>
+<p>Created by SSMS</p>
+<p>Location: %SYSTEMROOT%\System32</p>
+<p>Multiple run. <strong>One</strong> per session. </p>
+<p>Malware often names itself after csrss to blend in.</p>
+<ul>
+<li>Csrsss.exe, Cssrs.exe.. etc.</li>
+</ul>
+<p>Windows &lt; 7 = cmd.exe broker </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>Winlogon</h1></header>
+            
+            
+            <section><p>Interactive login prompt</p>
+<p>Screen saver</p>
+<p>Started by SSMS, so no PID as SSMS exits.</p>
+<p>Secure Attention Sequences (Ctrl+Alt+Del)</p>
+<p>Location: %SYSTEMROOT%\System32</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Wininit</h1></header>
+            
+            
+            <section><p>Parent: None as smss.exe creates it which exits. </p>
+<p>Marks itself critical so that if it exits prematurely and the system is booted in debugging mode, it will break into the debugger (if not, the system will crash).</p>
+<p>Location: %SystemRoot%\system32\wininit.exe</p>
+<p>Performs user-mode initalization tasks and starts user-mode scheduling. </p>
+<p>Creates %windir%\temp</p>
+<p>Starts Lsass.exe, Lsm.exe and Services.exe</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Services Control Manager (Services.exe)</h1></header>
+            
+            
+            <section><p>Manages Windows services</p>
+<p>Parent of any svchost process, dllhost, taskhost.</p>
+<p><strong>One copy</strong></p>
+<p>Location: %SYSTEMROOT%\System32</p>
+<p>Created by WININET</p>
+<p>Services defined in <em>HKLM\SYSTEM\CurrentControlSet\Services</em></p>
+<p>Whole lecture on these later</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
+          <div class="inner">
+            
+            <header><h1>Lsass</h1></header>
+            
+            
+            <section><p>The Stuxnet service</p>
+<p>Child of Wininit.exe</p>
+<p>Only <strong>one</strong> on the system!</p>
+<p>Manages local security policy. manages users allowed to login, password policies, security event logs, etc. </p>
+<p>Targeted by malware to dump passwords!</p>
+<p>Should not have any children</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>Several More</h1></header>
+            
+            
+            <section><p>Resources: <a href="https://sysforensics.org/2014/01/know-your-windows-processes.html" title="know your windows processes">https://sysforensics.org/2014/01/know-your-windows-processes.html</a></p>
+<p>Know important Windows services and what is normal before trying to find the abnormal. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Volatility to Track Processes, Security Context and Handles</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>PsActiveProcessHead</h1></header>
+            
+            
+            <section><p>Symbol that points to doubly-linked list of _EPROCESS objects.</p>
+<p>Inactive processes remain active in list if another process has an open handle to it.</p>
+<p>A process with 0 threads and an ExitTime can still appear in list, although it has terminated. </p>
+<p>Process is removed from list when PspProcessDelete it called </p>
+<p>Each process has ActiveProcessList</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_EPROCESS&#39;</span> <span class="p">(</span><span class="mi">704</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0xb8</span>  <span class="p">:</span> <span class="n">ActiveProcessLinks</span>             <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p><br></p>
+<p>The main PsActiveProcessHead is in the Kernel Processor Control Region (KPCR).</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-25">
+          <div class="inner">
+            
+            <header><h1>Kernel Processor Control Region (KPCR)</h1></header>
+            
+            
+            <section><p>Structure where kernel stores per-processor information and is viewable from a debugger. </p>
+<p>It is located from the FS register from Windows &lt;= Vista. </p>
+<ul>
+<li>It is now randomized with ASLR. </li>
+</ul>
+<p>Contains the contents of CR3. </p>
+<p>Recall the _KDDEBUGGER_DATA64 structure from week 1-02. </p>
+<p>Magic = <em>KDBG</em></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>kpcrscan</h1></header>
+            
+            
+            <section><p>Scans for <strong>potential</strong> KPCR structures </p>
+<p>Imageinfo also shows the location of the KDBG and KPCR. </p>
+<p>Uses a signature to location the _KPCR struct and ensures the _KPCR.Self points to itself. </p>
+<p>SLOW SLOW SLOW SLOW</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 kpcrscan</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="o">**************************************************</span>
+<span class="n">Offset</span> <span class="p">(</span><span class="n">V</span><span class="p">)</span>                    <span class="p">:</span> <span class="mh">0x8292ec00</span>
+<span class="n">Offset</span> <span class="p">(</span><span class="n">P</span><span class="p">)</span>                    <span class="p">:</span> <span class="mh">0x292ec00</span>
+<span class="n">KdVersionBlock</span>                <span class="p">:</span> <span class="mh">0x8292dc00</span>
+<span class="n">IDT</span>                           <span class="p">:</span> <span class="mh">0x80b95400</span>
+<span class="n">GDT</span>                           <span class="p">:</span> <span class="mh">0x80b95000</span>
+<span class="n">CurrentThread</span>                 <span class="p">:</span> <span class="mh">0x8516c030</span> <span class="n">TID</span> <span class="mi">624</span> <span class="p">(</span><span class="n">svchost</span><span class="o">.</span><span class="n">exe</span><span class="p">:</span><span class="mi">1204</span><span class="p">)</span>
+<span class="n">IdleThread</span>                    <span class="p">:</span> <span class="mh">0x82938380</span> <span class="n">TID</span> <span class="mi">0</span> <span class="p">(</span><span class="n">Idle</span><span class="p">:</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Details</span>                       <span class="p">:</span> <span class="n">CPU</span> <span class="mi">0</span> <span class="p">(</span><span class="n">GenuineIntel</span> <span class="err">@</span> <span class="mi">3191</span> <span class="n">MHz</span><span class="p">)</span>
+<span class="n">CR3</span><span class="o">/</span><span class="n">DTB</span>                       <span class="p">:</span> <span class="mh">0x185000</span>
+
+<span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 imageinfo</span>
+<span class="o">---</span><span class="n">CUT</span><span class="o">---</span>
+<span class="n">KDBG</span> <span class="p">:</span> <span class="mh">0x8292dc28</span><span class="n">L</span>  
+<span class="n">KPCR</span> <span class="k">for</span> <span class="n">CPU</span> <span class="mi">0</span> <span class="p">:</span> <span class="mh">0x8292ec00</span><span class="n">L</span>
+<span class="o">---</span><span class="n">CUT</span><span class="o">---</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>KPCR</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_KPCR&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_KPCR&#39;</span> <span class="p">(</span><span class="mi">14152</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">NtTib</span>                          <span class="p">[</span><span class="s">&#39;_NT_TIB&#39;</span><span class="p">]</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Used_ExceptionList</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EXCEPTION_REGISTRATION_RECORD&#39;</span><span class="p">]]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Used_StackBase</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Spare2</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">TssCopy</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">ContextSwitches</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">SetMemberCopy</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">Used_Self</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">SelfPcr</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KPCR&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">Prcb</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KPRCB&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Irql</span>                           <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">IRR</span>                            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">IrrActive</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">IDR</span>                            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">KdVersionBlock</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">IDT</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KIDTENTRY&#39;</span><span class="p">]]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">GDT</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KGDTENTRY&#39;</span><span class="p">]]]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">TSS</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KTSS&#39;</span><span class="p">]]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">MajorVersion</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x46</span>  <span class="p">:</span> <span class="n">MinorVersion</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">SetMember</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">StallScaleFactor</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">SpareUnused</span>                    <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x51</span>  <span class="p">:</span> <span class="n">Number</span>                         <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x52</span>  <span class="p">:</span> <span class="n">Spare0</span>                         <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x53</span>  <span class="p">:</span> <span class="n">SecondLevelCacheAssociativity</span>  <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x54</span>  <span class="p">:</span> <span class="n">VdmAlert</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">KernelReserved</span>                 <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x90</span>  <span class="p">:</span> <span class="n">SecondLevelCacheSize</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x94</span>  <span class="p">:</span> <span class="n">HalReserved</span>                    <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0xd4</span>  <span class="p">:</span> <span class="n">InterruptMode</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xd8</span>  <span class="p">:</span> <span class="n">Spare1</span>                         <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">KernelReserved2</span>                <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x120</span> <span class="p">:</span> <span class="n">PrcbData</span>                       <span class="p">[</span><span class="s">&#39;_KPRCB&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>We really only care about getting to the KDVersionBlock!</p>
+<p>Offset 0x34 = KdVersionBlock pointer</p>
+<p>Offset 0x78 in KdVersionBlock is &amp;PsActiveProcessHead</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>_KDDEBUGGER_DATA64</h1></header>
+            
+            
+            <section><p>Contains the PsActiveProcessHead </p>
+<p>Already found this in imageinfo</p>
+<p>Easier than the aforementioned method and how Volatility does it</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_KDDEBUGGER_DATA64&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_KDDEBUGGER_DATA64&#39;</span> <span class="p">(</span><span class="mi">832</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Header</span>                         <span class="p">[</span><span class="s">&#39;_DBGKD_DEBUG_DATA_HEADER64&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">KernBase</span>                       <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">BreakpointWithStatus</span>           <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">SavedContext</span>                   <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">ThCallbackStack</span>                <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x32</span>  <span class="p">:</span> <span class="n">NextCallback</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">FramePointer</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">KiCallUserMode</span>                 <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">KeUserCallbackDispatcher</span>       <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">PsLoadedModuleList</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">PsActiveProcessHead</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">PspCidTable</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_PSP_CID_TABLE&#39;</span><span class="p">]]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>kdbg scan</h1></header>
+            
+            
+            <section><p>Search for and dump potential KDBG values</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 kdbgscan</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="o">**************************************************</span>
+<span class="n">Instantiating</span> <span class="n">KDBG</span> <span class="n">using</span><span class="p">:</span> <span class="n">Kernel</span> <span class="n">AS</span> <span class="n">Win7SP0x86</span> <span class="p">(</span><span class="mf">6.1</span><span class="o">.</span><span class="mi">7600</span> <span class="mi">32</span><span class="n">bit</span><span class="p">)</span>
+<span class="n">Offset</span> <span class="p">(</span><span class="n">V</span><span class="p">)</span>                    <span class="p">:</span> <span class="mh">0x8292dc28</span>
+<span class="n">Offset</span> <span class="p">(</span><span class="n">P</span><span class="p">)</span>                    <span class="p">:</span> <span class="mh">0x292dc28</span>
+<span class="n">KDBG</span> <span class="n">owner</span> <span class="n">tag</span> <span class="n">check</span>          <span class="p">:</span> <span class="bp">True</span>
+<span class="n">Profile</span> <span class="n">suggestion</span> <span class="p">(</span><span class="n">KDBGHeader</span><span class="p">):</span> <span class="n">Win7SP1x86</span>
+<span class="n">Version64</span>                     <span class="p">:</span> <span class="mh">0x8292dc00</span> <span class="p">(</span><span class="n">Major</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="n">Minor</span><span class="p">:</span> <span class="mi">7601</span><span class="p">)</span>
+<span class="n">Service</span> <span class="n">Pack</span> <span class="p">(</span><span class="n">CmNtCSDVersion</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span>
+<span class="n">Build</span> <span class="n">string</span> <span class="p">(</span><span class="n">NtBuildLab</span><span class="p">)</span>     <span class="p">:</span> <span class="mf">7601.18205</span><span class="o">.</span><span class="n">x86fre</span><span class="o">.</span><span class="n">win7sp1_gdr</span><span class="o">.</span><span class="mi">13</span>
+<span class="n">PsActiveProcessHead</span>           <span class="p">:</span> <span class="mh">0x82945ba8</span> <span class="p">(</span><span class="mi">54</span> <span class="n">processes</span><span class="p">)</span>
+<span class="n">PsLoadedModuleList</span>            <span class="p">:</span> <span class="mh">0x8294d4d0</span> <span class="p">(</span><span class="mi">155</span> <span class="n">modules</span><span class="p">)</span>
+<span class="n">KernelBase</span>                    <span class="p">:</span> <span class="mh">0x82804000</span> <span class="p">(</span><span class="n">Matches</span> <span class="n">MZ</span><span class="p">:</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">Major</span> <span class="p">(</span><span class="n">OptionalHeader</span><span class="p">)</span>        <span class="p">:</span> <span class="mi">6</span>
+<span class="n">Minor</span> <span class="p">(</span><span class="n">OptionalHeader</span><span class="p">)</span>        <span class="p">:</span> <span class="mi">1</span>
+<span class="n">KPCR</span>                          <span class="p">:</span> <span class="mh">0x8292ec00</span> <span class="p">(</span><span class="n">CPU</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>Analyzing Process Activity</h1></header>
+            
+            
+            <section><p>Pslist</p>
+<ul>
+<li>Walks linked list of processes in ActiveProcessList. Easy to unlink from </li>
+</ul>
+<p>Pstree</p>
+<ul>
+<li>Print process list as a tree</li>
+</ul>
+<p>Psscan</p>
+<ul>
+<li>Scans for _EPROCESS objects</li>
+</ul>
+<p>Psxview</p>
+<ul>
+<li>7 different enumerations for process objects</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-31">
+          <div class="inner">
+            
+            <header><h1>Pslist/Pstree</h1></header>
+            
+            
+            <section><p>PsActiveProcessHead</p>
+<p>Shows</p>
+<ul>
+<li>Offset ( virtual address)</li>
+<li>process name</li>
+<li>process ID and the parent process ID</li>
+<li>Number of threads</li>
+<li>Number of handles</li>
+<li>Date/time when the process started and exited</li>
+</ul>
+<p>Options
+- -P gives the physical offset address</p>
+<p>Points to the start of a list of _EPROCESS structures </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Pstree</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 pstree</span>
+<span class="n">Name</span>                                                  <span class="n">Pid</span>   <span class="n">PPid</span>   <span class="n">Thds</span>   <span class="n">Hnds</span> <span class="n">Time</span>
+<span class="o">--------------------------------------------------</span> <span class="o">------</span> <span class="o">------</span> <span class="o">------</span> <span class="o">------</span> <span class="o">----</span>
+ <span class="mh">0x853f7490</span><span class="p">:</span><span class="n">csrss</span><span class="o">.</span><span class="n">exe</span>                                 <span class="mi">348</span>    <span class="mi">340</span>      <span class="mi">9</span>    <span class="mi">523</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">53</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">.</span> <span class="mh">0x8426ad40</span><span class="p">:</span><span class="n">conhost</span><span class="o">.</span><span class="n">exe</span>                             <span class="mi">3880</span>    <span class="mi">348</span>      <span class="mi">0</span> <span class="o">------</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mo">01</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+ <span class="mh">0x859c2d40</span><span class="p">:</span><span class="n">wininit</span><span class="o">.</span><span class="n">exe</span>                               <span class="mi">400</span>    <span class="mi">340</span>      <span class="mi">3</span>     <span class="mi">74</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">53</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">.</span> <span class="mh">0x85a2d308</span><span class="p">:</span><span class="n">lsass</span><span class="o">.</span><span class="n">exe</span>                                <span class="mi">520</span>    <span class="mi">400</span>      <span class="mi">7</span>    <span class="mi">595</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">53</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">.</span> <span class="mh">0x85a315a8</span><span class="p">:</span><span class="n">lsm</span><span class="o">.</span><span class="n">exe</span>                                  <span class="mi">528</span>    <span class="mi">400</span>     <span class="mi">10</span>    <span class="mi">162</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">53</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">.</span> <span class="mh">0x85a1e410</span><span class="p">:</span><span class="n">services</span><span class="o">.</span><span class="n">exe</span>                             <span class="mi">504</span>    <span class="mi">400</span>     <span class="mi">11</span>    <span class="mi">218</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">53</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">..</span> <span class="mh">0x8526ad00</span><span class="p">:</span><span class="n">svchost</span><span class="o">.</span><span class="n">exe</span>                            <span class="mi">3712</span>    <span class="mi">504</span>      <span class="mi">9</span>    <span class="mi">204</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mi">43</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">..</span> <span class="mh">0x8538b030</span><span class="p">:</span><span class="n">dllhost</span><span class="o">.</span><span class="n">exe</span>                            <span class="mi">1804</span>    <span class="mi">504</span>     <span class="mi">21</span>    <span class="mi">189</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">57</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">..</span> <span class="mh">0x86485030</span><span class="p">:</span><span class="n">FXSSVC</span><span class="o">.</span><span class="n">exe</span>                             <span class="mi">3092</span>    <span class="mi">504</span>     <span class="mi">18</span>    <span class="mi">110</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mi">15</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">..</span> <span class="mh">0x86019b48</span><span class="p">:</span><span class="n">spoolsv</span><span class="o">.</span><span class="n">exe</span>                            <span class="mi">1304</span>    <span class="mi">504</span>     <span class="mi">15</span>    <span class="mi">337</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">55</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">..</span> <span class="mh">0x8617ab90</span><span class="p">:</span><span class="n">TPAutoConnSvc</span><span class="o">.</span>                         <span class="mi">1668</span>    <span class="mi">504</span>     <span class="mi">11</span>    <span class="mi">139</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">57</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="o">...</span> <span class="mh">0x862ba8c8</span><span class="p">:</span><span class="n">TPAutoConnect</span><span class="o">.</span>                        <span class="mi">2176</span>   <span class="mi">1668</span>      <span class="mi">6</span>    <span class="mi">123</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mo">00</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>Virtual Address</h1></header>
+            
+            
+            <section><p>Ps* contains virtual address of _EPROCESS structure. </p>
+<p>_EPROCESS of Winlogon</p>
+<p>Can use it in Volshell to parse information</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 pstree | grep cmd.exe</span>
+<span class="o">...</span> <span class="mh">0x842424b8</span><span class="p">:</span><span class="n">cmd</span><span class="o">.</span><span class="n">exe</span>                               <span class="mi">3912</span>   <span class="mi">1504</span>      <span class="mi">0</span> <span class="o">------</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mo">01</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 volshell</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span><span class="p">,</span> <span class="mh">0x842424b8</span><span class="p">)</span>
+<span class="p">[</span><span class="n">_EPROCESS</span> <span class="n">_EPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x842424B8</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Pcb</span>                            <span class="mi">2216961208</span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">ProcessLock</span>                    <span class="mi">2216961360</span>
+<span class="mh">0xa0</span>  <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mo">01</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="mh">0xa8</span>  <span class="p">:</span> <span class="n">ExitTime</span>                       <span class="mi">2013</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span> <span class="mi">18</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mo">01</span> <span class="n">UTC</span><span class="o">+</span><span class="mo">0000</span>
+<span class="mh">0xb0</span>  <span class="p">:</span> <span class="n">RundownProtect</span>                 <span class="mi">2216961384</span>
+<span class="mh">0xb4</span>  <span class="p">:</span> <span class="n">UniqueProcessId</span>                <span class="mi">3912</span>
+<span class="mh">0xb8</span>  <span class="p">:</span> <span class="n">ActiveProcessLinks</span>             <span class="mi">2216961392</span>
+<span class="mh">0xc0</span>  <span class="p">:</span> <span class="n">ProcessQuotaUsage</span>              <span class="o">-</span>
+<span class="mh">0xc8</span>  <span class="p">:</span> <span class="n">ProcessQuotaPeak</span>               <span class="o">-</span>
+<span class="mh">0xd0</span>  <span class="p">:</span> <span class="n">CommitCharge</span>                   <span class="mi">0</span>
+<span class="mh">0xd4</span>  <span class="p">:</span> <span class="n">QuotaBlock</span>                     <span class="mi">2190711296</span>
+<span class="mh">0xd8</span>  <span class="p">:</span> <span class="n">CpuQuotaBlock</span>                  <span class="mi">0</span>
+<span class="mh">0x274</span> <span class="p">:</span> <span class="n">ExitStatus</span>                     <span class="mi">0</span>
+<span class="mh">0x278</span> <span class="p">:</span> <span class="n">VadRoot</span>                        <span class="mi">2216961840</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-34">
+          <div class="inner">
+            
+            <header><h1>We obtained the address to Pcb/_KPROCESS from the last entry</h1></header>
+            
+            
+            <section><p><br><br></p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 volshell</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_KPROCESS&quot;</span><span class="p">,</span> <span class="mi">2216961208</span><span class="p">)</span>
+<span class="p">[</span><span class="n">CType</span> <span class="n">_KPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x842424B8</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Header</span>                         <span class="mi">2216961208</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">ProfileListHead</span>                <span class="mi">2216961224</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DirectoryTableBase</span>             <span class="mi">1053738560</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">LdtDescriptor</span>                  <span class="mi">2216961236</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Int21Descriptor</span>                <span class="mi">2216961244</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">ThreadListHead</span>                 <span class="mi">2216961252</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">ProcessLock</span>                    <span class="mi">0</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">Affinity</span>                       <span class="mi">2216961264</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">ReadyListHead</span>                  <span class="mi">2216961276</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">SwapListEntry</span>                  <span class="mi">2216961284</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">ActiveProcessors</span>               <span class="mi">2216961288</span>
+<span class="mh">0x6c</span>  <span class="p">:</span> <span class="n">Flags</span>                          <span class="mi">2216961316</span>
+<span class="mh">0x6d</span>  <span class="p">:</span> <span class="n">Unused1</span>                        <span class="mi">0</span>
+<span class="mh">0x6e</span>  <span class="p">:</span> <span class="n">IopmOffset</span>                     <span class="mi">8364</span>
+<span class="mh">0x70</span>  <span class="p">:</span> <span class="n">Unused4</span>                        <span class="mi">0</span>
+<span class="mh">0x74</span>  <span class="p">:</span> <span class="n">StackCount</span>                     <span class="mi">2216961324</span>
+<span class="mh">0x78</span>  <span class="p">:</span> <span class="n">ProcessListEntry</span>               <span class="mi">2216961328</span>
+<span class="mh">0x80</span>  <span class="p">:</span> <span class="n">CycleTime</span>                      <span class="mi">20807923</span>
+<span class="mh">0x88</span>  <span class="p">:</span> <span class="n">KernelTime</span>                     <span class="mi">0</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            <header><h1>psscan</h1></header>
+            
+            
+            <section><p>Enumerates processes</p>
+<ul>
+<li>Uses pool tag scanning </li>
+</ul>
+<p>can find processes</p>
+<ul>
+<li>Previously terminated (inactive)</li>
+<li>Hidden processes</li>
+<li>Unlinked by a rootkit</li>
+</ul>
+<p>Downside</p>
+<ul>
+<li>rootkits can still hide by overwriting the pool tag values</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Psxview</h1></header>
+            
+            
+            <section><p>Scans for a process by enumerating 7 listings.</p>
+<p>Pool-tag scanning</p>
+<p>Thread scanning. </p>
+<h2>- _ETHREAD.ThreadProcess</h2>
+<p>CRSS handle table </p>
+<p>PspCid table </p>
+<p>Session processes </p>
+<p>Desktop threads </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Psxview cont</h1></header>
+            
+            
+            <section><p>True = Process Found</p>
+<p>False = Process not in list.</p>
+<ul>
+<li>Normal for some processes such as system, smss, csrss as they are started before the CSRSS handle table is created.</li>
+<li>Processes before smss are not in session/desktop listing</li>
+<li>Use –apply-rules to get an “Okay”  if false. </li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 psxview --apply-rules</span>
+Offset<span class="o">(</span>P<span class="o">)</span>  Name                    PID pslist psscan thrdproc pspcid csrss session deskthrd ExitTime
+---------- -------------------- ------ ------ ------ -------- ------ ----- ------- -------- --------
+0x3ec6ad00 svchost.exe            <span class="m">3712</span> True   True   True     True   True  True    False
+0x3df3ad40 msdtc.exe              <span class="m">1980</span> True   True   True     True   True  True    True
+0x3e42d308 lsass.exe               <span class="m">520</span> True   True   True     True   True  True    False
+0x3da80530 calc.exe               <span class="m">3032</span> True   True   True     True   True  True    True
+0x3df7ab90 TPAutoConnSvc.         <span class="m">1668</span> True   True   True     True   True  True    True
+0x3dcba248 conhost.exe            <span class="m">2184</span> True   True   True     True   True  True    True
+0x3e0f03c8 svchost.exe             <span class="m">908</span> True   True   True     True   True  True    True
+0x3f435030 msra.exe               <span class="m">3676</span> True   True   True     True   True  True    True
+0x3e7c2030 csrss.exe               <span class="m">412</span> True   True   True     True   Okay  True    True
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-38">
+          <div class="inner">
+            
+            <header><h1>Direct Kernel Object Manipulation (DKOM)</h1></header>
+            
+            
+            <section><p>If an attack gets access to system and can write into kernel objects, they can hide information from certain lists.</p>
+<p>Kernel Drivers have unrestricted access to kernel memory.</p>
+<p>\Device\PhysicalMemory in XP</p>
+<p>ZwSystemDebugControl winAPI function to access kernel objects if SeDebugPrivilege is set on a process.  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-39">
+          <div class="inner">
+            
+            <header><h1>DKOM Uses</h1></header>
+            
+            
+            <section><p>Hide Processes, files, network connections</p>
+<p>Adjust Privileges</p>
+<p>Add groups to tokens</p>
+<p>Manipulate event view</p>
+<p>Hide Ports</p>
+<p>Default Kernel mode IDS/IPS/AV</p>
+<h3>TLDR</h3>
+<p>Anything in a Kernel list can be manipulated with DKOM if careful (VADs are HARD to DKOM).</p>
+<p>Install Kernel driver onto system and control it from user land.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-40">
+          <div class="inner">
+            
+            <header><h1>DKOM sample</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="n">itemTOHide</span> <span class="o">=</span> <span class="p">(</span><span class="n">PLIST_ENTRY</span><span class="p">)((</span><span class="n">PUCHAR</span><span class="p">)</span><span class="n">toHide</span> <span class="o">+</span> <span class="n">hardcodeaddress</span><span class="p">);</span>
+<span class="o">*</span><span class="p">((</span><span class="n">PDWORD</span><span class="p">)</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Blink</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">DWORD</span><span class="p">)</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Flink</span><span class="p">;</span>
+<span class="o">*</span><span class="p">((</span><span class="n">PDWORD</span><span class="p">)(</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Flink</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">DWORD</span><span class="p">)</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Blink</span><span class="p">;</span>
+<span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Blink</span> <span class="o">=</span> <span class="p">(</span><span class="n">PLIST_ENTRY</span><span class="p">)</span><span class="o">&amp;</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Flink</span><span class="p">;</span>
+<span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Flink</span> <span class="o">=</span> <span class="p">(</span><span class="n">PLIST_ENTRY</span><span class="p">)</span><span class="o">&amp;</span><span class="n">itemTOHide</span><span class="o">-&gt;</span><span class="n">Flink</span><span class="p">;</span>
+</pre></div>
+
+<p>Simple forward/back link swap! Easy!</p>
+<p>Need to get a driver installed or a kernel module loaded though... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-41">
+          <div class="inner">
+            
+            <header><h1>Security</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>Security Context</h1></header>
+            
+            
+            <section><p>Security Identifies (SIDs) determine the privileges a user or group has.</p>
+<p>Tokens are used by a process to store SID values for users/groups.  </p>
+<p>Tokens are the underlying object that describe security context</p>
+<p>Several API functions to control security context</p>
+<ul>
+<li>AdjustTokenPrivileges, GetTokenInformation, SetThreadToken</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-43">
+          <div class="inner">
+            
+            <header><h1>SID</h1></header>
+            
+            
+            <section><p><img alt="sids" src="../slideResources/processes/sids.png" /></p>
+<p>S-1-5-21-2753350090-3269873950-3447048925-1000</p>
+<p>S = Prefix for SID</p>
+<p>1 = Revision Level (NT = 1)</p>
+<p>5 = Highest level of authority that can issue SID.NT Authority.
+21-2753350090-3269873950-3447048925 = Local computer/domain Identifier</p>
+<p>1000 = Relative Identifier. 1000&gt; = OS didn't create by default. 
+https://msdn.microsoft.com/en-us/library/windows/desktop/aa379649(v=vs.85).aspx</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-44">
+          <div class="inner">
+            
+            <header><h1>SID In Registry</h1></header>
+            
+            
+            <section><p>HKEY_USERS\SID*</p>
+<p>HKEY_USERS\SID\Volatile Environment\Username</p>
+<p>All over the place...</p>
+<p>The SID from HKEY_USERS is what gets put in HKEY_CURRENT_USER for a logged in account </p>
+<p><img alt="example sid" src="../slideResources/processes/exampleSID.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-45">
+          <div class="inner">
+            
+            <header><h1>Many Structs &amp; API</h1></header>
+            
+            
+            <section><p>_TOKEN</p>
+<ul>
+<li>Describes security context of a process or thread.
+_SID</li>
+</ul>
+<p>_LUID</p>
+<ul>
+<li>Locally Unique Identifier unique to a system</li>
+<li>… too many.</li>
+</ul>
+<p>OpenProcessToken → GetTokenInformation </p>
+<p>Also, procexplorer from SysInternals</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-46">
+          <div class="inner">
+            
+            
+            <section><p><img alt="procexp sid" src="../slideResources/processes/procexpSID.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-47">
+          <div class="inner">
+            
+            <header><h1>Getsids</h1></header>
+            
+            
+            <section><p>Volatility plugin to get the SIDs associated with a process.</p>
+<ul>
+<li>-p PID</li>
+<li>-n NAME (uses regex)</li>
+<li>
+<p>-o offset for hidden process from psxview</p>
+<p>!bash
+[root&amp;windows]#volatility -f Win7.bin --profile=Win7SP0x86 getsids -n cmd
+cmd.exe (3912): S-1-5-18 (Local System)
+cmd.exe (3912): S-1-5-32-544 (Administrators)
+cmd.exe (3912): S-1-1-0 (Everyone)
+cmd.exe (3912): S-1-5-11 (Authenticated Users)
+cmd.exe (3912): S-1-16-16384 (System Mandatory Level)</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-48">
+          <div class="inner">
+            
+            <header><h1>Tokens</h1></header>
+            
+            
+            <section><p>Tokens contain information on what privileges they have. </p>
+<p>Privileges = Permission to perform a specific task. </p>
+<p>All processes contain tokens.</p>
+<p>The Local Security Policy dictates what privileges can be enabled. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-49">
+          <div class="inner">
+            
+            <header><h1>Privileges</h1></header>
+            
+            
+            <section><p>A privilege can be present but not enabled.</p>
+<p>Processes can inheritance privileges</p>
+<p>Privileges can be enabled by default</p>
+<p>SeDebug= Read/Write into other processes. Malware LOVES this one. </p>
+<p>SeLoadDriver = Load/unload Kernel drivers.</p>
+<p>Can use DKOM methods to trick kernel into enabling all privileges and hiding information from user mode.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-50">
+          <div class="inner">
+            
+            <header><h1>Privs</h1></header>
+            
+            
+            <section><p>Volatility plugin to list present and enabled privileges on a per process basis.</p>
+<ul>
+<li>-p flag for specific PID.</li>
+<li>-n NAME (uses regex)</li>
+<li>-s suppress results that were enabled by default</li>
+<li>-o offset for hidden process from psxview</li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 privs -n cmd</span>
+Pid      Process          Value  Privilege                            Attributes               Description
+-------- ---------------- ------ ------------------------------------ ------------------------ -----------
+<span class="m">3912</span> cmd.exe               <span class="m">2</span> SeCreateTokenPrivilege                                        Create a token object
+<span class="m">3912</span> cmd.exe               <span class="m">3</span> SeAssignPrimaryTokenPrivilege        Present                  Replace a process-level token
+<span class="m">3912</span> cmd.exe               <span class="m">4</span> SeLockMemoryPrivilege                Present,Enabled,Default  Lock pages in memory
+<span class="m">3912</span> cmd.exe               <span class="m">5</span> SeIncreaseQuotaPrivilege             Present                  Increase quotas
+<span class="m">3912</span> cmd.exe               <span class="m">6</span> SeMachineAccountPrivilege                                     Add workstations to the domain
+<span class="m">3912</span> cmd.exe               <span class="m">7</span> SeTcbPrivilege                       Present,Enabled,Default  Act as part of the operating system
+<span class="m">3912</span> cmd.exe               <span class="m">8</span> SeSecurityPrivilege                  Present                  Manage auditing and security log
+<span class="m">3912</span> cmd.exe               <span class="m">9</span> SeTakeOwnershipPrivilege             Present                  Take ownership of files/objects
+<span class="m">3912</span> cmd.exe              <span class="m">10</span> SeLoadDriverPrivilege                Present                  Load and unload device drivers
+<span class="m">3912</span> cmd.exe              <span class="m">11</span> SeSystemProfilePrivilege             Present,Enabled,Default  Profile system performance
+<span class="m">3912</span> cmd.exe              <span class="m">12</span> SeSystemtimePrivilege                Present                  Change the system <span class="nb">time</span>
+<span class="m">3912</span> cmd.exe              <span class="m">13</span> SeProfileSingleProcessPrivilege      Present,Enabled,Default  Profile a single process
+<span class="m">3912</span> cmd.exe              <span class="m">14</span> SeIncreaseBasePriorityPrivilege      Present,Enabled,Default  Increase scheduling priority
+<span class="m">3912</span> cmd.exe              <span class="m">15</span> SeCreatePagefilePrivilege            Present,Enabled,Default  Create a pagefile
+<span class="m">3912</span> cmd.exe              <span class="m">16</span> SeCreatePermanentPrivilege           Present,Enabled,Default  Create permanent shared objects
+<span class="m">3912</span> cmd.exe              <span class="m">17</span> SeBackupPrivilege                    Present                  Backup files and directories
+<span class="m">3912</span> cmd.exe              <span class="m">18</span> SeRestorePrivilege                   Present                  Restore files and directories
+<span class="m">3912</span> cmd.exe              <span class="m">19</span> SeShutdownPrivilege                  Present                  Shut down the system
+<span class="m">3912</span> cmd.exe              <span class="m">20</span> SeDebugPrivilege                     Present,Default          Debug programs
+<span class="m">3912</span> cmd.exe              <span class="m">21</span> SeAuditPrivilege                     Present,Enabled,Default  Generate security audits
+<span class="m">3912</span> cmd.exe              <span class="m">22</span> SeSystemEnvironmentPrivilege         Present                  Edit firmware environment values
+<span class="m">3912</span> cmd.exe              <span class="m">23</span> SeChangeNotifyPrivilege              Present,Enabled,Default  Receive notifications of changes to files or directories
+<span class="m">3912</span> cmd.exe              <span class="m">24</span> SeRemoteShutdownPrivilege                                     Force shutdown from a remote system
+<span class="m">3912</span> cmd.exe              <span class="m">25</span> SeUndockPrivilege                    Present                  Remove computer from docking station
+<span class="m">3912</span> cmd.exe              <span class="m">26</span> SeSyncAgentPrivilege                                          Synch directory service data
+<span class="m">3912</span> cmd.exe              <span class="m">27</span> SeEnableDelegationPrivilege                                   Enable user accounts to be trusted <span class="k">for</span> delegation
+<span class="m">3912</span> cmd.exe              <span class="m">28</span> SeManageVolumePrivilege              Present                  Manage the files on a volume
+<span class="m">3912</span> cmd.exe              <span class="m">29</span> SeImpersonatePrivilege               Present,Enabled,Default  Impersonate a client after authentication
+<span class="m">3912</span> cmd.exe              <span class="m">30</span> SeCreateGlobalPrivilege              Present,Enabled,Default  Create global objects
+<span class="m">3912</span> cmd.exe              <span class="m">31</span> SeTrustedCredManAccessPrivilege                               Access Credential Manager as a trusted <span class="nb">caller</span>
+<span class="m">3912</span> cmd.exe              <span class="m">32</span> SeRelabelPrivilege                                            Modify the mandatory integrity level of an object
+<span class="m">3912</span> cmd.exe              <span class="m">33</span> SeIncreaseWorkingSetPrivilege        Present,Enabled,Default  Allocate more memory <span class="k">for</span> user applications
+<span class="m">3912</span> cmd.exe              <span class="m">34</span> SeTimeZonePrivilege                  Present,Enabled,Default  Adjust the <span class="nb">time </span>zone of the computer<span class="err">&#39;</span>s internal clock
+<span class="m">3912</span> cmd.exe              <span class="m">35</span> SeCreateSymbolicLinkPrivilege        Present,Enabled,Default  Required to create a symbolic link
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-51">
+          <div class="inner">
+            
+            
+            <section><p>Use privs with a goal in mind! </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 privs -s | grep SeDebug</span>
+<span class="m">1108</span> ProcessHacker.       <span class="m">20</span> SeDebugPrivilege                     Present,Enabled          Debug programs
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>Explorer.exe    <br>
+Common target for attackers as it is white-listed for automatic elevation to administrator. <br>
+Enabled privileges could indicate malicious activity.</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-52">
+          <div class="inner">
+            
+            <header><h1>Handles</h1></header>
+            
+            
+            <section><p>Reference to an open instance of a kernel object</p>
+<p>Includes files, registry keys, mutexes, named pipes, events, window stations, desktops, threads, and all other types of securable executive objects.</p>
+<p>Recall the executive creates several objects based on API call. CreateFile → _FILE_OBJECT </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-53">
+          <div class="inner">
+            
+            
+            <section><p>System has handle table of Kernel resources</p>
+<p>._EPROCESS.ObjectTable has handle table</p>
+<p>Indexes contain _HANDLE_TABLE_ENTRY structs in yet another _LIST_ENTRY list </p>
+<p>_HANDLE_TABLE_ENTRY point to an Object member which contain the _OBJECT_HEADER of the object.</p>
+<p>_EPROCESS.ObjectTable → _Handle_Table.TableCode → _HANDLE_TABLE_ENTRY → _OBJECT_HEADER</p>
+<p><img alt="handle table" src="../slideResources/processes/handleTable.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              53/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-54">
+          <div class="inner">
+            
+            <header><h1>Handles</h1></header>
+            
+            
+            <section><p>Volatility plugin to display all open handles.</p>
+<p>-p for process</p>
+<p>-o for physical offset to _EPROCESS</p>
+<p>-t objectType (comma-serparated)</p>
+<p>--silent = surpress unamed objects</p>
+<p>ProcessHacker = PID 1108 had SeDebugPriv added</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 handles -p 1108</span>
+Offset<span class="o">(</span>V<span class="o">)</span>     Pid     Handle     Access Type                       Details
+---------- ------ ---------- ---------- -------------------------- -------
+0x8bbd6458   <span class="m">1108</span>        0x4        0x3 Directory                  KnownDlls
+0x86450cd0   <span class="m">1108</span>        0x8   0x100020 File                       <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86
+0x85a09eb8   <span class="m">1108</span>        0xc   0x100020 File                       <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\w</span>insxs<span class="se">\x</span>86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+0x933b8310   <span class="m">1108</span>       0x10    0x20019 Key                        MACHINE<span class="se">\S</span>YSTEM<span class="se">\C</span>ONTROLSET001<span class="se">\C</span>ONTROL<span class="se">\N</span>LS<span class="se">\S</span>ORTING<span class="se">\V</span>ERSIONS
+0x8650e500   <span class="m">1108</span>       0x14   0x1f0001 ALPC Port
+0x85f36770   <span class="m">1108</span>       0x18      0x804 EtwRegistration
+0x84408988   <span class="m">1108</span>      0x38c   0x1fffff Thread                     TID <span class="m">852</span> PID 1108
+0x86452d40   <span class="m">1108</span>      0x290     0x1400 Process                    StikyNot.exe<span class="o">(</span>2972<span class="o">)</span>
+0x862f63a0   <span class="m">1108</span>      0x294     0x1400 Process                    mstsc.exe<span class="o">(</span>2704<span class="o">)</span>
+0x863f63b8   <span class="m">1108</span>      0x298     0x1400 Process                    devenv.exe<span class="o">(</span>2876<span class="o">)</span>
+0x86480530   <span class="m">1108</span>      0x29c     0x1400 Process                    calc.exe<span class="o">(</span>3032<span class="o">)</span>
+0x8533ad40   <span class="m">1108</span>      0x2a0     0x1400 Process                    WFS.exe<span class="o">(</span>3056<span class="o">)</span>
+0x86485030   <span class="m">1108</span>      0x2a4     0x1400 Process                    FXSSVC.exe<span class="o">(</span>3092<span class="o">)</span>
+0x86499d40   <span class="m">1108</span>      0x2a8     0x1400 Process                    mspaint.exe<span class="o">(</span>3196<span class="o">)</span>
+0x864ada20   <span class="m">1108</span>      0x2ac     0x1400 Process                    svchost.exe<span class="o">(</span>3232<span class="o">)</span>
+0x864b5d40   <span class="m">1108</span>      0x2b0     0x1400 Process                    SnippingTool.e<span class="o">(</span>3276<span class="o">)</span>
+0x86487d40   <span class="m">1108</span>      0x2b4     0x1400 Process                    wisptis.exe<span class="o">(</span>3364<span class="o">)</span>
+0x85358d40   <span class="m">1108</span>      0x2b8     0x1400 Process                    mobsync.exe<span class="o">(</span>3444<span class="o">)</span>
+0x86250770   <span class="m">1108</span>      0x2bc     0x1400 Process                    sidebar.exe<span class="o">(</span>3544<span class="o">)</span>
+0x84a35030   <span class="m">1108</span>      0x2c0     0x1400 Process                    msra.exe<span class="o">(</span>3676<span class="o">)</span>
+0x8526ad00   <span class="m">1108</span>      0x2c4     0x1400 Process                    svchost.exe<span class="o">(</span>3712<span class="o">)</span>
+0x861abd40   <span class="m">1108</span>      0x2c8     0x1400 Process                    svchost.exe<span class="o">(</span>3744<span class="o">)</span>
+0x863a20f0   <span class="m">1108</span>      0x110   0x1f0001 Mutant                     ProcessHacker2Mutant
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>ProcessHacker opened a handle to processes running on the system.<br>
+It also created a mutant, ProcessHacker2Mutant! EASY flag for a scan! </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              54/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-55">
+          <div class="inner">
+            
+            <header><h1>Concurrency</h1></header>
+            
+            
+            <section><p>Address Space</p>
+<ul>
+<li>All threads in the same process can access the processes address space</li>
+<li>Enables tight coupling of threads</li>
+<li>No IPC overhead</li>
+<li>2 threads can access the same structures at the same time <ul>
+<li>Race conditions</li>
+<li>Data corruption</li>
+</ul>
+</li>
+</ul>
+<p>Synchronizing techniques
+- Memory locks
+- Process/thread preemption </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              55/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-56">
+          <div class="inner">
+            
+            <header><h1>Semaphores</h1></header>
+            
+            
+            <section><h2>Synchronization object</h2>
+<p>Maintains a count between zero and a specified maximum value</p>
+<ul>
+<li>Decremented each time a thread completes a wait for the semaphore object</li>
+<li>Incremented each time a thread releases the semaphore</li>
+<li>When the count reaches zero, no more threads can successfully wait for the semaphore object state to become signaled</li>
+<li>The state of a semaphore is set to signaled when its count is greater than zero</li>
+<li>Nonsignaled when its count is zero</li>
+</ul>
+<p>Semaphore object is useful in controlling a shared resource that can support a limited number of users</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              56/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-57">
+          <div class="inner">
+            
+            <header><h1>Semaphore Functions</h1></header>
+            
+            
+            <section><p>Semaphore objects control shared resources</p>
+<ul>
+<li>Supports a limited number of users</li>
+</ul>
+<p>Limits the number of threads sharing a resource</p>
+<p>The wait function blocks execution of the window-creation code</p>
+<p>Incremented each time a thread releases the semaphore</p>
+<p>Decremented each time a thread completes a wait</p>
+<p>When count reaches zero, no more threads can successfully wait</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              57/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-58">
+          <div class="inner">
+            
+            <header><h1>Semaphore States</h1></header>
+            
+            
+            <section><h2>Signaled</h2>
+<p>State of a semaphore is set to signaled when its count is greater than zero, and nonsignaled when its count is zero</p>
+<h2>Not Signaled</h2>
+<p>State is set to nonsignaled when its count is zero
+No more threads can successfully wait for the semaphore</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              58/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-59">
+          <div class="inner">
+            
+            <header><h1>Waiting for a Shared Resourcce</h1></header>
+            
+            
+            <section><p>If more than one thread is waiting on a semaphore, a waiting thread is selected</p>
+<p>Is not a first-in, first-out (FIFO) order</p>
+<p>External events such as kernel-mode states can change the wait order.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              59/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-60">
+          <div class="inner">
+            
+            <header><h1>winAPI</h1></header>
+            
+            
+            <section><p>Watch for these when doing analysis</p>
+<p>CreateSemaphore</p>
+<p>OpenSemaphore</p>
+<p>ReleaseSemaphore</p>
+<p>CloseHandle</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              60/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-61">
+          <div class="inner">
+            
+            <header><h1>Mutex Objects</h1></header>
+            
+            
+            <section><p>A mutex is a synchronization object </p>
+<p>Whose state is set to signaled when it is Not owned by any thread is set to signaled</p>
+<p>Nonsignaled when it is owned</p>
+<p>Only one thread at a time can own a mutex object</p>
+<p>Useful in coordinating mutually exclusive access to a shared resource</p>
+<p>Similar to a semaphore for single thread access</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>Example: to prevent two threads from writing to shared memory at the same time, each thread waits for ownership of a mutex object before executing the code that accesses the memory. After writing to the shared memory, the thread releases the mutex object.<br>
+Malware LOVES Mutexes!!! </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              61/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-62">
+          <div class="inner">
+            
+            <header><h1>Mutantscan</h1></header>
+            
+            
+            <section><p>Scan physical memory for KMUTANT objects with pool tag scanning</p>
+<p>Displays all objects, a LOT</p>
+<ul>
+<li>-s to only show named mutexes</li>
+<li>A start address</li>
+<li>G length to scan from start address</li>
+<li>-W skip unallocated objects</li>
+</ul>
+<p>The CID column contains the process ID and thread ID of the mutex owner if one exists. </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 mutantscan -s                                                                         </span>
+Offset<span class="o">(</span>P<span class="o">)</span>              <span class="c">#Ptr     #Hnd Signal Thread           CID Name</span>
+------------------ -------- -------- ------ ---------- --------- ----
+0x000000003dfd45f8        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           .NET Data Provider <span class="k">for</span> Oracle_Perf_Library_Lock_PID_5e0
+0x000000003dfd47e0        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           .NET Data Provider <span class="k">for</span> SqlServer_Perf_Library_Lock_PID_5e0
+0x000000003dfdf758        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           MSDTC_STATS_EVENT
+0x000000003dfe9bf8        <span class="m">5</span>        <span class="m">4</span>      <span class="m">1</span> 0x00000000           TpVcW32ListMutex
+0x000000003dfeab88        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           TP-TMUACCESS
+0x000000003dd99f08        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           WindowsSearchService_EfsRegKeysMutex
+0x000000003dda20f0        <span class="m">2</span>        <span class="m">1</span>      <span class="m">1</span> 0x00000000           ProcessHacker2Mutant
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              62/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_02_ProcessesHandlesAndTokensOhMy.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-63">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_02_ProcessesHandlesAndTokensOhMy.md">week02_02_ProcessesHandlesAndTokensOhMy.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              63/63
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Processes, Handles and Tokens</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Process / Thread</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Threads</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Privilege Separation</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">_EPROCESS</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">_EPROCESS in Memory</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">What is important in that huge structure?</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">_KPROCESS</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">-</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Active Process Links</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Linked List of Processes</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Normal Windows System <br> What is abnormal?</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Tools</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">System and Idle</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Session Manger (SSMS)</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Client/Server Runtime Subsystem (CSRSS)</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Winlogon</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Wininit</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Services Control Manager (Services.exe)</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Lsass</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Several More</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Volatility to Track Processes, Security Context and Handles</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">PsActiveProcessHead</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Kernel Processor Control Region (KPCR)</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">kpcrscan</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">KPCR</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">_KDDEBUGGER_DATA64</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">kdbg scan</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Analyzing Process Activity</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Pslist/Pstree</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Pstree</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Virtual Address</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">We obtained the address to Pcb/_KPROCESS from the last entry</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">psscan</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Psxview</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Psxview cont</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Direct Kernel Object Manipulation (DKOM)</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">DKOM Uses</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">DKOM sample</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Security</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">Security Context</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">SID</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">SID In Registry</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">Many Structs &amp; API</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">-</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Getsids</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">Tokens</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Privileges</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Privs</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">-</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">Handles</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-53">
+        <th><a href="#slide53">-</a></th>
+        <td><a href="#slide53">53</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-54">
+        <th><a href="#slide54">Handles</a></th>
+        <td><a href="#slide54">54</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-55">
+        <th><a href="#slide55">Concurrency</a></th>
+        <td><a href="#slide55">55</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-56">
+        <th><a href="#slide56">Semaphores</a></th>
+        <td><a href="#slide56">56</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-57">
+        <th><a href="#slide57">Semaphore Functions</a></th>
+        <td><a href="#slide57">57</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-58">
+        <th><a href="#slide58">Semaphore States</a></th>
+        <td><a href="#slide58">58</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-59">
+        <th><a href="#slide59">Waiting for a Shared Resourcce</a></th>
+        <td><a href="#slide59">59</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-60">
+        <th><a href="#slide60">winAPI</a></th>
+        <td><a href="#slide60">60</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-61">
+        <th><a href="#slide61">Mutex Objects</a></th>
+        <td><a href="#slide61">61</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-62">
+        <th><a href="#slide62">Mutantscan</a></th>
+        <td><a href="#slide62">62</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-63">
+        <th><a href="#slide63">EOF</a></th>
+        <td><a href="#slide63">63</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>

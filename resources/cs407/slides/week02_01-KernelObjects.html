@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Windows Objects and Pool Allocations</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Windows Objects and Pool Allocations</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>Windows Executive Objects</p>
+<p>Kernel Pool Allocations</p>
+<p>Pool Tag Scanning</p>
+<p>Finding Objects in memory</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Windows NT</h1></header>
+            
+            
+            <section><p>Windows New Technology (NT) is the family of products from Microsoft</p>
+<p>Windows NT 3.1 first OS in 1993</p>
+<p>NT still in product version string, but does not refer to anything in product naming.</p>
+<ul>
+<li>XP = NT 5.1 and 5.2</li>
+<li>Vista = NT 6.0</li>
+<li>Windows 7 = NT 6.1</li>
+<li>Windows 8 = NT 6.2 an 6.3 (8.1)</li>
+<li>Windows 10 = NT 10</li>
+</ul>
+<p>NT* represents Kernel mode in Windows and is still used for the API</p>
+<p>Every resource is an object consisting of data and methods to manipulate them</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Windows NT Operating System Kernel / Ntoskrnl.exe</h1></header>
+            
+            
+            <section><p><br><br>
+Contains Kernel and Windows Executive layers of Windows NT</p>
+<p>Object Management</p>
+<p>Security and Process Management</p>
+<p>Cache Manager</p>
+<p>Nt or Zw API routines go through ntdll.dll and run in th kernel. </p>
+<p>Kernel drivers can call them directly whereas user-mode applications use normal system calls. </p>
+<p>Kernel32.CreateFileA -&gt; NtCreateFile</p>
+<p>Zw has no significance and was just added to avoid naming conflicts.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Windows NT Layout</h1></header>
+            
+            
+            <section><p><img alt="winowsLayout" src="..\slideResources\kernelObjects\windowsLayout.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Windows Executive</h1></header>
+            
+            
+            <section><p>Upper level of Ntoskrnl.exe </p>
+<p>Contains base OS services</p>
+<p>Process/Thread management</p>
+<p>Security Reference Monitor</p>
+<p>I/O System</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Executive</h1></header>
+            
+            
+            <section><p>Exported functions via Ntdll.dll</p>
+<p>DeviceIoControl</p>
+<p>Kernel mode functions through Windows Driver Development Kit</p>
+<p>Memory Manager</p>
+<p>Virtual memory management and support for cache management. </p>
+<p>Object Management</p>
+<p>Create, manage and delete Windows Executive Objects to represent system resources. </p>
+<p>Configuration Manager for system registry</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Kernel</h1></header>
+            
+            
+            <section><p>Lower level of Ntoskrnl.exe</p>
+<p>Thread scheduling</p>
+<p>Synchronization</p>
+<p>Interrupt and Exception dispatching</p>
+<p>Does not make policies... tasked to Executive</p>
+<p>Kernel Objects encapsulated by Executive Objects</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>Executive Objects</h1></header>
+            
+            
+            <section><p>Structure → Executive Object</p>
+<ul>
+<li>OS adds headers to manage services such as naming, access control, reference counters, etc. </li>
+</ul>
+<p>25+ Objects</p>
+<pre><code>| Object Name  | Strucutre            | Description                                                                |
+|--------------|----------------------|----------------------------------------------------------------------------|
+| File         | _FILE_OBJECT         |Instance of an open file                                                    |
+| Process      | _EPROCESS            |Container that allows threads to execute in a private virtual address space.|
+| SymbolicLink | _OBJECT_SYBOLIC_LINK |Alias to map network share paths and removable media                        |
+| Token        | _TOKEN               |Security information such as SID and privileges for processes and threads   |
+| Thread       | _ETHREAD             |Scheduled execution entry and its CPU context                               |
+| Mutant       | _KMUTANT             |Mutal exclision and is used for synchronization                             |
+</code></pre>
+<p>Created by environment subsystem user application</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>WINAPI functions create a ton
+CreateMutext creates a Mutant object</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>WINOBJ</h1></header>
+            
+            
+            <section><p>Display information on NT Object Manager.</p>
+<p>The object management maintains an internal namespace for OS components, drivers and programs. </p>
+<p><img alt="winObj" src="..\slideResources\kernelObjects\winObj.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>Important Note</h1></header>
+            
+            
+            <section><p>All addresses and structure layouts differ between versions of Windows</p>
+<p>Service Packs are known to change memory layout of key structures</p>
+<p>Several structures are undocumented</p>
+<p>Microsoft adds and removes information from everything all the time</p>
+<p>My slides will differ from your output of a structure and I cannot cover all possibilities </p>
+<ul>
+<li>VolShell </li>
+<li>Windbg</li>
+<li>nirsoft</li>
+<li>The Google</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>Executive Objects</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>OBJECT Structure</h1></header>
+            
+            
+            <section><p><img alt="objectStructure" src="..\slideResources\kernelObjects\objectStructure.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>_OBJECT_HEADER</h1></header>
+            
+            
+            <section><p>State information used by the Object Manger</p>
+<p>Common to all objects</p>
+<p>Up to four optional headers</p>
+<p>Precedes the the executive object structure </p>
+<p>Weirdly enough, also precedes optional headers</p>
+<p>Constant offsets between header and optional headers. </p>
+<p>Following the header is the object body for the executive object</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>TName, Quota, Handle, and Creator information headers. 
+ executive object = file, proces, symlink, etc. 
+ Optional Headers located at a negative offset from start of Object Header</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-15">
+          <div class="inner">
+            
+            <header><h1>_OBJECT_HEADER</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_OBJECT_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_OBJECT_HEADER&#39;</span> <span class="p">(</span><span class="mi">32</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">PointerCount</span>                   <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">HandleCount</span>                    <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">NextToFree</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Lock</span>                           <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">TypeIndex</span>                      <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0xd</span>   <span class="p">:</span> <span class="n">TraceFlags</span>                     <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0xe</span>   <span class="p">:</span> <span class="n">InfoMask</span>                       <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0xf</span>   <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">ObjectCreateInfo</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_OBJECT_CREATE_INFORMATION&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">QuotaBlockCharged</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">SecurityDescriptor</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">Body</span>                           <span class="p">[</span><span class="s">&#39;_QUAD&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Object Header Layout</h1></header>
+            
+            
+            <section><p><img alt="objectHeader" src="..\slideResources\kernelObjects\objectHeader.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            <header><h1>OBJECT HEADER INFORMATION</h1></header>
+            
+            
+            <section><p>Pointer Count </p>
+<ul>
+<li>Number of references to the object.</li>
+</ul>
+<p>Handle Count </p>
+<ul>
+<li>Number of opened handles to the object. </li>
+<li>If any handles are open to an object it is locked from certain tasks (file deletion)</li>
+</ul>
+<p>Type Index </p>
+<ul>
+<li>Type of Object </li>
+</ul>
+<p>Info Mask </p>
+<ul>
+<li>Optional Headers in a bit mask if they are present. </li>
+</ul>
+<p>Body</p>
+<ul>
+<li>Start of the structure contained within the object</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>Optional Headers</h1></header>
+            
+            
+            <section><p>_OBJECT_HEADER.InfoMask tells us what optional headers are present above the object header</p>
+<p>0x1 – CREATOR_INFO</p>
+<ul>
+<li>Information of creation of object. Back trace of object creation. </li>
+</ul>
+<p>0x2 - NAME_INFO </p>
+<ul>
+<li>Object Name. Named Mutants utilize this. </li>
+</ul>
+<p>0x4 – HANDLE_INFO</p>
+<ul>
+<li>Database of entries for a process that has an open handle to the object. </li>
+</ul>
+<p>0x8 – QUOTA_INFO</p>
+<ul>
+<li>Tracks resources. </li>
+<li>Idle and System will never have this as an optional header.</li>
+</ul>
+<p>0x10 – PROCESS_INFO</p>
+<ul>
+<li>Identifies owing process if it is an exclusive object. </li>
+</ul>
+<p>0x20 - AUDIT_INFO</p>
+<ul>
+<li>New on Windows 7</li>
+<li>Contains a pointer to a SecurityDescriptor for the object </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>_OBJECT_HEADER.TypeIndex</h1></header>
+            
+            
+            <section><p>Index into nt!ObTypeIndexTable array of Type Objects</p>
+<p>Common meta-data for all objects of said type.</p>
+<p><img alt="typeIndex" src="..\slideResources\kernelObjects\processObjects.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>_OBJECT_TYPE</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="s">&#39;_OBJECT_TYPE&#39;</span> <span class="p">(</span><span class="mi">136</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">TypeList</span>                       <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Name</span>                           <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">DefaultObject</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">Index</span>                          <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">TotalNumberOfObjects</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">TotalNumberOfHandles</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">HighWaterNumberOfObjects</span>       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">HighWaterNumberOfHandles</span>       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">TypeInfo</span>                       <span class="p">[</span><span class="s">&#39;_OBJECT_TYPE_INITIALIZER&#39;</span><span class="p">]</span>
+<span class="mh">0x78</span>  <span class="p">:</span> <span class="n">TypeLock</span>                       <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x7c</span>  <span class="p">:</span> <span class="n">Key</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x80</span>  <span class="p">:</span> <span class="n">CallbackList</span>                   <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>Name: String of object type. Process, File, etc.</p>
+<p>TotalNumberOfObjects: Count of objects of this type on system.</p>
+<p>TotalNumberOfHandles: Total handles open to this object type on the system </p>
+<p>TypeInfo: Type of memory used to allocate object. Paged, Nonpaged. Flags, Type codes, access mask (rwx). </p>
+<p>Key: Four-byte tag used to mark memory allocations for this object type.</p>
+<p><strong>TypeInfo</strong> is the where and <strong>Key</strong> is the what. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>objtypescan</h1></header>
+            
+            
+            <section><p>Scan for Windows object type objects by enumerating Nt!ObTypeIndexTable   </p>
+<p>Scans for _OBJECT_TYPE</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f sample002.bin --profile=Win7SP0x86 objtypescan</span>
+Offset       nObjects   nHandles Key      Name                           PoolType
+---------- ---------- ---------- -------- ------------------------------ --------------------
+0x3f2927c8       0x10       0x10 PcwO     PcwObject                      PagedPool
+0x3f4ad6b0        0x0        0x0 Filt     FilterConnectionPort           NonPagedPool
+0x3f4b26b0        0x0        0x0 Filt     FilterCommunicationPort        NonPagedPool
+0x3ff070f8      0x75d      0x6b5 EtwR     EtwRegistration                NonPagedPool
+0x3ff07bb0       0x11       0x11 WmiG     WmiGuid                        NonPagedPool
+0x3ff08040        0x6        0x6 EtwC     EtwConsumer                    NonPagedPool
+0x3ff599d0        0x5        0x1 Powe     PowerRequest                   NonPagedPool
+0x3ff66330     0x10c0     0x1125 Even     Event                          NonPagedPool
+0x3ff68350      0x35f      0x361 Sema     Semaphore                      NonPagedPool
+0x3ff68418       0x10        0x0 Call     Callback                       NonPagedPool
+0x3ff69350        0x0        0x0 Prof     Profile                        NonPagedPool
+0x3ff69418       0xba       0xba Time     Timer                          NonPagedPool
+0x3ff6b3c0     0x120b      0x3ae File     File                           NonPagedPool
+0x3ff6b488       0x6b       0x64 IoCo     IoCompletion                   NonPagedPool
+0x3ff6b550       0x7c        0x0 Driv     Driver                         NonPagedPool
+0x3ff6b618      0x1a4        0x0 Devi     Device                         NonPagedPool
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>Kernel Pool Allocations</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Kernel Pools</h1></header>
+            
+            
+            <section><p>Range of memory divided into small blocks for storing data from kernel components. </p>
+<ul>
+<li>Accounting and debug information. </li>
+<li>Attributes back to driver that owns them.</li>
+</ul>
+<p>_POOL_HEADER sits above any optional headers from _OBJECT_HEADER </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>_POOL_HEADER</h1></header>
+            
+            
+            <section><p><br><br><br><br></p>
+<div class="highlight"><pre><span class="s">&#39;_POOL_HEADER&#39;</span> <span class="p">(</span><span class="mi">8</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">PoolIndex</span>   <span class="c">#Total size of allocation including all of the object information</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">PreviousSize</span>                   
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Ulong1</span>                         
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">BlockSize</span>                      
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">PoolType</span>    <span class="c">#Type of system memory. A lot of objects are allocated using nonpageable memory </span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">AllocatorBackTraceIndex</span>        
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">PoolTag</span>     <span class="c">#Four-byte value to identify code path taken to produce the allocation </span>
+<span class="mh">0x6</span>   <span class="p">:</span> <span class="n">PoolTagHash</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-25">
+          <div class="inner">
+            
+            <header><h1>Kernel Pool Layout</h1></header>
+            
+            
+            <section><p><img alt="poolHeader" src="..\slideResources\kernelObjects\poolHeader.png" />   </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Kernel Pool Allocation</h1></header>
+            
+            
+            <section><p>Any instance of an object must be allocated by the kernel from an OS memory pool.</p>
+<p>Ntoskrnl.ExAllocatePoolWithTag </p>
+<div class="highlight"><pre>PVOID ExAllocatePoolWithTag<span class="o">(</span>
+    _In_  POOL_TYPE PoolType,
+    _In_  SIZE_T NumberOfBytes, 
+    _In_  ULONG Tag
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Tag comes from _OBJECT_TYPE.Key and needs to match the tag used with ExAllocatePoolWithTag to safeguard memory</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>ObCreateObject</h1></header>
+            
+            
+            <section><p>ObCreateObject is an undocumented function that creates executive objects. </p>
+<ul>
+<li>Determines size of structure to allocate and adds any optional headers before ExAllocatePoolWithTag is called</li>
+</ul>
+<p>Size of executive objects + size of _OBJECT_HEADER + size of Optional Headers</p>
+<ul>
+<li>1304 for _EPROCESS</li>
+<li>1248 Threads</li>
+<li>128 Mutant</li>
+<li>. . .</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>Example Object Creation</h1></header>
+            
+            
+            <section><ol>
+<li>Process calls Kernel32.CreateFileA</li>
+<li>API leads into ntdll.dll and calls native NtCreateFile</li>
+<li>NtCreateFile calls ObCreateObject to request file object</li>
+<li>ObCreateObject calculates size of _FILE_OBJECT</li>
+<li>ObCreateObject finds _OBJECT_TYPE and determines pool tag</li>
+<li>ExAllocateWithPoolTag is called </li>
+<li>File handle is now returned to calling process (More to it than that, though.. handle tables, etc)</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>Kernel32.CloseHandle</h1></header>
+            
+            
+            <section><p>When a process no longer needs a handle, it is deallocated with CloseHandle() </p>
+<div class="highlight"><pre>BOOL WINAPI CloseHandle<span class="o">(</span>
+    _In_  HANDLE hObject
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Block of memory returns to free list</p>
+<p>Contents of memory still intact until overwritten.</p>
+<p>Object still resident in RAM.  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>ExFreePoolWithTag</h1></header>
+            
+            
+            <section><p>It is worth noting that Kernel mode objects are freed with ExFreePoolWithTag which sometimes leaves a protected bit in the tag.</p>
+<div class="highlight"><pre>Ntoskrnl.lib
+VOID ExFreePoolWithTag(
+  _In_  PVOID P<span class="p">,</span>
+  _In_  ULONG Tag
+);
+</pre></div>
+
+<p><img alt="poolTags" src="..\slideResources\kernelObjects\poolTags.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-31">
+          <div class="inner">
+            
+            <header><h1>Pool-tag Scanning</h1></header>
+            
+            
+            <section><p>Search memory for four-byte tags from allocation of executive objects.</p>
+<ul>
+<li>Using the <strong>Key</strong> from _OBJECT_HEADER-&gt;_OBJECT_TYPE-&gt;Key </li>
+</ul>
+<p>Finds historical objects</p>
+<p>Finds hidden objects from anti-techniques </p>
+<p>Can't just look for “Proc”... might not be _EPROCESS.</p>
+<p>More or less brute forcing all of memory! </p>
+<h1>Why pool-tag scan?</h1>
+<p>Find unlinked, linked and unreachable objects! </p>
+<p>For example, a terminated process is no longer in the PsActiveProcessList, but an EPROCESS strucutre is still in memory somewhere!</p>
+<p>Robust signatures to determine if an object actually exists. . .</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Pool Tags</h1></header>
+            
+            
+            <section><p>Pooltag.txt from Drive Development Kit lists them... there are <a href="http://blogs.technet.com/b/yongrhee/archive/2009/06/24/pool-tag-list.aspx">A LOT.</a> </p>
+<p>PoolMon.exe     </p>
+<ul>
+<li>Live updates pool tag usage </li>
+<li>Pool tag, type, allocations, frees</li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre>c:\bin\poolmon.exe
+Memory:  <span class="m">260620</span>K Avail:   <span class="m">96364</span>K  PageFlts:     <span class="m">0</span>   InRam Krnl: <span class="m">1916</span>K P:17856K
+Commit: <span class="m">203500</span>K Limit: <span class="m">640916</span>K Peak: <span class="m">260632</span>K            Pool N: <span class="m">8332</span>K P:27220K
+System pool information
+Tag  Type     Allocs            Frees            Diff   Bytes       Per Alloc
+Wait Nonp    <span class="m">3971107</span> (   <span class="m">0</span>)   <span class="m">3971077</span> (   <span class="m">0</span>)       <span class="m">30</span>    <span class="m">8456</span> (     <span class="m">0</span>)    <span class="m">281</span>
+ObSt Nonp    <span class="m">2791258</span> (   <span class="m">0</span>)   <span class="m">2791258</span> (   <span class="m">0</span>)        <span class="m">0</span>       <span class="m">0</span> (     <span class="m">0</span>)      <span class="m">0</span>
+Gxlt Paged   <span class="m">1161638</span> (   <span class="m">0</span>)   <span class="m">1161630</span> (   <span class="m">0</span>)        <span class="m">8</span>     <span class="m">864</span> (     <span class="m">0</span>)    <span class="m">108</span>
+Ustm Paged   <span class="m">1088342</span> (   <span class="m">0</span>)   <span class="m">1088298</span> (   <span class="m">0</span>)       <span class="m">44</span>    <span class="m">2464</span> (     <span class="m">0</span>)     <span class="m">56</span>
+Io   Nonp    <span class="m">1021112</span> (   <span class="m">1</span>)   <span class="m">1020985</span> (   <span class="m">1</span>)      <span class="m">127</span>   <span class="m">91912</span> (     <span class="m">0</span>)    <span class="m">723</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>In Memory</h1></header>
+            
+            
+            <section><p>Pool tag information still in memory (What poolmon uses)</p>
+<p>_KDDEBUGGER_DATA64._POOL_TRACKER_TABLE</p>
+<div class="highlight"><pre><span class="s">&#39;_POOL_TRACKER_TABLE&#39;</span> <span class="p">(</span><span class="mi">28</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Key</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">NonPagedAllocs</span>                 <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">NonPagedFrees</span>                  <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">NonPagedBytes</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">PagedAllocs</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">PagedFrees</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">PagedBytes</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-34">
+          <div class="inner">
+            
+            <header><h1>PoolTracker</h1></header>
+            
+            
+            <section><p>PoolMon in memory implemented in Volatility</p>
+<p>Show a summary of pool tag usage</p>
+<p>Size per allocation:</p>
+<ul>
+<li>NpBytes / (NpAllocs-NpFrees)</li>
+</ul>
+<p>Gives size of each allocation for a robust pool scanner.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f sample002.bin --profile=Win7SP0x86 pooltracker</span>
+<span class="n">Tag</span>    <span class="n">NpAllocs</span> <span class="n">NpFrees</span>  <span class="n">NpBytes</span>  <span class="n">PgAllocs</span> <span class="n">PgFrees</span>  <span class="n">PgBytes</span>  <span class="n">Driver</span>               
+<span class="o">------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">--------------------</span>
+<span class="n">Io</span>      <span class="mi">67539</span>   <span class="mi">66947</span>   <span class="mi">55576</span>     <span class="mi">27308</span>     <span class="mi">27303</span>   <span class="mi">224</span>
+<span class="n">Even</span>    <span class="mi">62482</span>   <span class="mi">58194</span>   <span class="mi">275952</span>    <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+<span class="n">File</span>    <span class="mi">61964</span>   <span class="mi">57345</span>   <span class="mi">822824</span>    <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+<span class="n">SeTl</span>    <span class="mi">27610</span>   <span class="mi">26517</span>   <span class="mi">69952</span>     <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+<span class="n">Vad</span>     <span class="mi">14588</span>   <span class="mi">10225</span>   <span class="mi">314136</span>    <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+<span class="n">FOCX</span>    <span class="mi">12505</span>   <span class="mi">12411</span>   <span class="mi">4512</span>      <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+<span class="n">usbp</span>    <span class="mi">11537</span>   <span class="mi">11422</span>   <span class="mi">90208</span>     <span class="mi">51</span>        <span class="mi">49</span>      <span class="mi">96</span>
+<span class="n">Wait</span>    <span class="mi">11179</span>   <span class="mi">11124</span>   <span class="mi">21704</span>     <span class="mi">0</span>         <span class="mi">0</span>       <span class="mi">0</span>
+
+<span class="c">#Note: I used pooltracker and performed sed and sort on the data to get</span>
+<span class="c">#the number of NpAllocs in sorted order.</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>NP = nonpaged
+P = paged</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            <header><h1>Volatility Pool Scanning</h1></header>
+            
+            
+            <section><p>Robust signature by ensuring adjacent memory near a pool is valid.</p>
+<p>OBJECT_HEADER + POOL_HEADER + Executive Object = Size</p>
+<p>Similar to total size per allocation from previous slide.</p>
+<h3>EPROCESS Detection Coniditions</h3>
+<ol>
+<li>_EPROCESS.Pcb.Header.Type == 0x03 and eprocess.Pcb.Header.Size == 0x1b</li>
+<li>_EPROCESS.Pcb.DirectoryTableBase must be aligned to 0x20</li>
+<li>_EPROCESS thread list points to the kernel Address Space (Both Flink and Blink for eprocess.ThreadListHead)</li>
+<li>_EPROCESS.WorkingSetLock and _EPROCESS.AddressCreationLock look valid</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Signature</h1></header>
+            
+            
+            <section><p><img alt="poolScanDiagram" src="..\slideResources\kernelObjects\poolScanDiagram.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-37">
+          <div class="inner">
+            
+            <header><h1>Plugins for Executive Objects</h1></header>
+            
+            
+            <section><p><center></p>
+<pre><code>| Object Name    | Plugin      |
+|----------------|-------------|
+| Process        | psscan      |
+| Threads        | thrdscan    |
+| Desktops       | deskscan    |
+| Window Station | wndscan     |
+| Mutants        | mutantscan  |
+| File           | filescan    |
+| Drivers        | driverscan  |
+| Symbolic Links | symlinkscan |
+</code></pre>
+<p></center></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-38">
+          <div class="inner">
+            
+            <header><h1>Pool Scanning Limitations</h1></header>
+            
+            
+            <section><p>Untagged memory</p>
+<ul>
+<li>ExAllocatePool does not allocate a tag for the object</li>
+</ul>
+<p>False positives</p>
+<ul>
+<li>Correlate with other tools/scanners</li>
+</ul>
+<p>Large Allocations</p>
+<p>Decoy Tags</p>
+<p>Arbitrary Tags (“Ddk” for drivers)</p>
+<p>Manipulated tag</p>
+<ul>
+<li>Tags are optional in OS and do not change operation. </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-39">
+          <div class="inner">
+            
+            <header><h1>Scanning Examples</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 filescan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>            <span class="c">#Ptr   #Hnd Access Name</span>
+------------------ ------ ------ ------ ----
+0x000000003da00038      <span class="m">1</span>      <span class="m">1</span> R--rw- <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\w</span>insxs<span class="se">\x</span>86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2
+0x000000003da00730      <span class="m">8</span>      <span class="m">0</span> R--rw- <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\T</span>emporary Internet Files<span class="se">\L</span>ow<span class="se">\C</span>ontent.IE5<span class="se">\L</span>W3MMD1X<span class="se">\w</span>idgets<span class="o">[</span>1<span class="o">]</span>.js
+0x000000003da00b88      <span class="m">7</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\s</span>rchadmin.dll
+0x000000003da00c40      <span class="m">4</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>ssenh.dll
+0x000000003da00ec8      <span class="m">8</span>      <span class="m">0</span> R--rw- <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\T</span>emporary Internet Files<span class="se">\L</span>ow<span class="se">\C</span>ontent.IE5<span class="se">\U</span>WEOZDSW<span class="se">\c</span>lient<span class="o">[</span>1<span class="o">]</span>.js
+0x000000003da012b0      <span class="m">8</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\T</span>emporary Internet Files<span class="se">\L</span>ow<span class="se">\C</span>ontent.IE5<span class="se">\4</span>7XIWBRS<span class="se">\h</span>ub<span class="o">[</span>1<span class="o">]</span>.htm
+0x000000003da01be0      <span class="m">6</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\Q</span>AGENTRT.DLL
+0x000000003da02188      <span class="m">4</span>      <span class="m">0</span> RW-rwd <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\$</span>Directory
+0x000000003da03748      <span class="m">8</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\T</span>emporary Internet Files<span class="se">\L</span>ow<span class="se">\C</span>ontent.IE5<span class="se">\7</span>SYX623H<span class="se">\x</span>d_arbiter<span class="o">[</span>1<span class="o">]</span>.htm
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 dumpfiles -Q 0x000000003da03748 -D html/</span>
+Volatility Foundation Volatility Framework 2.4
+DataSectionObject 0x3da03748   None   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\T</span>emporary Internet Files<span class="se">\L</span>ow<span class="se">\C</span>ontent.IE5<span class="se">\7</span>SYX623H<span class="se">\x</span>d_arbiter<span class="o">[</span>1<span class="o">]</span>.htm
+</pre></div>
+
+<p>We can now open that file</p>
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span><span class="nt">&lt;html&gt;&lt;head&gt;&lt;title&gt;</span>Facebook Cross-Domain Messaging helper<span class="nt">&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;script&gt;</span><span class="err"> document.domain = &#39;facebook.com&#39;; var ES5 = function(){</span>
+__d(&quot;ES5ArrayPrototype&quot;,[],function(a,b,c,d,e,f){var g={};g.map=function(h,i){if(typeof h!=&#39;function&#39;)throw new TypeError();var j,k=this.length,l=new Array(k);for(j=0;j<span class="nt">&lt;k</span><span class="err">;++</span><span class="na">j</span><span class="err">)</span><span class="na">if</span><span class="err">(</span><span class="na">j</span> <span class="na">in</span> <span class="na">this</span><span class="err">)</span><span class="na">l</span><span class="err">[</span><span class="na">j</span><span class="err">]=</span><span class="na">h</span><span class="err">.</span><span class="na">call</span><span class="err">(</span><span class="na">i</span><span class="err">,</span><span class="na">this</span><span class="err">[</span><span class="na">j</span><span class="err">],</span><span class="na">j</span><span class="err">,</span><span class="na">this</span><span class="err">);</span><span class="na">return</span> <span class="na">l</span><span class="err">;};</span><span class="na">g</span><span class="err">.</span><span class="na">forEach=</span><span class="s">function(h,i){g.map.call</span>
+<span class="na">--</span> <span class="na">CUT</span> <span class="na">--</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-40">
+          <div class="inner">
+            
+            <header><h1>Dumpfiles</h1></header>
+            
+            
+            <section><p>Cached files appear in memory dumps and can be recovered using Dumpfiles. </p>
+<p>Dumpfiles iterates through the VAD and extracts all files that are mapped as DataSectionObject, ImageSectionObject or SharedChacheMap. </p>
+<div class="highlight"><pre>-r REGEX, --regex<span class="o">=</span>REGEX
+                Dump files matching REGEX
+-i, --ignore-case     Ignore <span class="k">case</span> in pattern match
+-o OFFSET, --offset<span class="o">=</span>OFFSET
+                Dump files <span class="k">for</span> Process with physical address OFFSET
+-Q PHYSOFFSET, --physoffset<span class="o">=</span>PHYSOFFSET
+                Dump File Object at physical address PHYSOFFSET
+-D DUMP_DIR, --dump-dir<span class="o">=</span>DUMP_DIR
+                Directory in which to dump extracted files
+-S SUMMARY_FILE, --summary-file<span class="o">=</span>SUMMARY_FILE
+                File where to store summary information
+-p PID, --pid<span class="o">=</span>PID     Operate on these Process IDs <span class="o">(</span>comma-separated<span class="o">)</span>
+-n, --name            Include extracted filename in output file path
+-u, --unsafe          Relax safety constraints <span class="k">for</span> more data
+-F FILTER, --filter<span class="o">=</span>FILTER
+                Filters to apply <span class="o">(</span>comma-separated<span class="o">)</span>
+</pre></div>
+
+<p>Dumped files are shown as file.[PID].[OFFSET].[EXT] OR named if -n is used. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-41">
+          <div class="inner">
+            
+            <header><h1>Symlinkscan</h1></header>
+            
+            
+            <section><p>Scan for symbolic link objects</p>
+<div class="highlight"><pre>  -V, --virtual         Scan virtual space instead of physical
+  -W, --show-unallocated
+                        Skip unallocated objects <span class="o">(</span>e.g. 0xbad0b0b0<span class="o">)</span>
+  -A START, --start<span class="o">=</span>START
+                        The starting address to begin scanning
+  -G LENGTH, --length<span class="o">=</span>LENGTH
+                        Length <span class="o">(</span>in bytes<span class="o">)</span> to scan from the starting address
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 symlinkscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>            <span class="c">#Ptr   #Hnd Creation time                  From                 To</span>
+------------------ ------ ------ ------------------------------ -------------------- ------------------------------------------------------------
+0x0000000002de3278      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:58 UTC+0000   Global               <span class="se">\G</span>lobal??
+0x00000000030b40a8      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:46 UTC+0000   DosDevices           <span class="se">\?</span>?
+0x00000000030b8470      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:46 UTC+0000   Global               <span class="se">\G</span>LOBAL??
+0x000000000f3c77d8      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:59 UTC+0000   Z:                   <span class="se">\D</span>evice<span class="se">\h</span>gfs<span class="se">\;</span>Z:0000000000027f8d<span class="se">\v</span>mware-host<span class="se">\S</span>hared Folders
+0x00000000122c0ce8      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:53 UTC+0000   Local                <span class="se">\B</span>aseNamedObjects
+0x0000000012474030      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:46:00 UTC+0000   UMB#UMB#1...e1ba19f<span class="o">}</span> <span class="se">\D</span>evice<span class="se">\0</span>0000069
+0x0000000012dca868      <span class="m">1</span>      <span class="m">0</span> 2013-10-15 18:45:56 UTC+0000   <span class="nv">$VDMLPT1</span>             <span class="se">\D</span>evice<span class="se">\P</span>arallelVdm0
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week02_01-KernelObjects.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+            <section><p><img alt="" src="http://i.imgur.com/BXS4Dcx.gif" /></p>
+<p>Photos snipped from Windows Internals 6th Edition Volume 1 &amp; 2, David Solomon and Mark Russinovich. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week02_01-KernelObjects.md">week02_01-KernelObjects.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Windows Objects and Pool Allocations</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Windows NT</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Windows NT Operating System Kernel / Ntoskrnl.exe</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Windows NT Layout</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Windows Executive</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Executive</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Kernel</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Executive Objects</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">WINOBJ</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Important Note</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Executive Objects</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">OBJECT Structure</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">_OBJECT_HEADER</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">_OBJECT_HEADER</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Object Header Layout</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">OBJECT HEADER INFORMATION</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Optional Headers</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">_OBJECT_HEADER.TypeIndex</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">_OBJECT_TYPE</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">objtypescan</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Kernel Pool Allocations</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Kernel Pools</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">_POOL_HEADER</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Kernel Pool Layout</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Kernel Pool Allocation</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">ObCreateObject</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Example Object Creation</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Kernel32.CloseHandle</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">ExFreePoolWithTag</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Pool-tag Scanning</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Pool Tags</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">In Memory</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">PoolTracker</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Volatility Pool Scanning</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Signature</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Plugins for Executive Objects</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Pool Scanning Limitations</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Scanning Examples</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Dumpfiles</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Symlinkscan</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">EOF</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>

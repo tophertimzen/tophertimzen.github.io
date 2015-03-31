@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>YARA</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>YARA</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>YARA</h1></header>
+            
+            
+            <section><p>The pattern matching swiss army knife for malware researchers.</p>
+<p>Uses rules to classify malware families, binary patterns, text patterns...</p>
+<p>Works on files, packets, memory dumps. . .</p>
+<p>Rule:</p>
+<ul>
+<li>$variable = pattern</li>
+</ul>
+<p>GitHub: https://github.com/plusvic/yara</p>
+<p>Website: https://plusvic.github.io/yara/</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-3">
+          <div class="inner">
+            
+            <header><h1>YARA Example</h1></header>
+            
+            
+            <section><div class="highlight"><pre>rule BadBoy
+<span class="o">{</span>
+    strings:
+         <span class="nv">$a</span> <span class="o">=</span> <span class="s2">&quot;win.exe&quot;</span>
+         <span class="nv">$b</span> <span class="o">=</span> <span class="s2">&quot;http://foo.com/badfile1.exe&quot;</span>
+         <span class="nv">$c</span> <span class="o">=</span> <span class="s2">&quot;http://bar.com/badfile2.exe&quot;</span>
+    condition:
+         <span class="nv">$a</span> and <span class="o">(</span><span class="nv">$b</span> or <span class="nv">$c</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-4">
+          <div class="inner">
+            
+            <header><h1>Rules</h1></header>
+            
+            
+            <section><p>Rule starts with a keyword followed by an identifier.</p>
+<p>Keywords: at, filesize, section, import, entrypoint, ascii, string, . . .</p>
+<p>identifies start with a $character like bash variables.</p>
+<p>Can use regular expressions.</p>
+<h1>Conditions</h1>
+<p>What rules to match on for a given result.</p>
+<p>Boolean expressions.</p>
+<h1>Example</h1>
+<div class="highlight"><pre>rule ExampleRule
+<span class="o">{</span>
+    strings:
+        <span class="nv">$easy</span> <span class="o">=</span> <span class="s2">&quot;yara is easy&quot;</span>
+        <span class="nv">$hex</span> <span class="o">=</span> <span class="o">{</span> 4D <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> 5A<span class="o">}</span>
+    condition:
+        <span class="nv">$easy</span> and <span class="nv">$hex</span>
+<span class="o">}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>Advanced</h1></header>
+            
+            
+            <section><p>Can use regular expressions</p>
+<p>? is a placeholder for a character</p>
+<div class="highlight"><pre><span class="nv">$hex_string</span> <span class="o">=</span> <span class="o">{</span> E2 <span class="m">34</span> ?? C8 A? FB <span class="o">}</span>
+</pre></div>
+
+<p>Can also use bounds</p>
+<div class="highlight"><pre><span class="nv">$hex_string</span> <span class="o">=</span> <span class="o">{</span> E2 <span class="m">34</span> <span class="o">[</span>4-8<span class="o">]</span> C8 A? FB <span class="o">}</span> //matches 4-8 hex bytes between <span class="m">34</span> and C8
+</pre></div>
+
+<p>Can use OR</p>
+<div class="highlight"><pre><span class="o">(</span><span class="m">62</span> B4 <span class="p">|</span> 56<span class="o">)</span>
+</pre></div>
+
+<p>etc...</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>Using YARA</h1></header>
+            
+            
+            <section><p>You need YARA and a set of rules to apply on a file, memory dump, etc. </p>
+<div class="highlight"><pre>usage: yara <span class="o">[</span>OPTION<span class="o">]</span>... <span class="o">[</span>RULEFILE<span class="o">]</span>... FILE <span class="p">|</span> PID
+options:
+ -t &lt;tag&gt; print rules tagged as &lt;tag&gt; and ignore the rest.
+ -i &lt;identifier&gt; print rules named &lt;identifier&gt; and ignore the rest.
+ -n print only not satisfied rules <span class="o">(</span>negate<span class="o">)</span>.
+ -g print tags.
+ -m print metadata.
+ -s print matching strings.
+ -l &lt;number&gt; abort scanning after a &lt;number&gt; of rules matched.
+ -d &lt;identifier&gt;<span class="o">=</span>&lt;value&gt; define external variable.
+ -r recursively search directories.
+ -f fast matching mode.
+ -v show version information.
+</pre></div>
+
+<p>There is also a python module for yara, which is needed for Volatility. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>What to Match?</h1></header>
+            
+            
+            <section><p>Common shellcode patterns</p>
+<ul>
+<li>Most need to access the PEB Module Lists</li>
+</ul>
+<p>IP Addresses</p>
+<p>Regular Expressions like phone numbers</p>
+<p>Packer Signatures</p>
+<p>Anti-virus signatures</p>
+<p>Encryption keys</p>
+<p>. . .</p>
+<p><strong>Get creative</strong></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Rule</h1></header>
+            
+            
+            <section><p>Rule to find 64 bit PEB access </p>
+<p>Malware accesses the PEB to traverse listings of DLLs to resolve functions </p>
+<p>Mov REG, [gs:60h]</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat *.yara</span>
+rule Win64PEBHunter
+<span class="o">{</span>
+        strings:
+                <span class="nv">$hex_string</span> <span class="o">=</span> <span class="o">{</span> <span class="m">65</span> 4c  8b ?? <span class="m">25</span> <span class="m">60</span> <span class="o">[</span>3<span class="o">]</span> <span class="o">}</span>
+
+        condition:
+                <span class="nv">$hex_string</span>
+<span class="o">}</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#yara -s win64shellcode.yara win64PEB.sc</span>
+
+Win64PEBHunter win64PEB.sc
+0x6:<span class="nv">$hex_string</span>: <span class="m">65</span> 4C 8B 2C <span class="m">25</span> <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> 00
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>YARASCAN</h1></header>
+            
+            
+            <section><p>Volatility has a plug-in to scan memory with yara rules.</p>
+<div class="highlight"><pre>--yara-file<span class="o">=</span>RULESFILE
+--yara-rules<span class="o">=</span>”TEXT”
+--pid
+--offset
+--kernel
+--dump-dir to extract the positive match
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-10">
+          <div class="inner">
+            
+            <header><h1>YARA</h1></header>
+            
+            
+            <section><p>Finds all “MZ” matches in memory image. </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 yarascan --yara-rules=&quot;{4d 5a}&quot; </span>
+<span class="n">Rule</span><span class="p">:</span> <span class="n">r1</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">System</span> <span class="n">Pid</span> <span class="mi">4</span>
+<span class="mh">0x775c0000</span>  <span class="mi">4</span><span class="n">d</span> <span class="mi">5</span><span class="n">a</span> <span class="mi">90</span> <span class="mo">00</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">04</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="n">ff</span> <span class="n">ff</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="n">MZ</span><span class="o">.......</span>
+<span class="n">Rule</span><span class="p">:</span> <span class="n">r1</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">smss</span><span class="o">.</span><span class="n">exe</span> <span class="n">Pid</span> <span class="mi">260</span>
+<span class="mh">0x775c0000</span>  <span class="mi">4</span><span class="n">d</span> <span class="mi">5</span><span class="n">a</span> <span class="mi">90</span> <span class="mo">00</span> <span class="mo">03</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">04</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="n">ff</span> <span class="n">ff</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="n">MZ</span><span class="o">.......</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">smss</span><span class="o">.</span><span class="n">exe</span> <span class="n">Pid</span> <span class="mi">260</span>
+<span class="mh">0x775d1c06</span>  <span class="mi">4</span><span class="n">d</span> <span class="mi">5</span><span class="n">a</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">66</span> <span class="mi">39</span> <span class="mo">03</span> <span class="mi">0</span><span class="n">f</span> <span class="mi">85</span> <span class="mi">97</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">8</span><span class="n">b</span> <span class="mi">43</span> <span class="mi">3</span><span class="n">c</span>   <span class="n">MZ</span><span class="o">..</span><span class="n">f9</span><span class="o">........</span><span class="n">C</span><span class="o">&lt;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>PageBrute.py</h1></header>
+            
+            
+            <section><p>Checks pages in pagefiles for YARA rule matches to locate forensic artifacts.</p>
+<p>Written by Michael Matonis </p>
+<p>Ideally for pagefile.sys, but works on raw memory dump also. </p>
+<p>Protocol information, command strings, malware, magic values... </p>
+<p>Can also run on memory image.</p>
+<p>Dumps to disk each match </p>
+<p>Comes with default rules </p>
+<p>Write your own</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Pagebrute</h1></header>
+            
+            
+            <section><p>GitHub: https://github.com/matonis/page_brute</p>
+<p>Requires <a href="https://code.google.com/p/yara-project/downloads/list" title="yara and yara-python">yara and yara-python </a></p>
+<div class="highlight"><pre>usage: page_brute-BETA.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-f FILE<span class="o">]</span> <span class="o">[</span>-p SIZE<span class="o">]</span> <span class="o">[</span>-o SCANNAME<span class="o">]</span> <span class="o">[</span>-i<span class="o">]</span>
+                          <span class="o">[</span>-r RULEFILE<span class="o">]</span>
+
+Checks pages in pagefiles <span class="k">for</span> YARA-based rule matches. Useful to identify
+forensic artifacts within Windows-based page files and characterize blocks
+based on regular expressions.
+
+optional arguments:
+  -h, --help            show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  -r RULEFILE, --rules RULEFILE
+                        File/directory containing YARA signatures <span class="o">(</span>must end
+                        with .yar<span class="o">)</span>
+
+  -f FILE, --file FILE  Pagefile or any chunk/block-based binary file
+  -p SIZE, --size SIZE  Size of chunk/block in bytes <span class="o">(</span>Default 4096<span class="o">)</span>
+  -o SCANNAME, --scanname SCANNAME
+                        Descriptor of the scan session - used <span class="k">for</span> output
+                        directory
+  -i, --invert          Given scan options, match all blocks that DO NOT match
+                        a ruleset
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-13">
+          <div class="inner">
+            
+            <header><h1>Pagebrute</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#pagebrute -f Win7.bin -r /opt/page_brute/default_signatures.yar</span>
+<span class="o">[</span>+<span class="o">]</span> - PAGE_BRUTE processing file: Win7.bin
+<span class="o">[</span>+<span class="o">]</span> - YARA rule of File <span class="nb">type </span>provided <span class="k">for</span> compilation: /opt/page_brute/default_signatures.yar
+..... Ruleset Compilation Successful.
+<span class="o">[</span>+<span class="o">]</span> - PAGE_BRUTE running with the following options:
+<span class="o">[</span>-<span class="o">]</span> - FILE: Win7.bin
+<span class="o">[</span>-<span class="o">]</span> - PAGE_SIZE: 4096
+<span class="o">[</span>-<span class="o">]</span> - RULES TYPE: FILE
+<span class="o">[</span>-<span class="o">]</span> - RULE LOCATION: /opt/page_brute/default_signatures.yar
+<span class="o">[</span>-<span class="o">]</span> - INVERSION SCAN: False
+<span class="o">[</span>-<span class="o">]</span> - WORKING DIR: PAGE_BRUTE-2015-03-31-09-46-03-RESULTS
+<span class="o">=================</span>
+
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3144: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3148: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3272: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3393: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3403: webartifact_html
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 3467: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 4036: http_response_header
+<span class="o">[</span>!<span class="o">]</span> FLAGGED BLOCK 4046: http_response_header
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>YARA is very good and a lot of companies use it <br> <a href="http://yara-project.googlecode.com/files/YARA%20User%27s%20Manual%201.6.pdf" title="RTFM">RTFM </a></h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week03-YARA.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-15">
+          <div class="inner">
+            
+            <header><h1>FindPOS malware</h1></header>
+            
+            
+            <section><p>Point of Sale malware written up by paloalto networks </p>
+<p><a href="http://researchcenter.paloaltonetworks.com/2015/03/findpos-new-pos-malware-family-discovered/" title="write up here">Write up here</a></p>
+<p>Note: cuckoo is a malware sandbox and YARA can use behavioral results to match on </p>
+<div class="highlight"><pre>import <span class="s2">&quot;cuckoo&quot;</span> 
+rule findpos
+<span class="o">{</span>
+    meta:
+        <span class="nv">description</span> <span class="o">=</span> <span class="s2">&quot;FindPOS is a newly discovered POS family.&quot;</span>
+        <span class="nv">category</span> <span class="o">=</span> <span class="s2">&quot;Point of Sale&quot;</span>
+        <span class="nv">author</span> <span class="o">=</span> <span class="s2">&quot;Josh Grunzweig&quot;</span>
+
+    strings:
+        <span class="nv">$s1</span> <span class="o">=</span> <span class="s2">&quot;oprat=2&amp;uid=%I64u&amp;uinfo=%s&amp;win=%d.%d&amp;vers=%s&quot;</span> nocase wide ascii
+
+        <span class="nv">$pdb1</span> <span class="o">=</span> <span class="s2">&quot;H:\\Work\\Current\\FindStr\\Release\\FindStr.pdb&quot;</span> nocase wide ascii
+        <span class="nv">$pdb2</span> <span class="o">=</span> <span class="s2">&quot;H:\\Work\\FindStrX\\Release\\FindStr.pdb&quot;</span> nocase wide ascii
+        <span class="nv">$pdb3</span> <span class="o">=</span> <span class="s2">&quot;H:\\Work\\Current\\KeyLogger\\Release\\KeyLogger.pdb&quot;</span> nocase wide ascii
+
+    condition:
+        any of <span class="o">(</span><span class="nv">$s</span>*<span class="o">)</span> or
+        any of <span class="o">(</span><span class="nv">$pdb</span>*<span class="o">)</span> or
+        <span class="o">(</span>
+          cuckoo.sync.mutex<span class="o">(</span>/WIN_<span class="o">[</span>a-fA-F0-9<span class="o">]{</span>16<span class="o">}</span>/<span class="o">)</span> and
+          cuckoo.registry.key_access<span class="o">(</span>/<span class="se">\\</span>Software<span class="se">\\</span>Microsoft<span class="se">\\</span>Windows<span class="se">\\</span>CurrentVersion<span class="se">\\</span>Run/<span class="o">)</span> and
+          <span class="o">(</span>
+              cuckoo.filesystem.file_access<span class="o">(</span>/C<span class="se">\:\\</span>WINDOWS<span class="se">\\</span>System32<span class="se">\\\w</span><span class="o">{</span>8<span class="o">}</span><span class="se">\.</span>exe/<span class="o">)</span> or
+              cuckoo.filesystem.file_access<span class="o">(</span>/C<span class="se">\:\\</span>Documents<span class="se">\ </span>and<span class="se">\ </span>Settings<span class="se">\\</span><span class="o">[</span>^<span class="se">\\</span><span class="o">]</span>+<span class="se">\\\w</span><span class="o">{</span>8<span class="o">}</span><span class="se">\.</span>exe/<span class="o">)</span>
+          <span class="o">)</span>
+        <span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week03-YARA.md">week03-YARA.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/15
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">YARA</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">YARA</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">YARA Example</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Rules</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Advanced</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Using YARA</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">What to Match?</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Rule</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">YARASCAN</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">YARA</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">PageBrute.py</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Pagebrute</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Pagebrute</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">YARA is very good and a lot of companies use it <br> <a href="http://yara-project.googlecode.com/files/YARA%20User%27s%20Manual%201.6.pdf" title="RTFM">RTFM </a></a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">FindPOS malware</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
