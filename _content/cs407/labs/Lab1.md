@@ -6,9 +6,9 @@ permalink: /cs407/labs/lab1.html
 
 #Learning the Toolset
 
-Assigned: April 2nd
+Assigned: April 1st
 
-Due: April 9th 
+Due: April 8th 
 
 Requirements: Use the tools discussed to look at the footprint of winpmem while acquiring memory and using Volatility's ImageInfo. 
 
