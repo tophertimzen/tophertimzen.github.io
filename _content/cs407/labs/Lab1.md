@@ -14,7 +14,7 @@ Requirements: Use the tools discussed to look at the footprint of winpmem while 
 
 You are a forensics investigator at 0xC0ff33, Inc and have been alerted that an employee browsed to a malicious website on a Windows workstation. You have been tasked to look at the memory of that users system.  
 
-Complete the following by writing a through report on the actions you took and the assumptions you made. Preferably give each command used and its flags. 
+Complete the following by writing a thorough report on the actions you took and the assumptions you made. Preferably give each command used and its flags. 
 
 Think like an investigator writing a report! 
 
