@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Event Logs in XP and Vista+</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Event Logs in XP and Vista+</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Event Logs</h1></header>
+            
+            
+            <section><p>Contain a wealth of information about a system.</p>
+<p>Windows monitors and logs several activities that occur within the OS.</p>
+<ul>
+<li>Amount makes it hard to determine what is occurring, though.</li>
+</ul>
+<p>What Events to collect/care about?</p>
+<ul>
+<li>Account login</li>
+<li>account management</li>
+<li>application crashes</li>
+<li>system or service failures</li>
+<li>firewall events (Windows Firewall)</li>
+<li>event logs were cleared</li>
+<li>installation of new software/services</li>
+<li>device attachment</li>
+<li>pass the hash detection</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Event Log Locations</h1></header>
+            
+            
+            <section><p>Event logs are specific files on disk that get written to.</p>
+<p>Readable by Event Viewer on a host machine.</p>
+<p>Application</p>
+<ul>
+<li>Events occurring with an error, warning or information.</li>
+<li>Error is defined as a significant problem like loss of data or crash.</li>
+<li>Warning might indicate a problem.</li>
+<li>Information is a successful operation.</li>
+<li>Anti-Virus information</li>
+</ul>
+<p>Security</p>
+<ul>
+<li>Audit events </li>
+<li>Logons</li>
+<li>Turned off by default on XP systems in HKLM/SECURITY/Policy/PolAdtEv</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            
+            <section><p>Setup</p>
+<ul>
+<li>Application setup.</li>
+<li>Windows update</li>
+</ul>
+<p>System</p>
+<ul>
+<li>System events</li>
+<li>Services</li>
+<li>DNS Client</li>
+<li>Plug and play</li>
+</ul>
+<p>Loads of different types of events and descriptions per event... 
+<a href="Windows Security Logs" title="https://www.ultimatewindowssecurity.com/securitylog/">Windows Security Logs</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>Windows XP</h1></header>
+            
+            
+            <section><p>.EVT Files</p>
+<p>Contains Application, System and Security logs</p>
+<p>%systemroot%\system32\config</p>
+<p>Services.exe contains event logs in process memory</p>
+<p>Event Log Header and Event Record Strucutres used to represent logs.</p>
+<p><br><br><br></p>
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">EVTLogHeader</span> <span class="mh">0x30</span><span class="p">:</span>  
+    <span class="s">&#39;HeaderSize&#39;</span>         
+    <span class="s">&#39;Magic&#39;</span>             <span class="c">#LfLe</span>
+    <span class="s">&#39;OffsetOldest&#39;</span>      <span class="c">#offset of oldest record</span>
+    <span class="s">&#39;OffsetNextToWrite&#39;</span> <span class="c">#offset of next record to be written</span>
+    <span class="s">&#39;NextID&#39;</span>            <span class="c">#next event record ID</span>
+    <span class="s">&#39;OldestID&#39;</span>          <span class="c">#oldest event record ID</span>
+    <span class="s">&#39;MaxSize&#39;</span>           <span class="c">#maximum size of event record </span>
+    <span class="s">&#39;RetentionTime&#39;</span>     <span class="c">#retention time of records</span>
+    <span class="s">&#39;RecordSize&#39;</span>        <span class="c">#size of the record</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            
+            <section><p><br><br><br><br><br></p>
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">EVTRecordStruct</span> <span class="mh">0x38</span><span class="p">:</span>
+    <span class="s">&#39;RecordLength&#39;</span>  <span class="c">#Length of event log recorded</span>
+    <span class="s">&#39;Magic&#39;</span>         <span class="c">#LfLe</span>
+    <span class="s">&#39;RecordNumber&#39;</span>  <span class="c">#ID record within the event log</span>
+    <span class="s">&#39;TimeGenerated&#39;</span>
+    <span class="s">&#39;TimeWritten&#39;</span>
+    <span class="s">&#39;EventID&#39;</span> <span class="p">:</span>     <span class="c">#specific to event source and uniquely identifies the event</span>
+    <span class="s">&#39;EventType&#39;</span>     <span class="c">#described above in EventTypes</span>
+    <span class="s">&#39;NumStrings&#39;</span>    <span class="c">#strings to describe event.</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>Volatility Plugins</h1></header>
+            
+            
+            <section><p>Requires knowing where the services.exe is located</p>
+<h3>1. Locate the services.exe binary in memory</h3>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#prof=WinXPSP3x86</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f sample004.bin --profile=$prof  pslist | grep services</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 
+0x82146460 services.exe            <span class="m">672</span>    <span class="m">624</span>     <span class="m">15</span>      <span class="m">238</span>      <span class="m">0</span>      0
+</pre></div>
+
+<h3>2. Using vadinfo, find the location of an event log .</h3>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f sample004.bin --profile=$prof vadinfo -p 672 | grep .Evt -B 9</span>
+VAD node @ 0x8226c2e0 Start 0x009b0000 End 0x009bffff Tag Vad
+Flags: Protection: 4
+Protection: PAGE_READWRITE
+ControlArea @822a5008 Segment e15310d0
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:           1
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          2
+Control Flags: Accessed: 1, File: 1, HadUserReference: 1
+FileObject @822a5f90, Name: <span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\S</span>ecEvent.Evt
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>evtlogs</h1></header>
+            
+            
+            <section><p>Performing manual parsing of the vad, while useful, is not needed as the Volatility authors wrote the evtlog plugin!</p>
+<ul>
+<li>Extracts and parses binary event logs from services.exe</li>
+<li>Files extracted from the VAD, much like we did in the previous slide. </li>
+<li>Handles corrupt events logs </li>
+<li>Can dump a raw log for external processing </li>
+<li>VERY slow<ul>
+<li>Parsing through vad to find evt file</li>
+<li>Ensures evt file has proper header values</li>
+<li>parses evt</li>
+<li>LOTS of events on a system</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>evtlogs Usage</h1></header>
+            
+            
+            <section><ul>
+<li>--save-evt outputs .evt files and .txt files for parsing each log file.<ul>
+<li>Can use evt files with external tools</li>
+</ul>
+</li>
+<li>-D output/<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f sample004.bin --profile=$prof evtlogs -v --save-evt -D logs/</span>
+Saved raw .evt file to secevent.evt
+Parsed data sent to secevent.txt
+Saved raw .evt file to appevent.evt
+Parsed data sent to appevent.txt
+Saved raw .evt file to sysevent.evt
+Parsed data sent to sysevent.txt
+</pre></div>
+
+</li>
+</ul>
+<p>Text is parsed as</p>
+<pre><code> Date\Time | Log Name | Computer Name | SID | Source | Event ID | Event Type | Message Strings
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-10">
+          <div class="inner">
+            
+            <header><h1>Tracing an Event</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#ls logs/</span>
+appevent.evt  appevent.txt  secevent.evt  secevent.txt  sysevent.evt  sysevent.txt
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat logs/appevent.txt  | grep -i warn</span>
+2012-03-28 16:18:28 UTC+0000<span class="p">|</span>appevent.evt<span class="p">|</span>RES-LAB01
+<span class="p">|</span>S-1-5-21-1417001333-1935655697-839522115-1003 <span class="o">(</span>User: Jack<span class="o">)</span>
+<span class="p">|</span>WinMgmt<span class="p">|</span>63<span class="p">|</span>Warning<span class="p">|</span>HiPerfCooker_v1<span class="p">;</span>Root<span class="se">\W</span>MI
+</pre></div>
+
+<p>WinMgmt Event 63:</p>
+<ul>
+<li>A provider has not been registered in the Windows Management Instrumentation (WMI) namespace. Great risk is posed by these providers as the account in question is privileged and the provider may cause a security violation. </li>
+<li>TLDR; Provider is running as LocalSystem security!</li>
+</ul>
+<p>HiPerfCooker_v1 is the instance name of _Win32Provider which registers information about physical WMI. </p>
+<p>Lots of Googling shows this is not malicious, but could be an area of priv. esc if it contained a vulnerability. </p>
+<p>Not every event log is a hint to an intrusion... use tools to parse, draw suspicions and validate! This event turned out to be nothing even though it was a warning. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>Logging Policies</h1></header>
+            
+            
+            <section><p>Security log turned off in XP by default.</p>
+<p>Check registry settings to see what events are recorded to make analysis easier.</p>
+<h3>auditpol</h3>
+<p>Prints out the Audit Policies from HKLM\SECURITY\Policy\PolAdtEv</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat logs/secevent.txt</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#</span>
+</pre></div>
+
+<p>No logs.. should expect all events to be non-logging.</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f sample004.bin --profile=$prof auditpol</span>
+Auditing is Disabled
+    Audit System Events: Not Logged
+    Audit Logon Events: Not Logged
+    Audit Object Access: Not Logged
+    Audit Privilege Use: Not Logged
+    Audit Process Tracking: Not Logged
+    Audit Policy Change: Not Logged
+    Audit Account Management: Not Logged
+    Audit Dir Service Access: Not Logged
+    Audit Account Logon Events: Not Logged
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Auditpol with security events logged</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f winXpLogs.bin --profile=$prof auditpol</span>
+Auditing is Enabled
+    Audit System Events: S/F
+    Audit Logon Events: Not Logged
+    Audit Object Access: S/F
+    Audit Privilege Use: S
+---CUT---
+</pre></div>
+
+<p>S = successful operations logged</p>
+<p>F = failed operations are logged</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Windows Vista+</h1></header>
+            
+            
+            <section><p>Logs are now in XML binary format </p>
+<p>Event log extension is now ".Evtx"</p>
+<p>More logs than on XP... more than 60 in %systemroot%\system32\winevt\Logs
+- My machine has 131</p>
+<p>Description of strings are contained within the event logs! </p>
+<p><img alt="win7logs" src="..\slideResources\eventLogs\eventsw7.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>Event Log ID in Vista+</h1></header>
+            
+            
+            <section><p>VistaEventId = PreVistaEventId + 4096</p>
+<p>Micro$oft did this as the event content changed and they wanted to preserve legacy support. </p>
+<p>Event for logon = 528 on PreVista
+PostVista eventID = 4624</p>
+<p>4624 = 528 + 4096</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Evtx Format</h1></header>
+            
+            
+            <section><pre><code>FileHeader
+
+    Basic information about the log file
+    Contains the number of chunks present in a file
+    Flags
+        1 = Full. Maximum configuration size and new records might not be written.
+        0 = Dirty. The log was opened and change.
+
+
+Chunk (Current Chunk mapped into memory, Not all chunks have to be)
+
+    Contains XML templates and a series of event records
+
+
+Event Records
+
+    XML
+    Messages
+    Timestamp
+    Record length
+    Event ID
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Layout of Evtx file</h1></header>
+            
+            
+            <section><p><img alt="evtx" src="..\slideResources\eventLogs\evtx.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>Headers of Evtx</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="k">def</span> <span class="nf">FileHeader</span><span class="p">:</span>
+    <span class="n">Magic</span> <span class="o">=</span> <span class="s">&quot;ElfFile&quot;</span>
+    <span class="n">No</span><span class="o">.</span> <span class="n">of</span> <span class="n">current</span> <span class="n">chunk</span>
+    <span class="n">No</span><span class="o">.</span> <span class="n">of</span> <span class="nb">next</span> <span class="n">record</span>
+    <span class="n">Header</span> <span class="n">space</span> <span class="n">used</span><span class="p">,</span>
+    <span class="n">Minor</span> <span class="n">version</span><span class="p">,</span> <span class="n">constant</span> <span class="mi">1</span>
+    <span class="n">Major</span> <span class="n">version</span><span class="p">,</span> <span class="n">constant</span> <span class="mi">3</span>
+    <span class="n">Size</span> <span class="n">of</span> <span class="n">header</span><span class="p">,</span> <span class="n">constant</span> <span class="mi">4096</span>
+    <span class="n">Chunk</span> <span class="n">count</span>
+    <span class="n">Flags</span> <span class="p">(</span><span class="mi">0</span> <span class="o">=</span> <span class="n">dirty</span> <span class="n">log</span><span class="p">,</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">full</span> <span class="n">log</span><span class="p">)</span>
+    <span class="n">Check</span> <span class="nb">sum</span>
+<span class="k">def</span> <span class="nf">Chunk</span><span class="p">:</span>
+    <span class="n">Magic</span> <span class="o">=</span> <span class="s">&quot;ElfChnk&quot;</span>
+    <span class="n">Number</span> <span class="n">of</span> <span class="n">first</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">log</span>
+    <span class="n">Number</span> <span class="n">of</span> <span class="n">last</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">log</span>
+    <span class="n">Number</span> <span class="n">of</span> <span class="n">first</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">file</span>
+    <span class="n">Number</span> <span class="n">of</span> <span class="n">last</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">file</span>
+    <span class="n">Size</span> <span class="n">of</span> <span class="n">header</span>
+    <span class="n">Offset</span> <span class="n">of</span> <span class="n">last</span> <span class="n">record</span>
+    <span class="n">Offset</span> <span class="n">of</span> <span class="nb">next</span> <span class="n">record</span>
+    <span class="n">Check</span> <span class="nb">sum</span>
+<span class="k">def</span> <span class="nf">EventRecord</span><span class="p">:</span>
+    <span class="n">Magic</span> <span class="o">=</span> <span class="mh">0x2a</span> <span class="mh">0x2a</span> <span class="mh">0x00</span> <span class="mh">0x00</span>
+    <span class="n">Record</span> <span class="n">Length</span>
+    <span class="n">EventID</span>
+    <span class="n">TimeCreated</span>
+    <span class="n">Event</span> <span class="n">messages</span><span class="p">,</span> <span class="n">binary</span> <span class="n">XML</span>
+    <span class="n">Length</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>Binary XML schema</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="k">def</span> <span class="nf">XMLschema</span><span class="p">:</span>
+<span class="o">&lt;</span><span class="n">Events</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">System</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">EventID</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">EventID</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">TimeCreated</span> <span class="n">SystemTime</span><span class="o">=</span><span class="s">&quot;2006-10-08T09:21:28.415Z&quot;</span><span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">EventRecordID</span><span class="o">&gt;</span><span class="mi">573</span><span class="o">&lt;/</span><span class="n">EventRecordID</span><span class="o">&gt;</span>
+            <span class="o">&lt;/</span><span class="n">System</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">EventData</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">EventData</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">Event</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">Events</span><span class="o">&gt;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Volatility with Evtx</h1></header>
+            
+            
+            <section><p>Volatility cannot parse Evtx files in memory.</p>
+<p>Extract the logs from memory and parse them with an external tool. </p>
+<p>Only extract logs you think you might need</p>
+<ul>
+<li>Security never a bad idea...</li>
+</ul>
+<p><a href="https://github.com/williballenthin/python-evtx" title="Python-evtx">Python-evtx</a> is easy and in python!</p>
+<ul>
+<li>Developed by Willi Ballenthin at Mandiant. (He has a ton of other python scripts to do IR!)</li>
+<li>Install through pip or clone the github repo and run setup.py</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Dumpfiles</h1></header>
+            
+            
+            <section><p>Files kept in memory cache can be recovered with this plugin. </p>
+<p>Files may not be completely mapped in memory and missing sections are padded with 0's.</p>
+<p>Iterates through the VAD and extracts files with DataSectionObject, ImageSectionObject or SharedCacheMap mappings. </p>
+<h3>Usage</h3>
+<pre><code>-r REGEX dumps all files matching 
+-i ignore case in REGEX
+-o physical offset (Useful for processes not in PsActiveProcess or that have no PID)
+-D dump dir
+-S summary file
+-p PID
+-n dump by original file name
+    default files are dumped in the form of file.[PID].[OFFSET].[EXT]
+</code></pre>
+<p>File EXT</p>
+<ul>
+<li>img – ImageSectionObject</li>
+<li>dat - DataSectionObject</li>
+<li>vacb – SharedCacheMap</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Dumpfiles in Practice</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#prof=Win7SP0x86</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#file=sample002.bin</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f $file --profile=$prof dumpfiles --regex .evtx$ -i -D eventsW7/</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cd eventsW7/</span>
+<span class="o">[</span>root<span class="p">&amp;</span>eventsW7<span class="o">]</span><span class="c">#evtxinfo file.748.0x8430d008.vacb</span>
+Information from file header:
+Format version  : 3.1
+Flags           : 0x00000001
+File is         : dirty
+Log is full     : no
+Current chunk   : <span class="m">0</span> of 1
+Oldest chunk    : 1
+Next record#    : 4
+Check sum       : pass
+
+Suspected updated header values <span class="o">(</span>header is dirty<span class="o">)</span>:
+Current chunk   : <span class="m">1</span> of 1
+Next record#    : 4
+
+Information from chunks:
+Chunk file <span class="o">(</span>first/last<span class="o">)</span>     log <span class="o">(</span>first/last<span class="o">)</span>      Header Data
+- ----- --------------------- --------------------- ------ ------
+*     <span class="m">1</span>          <span class="m">1</span>         <span class="m">3</span>           <span class="m">1</span>         <span class="m">3</span>   pass   pass
+  <span class="m">2</span>     <span class="o">[</span>EMPTY<span class="o">]</span>
+  <span class="m">3</span>     <span class="o">[</span>EMPTY<span class="o">]</span>
+<span class="o">[</span>root<span class="p">&amp;</span>eventsW7<span class="o">]</span><span class="c">#evtxdump file.748.0x8430d008.vacb</span>
+&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span> <span class="nv">standalone</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span> ?&gt;
+&lt;Events&gt;
+&lt;Event <span class="nv">xmlns</span><span class="o">=</span><span class="s2">&quot;http://schemas.microsoft.com/win/2004/08/events/event&quot;</span>&gt;&lt;System&gt;&lt;Provider <span class="nv">Name</span><span class="o">=</span><span class="s2">&quot;Microsoft-Windows-CodeIntegrity&quot;</span> <span class="nv">Guid</span><span class="o">=</span><span class="s2">&quot;4ee76bd8-3cf4-44a0-a0ac-3937643e37a3&quot;</span>&gt;&lt;/Provider&gt;
+&lt;EventID <span class="nv">Qualifiers</span><span class="o">=</span><span class="s2">&quot;&quot;</span>&gt;3024&lt;/EventID&gt;
+&lt;Version&gt;0&lt;/Version&gt;
+&lt;Level&gt;3&lt;/Level&gt;
+&lt;Task&gt;10&lt;/Task&gt;
+&lt;Opcode&gt;109&lt;/Opcode&gt;
+&lt;Keywords&gt;0x8000000000000000&lt;/Keywords&gt;
+&lt;TimeCreated <span class="nv">SystemTime</span><span class="o">=</span><span class="s2">&quot;2012-07-06 07:33:38.591425&quot;</span>&gt;&lt;/TimeCreated&gt;
+&lt;EventRecordID&gt;1&lt;/EventRecordID&gt;
+&lt;Correlation <span class="nv">ActivityID</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="nv">RelatedActivityID</span><span class="o">=</span><span class="s2">&quot;&quot;</span>&gt;&lt;/Correlation&gt;
+&lt;Execution <span class="nv">ProcessID</span><span class="o">=</span><span class="s2">&quot;4&quot;</span> <span class="nv">ThreadID</span><span class="o">=</span><span class="s2">&quot;48&quot;</span>&gt;&lt;/Execution&gt;
+&lt;Channel&gt;Microsoft-Windows-CodeIntegrity/Operational&lt;/Channel&gt;
+&lt;Computer&gt;WIN-N3QCH29P1O5&lt;/Computer&gt;
+&lt;Security <span class="nv">UserID</span><span class="o">=</span><span class="s2">&quot;S-1-5-18&quot;</span>&gt;&lt;/Security&gt;
+&lt;/System&gt;
+&lt;EventData&gt;&lt;Data <span class="nv">Name</span><span class="o">=</span><span class="s2">&quot;Status&quot;</span>&gt;0xc0000034&lt;/Data&gt;
+&lt;/EventData&gt;
+&lt;/Event&gt;
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Log Wiping</h1></header>
+            
+            
+            <section><p>Attackers can be smart and erase all of the log files on disk using the Windows API.</p>
+<h2>- MetaSploit implements this in the meterpreter shell</h2>
+<div class="highlight"><pre>BOOL ClearEventLog<span class="o">(</span>
+    HANDLE hEventLog,        // handle to event log from advapi32.OpenEventLog<span class="o">()</span>
+    LPCTSTR lpBackupFileName // name of backup file. Can be NULL. 
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Easy to produce.</p>
+<p>Need to specify each log to erase... attacks can forget a few!</p>
+<p>Security log commonly erased.</p>
+<p>Because event logs are cached in memory or are still resident, some logs can be recovered! </p>
+<p>Important Note</p>
+<pre><code>- An event is triggered when an event log is cleared to the security log.
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-EventLogs.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>Happy</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="nv">$ </span><span class="k">for</span> b in  <span class="k">$(</span>git fsck --lost-found <span class="p">|</span> grep blob <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span><span class="p">;</span> 
+<span class="k">do</span> git cat-file -p <span class="nv">$b</span> &gt; ../<span class="nv">$b</span> <span class="p">;</span> <span class="k">done</span>
+</pre></div>
+
+<p>Resolve git conflicts before checking out a branch... thanks to the inetnet (other people did this, too), I did not lose all of this presentation! :)</p>
+<p><img alt="blobRestore" src="https://i.imgflip.com/iv30q.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-EventLogs.md">week04_02-EventLogs.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/23
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Event Logs in XP and Vista+</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Event Logs</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Event Log Locations</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">-</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Windows XP</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">-</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Volatility Plugins</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">evtlogs</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">evtlogs Usage</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Tracing an Event</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Logging Policies</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Auditpol with security events logged</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Windows Vista+</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Event Log ID in Vista+</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Evtx Format</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Layout of Evtx file</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Headers of Evtx</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Binary XML schema</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Volatility with Evtx</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Dumpfiles</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Dumpfiles in Practice</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Log Wiping</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Happy</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
