@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Registry</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Registry</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Windows Registry Review</h1></header>
+            
+            
+            <section><p>Hierarchal database </p>
+<p>Maintains configuration settings
+- Applications
+- Hardware
+- Devices
+- Users
+- Wireless networks</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Physical Structure</h1></header>
+            
+            
+            <section><p>Binary files</p>
+<p>Stored in RAM and hard drive</p>
+<p>Limited data types </p>
+<h1>Logical Structure</h1>
+<p>Contains Five Root Hives</p>
+<p>Each Hive consists of Hives and Keys</p>
+<p>Each key has a set of </p>
+<ul>
+<li><Name Type Value> triples</li>
+<li>Subkey list</li>
+<li>Last access time</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Root Hives</h1></header>
+            
+            
+            <section><p>HKEY_USERS</p>
+<ul>
+<li>Contains all the actively loaded user profiles for the system</li>
+</ul>
+<p>HKEY_CURRENT_USER</p>
+<ul>
+<li>Is the active, loaded user profile currently logged on</li>
+</ul>
+<p>HKEY_LOCAL_MACHINE</p>
+<ul>
+<li>Contains configuration information for the system bot HW and SW</li>
+</ul>
+<p>HKEY_CURRENT_CONFIG</p>
+<ul>
+<li>Contains the hardware profile the system uses at startup</li>
+</ul>
+<p>HKEY_CLASSES_ROOT</p>
+<ul>
+<li>Contains configuration information for which apps open which files</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Memory</h1></header>
+            
+            
+            <section><p>The registry is constantly processed at run time</p>
+<p>Lots of registry artifacts in RAM</p>
+<p>Recently ran programs, password hashes, new keys and values</p>
+<p>_CMHIVE data structure for disk</p>
+<p>_HHIVE is the header for a specific hive</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>_CMHIVE</h1></header>
+            
+            
+            <section><p>Pool tag is CM10</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_CMHIVE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_CMHIVE&#39;</span> <span class="p">(</span><span class="mi">1584</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Hive</span>                           <span class="p">[</span><span class="s">&#39;_HHIVE&#39;</span><span class="p">]</span>
+<span class="mh">0x2ec</span> <span class="p">:</span> <span class="n">FileHandles</span>                    <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]]</span>
+<span class="mh">0x304</span> <span class="p">:</span> <span class="n">NotifyList</span>                     <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x30c</span> <span class="p">:</span> <span class="n">HiveList</span>                       <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x314</span> <span class="p">:</span> <span class="n">PreloadedHiveList</span>              <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x31c</span> <span class="p">:</span> <span class="n">HiveRundown</span>                    <span class="p">[</span><span class="s">&#39;_EX_RUNDOWN_REF&#39;</span><span class="p">]</span>
+<span class="mh">0x320</span> <span class="p">:</span> <span class="n">ParseCacheEntries</span>              <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x328</span> <span class="p">:</span> <span class="n">KcbCacheTable</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_KEY_HASH_TABLE_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x32c</span> <span class="p">:</span> <span class="n">KcbCacheTableSize</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x330</span> <span class="p">:</span> <span class="n">Identity</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x334</span> <span class="p">:</span> <span class="n">HiveLock</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FAST_MUTEX&#39;</span><span class="p">]]</span>
+<span class="mh">0x338</span> <span class="p">:</span> <span class="n">ViewLock</span>                       <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x33c</span> <span class="p">:</span> <span class="n">ViewLockOwner</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KTHREAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x340</span> <span class="p">:</span> <span class="n">ViewLockLast</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x344</span> <span class="p">:</span> <span class="n">ViewUnLockLast</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x348</span> <span class="p">:</span> <span class="n">WriterLock</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FAST_MUTEX&#39;</span><span class="p">]]</span>
+<span class="mh">0x34c</span> <span class="p">:</span> <span class="n">FlusherLock</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ERESOURCE&#39;</span><span class="p">]]</span>
+<span class="mh">0x350</span> <span class="p">:</span> <span class="n">FlushDirtyVector</span>               <span class="p">[</span><span class="s">&#39;_RTL_BITMAP&#39;</span><span class="p">]</span>
+<span class="mh">0x358</span> <span class="p">:</span> <span class="n">FlushOffsetArray</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;CMP_OFFSET_ARRAY&#39;</span><span class="p">]]</span>
+<span class="mh">0x35c</span> <span class="p">:</span> <span class="n">FlushOffsetArrayCount</span>          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x360</span> <span class="p">:</span> <span class="n">FlushHiveTruncated</span>             <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x364</span> <span class="p">:</span> <span class="n">FlushLock2</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FAST_MUTEX&#39;</span><span class="p">]]</span>
+<span class="mh">0x368</span> <span class="p">:</span> <span class="n">SecurityLock</span>                   <span class="p">[</span><span class="s">&#39;_EX_PUSH_LOCK&#39;</span><span class="p">]</span>
+<span class="mh">0x36c</span> <span class="p">:</span> <span class="n">MappedViewList</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x374</span> <span class="p">:</span> <span class="n">PinnedViewList</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x37c</span> <span class="p">:</span> <span class="n">FlushedViewList</span>                <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x384</span> <span class="p">:</span> <span class="n">MappedViewCount</span>                <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x386</span> <span class="p">:</span> <span class="n">PinnedViewCount</span>                <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x388</span> <span class="p">:</span> <span class="n">UseCount</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38c</span> <span class="p">:</span> <span class="n">ViewsPerHive</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x390</span> <span class="p">:</span> <span class="n">FileObject</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FILE_OBJECT&#39;</span><span class="p">]]</span>
+<span class="mh">0x394</span> <span class="p">:</span> <span class="n">LastShrinkHiveSize</span>             <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x398</span> <span class="p">:</span> <span class="n">ActualFileSize</span>                 <span class="p">[</span><span class="s">&#39;_LARGE_INTEGER&#39;</span><span class="p">]</span>
+<span class="mh">0x3a0</span> <span class="p">:</span> <span class="n">FileFullPath</span>                   <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x3a8</span> <span class="p">:</span> <span class="n">FileUserName</span>                   <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x3b0</span> <span class="p">:</span> <span class="n">HiveRootPath</span>                   <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x3b8</span> <span class="p">:</span> <span class="n">SecurityCount</span>                  <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3bc</span> <span class="p">:</span> <span class="n">SecurityCacheSize</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c0</span> <span class="p">:</span> <span class="n">SecurityHitHint</span>                <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c4</span> <span class="p">:</span> <span class="n">SecurityCache</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_KEY_SECURITY_CACHE_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c8</span> <span class="p">:</span> <span class="n">SecurityHash</span>                   <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x5c8</span> <span class="p">:</span> <span class="n">UnloadEventCount</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5cc</span> <span class="p">:</span> <span class="n">UnloadEventArray</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KEVENT&#39;</span><span class="p">]]]</span>
+<span class="mh">0x5d0</span> <span class="p">:</span> <span class="n">RootKcb</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_KEY_CONTROL_BLOCK&#39;</span><span class="p">]]</span>
+<span class="mh">0x5d4</span> <span class="p">:</span> <span class="n">Frozen</span>                         <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x5d8</span> <span class="p">:</span> <span class="n">UnloadWorkItem</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_WORKITEM&#39;</span><span class="p">]]</span>
+<span class="mh">0x5dc</span> <span class="p">:</span> <span class="n">UnloadWorkItemHolder</span>           <span class="p">[</span><span class="s">&#39;_CM_WORKITEM&#39;</span><span class="p">]</span>
+<span class="mh">0x5f0</span> <span class="p">:</span> <span class="n">GrowOnlyMode</span>                   <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x5f4</span> <span class="p">:</span> <span class="n">GrowOffset</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5f8</span> <span class="p">:</span> <span class="n">KcbConvertListHead</span>             <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x600</span> <span class="p">:</span> <span class="n">KnodeConvertListHead</span>           <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x608</span> <span class="p">:</span> <span class="n">CellRemapArray</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_CELL_REMAP_BLOCK&#39;</span><span class="p">]]</span>
+<span class="mh">0x60c</span> <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x610</span> <span class="p">:</span> <span class="n">TrustClassEntry</span>                <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x618</span> <span class="p">:</span> <span class="n">FlushCount</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x61c</span> <span class="p">:</span> <span class="n">CmRm</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_RM&#39;</span><span class="p">]]</span>
+<span class="mh">0x620</span> <span class="p">:</span> <span class="n">CmRmInitFailPoint</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x624</span> <span class="p">:</span> <span class="n">CmRmInitFailStatus</span>             <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x628</span> <span class="p">:</span> <span class="n">CreatorOwner</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KTHREAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x62c</span> <span class="p">:</span> <span class="n">RundownThread</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KTHREAD&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>We care about </p>
+<p>0x0 HIVE</p>
+<p>0x30c HiveList. Doble list of _CMHIVEs using _LIST_ENTRY</p>
+<p>0x3a0 FullFilePath \Device\HardDIsk\Windows\sys\config\software</p>
+<p>0x3a8 FIleUserName \/\ system root</p>
+<p>0x3b0 HiveRootPath \REGISTRY\MACHINE\SOFTWARE</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>_HHIVE</h1></header>
+            
+            
+            <section><p>Signature is <strong>0xbee0bee0</strong></p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HHIVE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_HHIVE&#39;</span> <span class="p">(</span><span class="mi">748</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Signature</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">GetCellRoutine</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ReleaseCellRoutine</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">Allocate</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">Free</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">FileSetSize</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">FileWrite</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">FileRead</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">FileFlush</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">HiveLoadFailure</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">BaseBlock</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HBASE_BLOCK&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">DirtyVector</span>                    <span class="p">[</span><span class="s">&#39;_RTL_BITMAP&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">DirtyCount</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">DirtyAlloc</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">BaseBlockAlloc</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">Cluster</span>                        <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">Flat</span>                           <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x45</span>  <span class="p">:</span> <span class="n">ReadOnly</span>                       <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x46</span>  <span class="p">:</span> <span class="n">DirtyFlag</span>                      <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">HvBinHeadersUse</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">HvFreeCellsUse</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">HvUsedCellsUse</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x54</span>  <span class="p">:</span> <span class="n">CmUsedCellsUse</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">HiveFlags</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">CurrentLog</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">LogSize</span>                        <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x68</span>  <span class="p">:</span> <span class="n">RefreshCount</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x6c</span>  <span class="p">:</span> <span class="n">StorageTypeCount</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x70</span>  <span class="p">:</span> <span class="n">Version</span>                        <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x74</span>  <span class="p">:</span> <span class="n">Storage</span>                        <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DUAL&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>We care about </p>
+<p>0x00 signature</p>
+<p>0x28 BaseBlock root key of the registry</p>
+<p>0x58 Storage virtual address space for keys</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Hives in memory</h1></header>
+            
+            
+            <section><p>Are not contagious</p>
+<p>Configuration Manager (CM) manages virtual memory for registry keys and values</p>
+<p>Ceell indexes and virtual addresses are mapped bu the CM</p>
+<p>_HHIVE.Storage gives us full access to registry data in memory from CM</p>
+<div class="highlight"><pre><span class="mh">0x74</span>  <span class="p">:</span> <span class="n">Storage</span>                        <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DUAL&#39;</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_DUAL&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_DUAL&#39;</span> <span class="p">(</span><span class="mi">316</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Length</span>                         <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Map</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HMAP_DIRECTORY&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">SmallDir</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HMAP_TABLE&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">Guard</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">FreeDisplay</span>                    <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FREE_DISPLAY&#39;</span><span class="p">]]</span>
+<span class="mh">0x130</span> <span class="p">:</span> <span class="n">FreeSummary</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x134</span> <span class="p">:</span> <span class="n">FreeBins</span>                       <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>_HHIVE.Storage.Map goes to structures to obtain the address of a key</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>Finding key in memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HMAP_DIRECTORY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_HMAP_DIRECTORY&#39;</span> <span class="p">(</span><span class="mi">4096</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Directory</span>                      <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HMAP_TABLE&#39;</span><span class="p">]]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HMAP_TABLE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_HMAP_TABLE&#39;</span> <span class="p">(</span><span class="mi">8192</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Table</span>                          <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HMAP_ENTRY&#39;</span><span class="p">]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HMAP_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_HMAP_ENTRY&#39;</span> <span class="p">(</span><span class="mi">16</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">BlockAddress</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">BinAddress</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">CmView</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_VIEW_OF_FILE&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">MemAlloc</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>BLockAddress</h1></header>
+            
+            
+            <section><p>Once the value of a cell index is known, a key can be found in memory.</p>
+<p>Split key into</p>
+<ul>
+<li>31:31 = Stable/Volatile flag. </li>
+<li>30:21 = Index into the directory memory</li>
+<li>20:12 = Table memory</li>
+<li>11:0 = aoffset within block address where the key data resides. <ul>
+<li>Add 4 from block address offset. </li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>Graphical</h1></header>
+            
+            
+            <section><p><img alt="blockAddress" src="..\slideResources\registry\blockAddress.png" /></p>
+<p><a href=".http://dfrws.org/2008/proceedings/p26-dolan-gavitt.pdf" title="paper"> Brendan Dolan-Gavitt, Forensic analysis of the Windows registry in memory. </a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>What Registry Keys Matter?</h1></header>
+            
+            
+            <section><p>Tons of data in registry.... what matters?</p>
+<ul>
+<li>Auto-start programs</li>
+<li>Hardware</li>
+<li>User account information</li>
+<li>Most recently used lists (MRU)</li>
+<li>System information</li>
+<li>Malware Configurations</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Hives in memory</h1></header>
+            
+            
+            <section><p>There are hives only in memory</p>
+<ul>
+<li>HKEY_LOCAL_MACHINE\Hardware</li>
+<li>HKEY_LOCAL_MACHINE</li>
+<li>HKEY_CURRENT_USER</li>
+</ul>
+<p>WinAPI functions cause a flush to disk every 5 seconds</p>
+<ul>
+<li>Malware doesn't use the API and only operates in memory</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>Volatility Hivelist</h1></header>
+            
+            
+            <section><p>Scans for CM10 pool tag and prints virtual and physical offsets of hives.</p>
+<p>_CMHIVE.HiveList is traversed once a valid _CMHIVE is found</p>
+<p>You can supply the offset of a specific hive. Otherwise this module will use the results from hivescan automatically.</p>
+<div class="highlight"><pre>  -W, --show-unallocated
+                        Skip unallocated objects <span class="o">(</span>e.g. 0xbad0b0b0<span class="o">)</span>
+  -A START, --start<span class="o">=</span>START
+                        The starting address to begin scanning
+  -G LENGTH, --length<span class="o">=</span>LENGTH
+                        Length <span class="o">(</span>in bytes<span class="o">)</span> to scan from the starting address
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 hivelist</span>
+Volatility Foundation Volatility Framework 2.4
+Virtual    Physical   Name
+---------- ---------- ----
+0x87c1a248 0x27f67248 <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\S</span>YSTEM
+0x87c429c8 0x27d519c8 <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\H</span>ARDWARE
+0x8bb5b9c8 0x25e359c8 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\C</span>onfig<span class="se">\S</span>OFTWARE
+0x8bbf0100 0x257a2100 <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\B</span>oot<span class="se">\B</span>CD
+0x91034008 0x1f326008 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\C</span>onfig<span class="se">\D</span>EFAULT
+0x91113930 0x1e7e4930 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\C</span>onfig<span class="se">\S</span>ECURITY
+0x978109c8 0x1ab599c8 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>erviceProfiles<span class="se">\N</span>etworkService<span class="se">\N</span>TUSER.DAT
+0x97858008 0x20b92008 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>erviceProfiles<span class="se">\L</span>ocalService<span class="se">\N</span>TUSER.DAT
+0x978e2008 0x207d0008 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\C</span>onfig<span class="se">\S</span>AM
+0xa0ddc008 0x2d856008 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\S</span>ystem Volume Information<span class="se">\S</span>yscache.hve
+0x8244a008 0x10c58008 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Locating hives</h1></header>
+            
+            
+            <section><p>Registry File header is broken into logical hive bins</p>
+<p>Each hive bin has a header and is broken into cells</p>
+<p>cells contain key and value data</p>
+<p><img alt="fileFormat" src="..\slideResources\registry\fileFormat.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>Printing Keys and Values</h1></header>
+            
+            
+            <section><p>Registry keys are in a tree-like structure with a root key and children keys</p>
+<p>Leaf-nodes are subkeys</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_CM_KEY_NODE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_CM_KEY_NODE&#39;</span> <span class="p">(</span><span class="mi">80</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Signature</span>                      <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">LastWriteTime</span>                  <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">Spare</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">Parent</span>                         <span class="p">[</span><span class="s">&#39;pointer32&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_CM_KEY_NODE&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">SubKeyCounts</span>                   <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">ChildHiveReference</span>             <span class="p">[</span><span class="s">&#39;_CM_KEY_REFERENCE&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">SubKeyLists</span>                    <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">ValueList</span>                      <span class="p">[</span><span class="s">&#39;_CHILD_LIST&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">Security</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">Class</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">Debug</span>                          <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">MaxNameLen</span>                     <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">UserFlags</span>                      <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">VirtControlFlags</span>               <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">MaxClassLen</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">MaxValueNameLen</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">MaxValueDataLen</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">WorkVar</span>                        <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">NameLength</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4a</span>  <span class="p">:</span> <span class="n">ClassLength</span>                    <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">Name</span>                           <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x984c9cc</span><span class="o">&gt;</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>Printkey</h1></header>
+            
+            
+            <section><p>Allows you to print a key’s values and data, the list of subkeys, and last write timestamp</p>
+<p>Hivescan</p>
+<div class="highlight"><pre>0x87c429c8 0x27d519c8 <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\H</span>ARDWARE
+0x8244a008 0x10c58008 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre>hivescan -h
+  -V, --virtual         Scan virtual space instead of physical
+  -W, --show-unallocated
+                        Skip unallocated objects <span class="o">(</span>e.g. 0xbad0b0b0<span class="o">)</span>
+  -A START, --start<span class="o">=</span>START
+                        The starting address to begin scanning
+  -G LENGTH, --length<span class="o">=</span>LENGTH
+                        Length <span class="o">(</span>in bytes<span class="o">)</span> to scan from the starting address
+  -o HIVE_OFFSET, --hive-offset<span class="o">=</span>HIVE_OFFSET
+                        Hive offset <span class="o">(</span>virtual<span class="o">)</span>
+  -K KEY, --key<span class="o">=</span>KEY     Registry Key
+
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -o 0x87c429c8</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\H</span>ARDWARE
+Key name: HARDWARE <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2013-10-15 18:45:46 UTC+0000
+
+Subkeys:
+  <span class="o">(</span>S<span class="o">)</span> ACPI
+  <span class="o">(</span>S<span class="o">)</span> DESCRIPTION
+  <span class="o">(</span>S<span class="o">)</span> DEVICEMAP
+  <span class="o">(</span>V<span class="o">)</span> RESOURCEMAP
+
+Values:
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -o 0x8244a008</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+Key name: CMI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span> <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2013-10-15 18:45:59 UTC+0000
+
+Subkeys:
+  <span class="o">(</span>S<span class="o">)</span> AppEvents
+  <span class="o">(</span>S<span class="o">)</span> Console
+  <span class="o">(</span>S<span class="o">)</span> Control Panel
+  <span class="o">(</span>S<span class="o">)</span> Environment
+  <span class="o">(</span>S<span class="o">)</span> EUDC
+  <span class="o">(</span>S<span class="o">)</span> Identities
+  <span class="o">(</span>S<span class="o">)</span> Keyboard Layout
+  <span class="o">(</span>S<span class="o">)</span> Network
+  <span class="o">(</span>S<span class="o">)</span> Printers
+  <span class="o">(</span>S<span class="o">)</span> Software
+  <span class="o">(</span>S<span class="o">)</span> System
+  <span class="o">(</span>V<span class="o">)</span> Volatile Environment
+
+Values:
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>Malware and printkey</h1></header>
+            
+            
+            <section><p>Malware loves run/startup keys</p>
+<p>For system startup</p>
+<ul>
+<li>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce</li>
+<li>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run</li>
+<li>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</li>
+</ul>
+<p>For user logons</p>
+<ul>
+<li>HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows</li>
+<li>HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Run</li>
+<li>HKCU\Software\Microsoft\Windows\CurrentVersion\Run</li>
+<li>HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h1>Run keys and Volatility</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -K &quot;Microsoft\Windows\CurrentVersion\Run&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\C</span>onfig<span class="se">\S</span>OFTWARE
+Key name: Run <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2013-10-05 07:33:58 UTC+0000
+
+Subkeys:
+
+Values:
+REG_SZ        VMware User Process : <span class="o">(</span>S<span class="o">)</span> <span class="s2">&quot;C:\Program Files\VMware\VMware Tools\vmtoolsd.exe&quot;</span> -n vmusr
+
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -K &quot;Software\Microsoft\Windows\CurrentVersion\Run&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>erviceProfiles<span class="se">\L</span>ocalService<span class="se">\N</span>TUSER.DAT
+Key name: Run <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2009-07-14 04:34:14 UTC+0000
+
+Subkeys:
+
+Values:
+REG_EXPAND_SZ Sidebar         : <span class="o">(</span>S<span class="o">)</span> %ProgramFiles%<span class="se">\W</span>indows Sidebar<span class="se">\S</span>idebar.exe /autoRun
+----------------------------
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>erviceProfiles<span class="se">\N</span>etworkService<span class="se">\N</span>TUSER.DAT
+Key name: Run <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2009-07-14 04:34:14 UTC+0000
+
+Subkeys:
+
+Values:
+REG_EXPAND_SZ Sidebar         : <span class="o">(</span>S<span class="o">)</span> %ProgramFiles%<span class="se">\W</span>indows Sidebar<span class="se">\S</span>idebar.exe /autoRun
+----------------------------
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+Key name: Run <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2013-10-15 18:46:10 UTC+0000
+
+Subkeys:
+
+Values:
+REG_SZ        RESTART_STICKY_NOTES : <span class="o">(</span>S<span class="o">)</span> C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\S</span>tikyNot.exe
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>Registry Keys for Services</h1></header>
+            
+            
+            <section><p>HKLM/SYSTEM/CurrentControlSet/Services</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -K currentcontrolset</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\S</span>YSTEM
+Key name: CurrentControlSet <span class="o">(</span>V<span class="o">)</span>
+Last updated: 2013-10-15 18:45:46 UTC+0000
+
+Subkeys:
+
+Values:
+REG_LINK      SymbolicLinkValue : <span class="o">(</span>V<span class="o">)</span> <span class="se">\R</span>egistry<span class="se">\M</span>achine<span class="se">\S</span>ystem<span class="se">\C</span>ontrolSet001
+
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 printkey -K &quot;ControlSet001\services&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\R</span>EGISTRY<span class="se">\M</span>ACHINE<span class="se">\S</span>YSTEM
+Key name: services <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2013-10-15 18:47:10 UTC+0000
+
+Subkeys:
+  <span class="o">(</span>S<span class="o">)</span> .NET CLR Data
+  <span class="o">(</span>S<span class="o">)</span> .NET CLR Networking
+  <span class="o">(</span>S<span class="o">)</span> .NET CLR Networking 4.0.0.0
+  <span class="o">(</span>S<span class="o">)</span> .NET Data Provider <span class="k">for</span> Oracle
+  <span class="o">(</span>S<span class="o">)</span> .NET Data Provider <span class="k">for</span> SqlServer
+  <span class="o">(</span>S<span class="o">)</span> .NETFramework
+  <span class="o">(</span>S<span class="o">)</span> 1394ohci
+  <span class="o">(</span>S<span class="o">)</span> ACPI
+  <span class="o">(</span>S<span class="o">)</span> AcpiPmi
+  <span class="o">(</span>S<span class="o">)</span> adp94xx
+  <span class="o">(</span>S<span class="o">)</span> adpahci
+  <span class="o">(</span>S<span class="o">)</span> adpu320
+  <span class="o">(</span>S<span class="o">)</span> adsi
+  <span class="o">(</span>S<span class="o">)</span> AeLookupSvc
+  <span class="o">(</span>S<span class="o">)</span> AFD
+  <span class="o">(</span>S<span class="o">)</span> agp440
+  <span class="o">(</span>S<span class="o">)</span> aic78xx
+  <span class="o">(</span>S<span class="o">)</span> ALG
+  <span class="o">(</span>S<span class="o">)</span> aliide
+  <span class="o">(</span>S<span class="o">)</span> amdagp
+  <span class="o">(</span>S<span class="o">)</span> amdide
+  <span class="o">(</span>S<span class="o">)</span> AmdK8
+  <span class="o">(</span>S<span class="o">)</span> AmdPPM
+  <span class="o">(</span>S<span class="o">)</span> amdsata
+  <span class="o">(</span>S<span class="o">)</span> amdsbs
+  <span class="o">(</span>S<span class="o">)</span> amdxata
+  <span class="o">(</span>S<span class="o">)</span> AppID
+  <span class="o">(</span>S<span class="o">)</span> AppIDSvc
+  <span class="o">(</span>S<span class="o">)</span> Appinfo
+  <span class="o">(</span>S<span class="o">)</span> AppMgmt
+  <span class="o">(</span>S<span class="o">)</span> arc
+  <span class="o">(</span>S<span class="o">)</span> arcsas
+  <span class="o">(</span>S<span class="o">)</span> AsyncMac
+  <span class="o">(</span>S<span class="o">)</span> atapi
+  <span class="o">(</span>S<span class="o">)</span> AudioEndpointBuilder
+  <span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Out of memory</h1></header>
+            
+            
+            <section><p>Can use dumpfiles and extract hives on Pre-W7</p>
+<h1>hivedump</h1>
+<p>To recursively list all subkeys in a hive, use the hivedump command and pass it the virtual address to the desired hive.</p>
+<p>0x8244a008 0x10c58008 \??\C:\Users\Daniel\ntuser.dat</p>
+<div class="highlight"><pre>  --output<span class="o">=</span>text         Output in this format <span class="o">(</span>format support is module
+                        specific<span class="o">)</span>
+  --output-file<span class="o">=</span>OUTPUT_FILE
+                        write output in this file
+  -v, --verbose         Verbose information
+  -g KDBG, --kdbg<span class="o">=</span>KDBG  Specify a specific KDBG virtual address
+  -k KPCR, --kpcr<span class="o">=</span>KPCR  Specify a specific KPCR address
+  -o HIVE_OFFSET, --hive-offset<span class="o">=</span>HIVE_OFFSET
+                        Hive offset <span class="o">(</span>virtual<span class="o">)</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 hivedump -o 0x8244a008</span>
+Volatility Foundation Volatility Framework 2.4
+Last Written         Key
+2013-10-15 18:45:59 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span>
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents
+2013-10-06 16:36:10 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\.</span>Default
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\A</span>ctivatingDocument
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\A</span>ppGPFault
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\B</span>lockedPopup
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\C</span>CSelect
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\C</span>hangeTheme
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\C</span>lose
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\C</span>riticalBatteryAlarm
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\D</span>eviceConnect
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\D</span>eviceDisconnect
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\D</span>eviceFail
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\D</span>isNumbersSound
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\E</span>mptyRecycleBin
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\F</span>axBeep
+2011-03-04 14:34:02 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\F</span>axError
+2011-03-04 14:34:02 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\F</span>axLineRings
+2011-03-04 14:34:02 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\F</span>axSent
+2011-03-04 14:33:06 UTC+0000 <span class="se">\C</span>MI-CreateHive<span class="o">{</span>6A1C4018-979D-4291-A7DC-7AED1C75B67C<span class="o">}</span><span class="se">\A</span>ppEvents<span class="se">\E</span>ventLabels<span class="se">\F</span>eedDiscovered
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>NTUser.dat</h1></header>
+            
+            
+            <section><p>Userassist keys</p>
+<p>Processes the user ran and the time they were ran</p>
+<p>Path of program is rot13 encoded</p>
+<ul>
+<li>Caesar cipher where letters shift 13 places</li>
+</ul>
+<h1>Userassist</h1>
+<p>Print userassist registry keys and information</p>
+<div class="highlight"><pre>  -o HIVE_OFFSET, --hive-offset<span class="o">=</span>HIVE_OFFSET
+                        Hive offset <span class="o">(</span>virtual<span class="o">)</span>
+  -K KEY, --key<span class="o">=</span>KEY     Registry Key
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 userassist</span>
+Volatility Foundation Volatility Framework 2.4
+----------------------------
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+Key name: Count
+Last updated: 2013-10-15 18:48:57 UTC+0000
+
+Subkeys:
+
+Values:
+REG_BINARY    %ProgramFiles%<span class="se">\D</span>ebugging Tools <span class="k">for</span> Windows <span class="o">(</span>x86<span class="o">)</span><span class="se">\w</span>indbg.exe :
+Count:          1
+Focus Count:    9
+Time Focused:   0:03:38.391000
+Last updated:   2013-10-15 18:14:36 UTC+0000
+0x00000000  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">09</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">23</span> <span class="m">53</span> <span class="m">03</span> <span class="m">00</span>   ............#S..
+0x00000010  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000020  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000030  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf ff ff ff ff <span class="m">80</span> <span class="m">19</span> b5 <span class="m">67</span>   ...............g
+0x00000040  d2 c9 ce <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>                           ........
+
+REG_BINARY    C:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\n</span>asm-2.10.09-installer.exe :
+Count:          1
+Focus Count:    0
+Time Focused:   0:00:05.500000
+Last updated:   2013-10-06 16:33:02 UTC+0000
+0x00000000  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">88</span> <span class="m">13</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00000010  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000020  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000030  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf ff ff ff ff d0 <span class="m">65</span> <span class="m">07</span> ba   .............e..
+0x00000040  b1 c2 ce <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>                           ........
+
+REG_BINARY    %windir%<span class="se">\s</span>ystem32<span class="se">\c</span>alc.exe :
+Count:          14
+Focus Count:    29
+Time Focused:   0:05:47.842000
+Last updated:   2013-10-15 18:46:12 UTC+0000
+0x00000000  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0e <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 1d <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ce 4c <span class="m">05</span> <span class="m">00</span>   .............L..
+0x00000010  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000020  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000030  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf ff ff ff ff <span class="m">00</span> f1 <span class="m">39</span> d2   ..............9.
+0x00000040  d6 c9 ce <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>                           ........
+
+REG_BINARY    %windir%<span class="se">\s</span>ystem32<span class="se">\S</span>nippingTool.exe :
+Count:          12
+Focus Count:    18
+Time Focused:   0:04:22.811000
+Last updated:   2013-10-15 18:46:18 UTC+0000
+0x00000000  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">12</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> a7 <span class="m">00</span> <span class="m">04</span> <span class="m">00</span>   ................
+0x00000010  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000020  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000030  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf ff ff ff ff a0 <span class="m">03</span> <span class="m">66</span> d5   ..............f.
+0x00000040  d6 c9 ce <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>                           ........
+
+REG_BINARY    %windir%<span class="se">\s</span>ystem32<span class="se">\m</span>spaint.exe :
+Count:          10
+Focus Count:    12
+Time Focused:   0:03:40.594000
+Last updated:   2013-10-15 18:46:16 UTC+0000
+0x00000000  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0a <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> be 5b <span class="m">03</span> <span class="m">00</span>   .............<span class="o">[</span>..
+0x00000010  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000020  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf   ................
+0x00000030  <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> bf ff ff ff ff <span class="m">10</span> f1 <span class="m">72</span> d4   ..............r.
+0x00000040  d6 c9 ce <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>                           ........
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>Shimcache</h1></header>
+            
+            
+            <section><p>Application Compatibility Database to identify application compatibility issues and their solutions </p>
+<p>Keys contain path of executable and $STANDARD_INFORMATION of $MFT</p>
+<p><img alt="stdInfo" src="..\slideResources\registry\stdInfo.png" /></p>
+<p><a href="http://www.writeblocked.org/resources/NTFS_CHEAT_SHEETS.pdf">NTFS_CHEAT_SHEETS</a></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 shimcache</span>
+Volatility Foundation Volatility Framework 2.4
+Last Modified                  Path
+------------------------------ ----
+2009-07-14 01:14:23 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\m</span>akecab.exe
+2010-11-20 21:29:13 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ervicing<span class="se">\T</span>rustedInstaller.exe
+2010-11-20 21:29:20 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\L</span>ogonUI.exe
+2009-07-14 01:14:18 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\d</span>llhost.exe
+2009-07-14 01:14:21 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\i</span>pconfig.exe
+2010-11-20 21:29:12 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe
+2012-10-31 22:12:08 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\P</span>rogram Files<span class="se">\V</span>Mware<span class="se">\V</span>Mware Tools<span class="se">\r</span>esume-vm-default.bat
+2012-10-31 22:12:08 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\P</span>rogram Files<span class="se">\V</span>Mware<span class="se">\V</span>Mware Tools<span class="se">\s</span>uspend-vm-default.bat
+2013-07-21 02:23:42 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\p</span>rocesshacker-2.31-bin<span class="se">\x</span>86<span class="se">\P</span>rocessHacker.exe
+2013-02-27 05:05:53 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\c</span>onsent.exe
+2010-11-20 21:29:39 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\m</span>obsync.exe
+2010-11-20 21:29:13 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\n</span>etworkexplorer.dll
+2011-05-04 04:28:31 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\S</span>earchFilterHost.exe
+2011-05-04 04:28:31 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\S</span>earchProtocolHost.exe
+2009-07-14 01:14:18 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>riverquery.exe
+2009-07-14 01:14:18 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>pnsvr.exe
+2009-07-13 21:41:43 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\D</span>RWATSON.EXE
+2009-07-14 01:14:18 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\D</span>rvInst.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>vdplay.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>vdupgrd.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\D</span>WWIN.EXE
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\s</span>ystem32<span class="se">\D</span>wm.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>xdiag.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\D</span>xpserver.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\E</span>ap3Host.exe
+2009-07-13 21:40:50 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\e</span>dlin.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\e</span>fsui.exe
+2010-11-20 21:29:21 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>frgui.exe
+2009-07-14 01:14:19 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\E</span>hStorAuthn.exe
+2009-07-14 01:14:17 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>ialer.exe
+2009-07-14 01:14:17 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>iantz.exe
+2010-11-20 21:29:41 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\a</span>udiodev.dll
+2010-11-20 21:29:41 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\w</span>pdshext.dll
+2006-11-01 18:05:24 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\e</span>fsdump.exe
+2006-11-01 18:05:40 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\h</span>ex2dec.exe
+2010-04-27 15:04:06 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\l</span>ivekd.exe
+2006-11-01 18:06:10 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\l</span>dmdump.exe
+2006-11-01 18:06:30 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\L</span>istdlls.exe
+2008-11-18 18:15:14 UTC+0000   <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\D</span>esktop<span class="se">\S</span>ysinternalsSuite<span class="se">\h</span>andle.exe
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-24">
+          <div class="inner">
+            
+            <header><h1>shellbags</h1></header>
+            
+            
+            <section><p>Registry keys that track user window viewing preferences</p>
+<p>Artifacts</p>
+<ul>
+<li>Windows sizes and preferences</li>
+<li>Icon and folder view settings</li>
+<li>Metadata such as MAC timestamps</li>
+<li>Most Recently Used (MRU) files and file type (zip, directory, installer)</li>
+<li>Files, folders, zip files, and installers that existed at one point on the system (even
+if deleted)</li>
+<li>Network shares and folders within the shares</li>
+<li>Metadata associated with any of these types that may include timestamps and
+absolute paths</li>
+<li>Information about TrueCrypt volumes</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>Could do a whole lecture on these...</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>shellbags</h1></header>
+            
+            
+            <section><p>This plugin parses and prints Shellbag information obtained from the registry.</p>
+<p>Also parses data using Shellbag data types</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 shellbags</span>
+Volatility Foundation Volatility Framework 2.4
+Scanning <span class="k">for</span> registries....
+Gathering shellbag items and building path tree...
+***************************************************************************
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\n</span>tuser.dat
+Key: Software<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\S</span>hell<span class="se">\B</span>ags<span class="se">\1\D</span>esktop
+Last updated: 2013-10-15 18:45:30 UTC+0000
+Value                     File Name      Modified Date                  Create Date                    Access Date                    File Attr                 Unicode Name
+------------------------- -------------- ------------------------------ ------------------------------ ------------------------------ ------------------------- ------------
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     GZIP-1~1.12-   2013-10-06 16:33:54 UTC+0000   2013-10-06 16:33:54 UTC+0000   2013-10-06 16:33:54 UTC+0000   DIR                       gzip-1.3.12-1-bin
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     PROCES~1.31-   2013-10-15 18:13:28 UTC+0000   2013-10-15 18:13:28 UTC+0000   2013-10-15 18:13:28 UTC+0000   DIR                       processhacker-2.31-bin
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     SYSINT~1       2011-03-04 14:39:26 UTC+0000   2011-03-04 14:39:26 UTC+0000   2011-03-04 14:39:26 UTC+0000   NI, DIR                   SysinternalsSuite
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     TRUECR~1       2013-10-06 16:38:34 UTC+0000   2013-10-05 01:33:00 UTC+0000   2013-10-06 16:38:34 UTC+0000   DIR                       TrueCrypt
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     nasm.lnk       2013-10-06 16:33:06 UTC+0000   2013-10-06 16:33:06 UTC+0000   2013-10-06 16:33:06 UTC+0000   ARC                       nasm.lnk
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     PROCES~1.ZIP   2013-10-15 18:13:08 UTC+0000   2013-10-15 18:13:18 UTC+0000   2013-10-15 18:13:18 UTC+0000   ARC, NI                   processhacker-2.31-bin.zip
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     TRUECR~1.ZIP   2013-10-05 01:32:24 UTC+0000   2013-10-05 01:32:30 UTC+0000   2013-10-05 01:32:30 UTC+0000   ARC, NI                   TrueCrypt 7.1a Source.zip
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     WINSDK~1.EXE   2013-10-06 16:11:04 UTC+0000   2013-10-06 16:11:40 UTC+0000   2013-10-06 16:11:40 UTC+0000   ARC, NI                   winsdk_web.exe
+ItemPos1024x768x96<span class="o">(</span>1<span class="o">)</span>     VMWARE~1.LNK   2013-10-15 18:45:08 UTC+0000   2013-10-06 19:16:02 UTC+0000   2013-10-15 18:45:08 UTC+0000   ARC                       VMware Shared Folders.lnk
+***************************************************************************
+
+***************************************************************************
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\U</span>srClass.dat
+Key: Local Settings<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\S</span>hell<span class="se">\B</span>agMRU
+Last updated: 2013-10-15 18:47:04 UTC+0000
+Value   Mru   Entry Type     GUID                                     GUID Description     Folder IDs
+------- ----- -------------- ---------------------------------------- -------------------- ----------
+<span class="m">1</span>       <span class="m">2</span>     Folder Entry   20d04fe0-3aea-1069-a2d8-08002b30309d     My Computer          EXPLORER, MY_COMPUTER
+
+Value   Mru   File Name      Modified Date                  Create Date                    Access Date                    File Attr                 Path
+------- ----- -------------- ------------------------------ ------------------------------ ------------------------------ ------------------------- ----
+<span class="m">0</span>       <span class="m">3</span>     SYSINT~1       2011-03-04 14:39:26 UTC+0000   2011-03-04 14:39:26 UTC+0000   2011-03-04 14:39:26 UTC+0000   NI, DIR                   SysinternalsSuite
+<span class="m">3</span>       <span class="m">6</span>     TrueCrypt 7.1a Source 1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   DIR                       TrueCrypt 7.1a Source
+
+Value   Mru   Entry Type     GUID                                     GUID Description     Folder IDs
+------- ----- -------------- ---------------------------------------- -------------------- ----------
+<span class="m">2</span>       <span class="m">1</span>     Folder Entry   26ee0668-a00a-44d7-9371-beb064c98683     <span class="o">{</span>Unknown CSIDL<span class="o">}</span>      EXPLORER, MY_COMPUTER, RECYCLE_BIN, UKNOWN
+
+Value   Mru   File Name      Modified Date                  Create Date                    Access Date                    File Attr                 Path
+------- ----- -------------- ------------------------------ ------------------------------ ------------------------------ ------------------------- ----
+<span class="m">5</span>       <span class="m">7</span>     pkcs           2013-10-06 14:48:04 UTC+0000   2013-10-06 16:32:30 UTC+0000   2013-10-06 16:32:30 UTC+0000   NI, DIR                   pkcs
+<span class="m">4</span>       <span class="m">5</span>     gzip-1.3.12-1-bin 1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   DIR                       gzip-1.3.12-1-bin
+<span class="m">7</span>       <span class="m">0</span>     processhacker-2.31-bin 1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   1970-01-01 00:00:00 UTC+0000   DIR                       processhacker-2.31-bin
+<span class="m">6</span>       <span class="m">4</span>     TRUECR~1       2013-10-06 16:38:20 UTC+0000   2013-10-05 01:33:00 UTC+0000   2013-10-06 16:38:20 UTC+0000   DIR                       TrueCrypt
+***************************************************************************
+
+***************************************************************************
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\U</span>srClass.dat
+Key: Local Settings<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\S</span>hell<span class="se">\B</span>agMRU<span class="se">\1</span>
+Last updated: 2013-10-06 19:20:20 UTC+0000
+Value   Mru   Entry Type     Path
+------- ----- -------------- ----
+<span class="m">1</span>       <span class="m">3</span>     Volume Name    A:<span class="se">\</span>
+<span class="m">0</span>       <span class="m">0</span>     Volume Name    C:<span class="se">\</span>
+<span class="m">3</span>       <span class="m">1</span>     Volume Name    Z:<span class="se">\</span>
+<span class="m">2</span>       <span class="m">2</span>     Volume Name    D:<span class="se">\</span>
+***************************************************************************
+
+***************************************************************************
+Registry: <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\U</span>sers<span class="se">\D</span>aniel<span class="se">\A</span>ppData<span class="se">\L</span>ocal<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\U</span>srClass.dat
+Key: Local Settings<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\S</span>hell<span class="se">\B</span>agMRU<span class="se">\4</span>
+Last updated: 2013-10-06 18:07:31 UTC+0000
+Value   Mru   File Name      Modified Date                  Create Date                    Access Date                    File Attr                 Path
+------- ----- -------------- ------------------------------ ------------------------------ ------------------------------ ------------------------- ----
+<span class="m">0</span>       <span class="m">0</span>     bin            2013-10-06 16:33:54 UTC+0000   2013-10-06 16:33:54 UTC+0000   2013-10-06 16:33:54 UTC+0000   DIR                       gzip-1.3.12-1-bin<span class="se">\b</span>in
+***************************************************************************
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Hashdump</h1></header>
+            
+            
+            <section><p>Dumps keys from SYSTEM and SAM hives which contain password hashes (LM and NT hash)</p>
+<p>NT hash is on all Windows </p>
+<ul>
+<li>Also called NTLM hash</li>
+<li>v1 uses MD4 hashing algorithm without salting</li>
+</ul>
+<p>LM hash is easy to crack and is disabled in Vista+</p>
+<p>Stored by Username:RID:LMHash:NTLMHash</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 hashdump</span>
+Volatility Foundation Volatility Framework 2.4
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Daniel:1000:aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c:::
+</pre></div>
+
+<p>Use cracker/website/rainbow table/etc</p>
+<pre><code>8846f7eaee8fb117ad06bdd830b7586c NTLM : password
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>RID = Releative Id of the user SID</p>
+<p>15+ characters = no LM hashes in memory</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>Timestomping</h1></header>
+            
+            
+            <section><p>Anti-registry forensics technique</p>
+<p>Write over Last Update time on a registry key to a ridiculous number</p>
+<p>SetRegTime by Joakim Schicht uses NtSetInformationKey to perform this</p>
+<div class="highlight"><pre>NTSTATUS NtSetInformationKey<span class="o">(</span>
+  _In_  HANDLE KeyHandle,
+  _In_  KEY_SET_INFORMATION_CLASS KeySetInformationClass,
+  _In_  PVOID KeySetInformation,
+  _In_  ULONG KeySetInformationLength
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>WinAPI</h1></header>
+            
+            
+            <section><p>Lots of WinAPI for <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724875%28v=vs.85%29.aspx" title="registry">registry</a></p>
+<p>2 important</p>
+<div class="highlight"><pre>LONG WINAPI RegCreateKeyEx<span class="o">(</span>
+  _In_        HKEY hKey,
+  _In_        LPCTSTR lpSubKey,
+  _Reserved_  DWORD Reserved,
+  _In_opt_    LPTSTR lpClass,
+  _In_        DWORD dwOptions,
+  _In_        REGSAM samDesired,
+  _In_opt_    LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+  _Out_       PHKEY phkResult,
+  _Out_opt_   LPDWORD lpdwDisposition
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>and</p>
+<div class="highlight"><pre>LONG WINAPI RegSetValueEx<span class="o">(</span>
+  _In_        HKEY hKey,
+  _In_opt_    LPCTSTR lpValueName,
+  _Reserved_  DWORD Reserved,
+  _In_        DWORD dwType,
+  _In_        const BYTE *lpData,
+  _In_        DWORD cbData
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week04_02-Registry.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-29">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week04_02-Registry.md">week04_02-Registry.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/29
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Registry</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Windows Registry Review</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Physical Structure</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Root Hives</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Memory</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">_CMHIVE</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">_HHIVE</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Hives in memory</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Finding key in memory</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">BLockAddress</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Graphical</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">What Registry Keys Matter?</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Hives in memory</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Volatility Hivelist</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Locating hives</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Printing Keys and Values</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Printkey</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Malware and printkey</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Run keys and Volatility</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Registry Keys for Services</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Out of memory</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">NTUser.dat</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Shimcache</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">shellbags</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">shellbags</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Hashdump</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Timestomping</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">WinAPI</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">EOF</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
