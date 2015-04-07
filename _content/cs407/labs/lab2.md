@@ -62,9 +62,9 @@ Download the memory image from [https://www.dropbox.com/s/fsycx69csdpt18e/Lab2.v
 
 	- Why would an attacker want to use such a tool?
 
-3. Describe in-depth how DKOM works. What is needed and how do you get it there? 
+3. Describe in depth how DKOM works. What is needed and how do you get it there? 
 
-	- Bonus: What there security mitigations, if any, are in Windows 7 to make this harder?
+	- Bonus: What are security mitigations, if any, in Windows 7 to make this harder?
 
 4. Are there any children processes of one of the unlinked processes? 
 
@@ -72,11 +72,11 @@ Download the memory image from [https://www.dropbox.com/s/fsycx69csdpt18e/Lab2.v
 
 6. For the process you found in question 4
 
-- Enter into volshell
-
-- use the physical offset given from a process plugin to list the _EPROCESS structure
-
-	- What was the Pcb address, Unique Process Id and Exit Status?
+	- Enter into volshell
+	
+	- use the physical offset given from a process plugin to list the _EPROCESS structure
+	
+		- What was the Pcb address, Unique Process Id and Exit Status?
 
 BONUS Valuable Valueless Prize Tokens: Using the modules() command in volshell, can you spot the malicious driver that was used?
 
