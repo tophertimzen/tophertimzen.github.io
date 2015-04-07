@@ -60,11 +60,11 @@ Download the memory image from [https://www.dropbox.com/s/fsycx69csdpt18e/Lab2.v
 
 2. Do the process/processes unlinked have any importance? *Might require Google* 
 
-- Why would an attacker want to use such a tool?
+	- Why would an attacker want to use such a tool?
 
 3. Describe in-depth how DKOM works. What is needed and how do you get it there? 
 
-- Bonus: What there security mitigations, if any, are in Windows 7 to make this harder?
+	- Bonus: What there security mitigations, if any, are in Windows 7 to make this harder?
 
 4. Are there any children processes of one of the unlinked processes? 
 
@@ -79,5 +79,9 @@ Download the memory image from [https://www.dropbox.com/s/fsycx69csdpt18e/Lab2.v
 	- What was the Pcb address, Unique Process Id and Exit Status?
 
 BONUS Valuable Valueless Prize Tokens: Using the modules() command in volshell, can you spot the malicious driver that was used?
+
+---
+
+
 
 Turn in by e-mail to <a href="mailto:timzenc@sou.edu?Subject=memForensicsLab1" target="_top">timzenc@sou.edu</a>.
