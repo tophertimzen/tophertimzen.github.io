@@ -8,7 +8,7 @@ permalink: /cs407/labs/lab2.html
 
 Assigned: April 8th
 
-Due: April 17th by 11:59 PM PST 
+Due: April 20th by 11:59 PM PST 
 
 Requirements
 
