@@ -30,17 +30,17 @@ For each command ran give it meaning by describing what it does and explain what
 
 Run the following using the above criteria:
 
-1. pooltracker
+1. filescan
 
-2. filescan
+2. pslist
 
-3. pslist
+3. psxview
 
-4. psxview
+4. psscan
 
-5. psscan
+5. dllist (pick a process from the process scans)
 
-6. dllist (pick a process from the process scans)
+BONUS: If you have a Windows 7 image run pooltracker
 
 Answer the following:
 
