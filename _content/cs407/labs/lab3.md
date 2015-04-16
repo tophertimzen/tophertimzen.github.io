@@ -20,7 +20,7 @@ Complete the following by writing a thorough report on the actions you took and 
 
 You are a Malware Investigator at 0xC0ff33, Inc and an incident responder came across injected shellcode during an investigation. He has done all he can in IDA and has passed on the .idb file to you. Figure out what the purpose of the malware was and how it achieved its goals. 
 
-The IDA Database file and Python script for ROR13 are located here. [lab3Resources.zip](lab3Resources.zip)
+The IDA Database file and Python script for ROR13 are located here. [lab3Resources.zip](/resources/cs407/labResources/lab3Resources.zip)
 
 Lab will be graded on the following criteria 
 
@@ -32,7 +32,7 @@ Lab will be graded on the following criteria
 
 I am looking for an analysis of the shellcode and the way that it parsed the PE and PEB structures we discussed to achieve its goal. 
 
-*Hint: I only used functions from kernel32.dll *
+*Hint: I only used functions from kernel32.dll*
 
 ---
 
