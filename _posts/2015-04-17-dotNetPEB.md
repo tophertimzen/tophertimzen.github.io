@@ -2,10 +2,8 @@
 layout: post
 title: "Shellcode in .NET - How the PEB Changes"
 date: 2015-04-17
-categories: shellcode, windows, .NET
+categories: shellcode
 ---
-
-#Shellcode in .NET - How the PEB Changes
 
 Shellcode commonly uses a method to resolve Windows API functions by traversing through the Portable Environment Blocks (PEB) _PEB_LDR_DATA structure which contains three linked lists of DLLs that are loaded in a process space.  
 
