@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Networking</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Networking</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>Malware and Networking</p>
+<p>Windows API</p>
+<p>Microsoft's TCP/IP</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Sockets and Connections</h1></header>
+            
+            
+            <section><p>Sockets</p>
+<ul>
+<li>Endpoints for communications</li>
+</ul>
+<p>Clients contain <em>client</em> sockets</p>
+<ul>
+<li>Initiate connections</li>
+</ul>
+<p>Servers contain <em>server</em> sockets</p>
+<ul>
+<li>Listen for incoming connections</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Creating Sockets</h1></header>
+            
+            
+            <section><p>Ws2_32.dll</p>
+<ul>
+<li>Main windows networking DLL</li>
+<li><em>Socket</em> function</li>
+</ul>
+<p>Wininet.dll</p>
+<ul>
+<li>High level networking DLL for protocols such as FTP and HTTP. </li>
+<li>Wrappers on Winsock2 functions</li>
+</ul>
+<p>Winsock2</p>
+<ul>
+<li>Windows Sockets 2</li>
+<li>Create advanced Internet, intranet, and other network-capable applications to transmit application data across the wire, independent of the network protocol being used.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            
+            <section><p>Kernel</p>
+<ul>
+<li>Transport Driver Interface (TDI)</li>
+<li>Used by higher-level components such as Winsock</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Winsock</h1></header>
+            
+            
+            <section><p>Windows Sockets API</p>
+<p>Passess</p>
+<ul>
+<li>IP Family (AF_INET = ipv4)</li>
+<li>A type (SOCK_STREAM, SOCK_DGRAM, SOCK_RAW)</li>
+<li>A protocol (IPROTO_TCP, IPPROTO_UDP, IPPROTO_IP, IPPROTO_ICMP)</li>
+</ul>
+<p>After a socket is created it must be bound to a port and listened.</p>
+<ul>
+<li>API = <em>bind</em> and <em>listen</em></li>
+</ul>
+<p>Clients call <em>connect</em>.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Berkeley Compatible Sockets</h1></header>
+            
+            
+            <section><p>Windows uses Berkeley compatible sockets in the Winsock Libraries </p>
+<pre><code>| Function | Description                                            |
+|----------|--------------------------------------------------------|
+| Socket   | Create a socket                                        |
+| bind     | Attach to a socket on a port                           |
+| listen   | Listen for incoming connections                        |
+| accept   | Open and accept a connection                           |
+| connect  | Open a connection to a remote socket that is listening |
+| recv     | Recieve data from the remote socket                    |
+| send     | Send data to remote socket                             |
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Establishing a connection</h1></header>
+            
+            
+            <section><h1>Windows uses the API call WSAStartup before any networking functions can be used</h1>
+<p><img alt="client" src="..\slideResources\networking\client.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            
+            <section><p><img alt="server" src="..\slideResources\networking\server.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>What to look for</h1></header>
+            
+            
+            <section><p>Rouge listeners</p>
+<p>Suspicious connections</p>
+<p>Promiscuous network cards</p>
+<p>Hidden ports</p>
+<p>Browser History</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>Structures</h1></header>
+            
+            
+            <section><div class="highlight"><pre>&gt;&gt;&gt; dt<span class="o">(</span><span class="s2">&quot;_ADDRESS_OBJECT&quot;</span><span class="o">)</span>
+ <span class="s1">&#39;_ADDRESS_OBJECT&#39;</span> <span class="o">(</span><span class="m">104</span> bytes<span class="o">)</span>
+0x0   : Next                           <span class="o">[</span><span class="s1">&#39;pointer&#39;</span>, <span class="o">[</span><span class="s1">&#39;_ADDRESS_OBJECT&#39;</span><span class="o">]]</span>
+0x2c  : LocalIpAddress                 <span class="o">[</span><span class="s1">&#39;IpAddress&#39;</span><span class="o">]</span>
+0x30  : LocalPort                      <span class="o">[</span><span class="s1">&#39;unsigned be short&#39;</span><span class="o">]</span>
+0x32  : Protocol                       <span class="o">[</span><span class="s1">&#39;unsigned short&#39;</span><span class="o">]</span>
+0x148 : Pid                            <span class="o">[</span><span class="s1">&#39;unsigned long&#39;</span><span class="o">]</span>
+0x158 : CreateTime                     <span class="o">[</span><span class="s1">&#39;WinTimeStamp&#39;</span>, <span class="o">{</span><span class="s1">&#39;is_utc&#39;</span>: True<span class="o">}]</span>
+&gt;&gt;&gt;
+
+
+&gt;&gt;&gt; dt<span class="o">(</span><span class="s2">&quot;_TCPT_OBJECT&quot;</span><span class="o">)</span>
+ <span class="s1">&#39;_TCPT_OBJECT&#39;</span> <span class="o">(</span><span class="m">32</span> bytes<span class="o">)</span>
+0x0   : Next                           <span class="o">[</span><span class="s1">&#39;pointer&#39;</span>, <span class="o">[</span><span class="s1">&#39;_TCPT_OBJECT&#39;</span><span class="o">]]</span>
+0xc   : RemoteIpAddress                <span class="o">[</span><span class="s1">&#39;IpAddress&#39;</span><span class="o">]</span>
+0x10  : LocalIpAddress                 <span class="o">[</span><span class="s1">&#39;IpAddress&#39;</span><span class="o">]</span>
+0x14  : RemotePort                     <span class="o">[</span><span class="s1">&#39;unsigned be short&#39;</span><span class="o">]</span>
+0x16  : LocalPort                      <span class="o">[</span><span class="s1">&#39;unsigned be short&#39;</span><span class="o">]</span>
+0x18  : Pid                            <span class="o">[</span><span class="s1">&#39;unsigned long&#39;</span><span class="o">]</span>
+</pre></div>
+
+<p>Both are Undocumented </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>In Memory</h1></header>
+            
+            
+            <section><p>Connections are stored in a hash table using Separate Chaining </p>
+<p><img alt="hashTable" src="..\slideResources\networking\hashTable.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Port Numbers</h1></header>
+            
+            
+            <section><p>0 -&gt; 1023 = Well-known / system ports</p>
+<p>1024 -&gt; 49151 = ephermeral client or server ports and are registered ports by IANA. </p>
+<p>49152 -&gt; 65535 = unregistered ports </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>Sockets</h1></header>
+            
+            
+            <section><p>Print list of open sockets</p>
+<p>Only works on XP and 2003 Server Images</p>
+<div class="highlight"><pre>vol.py sockets -f zeus.bin --profile<span class="o">=</span>WinXPSP3x86
+Volatility Foundation Volatility Framework 2.4
+PID Port Proto Protocol Address Create Time
+-------- ------ ------ --------------- --------------- -----------
+<span class="m">892</span> <span class="m">19705</span> <span class="m">6</span> TCP 0.0.0.0 2009-02-12 03:38:14
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-15">
+          <div class="inner">
+            
+            <header><h1>Sorted</h1></header>
+            
+            
+            <section><div class="highlight"><pre>PID Port Proto Protocol Address Create Time
+-------- ------ ------ --------------- --------------- -----------
+<span class="m">1064</span> <span class="m">1276</span> <span class="m">17</span> UDP 127.0.0.1 2009-02-12 03:38:12
+<span class="m">1064</span> <span class="m">1275</span> <span class="m">17</span> UDP 192.168.128.128 2009-02-12 03:38:12
+<span class="m">892</span> <span class="m">19705</span> <span class="m">6</span> TCP 0.0.0.0 2009-02-12 03:38:14
+<span class="m">892</span> <span class="m">35335</span> <span class="m">6</span> TCP 0.0.0.0 2009-02-12 03:38:14
+<span class="m">892</span> <span class="m">1277</span> <span class="m">6</span> TCP 0.0.0.0 2009-02-12 03:38:15
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>What are they?</h1></header>
+            
+            
+            <section><div class="highlight"><pre>python vol.py -f zeus.vmem --profile<span class="o">=</span>WinXPSP3x86 pslist <span class="p">|</span> grep 892
+Volatility Foundation Volatility Framework 2.4
+Name PID PPID Thds Hnds Sess Start
+----------------- ------ ------ ------ -------- ------ ------------------
+svchost.exe <span class="m">892</span> <span class="m">728</span> <span class="m">26</span> <span class="m">294</span> <span class="m">0</span> 2008-09-18 05:32:58
+
+<span class="nv">$ </span>python vol.py -f zeus.vmem --profile<span class="o">=</span>WinXPSP3x86 pslist <span class="p">|</span> grep 1064
+Volatility Foundation Volatility Framework 2.4
+Name PID PPID Thds Hnds Sess Start
+----------------- ------ ------ ------ -------- ------ ------------------
+svchost.exe <span class="m">1064</span> <span class="m">728</span> <span class="m">62</span> <span class="m">1235</span> <span class="m">0</span> 2008-09-18 05:32:59
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>Connections</h1></header>
+            
+            
+            <section><p>View TCP connections active at time of acquisition. </p>
+<p>Only works on XP and 2003 Server Images</p>
+<div class="highlight"><pre>python vol.py -f Win2003SP2x64.vmem --profile<span class="o">=</span>Win2003SP2x64 connections
+Volatile Systems Volatility Framework 2.1_alpha
+Offset<span class="o">(</span>V<span class="o">)</span>          Local Address             Remote Address               Pid
+------------------ ------------------------- ------------------------- ------
+0xfffffadfe6f2e2f0 172.16.237.150:1408       72.246.25.25:80             2136
+0xfffffadfe72e8080 172.16.237.150:1369       64.4.11.30:80               2136
+0xfffffadfe622d010 172.16.237.150:1403       74.125.229.188:80           2136
+0xfffffadfe62e09e0 172.16.237.150:1352       64.4.11.20:80               2136
+0xfffffadfe6f2e630 172.16.237.150:1389       209.191.122.70:80           2136
+0xfffffadfe5e7a610 172.16.237.150:1419       74.125.229.187:80           2136
+0xfffffadfe7321bc0 172.16.237.150:1418       74.125.229.188:80           2136
+0xfffffadfe5ea3c90 172.16.237.150:1393       216.115.98.241:80           2136
+0xfffffadfe72a3a80 172.16.237.150:1391       209.191.122.70:80           2136
+0xfffffadfe5ed8560 172.16.237.150:1402       74.125.229.188:80           2136
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>connscan</h1></header>
+            
+            
+            <section><p>Only works on XP and 2003 Server Images</p>
+<p>Pool tag scan for _TCPT_OBJECT </p>
+<div class="highlight"><pre>python vol.py -f Win2K3SP0x64.vmem --profile<span class="o">=</span>Win2003SP2x64 connscan
+Volatile Systems Volatility Framework 2.1_alpha
+ Offset<span class="o">(</span>P<span class="o">)</span>  Local Address             Remote Address            Pid   
+---------- ------------------------- ------------------------- ------ 
+0x0ea7a610 172.16.237.150:1419       74.125.229.187:80           2136
+0x0eaa3c90 172.16.237.150:1393       216.115.98.241:80           2136
+0x0eaa4480 172.16.237.150:1398       216.115.98.241:80           2136
+0x0ead8560 172.16.237.150:1402       74.125.229.188:80           2136
+0x0ee2d010 172.16.237.150:1403       74.125.229.188:80           2136
+0x0eee09e0 172.16.237.150:1352       64.4.11.20:80               2136
+0x0f9f83c0 172.16.237.150:1425       98.139.240.23:80            2136
+0x0f9fe010 172.16.237.150:1394       216.115.98.241:80           2136
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h1>sockscan</h1></header>
+            
+            
+            <section><p>Pool tag scan for _ADDRESS_OBJECT </p>
+<p>XP and 2003 Server Only </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 sockscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>       PID   Port  Proto Protocol        Address         Create Time
+---------- -------- ------ ------ --------------- --------------- -----------
+0x014273f8     <span class="m">1392</span>   <span class="m">1900</span>     <span class="m">17</span> UDP             192.168.145.135 2015-04-02 19:47:09 UTC+0000
+0x01455978     <span class="m">1056</span>    <span class="m">123</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-02 18:37:38 UTC+0000
+0x0145b478     <span class="m">1056</span>    <span class="m">123</span>     <span class="m">17</span> UDP             192.168.145.135 2015-04-02 18:37:38 UTC+0000
+0x0145e4c8     <span class="m">1392</span>   <span class="m">1900</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-02 19:47:09 UTC+0000
+0x01481938      <span class="m">828</span>   <span class="m">3389</span>      <span class="m">6</span> TCP             0.0.0.0         2015-04-02 19:38:07 UTC+0000
+0x01f16008        <span class="m">4</span>    <span class="m">137</span>     <span class="m">17</span> UDP             192.168.145.135 2015-04-07 03:05:41 UTC+0000
+0x01f181d8     <span class="m">1052</span>   <span class="m">1355</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-06 19:04:12 UTC+0000
+0x01f218b8     <span class="m">1076</span>    <span class="m">123</span>     <span class="m">17</span> UDP             192.168.145.135 2015-04-07 03:05:41 UTC+0000
+0x01f33680     <span class="m">1076</span>    <span class="m">123</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-07 03:05:41 UTC+0000
+0x01f5b6e8      <span class="m">876</span>   <span class="m">3389</span>      <span class="m">6</span> TCP             0.0.0.0         2015-04-04 00:09:19 UTC+0000
+0x01f684f8     <span class="m">1752</span>   <span class="m">1028</span>      <span class="m">6</span> TCP             127.0.0.1       2015-04-04 00:09:11 UTC+0000
+0x01f87bb0      <span class="m">696</span>      <span class="m">0</span>    <span class="m">255</span> Reserved        0.0.0.0         2015-04-04 00:09:00 UTC+0000
+0x01f9b5c0     <span class="m">1332</span>   <span class="m">1309</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-06 19:03:47 UTC+0000
+0x01fabc18        <span class="m">4</span>   <span class="m">1143</span>      <span class="m">6</span> TCP             0.0.0.0         2015-04-05 03:05:04 UTC+0000
+0x020db008     <span class="m">1372</span>   <span class="m">1900</span>     <span class="m">17</span> UDP             127.0.0.1       2015-04-07 03:05:41 UTC+0000
+0x0214c5f0      <span class="m">696</span>   <span class="m">4500</span>     <span class="m">17</span> UDP             0.0.0.0         2015-04-04 00:09:00 UTC+0000
+0x0214cd80      <span class="m">696</span>    <span class="m">500</span>     <span class="m">17</span> UDP             0.0.0.0         2015-04-04 00:09:00 UTC+0000
+0x021b17b8        <span class="m">4</span>    <span class="m">139</span>      <span class="m">6</span> TCP             192.168.145.135 2015-04-07 03:05:41 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Malicious?</h1></header>
+            
+            
+            <section><p>Dump executable to disk, restore imports and analyze!</p>
+<p>Yara scan in memory to match malware signatures</p>
+<p>If DLL Dlldump it!</p>
+<p>Injected shellcode? Dump ir ot Disassemble it in VolShell!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
+          <div class="inner">
+            
+            <header><h1>API calls to watch</h1></header>
+            
+            
+            <section><pre><code>| WinSock           | WinINet               | COM                   |
+|-----------------  |-------------------    |-------------------    |
+| WSAStartup        | InternetOpen          | URLDownloadToFile     |
+| getaddrinfo       | InternetConnect       | CoInitialize          |
+| socket            | InternetOpenURL       | CoCreateInstance      |
+| connect           | InternetReadFile      | Navigate              |
+| send              | InternetWriteFile     |                       |
+| recv              | HttpOpenRequest       |                       |
+| WSAGetLastError   | HTTPQueryInfo         |                       |
+|                   |                       |                       |
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>IDA Networking Calls</h1></header>
+            
+            
+            <section><p><img alt="ida1" src="..\slideResources\networking\ida1.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            
+            <section><p><img alt="ida2" src="..\slideResources\networking\ida2.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-24">
+          <div class="inner">
+            
+            <header><h1>Netscan</h1></header>
+            
+            
+            <section><p>Windows Vista + network artifacts using pool-scanning </p>
+<p>Scans</p>
+<ul>
+<li>_TCP_ENDPOINT</li>
+<li>_TCP_LISTENER</li>
+<li>_UDP_ENDPOINT</li>
+</ul>
+<p>Distinguishes between IPv4 and IPv6</p>
+<p>prints </p>
+<ul>
+<li>the local and remote IP </li>
+<li>the local and remote port </li>
+<li>the time when the socket was bound or when the connection was established</li>
+<li>the current TCP state</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Structures TCP</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_TCP_ENDPOINT&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_TCP_ENDPOINT&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">InetAF</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_INETAF&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">AddrInfo</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ADDRINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">ListEntry</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">State</span>                          <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;CLOSED&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">&#39;LISTENING&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">&#39;SYN_SENT&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">&#39;SYN_RCVD&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">&#39;ESTABLISHED&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">&#39;FIN_WAIT1&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s">&#39;FIN_WAIT2&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s">&#39;CLOSE_WAIT&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s">&#39;CLOSING&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s">&#39;LAST_ACK&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s">&#39;TIME_WAIT&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="s">&#39;DELETE_TCB&#39;</span><span class="p">}}]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">LocalPort</span>                      <span class="p">[</span><span class="s">&#39;unsigned be short&#39;</span><span class="p">]</span>
+<span class="mh">0x3a</span>  <span class="p">:</span> <span class="n">RemotePort</span>                     <span class="p">[</span><span class="s">&#39;unsigned be short&#39;</span><span class="p">]</span>
+<span class="mh">0x174</span> <span class="p">:</span> <span class="n">Owner</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EPROCESS&#39;</span><span class="p">]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_TCP_LISTENER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_TCP_LISTENER&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">Owner</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EPROCESS&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">LocalAddr</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LOCAL_ADDRESS&#39;</span><span class="p">]]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">InetAF</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_INETAF&#39;</span><span class="p">]]</span>
+<span class="mh">0x3e</span>  <span class="p">:</span> <span class="n">Port</span>                           <span class="p">[</span><span class="s">&#39;unsigned be short&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Structures UDP</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_UDP_ENDPOINT&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_UDP_ENDPOINT&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">InetAF</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_INETAF&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">Owner</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_EPROCESS&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">CreateTime</span>                     <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">LocalAddr</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LOCAL_ADDRESS&#39;</span><span class="p">]]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">Port</span>                           <span class="p">[</span><span class="s">&#39;unsigned be short&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>Netscan</h1></header>
+            
+            
+            <section><p>(-) means results could not be found in memory dump. </p>
+<p>Information in structures are pointers to pointers and are not always there if pages are swapped. </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 netscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>          Proto    Local Address                  Foreign Address      State            Pid      Owner          Created
+0x3da07008         UDPv4    0.0.0.0:0                      *:*                                   <span class="m">2876</span>     devenv.exe     2013-10-15 18:46:18 UTC+0000
+0x3da07008         UDPv6    :::0                           *:*                                   <span class="m">2876</span>     devenv.exe     2013-10-15 18:46:18 UTC+0000
+0x3da076c0         UDPv4    0.0.0.0:0                      *:*                                   <span class="m">2876</span>     devenv.exe     2013-10-15 18:46:18 UTC+0000
+0x3dad5a18         UDPv4    0.0.0.0:0                      *:*                                   <span class="m">2876</span>     devenv.exe     2013-10-15 18:46:18 UTC+0000
+0x3dad5a18         UDPv6    :::0                           *:*                            
+0x3ddca628         TCPv4    0.0.0.0:49178                  0.0.0.0:0            LISTENING        <span class="m">520</span>      lsass.exe
+0x3ddca628         TCPv6    :::49178                       :::0                 LISTENING        <span class="m">520</span>      lsass.exe
+0x3ddcdf60         TCPv4    0.0.0.0:49178                  0.0.0.0:0            LISTENING        <span class="m">520</span>      lsass.exe
+0x3da2db78         TCPv4    192.168.228.159:49210          63.241.108.124:80    CLOSED           -------- --------------
+0x3dab8570         TCPv4    192.168.228.159:49203          70.37.57.244:80      CLOSED           -------- --------------
+0x3dad6008         TCPv4    192.168.228.159:49202          64.4.11.25:80        CLOSED           -------- --------------
+0x3ef65af8         UDPv4    192.168.228.159:138            *:*                                   <span class="m">4</span>        System         2013-10-15 18:48:52 UTC+0000
+0x3f309200         TCPv4    192.168.228.159:49204          65.55.57.27:80       CLOSED           -------- --------------
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>Indicators and Investigation</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#whois 64.4.11.25</span>
+NetRange:       64.4.0.0 - 64.4.63.255
+CIDR:           64.4.0.0/18
+NetName:        MICROSOFT
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#whois  70.37.57.244</span>
+NetRange:       70.37.0.0 - 70.37.191.255
+CIDR:           70.37.128.0/18, 70.37.0.0/17
+NetName:        MICROSOFT
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>With Yara</h1></header>
+            
+            
+            <section><p>Use yara to discover web related activity in memory </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 yarascan --wide -Y &quot;http&quot;</span>
+<span class="n">Rule</span><span class="p">:</span> <span class="n">r1</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">taskhost</span><span class="o">.</span><span class="n">exe</span> <span class="n">Pid</span> <span class="mi">320</span>
+<span class="mh">0x772c5eb0</span>  <span class="mi">68</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mi">70</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">66</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span>   <span class="n">h</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">p</span><span class="o">.....</span><span class="n">f</span><span class="o">.</span><span class="n">t</span><span class="o">.</span>
+<span class="mh">0x772c5ec0</span>  <span class="mi">70</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">67</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">f</span> <span class="mo">00</span> <span class="mi">70</span> <span class="mo">00</span> <span class="mi">68</span> <span class="mo">00</span> <span class="mi">65</span> <span class="mo">00</span> <span class="mi">72</span> <span class="mo">00</span>   <span class="n">p</span><span class="o">...</span><span class="n">g</span><span class="o">.</span><span class="n">o</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">h</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">r</span><span class="o">.</span>
+<span class="mh">0x772c5ed0</span>  <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">d</span> <span class="mo">00</span> <span class="mi">61</span> <span class="mo">00</span> <span class="mi">69</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">c</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">f</span> <span class="mo">00</span>   <span class="o">....</span><span class="n">m</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">o</span><span class="o">.</span>
+<span class="mh">0x772c5ee0</span>  <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">65</span> <span class="mo">00</span> <span class="mi">77</span> <span class="mo">00</span> <span class="mi">73</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="o">....</span><span class="n">n</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">s</span><span class="o">.....</span>
+<span class="mh">0x772c5ef0</span>  <span class="mi">6</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mi">70</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mi">65</span> <span class="mo">00</span>   <span class="n">n</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">p</span><span class="o">.....</span><span class="n">t</span><span class="o">.</span><span class="n">e</span><span class="o">.</span>
+<span class="mh">0x772c5f00</span>  <span class="mi">6</span><span class="n">c</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">65</span> <span class="mo">00</span> <span class="mi">74</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">77</span> <span class="mo">00</span> <span class="mi">61</span> <span class="mo">00</span>   <span class="n">l</span><span class="o">.</span><span class="n">n</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">t</span><span class="o">.....</span><span class="n">w</span><span class="o">.</span><span class="n">a</span><span class="o">.</span>
+<span class="mh">0x772c5f10</span>  <span class="mi">69</span> <span class="mo">00</span> <span class="mi">73</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">d</span> <span class="mo">00</span> <span class="mi">6</span><span class="n">b</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="n">i</span><span class="o">.</span><span class="n">s</span><span class="o">.....</span><span class="n">m</span><span class="o">.</span><span class="n">k</span><span class="o">.....</span>
+</pre></div>
+
+<p>Find a firewall log for an IP address?</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 yarascan --wide -Y &quot;192.168&quot;</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">VSSVC</span><span class="o">.</span><span class="n">exe</span> <span class="n">Pid</span> <span class="mi">580</span>
+<span class="mh">0x002d84b8</span>  <span class="mi">31</span> <span class="mo">00</span> <span class="mi">39</span> <span class="mo">00</span> <span class="mi">32</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">31</span> <span class="mo">00</span> <span class="mi">36</span> <span class="mo">00</span> <span class="mi">38</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span>   <span class="mf">1.9</span><span class="o">.</span><span class="mf">2.</span><span class="o">..</span><span class="mf">1.6</span><span class="o">.</span><span class="mf">8.</span><span class="o">..</span>
+<span class="mh">0x002d84c8</span>  <span class="mi">32</span> <span class="mo">00</span> <span class="mi">32</span> <span class="mo">00</span> <span class="mi">38</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">31</span> <span class="mo">00</span> <span class="mi">35</span> <span class="mo">00</span> <span class="mi">39</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="mf">2.2</span><span class="o">.</span><span class="mf">8.</span><span class="o">..</span><span class="mf">1.5</span><span class="o">.</span><span class="mf">9.</span><span class="o">..</span>
+<span class="n">Owner</span><span class="p">:</span> <span class="n">Process</span> <span class="n">VSSVC</span><span class="o">.</span><span class="n">exe</span> <span class="n">Pid</span> <span class="mi">580</span>
+<span class="mh">0x0029f620</span>  <span class="mi">31</span> <span class="mo">00</span> <span class="mi">39</span> <span class="mo">00</span> <span class="mi">32</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">31</span> <span class="mo">00</span> <span class="mi">36</span> <span class="mo">00</span> <span class="mi">38</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span>   <span class="mf">1.9</span><span class="o">.</span><span class="mf">2.</span><span class="o">..</span><span class="mf">1.6</span><span class="o">.</span><span class="mf">8.</span><span class="o">..</span>
+<span class="mh">0x0029f630</span>  <span class="mi">32</span> <span class="mo">00</span> <span class="mi">32</span> <span class="mo">00</span> <span class="mi">38</span> <span class="mo">00</span> <span class="mi">2</span><span class="n">e</span> <span class="mo">00</span> <span class="mi">31</span> <span class="mo">00</span> <span class="mi">35</span> <span class="mo">00</span> <span class="mi">39</span> <span class="mo">00</span> <span class="mo">00</span> <span class="mo">00</span>   <span class="mf">2.2</span><span class="o">.</span><span class="mf">8.</span><span class="o">..</span><span class="mf">1.5</span><span class="o">.</span><span class="mf">9.</span><span class="o">..</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>Slim it down</h1></header>
+            
+            
+            <section><p>From knowing what processes had network connections, use -p to find only connections that appeared malicious </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 yarascan --wide -Y &quot;http&quot; -p 520</span>
+Volatility Foundation Volatility Framework 2.4
+Rule: r1
+Owner: Process lsass.exe Pid 520
+0x752bd3a4  <span class="m">68</span> <span class="m">00</span> <span class="m">74</span> <span class="m">00</span> <span class="m">74</span> <span class="m">00</span> <span class="m">70</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">90</span> <span class="m">90</span> 6e <span class="m">00</span> <span class="m">63</span> <span class="m">00</span>   h.t.t.p.....n.c.
+0x752bd3b4  <span class="m">61</span> <span class="m">00</span> 6c <span class="m">00</span> <span class="m">72</span> <span class="m">00</span> <span class="m">70</span> <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 6e <span class="m">00</span> <span class="m">63</span> <span class="m">00</span>   a.l.r.p.c...n.c.
+0x752bd3c4  <span class="m">61</span> <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> 6e <span class="m">00</span> 5f <span class="m">00</span> 6e <span class="m">00</span> <span class="m">70</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">90</span> <span class="m">90</span>   a.c.n._.n.p.....
+0x752bd3d4  6e <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> <span class="m">61</span> <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> 6e <span class="m">00</span> 5f <span class="m">00</span> <span class="m">69</span> <span class="m">00</span> <span class="m">70</span> <span class="m">00</span>   n.c.a.c.n._.i.p.
+0x752bd3e4  5f <span class="m">00</span> <span class="m">74</span> <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> <span class="m">70</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> 8b   _.t.c.p.........
+0x752bd3f4  ff <span class="m">55</span> 8b ec <span class="m">83</span> ec 0c 8b <span class="m">45</span> <span class="m">08</span> c1 e0 <span class="m">02</span> 8b <span class="m">88</span> <span class="m">74</span>   .U......E......t
+0x752bd404  ad <span class="m">32</span> <span class="m">75</span> <span class="m">33</span> d2 c7 <span class="m">45</span> f4 0c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> c7 <span class="m">45</span> f8 <span class="m">04</span>   .2u3..E......E..
+0x752bd414  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">89</span> <span class="m">55</span> <span class="nb">fc </span>3b ca 0f <span class="m">84</span> 9d <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">56</span> 8d   ....U.<span class="p">;</span>.......V.
+0x752bd424  <span class="m">75</span> f4 <span class="m">56</span> <span class="m">52</span> <span class="m">51</span> 6a 0a ff b0 <span class="m">60</span> ad <span class="m">32</span> <span class="m">75</span> ff <span class="m">15</span> d8   u.VRQj...<span class="sb">`</span>.2u...
+0x752bd434  <span class="m">90</span> <span class="m">32</span> <span class="m">75</span> 5e c9 c2 <span class="m">04</span> <span class="m">00</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> ff <span class="m">25</span> e4   .2u^..........%.
+0x752bd444  <span class="m">13</span> 2b <span class="m">75</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> <span class="m">90</span> 6a <span class="m">64</span> <span class="m">68</span> <span class="m">80</span> d5 2b <span class="m">75</span> e8   .+u.....jdh..+u.
+0x752bd454  9c <span class="m">41</span> ff ff <span class="m">33</span> f6 <span class="m">89</span> <span class="m">75</span> e0 c6 <span class="m">45</span> e7 <span class="m">00</span> c6 <span class="m">45</span> e6   .A..3..u..E...E.
+0x752bd464  <span class="m">00</span> <span class="m">32</span> db <span class="m">89</span> <span class="m">75</span> d0 <span class="m">89</span> <span class="m">75</span> dc <span class="m">33</span> d2 <span class="m">42</span> <span class="m">89</span> <span class="m">55</span> d4 <span class="m">89</span>   .2..u..u.3.B.U..
+0x752bd474  <span class="m">75</span> cc 6a <span class="m">07</span> <span class="m">59</span> <span class="m">33</span> c0 8d 7d b0 f3 ab 6a <span class="m">09</span> <span class="m">59</span> 8d   u.j.Y3..<span class="o">}</span>...j.Y.
+0x752bd484  7d 8c f3 ab <span class="m">89</span> <span class="m">75</span> <span class="nb">fc </span><span class="m">52</span> <span class="m">56</span> <span class="m">56</span> ff <span class="m">15</span> 8c <span class="m">92</span> <span class="m">32</span> <span class="m">75</span>   <span class="o">}</span>....u.RVV....2u
+0x752bd494  <span class="m">89</span> <span class="m">45</span> d0 3b c6 0f <span class="m">84</span> bc <span class="m">16</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">85</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .E.<span class="p">;</span>.......h....
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-31">
+          <div class="inner">
+            
+            <header><h1>Hiding Information</h1></header>
+            
+            
+            <section><p>Hook user mode APIs </p>
+<ul>
+<li>DeviceIoControl</li>
+<li>ZqDeviceIoControlFile</li>
+<li>GetTcpTable</li>
+</ul>
+<p>Install Kernel Drive to hook tcpip.sys driver</p>
+<p>Create a driver, NDIS, to operate lower than Winsock2 and bypass socket and connection object creation </p>
+<ul>
+<li>The Network Driver Interface Specification (NDIS) library abstracts the network hardware from network drivers.</li>
+</ul>
+<p>Pooltag scanning eliminates these. Also finding IP packets or eth frames in memory dump. </p>
+<p>*Note: DKOM does not work on TCP/IP structures, but you can overwrite pool tags. *</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Raw Sockets</h1></header>
+            
+            
+            <section><p>Admin processes can enable raw sockets through Winsock2.</p>
+<p>Enable programs to access transport layer data and forge/spoof packets.</p>
+<p>Can use raw sockets in promiscuous mode and capture information going over wire.</p>
+<ul>
+<li>Passes and receives all traffic. Packet sniffing. </li>
+</ul>
+<p>Two types:</p>
+<ul>
+<li>IP header and recognized by Winsock service provider.</li>
+<li>Any protocol. Make your own! </li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre><span class="n">SOCKET</span> <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">IPPROTO_IP</span><span class="p">);</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>Detecting Raw Sockets</h1></header>
+            
+            
+            <section><p>Live: Promiscdetect</p>
+<p>Volatility: Sockets or Handles</p>
+<p>Look for oddly named protocols </p>
+<div class="highlight"><pre><span class="nv">$ </span>python vol.py sockets -f ursniff.vmem --profile<span class="o">=</span>WinXPSP3x86
+Volatility Foundation Volatility Framework 2.4
+PID Port Proto Protocol Address Create Time
+-------- ------ ------ --------------- --------------- -----------
+<span class="m">1052</span> <span class="m">123</span> <span class="m">17</span> UDP 172.16.99.130 2009-11-18 01:23:24
+<span class="m">716</span> <span class="m">500</span> <span class="m">17</span> UDP 0.0.0.0 2009-11-18 01:23:20
+<span class="m">1824</span> <span class="m">0</span> <span class="m">0</span> HOPOPT 172.16.99.130 2010-01-07 20:29:10
+<span class="o">[</span>...<span class="o">]</span>
+<span class="nv">$ </span>python vol.py files -p <span class="m">1824</span> -f ursniff.vmem --profile<span class="o">=</span>WinXPSP3x86
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span> Pid Handle Access Type Details
+---------- ------ ---------- ---------- ---------------- -------
+0x818f9f90 <span class="m">1824</span> 0xa0 0x1f01ff File <span class="se">\D</span>evice<span class="se">\A</span>fd<span class="se">\E</span>ndpoint
+0x814d4b70 <span class="m">1824</span> 0xa8 0x1f01ff File <span class="se">\D</span>evice<span class="se">\R</span>awIp<span class="se">\0</span>
+0x8145bf90 <span class="m">1824</span> 0xd0 0x1f01ff File <span class="se">\D</span>evice<span class="se">\A</span>fd<span class="se">\E</span>ndpoint
+0x8155cf90 <span class="m">1824</span> 0xd4 0x1f01ff File <span class="se">\D</span>evice<span class="se">\T</span>cp
+<span class="o">[</span>...<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-34">
+          <div class="inner">
+            
+            <header><h1>Windows Vista+</h1></header>
+            
+            
+            <section><p><img alt="tcpPart" src="..\slideResources\networking\tcpPart.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            
+            <section><p><img alt="openPorts" src="..\slideResources\networking\openPorts.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Internet History</h1></header>
+            
+            
+            <section><p>Chrome and Firefox use a SQLite database.</p>
+<ul>
+<li>That database is opened and read when a browser loads</li>
+</ul>
+<p>Internet Explorer</p>
+<ul>
+<li>Uses .dat files</li>
+<li>Index .dat is history</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Obtaining History</h1></header>
+            
+            
+            <section><ol>
+<li>Find internet process</li>
+<li>Locate signature of database or file</li>
+<li>????</li>
+<li>Profit</li>
+</ol>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 pslist | grep iexplore</span>
+Volatility Foundation Volatility Framework 2.4
+0x81d79da0 iexplore.exe           <span class="m">1052</span>   <span class="m">1756</span>     <span class="m">12</span>      <span class="m">484</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-06 19:03:42 UTC+0000
+0x81fa8ad0 iexplore.exe           <span class="m">1332</span>   <span class="m">1052</span>     <span class="m">20</span>      <span class="m">797</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-06 19:03:46 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-38">
+          <div class="inner">
+            
+            <header><h1>Cont</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 yarascan -p 1052,1332 -Y &quot;/(URL |REDR|LEAK)/&quot;</span>
+
+Owner: Process iexplore.exe Pid 1332
+0x01115600  <span class="m">55</span> <span class="m">52</span> 4c <span class="m">20</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> f0 9a ab 8d <span class="m">76</span> <span class="m">70</span> d0 <span class="m">01</span>   URL.........vp..
+0x01115610  f0 a2 <span class="m">81</span> <span class="m">76</span> a0 <span class="m">70</span> d0 <span class="m">01</span> a2 <span class="m">46</span> <span class="m">18</span> 9c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ...v.p...F......
+0x01115620  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">80</span> <span class="m">51</span> <span class="m">01</span> <span class="m">00</span>   .............Q..
+0x01115630  <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> fe <span class="m">00</span> <span class="m">10</span> <span class="m">10</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   <span class="sb">`</span>...h...........
+0x01115640  <span class="m">04</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x01115650  <span class="m">86</span> <span class="m">46</span> <span class="m">18</span> 9c <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .F..............
+0x01115660  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ef be ad de 3a <span class="m">32</span> <span class="m">30</span> <span class="m">31</span> <span class="m">35</span> <span class="m">30</span> <span class="m">34</span> <span class="m">30</span>   ........:2015040
+0x01115670  <span class="m">36</span> <span class="m">32</span> <span class="m">30</span> <span class="m">31</span> <span class="m">35</span> <span class="m">30</span> <span class="m">34</span> <span class="m">30</span> <span class="m">37</span> 3a <span class="m">20</span> <span class="m">41</span> <span class="m">64</span> 6d <span class="m">69</span> 6e   620150407:.Admin
+0x01115680  <span class="m">40</span> <span class="m">68</span> <span class="m">74</span> <span class="m">74</span> <span class="m">70</span> 3a 2f 2f <span class="m">77</span> <span class="m">77</span> <span class="m">77</span> 2e <span class="m">68</span> <span class="m">61</span> 6e <span class="m">64</span>   @http://www.hand
+0x01115690  <span class="m">67</span> <span class="m">72</span> <span class="m">65</span> <span class="m">70</span> 2e <span class="m">73</span> <span class="m">65</span> 2f <span class="m">72</span> <span class="m">65</span> <span class="m">70</span> 6f <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> 6f   grep.se/reposito
+0x011156a0  <span class="m">72</span> <span class="m">79</span> 2f <span class="m">73</span> 6f <span class="m">75</span> <span class="m">72</span> <span class="m">63</span> <span class="m">65</span> <span class="m">73</span> 2f <span class="m">52</span> 6f 6f <span class="m">74</span> 6b   ry/sources/Rootk
+0x011156b0  <span class="m">69</span> <span class="m">74</span> <span class="m">73</span> 2f <span class="m">64</span> <span class="m">72</span> <span class="m">69</span> <span class="m">76</span> <span class="m">65</span> <span class="m">72</span> 5f 6c 6f <span class="m">61</span> <span class="m">64</span> <span class="m">65</span>   its/driver_loade
+0x011156c0  <span class="m">72</span> 2e <span class="m">63</span> <span class="m">00</span> ef be ad de ef be ad de ef be ad de   r.c.............
+Rule: r1
+Owner: Process iexplore.exe Pid 1052
+0x00b08b80  <span class="m">55</span> <span class="m">52</span> 4c <span class="m">20</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">30</span> <span class="m">39</span> 6d <span class="nb">cd </span>a0 <span class="m">70</span> d0 <span class="m">01</span>   URL.....09m..p..
+0x00b08b90  <span class="m">30</span> <span class="m">39</span> 6d <span class="nb">cd </span>a0 <span class="m">70</span> d0 <span class="m">01</span> a2 <span class="m">46</span> <span class="m">83</span> 9b <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   09m..p...F......
+0x00b08ba0  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b08bb0  <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> fe <span class="m">00</span> <span class="m">10</span> <span class="m">10</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   <span class="sb">`</span>...h...........
+0x00b08bc0  <span class="m">01</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span> 9c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">14</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b08bd0  <span class="m">86</span> <span class="m">46</span> <span class="m">67</span> 9c <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .Fg.............
+0x00b08be0  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ef be ad de <span class="m">56</span> <span class="m">69</span> <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> <span class="m">65</span> <span class="m">64</span> 3a   ........Visited:
+0x00b08bf0  <span class="m">20</span> <span class="m">41</span> <span class="m">64</span> 6d <span class="m">69</span> 6e <span class="m">40</span> <span class="m">68</span> <span class="m">74</span> <span class="m">74</span> <span class="m">70</span> 3a 2f 2f <span class="m">77</span> <span class="m">77</span>   .Admin@http://ww
+0x00b08c00  <span class="m">77</span> 2e 6f <span class="m">73</span> <span class="m">72</span> 6f 6e 6c <span class="m">69</span> 6e <span class="m">65</span> 2e <span class="m">63</span> 6f 6d 2f   w.osronline.com/
+0x00b08c10  6c 6f <span class="m">67</span> <span class="m">69</span> 6e 2e <span class="m">63</span> <span class="m">66</span> 6d <span class="m">00</span> ad de <span class="m">10</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span>   login.cfm.......
+Rule: r1
+Owner: Process iexplore.exe Pid 1052
+0x00b06700  <span class="m">55</span> <span class="m">52</span> 4c <span class="m">20</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> e0 2a <span class="m">22</span> d1 a0 <span class="m">70</span> d0 <span class="m">01</span>   URL......*<span class="s2">&quot;..p..</span>
+<span class="s2">0x00b06710  e0 2a 22 d1 a0 70 d0 01 a2 46 86 9b 00 00 00 00   .*&quot;</span>..p...F......
+0x00b06720  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b06730  <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> fe <span class="m">00</span> <span class="m">10</span> <span class="m">10</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   <span class="sb">`</span>...h...........
+0x00b06740  <span class="m">01</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span> <span class="m">98</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">14</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b06750  <span class="m">86</span> <span class="m">46</span> 6a 9c <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .Fj.............
+0x00b06760  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ef be ad de <span class="m">56</span> <span class="m">69</span> <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> <span class="m">65</span> <span class="m">64</span> 3a   ........Visited:
+0x00b06770  <span class="m">20</span> <span class="m">41</span> <span class="m">64</span> 6d <span class="m">69</span> 6e <span class="m">40</span> <span class="m">66</span> <span class="m">69</span> 6c <span class="m">65</span> 3a 2f 2f 2f <span class="m">43</span>   .Admin@file:///C
+0x00b06780  3a 2f <span class="m">62</span> <span class="m">69</span> 6e 2f 6f <span class="m">73</span> <span class="m">72</span> 6c 6f <span class="m">61</span> <span class="m">64</span> <span class="m">65</span> <span class="m">72</span> <span class="m">76</span>   :/bin/osrloaderv
+0x00b06790  <span class="m">33</span> <span class="m">30</span> 2e 7a <span class="m">69</span> <span class="m">70</span> <span class="m">00</span> de <span class="m">10</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">10</span>   30.zip..........
+Rule: r1
+Owner: Process iexplore.exe Pid 1052
+0x00b01c80  <span class="m">55</span> <span class="m">52</span> 4c <span class="m">20</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> b0 <span class="m">57</span> <span class="m">91</span> <span class="m">27</span> 8c 6d d0 <span class="m">01</span>   URL......W.<span class="s1">&#39;.m..</span>
+<span class="s1">0x00b01c90  b0 57 91 27 8c 6d d0 01 9c 46 bb ab 00 00 00 00   .W.&#39;</span>.m...F......
+0x00b01ca0  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b01cb0  <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> fe <span class="m">00</span> <span class="m">10</span> <span class="m">10</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   <span class="sb">`</span>...h...........
+0x00b01cc0  <span class="m">01</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span> <span class="m">90</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">14</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b01cd0  <span class="m">82</span> <span class="m">46</span> bb ab <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .F..............
+0x00b01ce0  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ef be ad de <span class="m">56</span> <span class="m">69</span> <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> <span class="m">65</span> <span class="m">64</span> 3a   ........Visited:
+0x00b01cf0  <span class="m">20</span> <span class="m">41</span> <span class="m">64</span> 6d <span class="m">69</span> 6e <span class="m">40</span> <span class="m">66</span> <span class="m">69</span> 6c <span class="m">65</span> 3a 2f 2f 2f <span class="m">43</span>   .Admin@file:///C
+0x00b01d00  3a 2f <span class="m">62</span> <span class="m">69</span> 6e 2f <span class="m">67</span> <span class="m">65</span> <span class="m">74</span> <span class="m">70</span> <span class="m">69</span> <span class="m">70</span> 2e <span class="m">70</span> <span class="m">79</span> <span class="m">00</span>   :/bin/getpip.py.
+Owner: Process iexplore.exe Pid 1052
+0x00b00d00  <span class="m">55</span> <span class="m">52</span> 4c <span class="m">20</span> <span class="m">04</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">10</span> <span class="m">18</span> 6c <span class="m">73</span> 8b 6d d0 <span class="m">01</span>   URL.......ls.m..
+0x00b00d10  <span class="m">00</span> <span class="m">62</span> 6e <span class="m">73</span> 8b 6d d0 <span class="m">01</span> 9c <span class="m">46</span> <span class="m">19</span> ab <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .bns.m...F......
+0x00b00d20  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b00d30  <span class="m">60</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> fe <span class="m">00</span> <span class="m">10</span> <span class="m">10</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   <span class="sb">`</span>...h...........
+0x00b00d40  <span class="m">01</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span> cc <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> bc <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+0x00b00d50  <span class="m">82</span> <span class="m">46</span> <span class="m">19</span> ab 1b <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   .F..............
+0x00b00d60  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> ef be ad de <span class="m">56</span> <span class="m">69</span> <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> <span class="m">65</span> <span class="m">64</span> 3a   ........Visited:
+0x00b00d70  <span class="m">20</span> <span class="m">41</span> <span class="m">64</span> 6d <span class="m">69</span> 6e <span class="m">40</span> <span class="m">68</span> <span class="m">74</span> <span class="m">74</span> <span class="m">70</span> <span class="m">73</span> 3a 2f 2f <span class="m">69</span>   .Admin@https://i
+0x00b00d80  <span class="m">73</span> <span class="m">63</span> 2e <span class="m">73</span> <span class="m">61</span> 6e <span class="m">73</span> 2e <span class="m">65</span> <span class="m">64</span> <span class="m">75</span> 2f 2f <span class="m">64</span> <span class="m">69</span> <span class="m">61</span>   sc.sans.edu//dia
+0x00b00d90  <span class="m">72</span> <span class="m">79</span> 2f <span class="m">57</span> <span class="m">69</span> 6e <span class="m">70</span> 6d <span class="m">65</span> 6d 2b 2d 2b 4d <span class="m">69</span> 6c   ry/Winpmem+-+Mil
+0x00b00da0  <span class="m">64</span> 2b 6d <span class="m">61</span> 6e 6e <span class="m">65</span> <span class="m">72</span> <span class="m">65</span> <span class="m">64</span> 2b 6d <span class="m">65</span> 6d 6f <span class="m">72</span>   d+mannered+memor
+0x00b00db0  <span class="m">79</span> 2b <span class="m">61</span> <span class="m">71</span> <span class="m">75</span> <span class="m">69</span> <span class="m">73</span> <span class="m">69</span> <span class="m">74</span> <span class="m">69</span> 6f 6e 2b <span class="m">74</span> 6f 6f   y+aquisition+too
+0x00b00dc0  6c 3f <span class="m">25</span> <span class="m">33</span> <span class="m">66</span> 2f <span class="m">31</span> <span class="m">37</span> <span class="m">30</span> <span class="m">35</span> <span class="m">34</span> <span class="m">00</span> <span class="m">10</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span>   l?%3f/17054.....
+0x00b00dd0  <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> a8 <span class="m">00</span> <span class="m">10</span> 1f   ................
+0x00b00de0  <span class="m">49</span> <span class="m">00</span> 6e <span class="m">00</span> <span class="m">66</span> <span class="m">00</span> 6f <span class="m">00</span> <span class="m">53</span> <span class="m">00</span> <span class="m">65</span> <span class="m">00</span> <span class="m">63</span> <span class="m">00</span> <span class="m">20</span> <span class="m">00</span>   I.n.f.o.S.e.c...
+0x00b00df0  <span class="m">48</span> <span class="m">00</span> <span class="m">61</span> <span class="m">00</span> 6e <span class="m">00</span> <span class="m">64</span> <span class="m">00</span> 6c <span class="m">00</span> <span class="m">65</span> <span class="m">00</span> <span class="m">72</span> <span class="m">00</span> <span class="m">73</span> <span class="m">00</span>   H.a.n.d.l.e.r.s.
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-39">
+          <div class="inner">
+            
+            <header><h1>SO what?</h1></header>
+            
+            
+            <section><p>We know pip was at least downloaded</p>
+<p>We know OSRLOADER was downloaded</p>
+<ul>
+<li>Remember lab 2?</li>
+</ul>
+<p>We know winpmem was accessed from the web </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-40">
+          <div class="inner">
+            
+            <header><h1>IEHistory</h1></header>
+            
+            
+            <section><p>Reconstruct Internet Explorer cache / history</p>
+<p>Output IE history in csv or text</p>
+<div class="highlight"><pre>  -o OFFSET, --offset<span class="o">=</span>OFFSET
+                        EPROCESS offset <span class="o">(</span>in hex<span class="o">)</span> in the physical address space
+  -p PID, --pid<span class="o">=</span>PID     Operate on these Process IDs <span class="o">(</span>comma-separated<span class="o">)</span>
+  -n NAME, --name<span class="o">=</span>NAME  Operate on these process names <span class="o">(</span>regex<span class="o">)</span>
+  -L, --leak            Find LEAK records <span class="o">(</span>deleted<span class="o">)</span>
+  -R, --redr            Find REDR records <span class="o">(</span>redirected<span class="o">)</span>
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 iehistory -p 1052,1332</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+Process: <span class="m">1052</span> iexplore.exe
+Cache <span class="nb">type</span> <span class="s2">&quot;URL &quot;</span> at 0xae5000
+Record length: 0x100
+Location: Cookie:admin@www.bing.com/
+Last modified: 2015-04-02 19:50:50 UTC+0000
+Last accessed: 2015-04-06 19:34:03 UTC+0000
+File Offset: 0x100, Data Offset: 0x84, Data Length: 0x0
+File: UAPOKXN1.txt
+**************************************************
+Process: <span class="m">1332</span> iexplore.exe
+Cache <span class="nb">type</span> <span class="s2">&quot;URL &quot;</span> at 0x1075400
+Record length: 0x100
+Location: DOMStore:http://pip.pypa.io/
+Last modified: 1970-01-01 00:00:00 UTC+0000
+Last accessed: 2015-04-02 21:28:24 UTC+0000
+File Offset: 0x100, Data Offset: 0x88, Data Length: 0x0
+File: pip.pypa<span class="o">[</span>1<span class="o">]</span>.xml
+**************************************************
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-41">
+          <div class="inner">
+            
+            <header><h1>Chrome and Firefox?</h1></header>
+            
+            
+            <section><p>Brute force!</p>
+<p>Use <a href="http://regexlib.com/search.aspx?k=UR">regex</a> and yara!</p>
+<p>Websites: "/[a-zA-Z0-9-.]+.(com|org|net|mil|edu|biz|name|info)/"</p>
+<p>Mail: ((mailto\:|(news|(ht|f)tp(s?))\://){1}\S+)</p>
+<p>Http: ^http\://[a-zA-Z0-9-.]+.[a-zA-Z]{2,3}(/\S*)?$</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>DNS Cache</h1></header>
+            
+            
+            <section><p>Svchost.exe runs DNS resolver</p>
+<ul>
+<li>Information stored in heap</li>
+</ul>
+<p>system32\drivers\etc\hosts</p>
+<ul>
+<li>Find using filescan</li>
+<li>Dump using dumpfiles</li>
+<li>read</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-43">
+          <div class="inner">
+            
+            <header><h1>Hosts</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 filescan | grep hosts</span>
+Volatility Foundation Volatility Framework 2.4
+0x0000000002089028      <span class="m">1</span>      <span class="m">0</span> R--rw- <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#mkdir hosts</span>
+/bin/mkdir: created directory <span class="sb">`</span>hosts<span class="err">&#39;</span>
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 dumpfiles -Q 0x0000000002089028 -D hosts/ --name</span>
+Volatility Foundation Volatility Framework 2.4
+DataSectionObject 0x02089028   None   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat hosts/file.None.0x8221fb30.hosts.dat</span>
+127.0.0.1       localhost
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week05_02-Networking.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-44">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week05_02-Networking.md">week05_02-Networking.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/44
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Networking</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Sockets and Connections</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Creating Sockets</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">-</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Winsock</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Berkeley Compatible Sockets</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Establishing a connection</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">-</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">What to look for</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Structures</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">In Memory</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Port Numbers</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Sockets</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Sorted</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">What are they?</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Connections</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">connscan</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">sockscan</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Malicious?</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">API calls to watch</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">IDA Networking Calls</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">-</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Netscan</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Structures TCP</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Structures UDP</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Netscan</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Indicators and Investigation</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">With Yara</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Slim it down</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Hiding Information</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Raw Sockets</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Detecting Raw Sockets</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Windows Vista+</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">-</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Internet History</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Obtaining History</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Cont</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">SO what?</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">IEHistory</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Chrome and Firefox?</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">DNS Cache</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Hosts</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">EOF</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
