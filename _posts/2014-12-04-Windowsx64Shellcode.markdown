@@ -4,6 +4,7 @@ title: "Windows x64 Shellcode"
 date: 2014-12-04
 categories: shellcode, windows, x64, 64bit, win64
 ---
+
 ### Introduction
  Recently I have been rewriting several pieces of shellcode that I have implemented for x86 Windows into x64 and have had a hard time finding resources online that aided in my endeavors. I wanted to write a blog post (my first one) in order to hopefully help someone that is or will be in the position that I was in while trying to port over shellcode. 
 
