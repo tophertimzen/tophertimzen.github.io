@@ -113,13 +113,16 @@ In win64 the calling convention is different and is similar to Win32 fast call a
 
 A call to the MessageBox function in the Windows API for example is declared as follows: 
 
-	int WINAPI MessageBox(
-	_In_opt_  HWND hWnd,
-	_In_opt_  LPCTSTR lpText,
-	_In_opt_  LPCTSTR lpCaption,
-	_In_      UINT uType
-	);
+{% highlight bash %}
 
+int WINAPI MessageBox(
+_In_opt_  HWND hWnd,
+_In_opt_  LPCTSTR lpText,
+_In_opt_  LPCTSTR lpCaption,
+_In_      UINT uType
+);
+
+{% endhighlight %}
 
 In the Win64 convention the arguments would be:
 
@@ -151,19 +154,23 @@ Open your favorite text editor, mine is Notepad++ for windows, and start typing!
 
 1.) Declare the NASM directives. 
 
+{% highlight asm %}
  
-	bits 64 
-	section .text
-	global start
- 
+bits 64 
+section .text
+global start
+
+{% endhighlight %}
 
 2.) Set up the stack
 
+{% highlight asm %}
  
-	start: 
-		sub rsp, 28h				;reserve stack space for called functions
-		and rsp, 0fffffffffffffff0h ;make sure stack 16-byte aligned   
+start: 
+	sub rsp, 28h				;reserve stack space for called functions
+	and rsp, 0fffffffffffffff0h ;make sure stack 16-byte aligned   
 
+{% endhighlight %}
 
 3.) Let's get the base address of Kernel32.dll. 
 
@@ -176,30 +183,38 @@ While the PEB struct has changed dramatically,
 we only care about the LDR list which can be seen by using the "!peb" command in Windbg. 
 
 Notice how in the Windbg output of the PEB, the Ldr.InMemoryOrderModuleList contained kernel32.dll and it was the third entry. This list shows where PE files are in memory (consisting of both executables and dynamically linked libraries).
-  
-  Ldr.InMemoryOrderModuleList:         00000000002b3150 . 00000000002b87d0
-            Base TimeStamp                     Module
-        ff600000 4a5bc9d4 Jul 13 16:57:08 2009 C:\Windows\System32\calc.exe
-        77b90000 4ce7c8f9 Nov 20 05:11:21 2010 C:\Windows\SYSTEM32\ntdll.dll
-        77970000 4ce7c78b Nov 20 05:05:15 2010 C:\Windows\system32\kernel32.dll
+
+{% highlight bash %}
+
+Ldr.InMemoryOrderModuleList:         00000000002b3150 . 00000000002b87d0
+        Base TimeStamp                     Module
+    ff600000 4a5bc9d4 Jul 13 16:57:08 2009 C:\Windows\System32\calc.exe
+    77b90000 4ce7c8f9 Nov 20 05:11:21 2010 C:\Windows\SYSTEM32\ntdll.dll
+    77970000 4ce7c78b Nov 20 05:05:15 2010 C:\Windows\system32\kernel32.dll
+
+{% endhighlight %}
 
 By filling the PEB structure in windbg, the location of the Ldr list is determined. 
 
-	0:000> dt _PEB 000007fffffd4000
-	ntdll!_PEB
-	   +0x000 InheritedAddressSpace : 0 ''
-	   +0x001 ReadImageFileExecOptions : 0 ''
-	   +0x002 BeingDebugged    : 0x1 ''
-	   +0x003 BitField         : 0x8 ''
-	   +0x003 ImageUsesLargePages : 0y0
-	   +0x003 IsProtectedProcess : 0y0
-	   +0x003 IsLegacyProcess  : 0y0
-	   +0x003 IsImageDynamicallyRelocated : 0y1
-	   +0x003 SkipPatchingUser32Forwarders : 0y0
-	   +0x003 SpareBits        : 0y000
-	   +0x008 Mutant           : 0xffffffff`ffffffff Void
-	   +0x010 ImageBaseAddress : 0x00000000`ff600000 Void
-	   +0x018 Ldr              : 0x00000000`77cc2640 _PEB_LDR_DATA
+{% highlight bash %}
+
+0:000> dt _PEB 000007fffffd4000
+ntdll!_PEB
+   +0x000 InheritedAddressSpace : 0 ''
+   +0x001 ReadImageFileExecOptions : 0 ''
+   +0x002 BeingDebugged    : 0x1 ''
+   +0x003 BitField         : 0x8 ''
+   +0x003 ImageUsesLargePages : 0y0
+   +0x003 IsProtectedProcess : 0y0
+   +0x003 IsLegacyProcess  : 0y0
+   +0x003 IsImageDynamicallyRelocated : 0y1
+   +0x003 SkipPatchingUser32Forwarders : 0y0
+   +0x003 SpareBits        : 0y000
+   +0x008 Mutant           : 0xffffffff`ffffffff Void
+   +0x010 ImageBaseAddress : 0x00000000`ff600000 Void
+   +0x018 Ldr              : 0x00000000`77cc2640 _PEB_LDR_DATA
+
+{% endhighlight %}
 
 Ldr is at the 0x18th offset in the PEB. 
 
@@ -209,26 +224,36 @@ So far we know that we need to
 
 Further going into the LDR list, we need to access the InMemoryOrderModuleList. This is at offset 0x20 in the LDR struct as shown in the below output. 
 
-	0:000> dt _PEB_LDR_DATA 77cc2640
-	ntdll!_PEB_LDR_DATA
-	   +0x000 Length           : 0x58
-	   +0x004 Initialized      : 0x1 ''
-	   +0x008 SsHandle         : (null) 
-	   +0x010 InLoadOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3140 - 0x00000000`002b87c0 ]
-	   +0x020 InMemoryOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3150 - 0x00000000`002b87d0 ]
-	   +0x030 InInitializationOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3270 - 0x00000000`002b87e0 ]
-	   +0x040 EntryInProgress  : (null) 
-	   +0x048 ShutdownInProgress : 0 ''
-	   +0x050 ShutdownThreadId : (null)
+
+{% highlight bash %}
+
+0:000> dt _PEB_LDR_DATA 77cc2640
+ntdll!_PEB_LDR_DATA
+   +0x000 Length           : 0x58
+   +0x004 Initialized      : 0x1 ''
+   +0x008 SsHandle         : (null) 
+   +0x010 InLoadOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3140 - 0x00000000`002b87c0 ]
+   +0x020 InMemoryOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3150 - 0x00000000`002b87d0 ]
+   +0x030 InInitializationOrderModuleList : _LIST_ENTRY [ 0x00000000`002b3270 - 0x00000000`002b87e0 ]
+   +0x040 EntryInProgress  : (null) 
+   +0x048 ShutdownInProgress : 0 ''
+   +0x050 ShutdownThreadId : (null)
+
+{% endhighlight %}
 
 3.) At offset 0x20 is the InMemoryOrderModuleList. 
 
 From the figure that had the output of the InMemoryOrderModule list, it is shown that Kernel32.dll is the 3rd entry. The way that the _LIST_ENTRY struct works is as follows and is useful to know so that the base address of Kernel32 can be determined. 
 
-	0:000> dt _LIST_ENTRY
-	ntdll!_LIST_ENTRY
-	   +0x000 Flink            : Ptr64 _LIST_ENTRY
-	   +0x008 Blink            : Ptr64 _LIST_ENTRY
+{% highlight bash %}
+
+
+0:000> dt _LIST_ENTRY
+ntdll!_LIST_ENTRY
+   +0x000 Flink            : Ptr64 _LIST_ENTRY
+   +0x008 Blink            : Ptr64 _LIST_ENTRY
+
+{% endhighlight %}
 
 The lists contain a forward and backwards pointer and contains circular references. 
 
@@ -236,65 +261,73 @@ In Windbg, !list allows the traversal of these lists. with !list, -x can be used
 
 Will list all of the InMemoryOrderModule list and display the related _LDR_DATA_TABLE_ENTRY
 
-	   0:000> dt _LDR_DATA_TABLE_ENTRY
-	ntdll!_LDR_DATA_TABLE_ENTRY
-	   +0x000 InLoadOrderLinks : _LIST_ENTRY
-	   +0x010 InMemoryOrderLinks : _LIST_ENTRY
-	   +0x020 InInitializationOrderLinks : _LIST_ENTRY
-	   +0x030 DllBase          : Ptr64 Void
-	   +0x038 EntryPoint       : Ptr64 Void
-	   +0x040 SizeOfImage      : Uint4B
-	   +0x048 FullDllName      : _UNICODE_STRING
-	   +0x058 BaseDllName      : _UNICODE_STRING
-	   +0x068 Flags            : Uint4B
-	   +0x06c LoadCount        : Uint2B
-	   +0x06e TlsIndex         : Uint2B
-	   +0x070 HashLinks        : _LIST_ENTRY
-	   +0x070 SectionPointer   : Ptr64 Void
-	   +0x078 CheckSum         : Uint4B
-	   +0x080 TimeDateStamp    : Uint4B
-	   +0x080 LoadedImports    : Ptr64 Void
-	   +0x088 EntryPointActivationContext : Ptr64 _ACTIVATION_CONTEXT
-	   +0x090 PatchInformation : Ptr64 Void
-	   +0x098 ForwarderLinks   : _LIST_ENTRY
-	   +0x0a8 ServiceTagLinks  : _LIST_ENTRY
-	   +0x0b8 StaticLinks      : _LIST_ENTRY
-	   +0x0c8 ContextInformation : Ptr64 Void
-	   +0x0d0 OriginalBase     : Uint8B
-	   +0x0d8 LoadTime         : _LARGE_INTEGER
+{% highlight bash %}
+
+   0:000> dt _LDR_DATA_TABLE_ENTRY
+ntdll!_LDR_DATA_TABLE_ENTRY
+   +0x000 InLoadOrderLinks : _LIST_ENTRY
+   +0x010 InMemoryOrderLinks : _LIST_ENTRY
+   +0x020 InInitializationOrderLinks : _LIST_ENTRY
+   +0x030 DllBase          : Ptr64 Void
+   +0x038 EntryPoint       : Ptr64 Void
+   +0x040 SizeOfImage      : Uint4B
+   +0x048 FullDllName      : _UNICODE_STRING
+   +0x058 BaseDllName      : _UNICODE_STRING
+   +0x068 Flags            : Uint4B
+   +0x06c LoadCount        : Uint2B
+   +0x06e TlsIndex         : Uint2B
+   +0x070 HashLinks        : _LIST_ENTRY
+   +0x070 SectionPointer   : Ptr64 Void
+   +0x078 CheckSum         : Uint4B
+   +0x080 TimeDateStamp    : Uint4B
+   +0x080 LoadedImports    : Ptr64 Void
+   +0x088 EntryPointActivationContext : Ptr64 _ACTIVATION_CONTEXT
+   +0x090 PatchInformation : Ptr64 Void
+   +0x098 ForwarderLinks   : _LIST_ENTRY
+   +0x0a8 ServiceTagLinks  : _LIST_ENTRY
+   +0x0b8 StaticLinks      : _LIST_ENTRY
+   +0x0c8 ContextInformation : Ptr64 Void
+   +0x0d0 OriginalBase     : Uint8B
+   +0x0d8 LoadTime         : _LARGE_INTEGER
+
+{% endhighlight %}
 	   
 Note that in this struct, InLoadOrderLinks points to the next element, DllBase is the base address of the module and FullDllName is the Unicode string of it. 
 
-Because we know Kernel32.dll is the 3rd entry in this list, let's go to it. 
+Because we know Kernel32.dll is the 3rd entry in this list, let's go to it.
 
-	0:000> !list -t ntdll!_LIST_ENTRY.Flink  -x "dt _LDR_DATA_TABLE_ENTRY @$extret" 002b3270
-	---CUT
-	ntdll!_LDR_DATA_TABLE_ENTRY
-	   +0x000 InLoadOrderLinks : _LIST_ENTRY [ 0x00000000`002b3830 - 0x00000000`002b3260 ]
-	   +0x010 InMemoryOrderLinks : _LIST_ENTRY [ 0x00000000`002b4980 - 0x00000000`002b3840 ]
-	   +0x020 InInitializationOrderLinks : _LIST_ENTRY [ 0x00000000`77970000 - 0x00000000`77985ea0 ]
-	   +0x030 DllBase          : 0xbaadf00d`0011f000 Void
-	   +0x038 EntryPoint       : 0x00000000`00420040 Void
-	   +0x040 SizeOfImage      : 0x2b35c0
-	   +0x048 FullDllName      : _UNICODE_STRING "kernel32.dll"
-	   +0x058 BaseDllName      : _UNICODE_STRING "ꩀ矌"
-	   +0x068 Flags            : 0x77ccaa40
-	   +0x06c LoadCount        : 0
-	   +0x06e TlsIndex         : 0
-	   +0x070 HashLinks        : _LIST_ENTRY [ 0xbaadf00d`4ce7c78b - 0x00000000`00000000 ]
-	   +0x070 SectionPointer   : 0xbaadf00d`4ce7c78b Void
-	   +0x078 CheckSum         : 0
-	   +0x080 TimeDateStamp    : 0
-	   +0x080 LoadedImports    : (null) 
-	   +0x088 EntryPointActivationContext : 0x00000000`002b4d20 _ACTIVATION_CONTEXT
-	   +0x090 PatchInformation : 0x00000000`002b4d20 Void
-	   +0x098 ForwarderLinks   : _LIST_ENTRY [ 0x00000000`002b36e8 - 0x00000000`002b36e8 ]
-	   +0x0a8 ServiceTagLinks  : _LIST_ENTRY [ 0x00000000`002b3980 - 0x00000000`002b3750 ]
-	   +0x0b8 StaticLinks      : _LIST_ENTRY [ 0x00000000`77c95124 - 0x00000000`78d20000 ]
-	   +0x0c8 ContextInformation : 0x01d00f7c`80e29f8e Void
-	   +0x0d0 OriginalBase     : 0xabababab`abababab
-	   +0x0d8 LoadTime         : _LARGE_INTEGER 0xabababab`abababab
-	   ---CUT
+{% highlight bash %} 
+
+0:000> !list -t ntdll!_LIST_ENTRY.Flink  -x "dt _LDR_DATA_TABLE_ENTRY @$extret" 002b3270
+---CUT
+ntdll!_LDR_DATA_TABLE_ENTRY
+   +0x000 InLoadOrderLinks : _LIST_ENTRY [ 0x00000000`002b3830 - 0x00000000`002b3260 ]
+   +0x010 InMemoryOrderLinks : _LIST_ENTRY [ 0x00000000`002b4980 - 0x00000000`002b3840 ]
+   +0x020 InInitializationOrderLinks : _LIST_ENTRY [ 0x00000000`77970000 - 0x00000000`77985ea0 ]
+   +0x030 DllBase          : 0xbaadf00d`0011f000 Void
+   +0x038 EntryPoint       : 0x00000000`00420040 Void
+   +0x040 SizeOfImage      : 0x2b35c0
+   +0x048 FullDllName      : _UNICODE_STRING "kernel32.dll"
+   +0x058 BaseDllName      : _UNICODE_STRING "ꩀ矌"
+   +0x068 Flags            : 0x77ccaa40
+   +0x06c LoadCount        : 0
+   +0x06e TlsIndex         : 0
+   +0x070 HashLinks        : _LIST_ENTRY [ 0xbaadf00d`4ce7c78b - 0x00000000`00000000 ]
+   +0x070 SectionPointer   : 0xbaadf00d`4ce7c78b Void
+   +0x078 CheckSum         : 0
+   +0x080 TimeDateStamp    : 0
+   +0x080 LoadedImports    : (null) 
+   +0x088 EntryPointActivationContext : 0x00000000`002b4d20 _ACTIVATION_CONTEXT
+   +0x090 PatchInformation : 0x00000000`002b4d20 Void
+   +0x098 ForwarderLinks   : _LIST_ENTRY [ 0x00000000`002b36e8 - 0x00000000`002b36e8 ]
+   +0x0a8 ServiceTagLinks  : _LIST_ENTRY [ 0x00000000`002b3980 - 0x00000000`002b3750 ]
+   +0x0b8 StaticLinks      : _LIST_ENTRY [ 0x00000000`77c95124 - 0x00000000`78d20000 ]
+   +0x0c8 ContextInformation : 0x01d00f7c`80e29f8e Void
+   +0x0d0 OriginalBase     : 0xabababab`abababab
+   +0x0d8 LoadTime         : _LARGE_INTEGER 0xabababab`abababab
+   ---CUT
+
+{% endhighlight %}
    
 We now know that the base address of a loaded module is at the 0x30th offset in this list. 
 
@@ -316,40 +349,55 @@ Output from dependency walker showing that ExitProcess simply points to Ntdll.Rt
 
 Now to assembly!
 
+{% highlight asm %}
  
-	mov r12, [gs:60h]       	;peb
-    mov r12, [r12 + 0x18]		;Peb --> LDR
-	mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
-	mov r12, [r12]				;2st entry
-	mov r15, [r12 + 0x20]		;ntdll.dll base address!
-	mov r12, [r12]				;3nd entry
-	mov r12, [r12 + 0x20]		;kernel32.dll base address! 
+mov r12, [gs:60h]       	;peb
+mov r12, [r12 + 0x18]		;Peb --> LDR
+mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
+mov r12, [r12]				;2st entry
+mov r15, [r12 + 0x20]		;ntdll.dll base address!
+mov r12, [r12]				;3nd entry
+mov r12, [r12 + 0x20]		;kernel32.dll base address! 
+
+{% endhighlight %}
 
 
 Notice I put Kernel32 into r12, which is not a clobber register! This address needs to be kept for the duration of the execution of the shellcode.
 
 Now that Kernel32 is found, it can be used to load other libraries into ourselves and get the address of processes. 
 
-	HMODULE WINAPI LoadLibrary(
-	_In_  LPCTSTR lpFileName
-	);
+{% highlight bash %}
+
+HMODULE WINAPI LoadLibrary(
+_In_  LPCTSTR lpFileName
+);
+
+{% endhighlight %}
 
 LoadLibraryA will be used to load a library into ourselves because we cannot rely any dll already being in our target process because shellcode needs to be position independent. In our case user32.dll is going to get loaded. 
 
 In order to use the LoadLibraryA function, it must be found in kernel32.dll. . . this is where GetProcAddress comes in. 
 
-	FARPROC WINAPI GetProcAddress(
-	_In_  HMODULE hModule,
-	_In_  LPCSTR lpProcName
-	);
+{% highlight bash %}
+
+FARPROC WINAPI GetProcAddress(
+_In_  HMODULE hModule,
+_In_  LPCSTR lpProcName
+);
+
+{% endhighlight %}
 
 This function takes two arguments, the handle to the module that contains the function we want and the function name. 
 
- 
+
+{% highlight asm %}
+
 	;find address of loadLibraryA from kernel32.dll which was found above. 
     mov rdx, 0xec0e4e8e		;lpProcName (loadLibraryA hash from rot13)
     mov rcx, r12    		;hModule
     call GetProcessAddress        
+
+{% endhighlight %}
 
  
 Once we know where LoadLibraryA lives, we can use it to load user32.dll.
@@ -359,195 +407,215 @@ The " 0xec0e4e8e" number and following numbers that are moved into rdx before th
 0xec0e4e8e is LoadLibraryA when each letter is rotated by 13 and added to a sum. This is common in shellcode that I have examined and used in projects such as MetaSploit. I have written a small C program to perform these hashes for me.
 
 
-	#./rot13.exe LoadLibraryA
-	LoadLibraryA
-	ROR13 of LoadLibraryA is: 0xec0e4e8e
+{% highlight bash %}
+
+#./rot13.exe LoadLibraryA
+LoadLibraryA
+ROR13 of LoadLibraryA is: 0xec0e4e8e
+
+{% endhighlight %}
 
 Now load User32.dll
-
  
+{% highlight asm %}
 
-	;import user32
-    lea rcx, [user32_dll]
-    call rax                ;load user32.dll
-	user_32dll: db 'user32.dll', 0
-	
+;import user32
+lea rcx, [user32_dll]
+call rax                ;load user32.dll
+user_32dll: db 'user32.dll', 0
+
+
+{% endhighlight %}
 
 
 Now we can get the address of the MessageBox function that was described before. 
 	
  
+{% highlight asm %}
 
-	mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
-	mov rcx, rax
-	call GetProcessAddress
+mov rdx, 0xbc4da2a8 	;hash for MessageBoxA from rot13
+mov rcx, rax
+call GetProcessAddress
 	
-
+{% endhighlight %}
 
 and call it
 	
  
+{% highlight asm %}
 
-	;messageBox
-    xor r9, r9              ;uType
-    lea r8, [title_str]     ;lpCaptopn
-    lea rdx, [hello_str]    ;lpText
-    xor rcx, rcx			;hWnd
-    call rax                ;display message box	
-	title_str: 	db  '0xdeadbeef', 0
-	hello_str:        db  'This is fun!', 0
+;messageBox
+xor r9, r9              ;uType
+lea r8, [title_str]     ;lpCaptopn
+lea rdx, [hello_str]    ;lpText
+xor rcx, rcx			;hWnd
+call rax                ;display message box	
+title_str: 	db  '0xdeadbeef', 0
+hello_str:        db  'This is fun!', 0
 	
-
+{% endhighlight %}
 
 and exit the process cleanly with the ExitProcess syscall. 
 
-	VOID WINAPI ExitProcess(
-	_In_  UINT uExitCode
-	);
+% highlight bash %}
+
+VOID WINAPI ExitProcess(
+_In_  UINT uExitCode
+);
+
+{% endhighlight %}
+
 
 Note that this is the header for the Kernel32 call, but we are going to use RtlExitUserProcess.
 
- 
+{% highlight asm %}
 
-	;ExitProcess
-	mov rdx, 0x2d3fcd70				
-    mov rcx, r15 			;base address of ntdll
-    call GetProcessAddress
-    xor  rcx, rcx 			;uExitCode
-    call rax             		   
-	
+;ExitProcess
+mov rdx, 0x2d3fcd70				
+mov rcx, r15 			;base address of ntdll
+call GetProcessAddress
+xor  rcx, rcx 			;uExitCode
+call rax             		   
+
+{% endhighlight %}	
 
 
 The finished shellcode with the GetProcAddress function I keep calling:
 
 Note: I have adjusted all of the "lea" instructions with call/pop implementations for the final form. I simply used "lea" above for demonstration. 
 
+{% highlight asm %}
+
+bits 64
+section .text
+global start
+
+start:
+;get dll base addresses
+	sub rsp, 28h					;reserve stack space for called functions
+	and rsp, 0fffffffffffffff0h 			;make sure stack 16-byte aligned   
  
-
-	bits 64
-	section .text
-	global start
-
-	start:
-	;get dll base addresses
-		sub rsp, 28h					;reserve stack space for called functions
-		and rsp, 0fffffffffffffff0h 			;make sure stack 16-byte aligned   
-	 
-		mov r12, [gs:60h]       			 ;peb
-		mov r12, [r12 + 0x18]				 ;Peb --> LDR
-		mov r12, [r12 + 0x20]				;Peb.Ldr.InMemoryOrderModuleList
-		mov r12, [r12]					;2st entry
-		mov r15, [r12 + 0x20]				;ntdll.dll base address!
-		mov r12, [r12]					;3nd entry
-		mov r12, [r12 + 0x20]				;kernel32.dll base address!
-	 
-	;find address of loadLibraryA from kernel32.dll which was found above. 
-		mov rdx, 0xec0e4e8e
-		mov rcx, r12
-		call GetProcessAddress         
-	 
-	;import user32
-		jmp getUser32
-	returnGetUser32:
-		pop rcx
-		call rax               				 ;load user32.dll
-		
-	;get messageBox address
-		mov rdx, 0xbc4da2a8
-		mov rcx, rax
-		call GetProcessAddress  
-		mov rbx, rax
-
-	;messageBox
-		xor r9, r9            				  ;uType
-		jmp getText
-	returnGetText:
-		pop r8	        				;lpCaption
-		jmp getTitle
-	returnGetTitle:
-		pop rdx						;lpTitle
-		xor rcx, rcx					;hWnd
-		call rbx                			;display message box	
-		
-	;ExitProcess
-		mov rdx, 0x2d3fcd70				
-		mov rcx, r15
-		call GetProcessAddress
-		xor  rcx, rcx 					;uExitCode
-		call rax       
-
-	;get strings	
-	getUser32:
-		call returnGetUser32
-		db  'user32.dll'
-		db	0x00
-	getTitle:
-		call returnGetTitle
-		db  'This is fun!'
-		db	0x00
-	getText:
-		call returnGetText
-		db  '0xdeadbeef'
-		db	0x00
-
-	;Hashing section to resolve a function address	
-	GetProcessAddress:		
-		mov r13, rcx					;base address of dll loaded 
-		mov eax, [r13d + 0x3c]				;skip DOS header and go to PE header
-		mov r14d, [r13d + eax + 0x88] 			;0x88 offset from the PE header is the export table. 
-
-		add r14d, r13d  				;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
-		mov r10d, [r14d + 0x18]				;go into the export table and get the numberOfNames 
-		mov ebx, [r14d + 0x20]				;get the AddressOfNames offset. 
-		add ebx, r13d					;AddressofNames base. 
-		
-	find_function_loop:	
-		jecxz find_function_finished			;if ecx is zero, quit :( nothing found. 
-		dec r10d					;dec ECX by one for the loop until a match/none are found
-		mov esi, [ebx + r10d * 4]			;get a name to play with from the export table. 
-		add esi, r13d					;esi is now the current name to search on. 
-		
-	find_hashes:
-		xor edi, edi
-		xor eax, eax
-		cld			
-		
-	continue_hashing:	
-		lodsb						;get into al from esi
-		test al, al					;is the end of string resarched?
-		jz compute_hash_finished
-		ror dword edi, 0xd				;ROR13 for hash calculation!
-		add edi, eax		
-		jmp continue_hashing
-		
-	compute_hash_finished:
-		cmp edi, edx					;edx has the function hash
-		jnz find_function_loop				;didn't match, keep trying!
-		mov ebx, [r14d + 0x24]				;put the address of the ordinal table and put it in ebx. 
-		add ebx, r13d					;absolute address
-		xor ecx, ecx					;ensure ecx is 0'd. 
-		mov cx, [ebx + 2 * r10d]			;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
-		mov ebx, [r14d + 0x1c]				;extract the address table offset
-		add ebx, r13d					;put absolute address in EBX.
-		mov eax, [ebx + 4 * ecx]			;relative address
-		add eax, r13d	
-		
-	find_function_finished:
-		ret 
-		
+	mov r12, [gs:60h]       			 ;peb
+	mov r12, [r12 + 0x18]				 ;Peb --> LDR
+	mov r12, [r12 + 0x20]				;Peb.Ldr.InMemoryOrderModuleList
+	mov r12, [r12]					;2st entry
+	mov r15, [r12 + 0x20]				;ntdll.dll base address!
+	mov r12, [r12]					;3nd entry
+	mov r12, [r12 + 0x20]				;kernel32.dll base address!
+ 
+;find address of loadLibraryA from kernel32.dll which was found above. 
+	mov rdx, 0xec0e4e8e
+	mov rcx, r12
+	call GetProcessAddress         
+ 
+;import user32
+	jmp getUser32
+returnGetUser32:
+	pop rcx
+	call rax               				 ;load user32.dll
 	
+;get messageBox address
+	mov rdx, 0xbc4da2a8
+	mov rcx, rax
+	call GetProcessAddress  
+	mov rbx, rax
+
+;messageBox
+	xor r9, r9            				  ;uType
+	jmp getText
+returnGetText:
+	pop r8	        				;lpCaption
+	jmp getTitle
+returnGetTitle:
+	pop rdx						;lpTitle
+	xor rcx, rcx					;hWnd
+	call rbx                			;display message box	
+	
+;ExitProcess
+	mov rdx, 0x2d3fcd70				
+	mov rcx, r15
+	call GetProcessAddress
+	xor  rcx, rcx 					;uExitCode
+	call rax       
+
+;get strings	
+getUser32:
+	call returnGetUser32
+	db  'user32.dll'
+	db	0x00
+getTitle:
+	call returnGetTitle
+	db  'This is fun!'
+	db	0x00
+getText:
+	call returnGetText
+	db  '0xdeadbeef'
+	db	0x00
+
+;Hashing section to resolve a function address	
+GetProcessAddress:		
+	mov r13, rcx					;base address of dll loaded 
+	mov eax, [r13d + 0x3c]				;skip DOS header and go to PE header
+	mov r14d, [r13d + eax + 0x88] 			;0x88 offset from the PE header is the export table. 
+
+	add r14d, r13d  				;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
+	mov r10d, [r14d + 0x18]				;go into the export table and get the numberOfNames 
+	mov ebx, [r14d + 0x20]				;get the AddressOfNames offset. 
+	add ebx, r13d					;AddressofNames base. 
+	
+find_function_loop:	
+	jecxz find_function_finished			;if ecx is zero, quit :( nothing found. 
+	dec r10d					;dec ECX by one for the loop until a match/none are found
+	mov esi, [ebx + r10d * 4]			;get a name to play with from the export table. 
+	add esi, r13d					;esi is now the current name to search on. 
+	
+find_hashes:
+	xor edi, edi
+	xor eax, eax
+	cld			
+	
+continue_hashing:	
+	lodsb						;get into al from esi
+	test al, al					;is the end of string resarched?
+	jz compute_hash_finished
+	ror dword edi, 0xd				;ROR13 for hash calculation!
+	add edi, eax		
+	jmp continue_hashing
+	
+compute_hash_finished:
+	cmp edi, edx					;edx has the function hash
+	jnz find_function_loop				;didn't match, keep trying!
+	mov ebx, [r14d + 0x24]				;put the address of the ordinal table and put it in ebx. 
+	add ebx, r13d					;absolute address
+	xor ecx, ecx					;ensure ecx is 0'd. 
+	mov cx, [ebx + 2 * r10d]			;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
+	mov ebx, [r14d + 0x1c]				;extract the address table offset
+	add ebx, r13d					;put absolute address in EBX.
+	mov eax, [ebx + 4 * ecx]			;relative address
+	add eax, r13d	
+	
+find_function_finished:
+	ret 
+	
+{% endhighlight %}	
 
 For information on the magic of the GetProcAddress function, refer to Skape's paper.
 
 Now that our shellcode is complete, let's assemble it and test it. 
 
+{% highlight bash %}
+
 	nasm -f win64 messageBox64bit.asm -o messageBox64bit.obj  
 	golink /console messageBox64bit.obj
 	./messageBox64bit.exe
 	
+{% endhighlight %}	
+
 ![alt text](http://www.tophertimzen.com/images/win64BlogPost/funButton.jpg "MessageBox output")
  
 This ran our shellcode as a binary.. we want to use it as pure shellcode. 
+
+{% highlight bash %}
 
 	nasm -f bin messageBox64bit.asm -o messageBox64bit.sc 
 	xxd -i messageBox64bit.sc
@@ -577,6 +645,8 @@ This ran our shellcode as a binary.. we want to use it as pure shellcode.
 	  0x01, 0xeb, 0x67, 0x8b, 0x04, 0x8b, 0x44, 0x01, 0xe8, 0xc3
 	};
 	unsigned int messageBox64bit_sc_len = 258;
+
+{% endhighlight %}	
 
 Taking all of the hex bytes returned, let's go to another little program I wrote because I wanted to be able to fire shellcode against a target, calc, to make sure it would work in a remote process. Please note this application is still in more or less of a beta form and I mostly wrote it because I wanted to play around with an open source disassembly project,  [*BeaEngine*](http://www.beaengine.org/home).
  
