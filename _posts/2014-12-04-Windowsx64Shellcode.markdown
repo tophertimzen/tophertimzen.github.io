@@ -135,13 +135,13 @@ In the Win64 convention the arguments would be:
 
 {% highlight asm %}
 
-	r9 = uType
+r9 = uType
 
-	r8 = lpCaption
+r8 = lpCaption
 
-	rdx = lpText
+rdx = lpText
 
-	rcx = hWnd
+rcx = hWnd
 
 {% endhighlight %}
 	
