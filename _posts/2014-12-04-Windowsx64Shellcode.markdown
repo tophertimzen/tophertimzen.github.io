@@ -457,7 +457,7 @@ hello_str:        db  'This is fun!', 0
 
 and exit the process cleanly with the ExitProcess syscall. 
 
-% highlight bash %}
+{% highlight bash %}
 
 VOID WINAPI ExitProcess(
 _In_  UINT uExitCode
