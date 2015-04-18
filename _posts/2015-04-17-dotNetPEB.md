@@ -5,13 +5,11 @@ date: 2015-04-17
 categories: shellcode
 ---
 
-Shellcode commonly uses a method to resolve Windows API functions by traversing through the Portable Environment Blocks (PEB) _PEB_LDR_DATA structure which contains three linked lists of DLLs that are loaded in a process space.  
-
-_PEB._LDR_DATA contains 3 circular linked lists of loaded modules
+Shellcode commonly uses a method to resolve Windows API functions by traversing through the Portable Environment Block (PEB) to find Kernel32's base address. This is done so shellcode remains position independent while still having the ability to call LoadLibraryA and GetProcAddress to resolve other dlls and functions. The PEB has a_PEB_LDR_DATA structure that contains three linked lists of DLLs that are loaded in a processes memory space.  The three linked lists are 
 
 InLoadOrder
 
-- Order module is loaded into process. *.exe is always first.
+- Order a module is loaded into process. *.exe is always first.
 
 InMemoryOrder
 
@@ -20,13 +18,49 @@ InMemoryOrder
 
 InInitializationOrder
 
-- When the DllMain fires.
+- Order of when the DllMain fires.
 
-The InMemoryorderModuleList is the most widely used, that I have seen, method to resolve Kernel32 functions. [Harmony Security](http://blog.harmonysecurity.com/2009_06_01_archive.html) has a write up of how to traverse the InMemoryorderModuleList on Windows 7 to allow shellcode to be more robust across Windows platforms. 
+The following Volatility Volshell output shows the location of the _PEB_LDR_DATA in the PEB and the three lists for a 32 bit system
 
-While this method holds true for most applications, if shellcode is injected into a .NET process this method will not work. 
+{% highlight python %}
 
-Shellcode, especially ones from MetaSploit, rely on Kernel32.dll being the third entry in the InMemoryorderModuleList as it typically is. However, in a .NET process, Kernel32.dll is the **4th** entry as Mscoree, the .NET bootstrapper for the default CLR host, is loaded before Kernel32. 
+>>> dt ("_PEB")
+ '_PEB' (584 bytes)
+0x0   : InheritedAddressSpace          ['unsigned char']
+0x1   : ReadImageFileExecOptions       ['unsigned char']
+0x2   : BeingDebugged                  ['unsigned char']
+0x3   : BitField                       ['unsigned char']h
+0x3   : ImageUsesLargePages            ['BitField', {'end_bit': 1, 'start_bit': 0, 'native_type': 'unsigned char'}]
+0x3   : IsImageDynamicallyRelocated    ['BitField', {'end_bit': 4, 'start_bit': 3, 'native_type': 'unsigned char'}]
+0x3   : IsLegacyProcess                ['BitField', {'end_bit': 3, 'start_bit': 2, 'native_type': 'unsigned char'}]
+0x3   : IsProtectedProcess             ['BitField', {'end_bit': 2, 'start_bit': 1, 'native_type': 'unsigned char'}]
+0x3   : SkipPatchingUser32Forwarders   ['BitField', {'end_bit': 5, 'start_bit': 4, 'native_type': 'unsigned char'}]
+0x3   : SpareBits                      ['BitField', {'end_bit': 8, 'start_bit': 5, 'native_type': 'unsigned char'}]
+0x4   : Mutant                         ['pointer', ['void']]
+0x8   : ImageBaseAddress               ['pointer', ['void']]
+0xc   : Ldr                            ['pointer', ['_PEB_LDR_DATA']]
+[snip]
+
+>>> dt("_PEB_LDR_DATA")
+ '_PEB_LDR_DATA' (48 bytes)
+0x0   : Length                         ['unsigned long']
+0x4   : Initialized                    ['unsigned char']
+0x8   : SsHandle                       ['pointer', ['void']]
+0xc   : InLoadOrderModuleList          ['_LIST_ENTRY']
+0x14  : InMemoryOrderModuleList        ['_LIST_ENTRY']
+0x1c  : InInitializationOrderModuleList ['_LIST_ENTRY']
+[snip]
+
+
+{% endhighlight %}
+
+The Ldr structure is at offset 0xc in the PEB and the InMemoryOrderModuleList is at offset 0x14 from the _PEB_LDR_DATA.
+
+The InMemoryorderModuleList is the most widely used linked list, that I have seen, to resolve the base address of Kernel32. [Harmony Security](http://blog.harmonysecurity.com/2009_06_01_archive.html) has a write up of how to traverse the InMemoryorderModuleList on Windows 7 to allow shellcode to be more robust across Windows platforms. 
+
+While the method Harmony Security mentions holds true for most applications and Windows environments, if shellcode is injected into a .NET process this method will not work. 
+
+Shellcode payloads, especially ones from MetaSploit, rely on Kernel32.dll being the third entry in the InMemoryorderModuleList. However, in a .NET process, Kernel32.dll is the **4th** entry as Mscoree, the .NET bootstrapper for the default CLR host, is loaded before Kernel32. 
 
 {% highlight bash %}
 
@@ -54,9 +88,9 @@ PEB at 7efde000
 
 Because of this, shellcode written for .NET applications needs to walk the _LIST_ENTRY structure for the Ldr lists to the 4th entry instead of the 3rd.
 
-Fortunately, this is easy to adjust in shellcode as the change is a one liner!
+Fortunately, this is an easy adjustment in shellcode as the change is a one-liner!
 
-In 32 bit code this change is
+In 32 bit code the traversal is as follows 
 
 {% highlight asm %}
 
@@ -70,7 +104,7 @@ mov ebx, [ ebx + 0x10 ]    // get the 3rd entries base address (kernel32.dll)
 
 {% endhighlight %}
 
-TO
+To perform the same action in a .NET process, go to the 4th entry in the InMemoryOrderModuleList as seen below. 
 
 {% highlight asm %}
 
@@ -85,19 +119,19 @@ mov ebx, [ ebx + 0x10 ]    // get the 4th entries base address (kernel32.dll)
 
 {% endhighlight %}
 
-This trick will also work with 64 bit .NET applications, although the addresses are much different. 
+This trick will also work with 64 bit .NET applications, although the offsets are different. 
 
 {% highlight asm %}
 
-mov ebx, [gs:60h]       // get a pointer to the PEB
-mov ebx, [ebx + 0x18]	// get PEB->Ldr
-mov ebx, [ebx + 0x20]	// get PEB->Ldr.InMemoryOrderModuleList.Flink
-mov ebx, [ebx]			// get the next entry (2nd entry)
-mov ebx, [ebx]			// get the next entry (3rd entry)
-mov ebx, [ebx]			// get the next entry (4th entry)
-mov ebx, [ebx + 0x20]	// get the 4th entries base address (kernel32.dll)
+mov ebx, [gs:60h]         // get a pointer to the PEB
+mov ebx, [ebx + 0x18]	  // get PEB->Ldr
+mov ebx, [ebx + 0x20]	  // get PEB->Ldr.InMemoryOrderModuleList.Flink
+mov ebx, [ebx]			  // get the next entry (2nd entry)
+mov ebx, [ebx]			  // get the next entry (3rd entry)
+mov ebx, [ebx]			  // get the next entry (4th entry)
+mov ebx, [ebx + 0x20]	  // get the 4th entries base address (kernel32.dll)
 
 
 {% endhighlight %}
 
-While developing shellcode, be mindful of the platform and application you are injecting into. If you are going up against .NET, it is important to know where Kernel32 is in the Ldr lists so that its base address can be resolved so the payload can acquire offsets to LoadLibraryA and GetProcAddress. 
+While developing shellcode, be mindful of the platform and application you are injecting into. If you are going up against .NET, it is important to know where Kernel32 is in the Ldr lists so that its base address can be resolved. 
