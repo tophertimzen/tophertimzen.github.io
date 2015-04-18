@@ -6,6 +6,8 @@ permalink: /pgp/
 
 [pgp.asc](/resources/pgp/pgp.asc)
 
+{% highlight bash %}
+
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
 xsFNBFUhe2MBEACtEU68ukad9pKO08bwE62YmvCFcjWB7i5+vyeA3soYoIOy
@@ -62,3 +64,4 @@ UJAI470SzNL4ptQSXfz6GQS67dnv8XdLyr4VUuwqLcWx
 -----END PGP PUBLIC KEY BLOCK-----
 
 
+{% endhighlight %}
