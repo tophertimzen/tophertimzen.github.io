@@ -99,13 +99,20 @@ RAX and EAX are used to return parameters from a function for both x86 and x64.
 Win32 uses the stdcall calling convection and passes arguments on the stack backwards. 
  
 A call to a function foo with the arguments int x and int y
- 
-	foo(int x, int y)
+{% highlight c %}
+
+foo(int x, int y)
+
+{% endhighlight %}
  
 would need to be passed on the stack as such
  
-	push y
-	push x
+{% highlight asm %}
+
+push y
+push x
+
+{% endhighlight %}
 
 ## x64
 
@@ -126,6 +133,8 @@ _In_      UINT uType
 
 In the Win64 convention the arguments would be:
 
+{% highlight asm %}
+
 	r9 = uType
 
 	r8 = lpCaption
@@ -133,6 +142,8 @@ In the Win64 convention the arguments would be:
 	rdx = lpText
 
 	rcx = hWnd
+
+{% endhighlight %}
 	
 ---
 
@@ -167,7 +178,7 @@ global start
 {% highlight asm %}
  
 start: 
-	sub rsp, 28h				;reserve stack space for called functions
+	sub rsp, 28h                ;reserve stack space for called functions
 	and rsp, 0fffffffffffffff0h ;make sure stack 16-byte aligned   
 
 {% endhighlight %}
@@ -351,13 +362,13 @@ Now to assembly!
 
 {% highlight asm %}
  
-mov r12, [gs:60h]       	;peb
-mov r12, [r12 + 0x18]		;Peb --> LDR
-mov r12, [r12 + 0x20]		;Peb.Ldr.InMemoryOrderModuleList
-mov r12, [r12]				;2st entry
-mov r15, [r12 + 0x20]		;ntdll.dll base address!
-mov r12, [r12]				;3nd entry
-mov r12, [r12 + 0x20]		;kernel32.dll base address! 
+mov r12, [gs:60h]       ;peb
+mov r12, [r12 + 0x18]   ;Peb --> LDR
+mov r12, [r12 + 0x20]   ;Peb.Ldr.InMemoryOrderModuleList
+mov r12, [r12]          ;2st entry
+mov r15, [r12 + 0x20]   ;ntdll.dll base address!
+mov r12, [r12]          ;3nd entry
+mov r12, [r12 + 0x20]   ;kernel32.dll base address! 
 
 {% endhighlight %}
 
@@ -392,10 +403,10 @@ This function takes two arguments, the handle to the module that contains the fu
 
 {% highlight asm %}
 
-	;find address of loadLibraryA from kernel32.dll which was found above. 
-    mov rdx, 0xec0e4e8e		;lpProcName (loadLibraryA hash from rot13)
-    mov rcx, r12    		;hModule
-    call GetProcessAddress        
+;find address of loadLibraryA from kernel32.dll which was found above. 
+mov rdx, 0xec0e4e8e  ;lpProcName (loadLibraryA hash from rot13)
+mov rcx, r12         ;hModule
+call GetProcessAddress        
 
 {% endhighlight %}
 
@@ -445,13 +456,13 @@ and call it
 {% highlight asm %}
 
 ;messageBox
-xor r9, r9              ;uType
-lea r8, [title_str]     ;lpCaptopn
-lea rdx, [hello_str]    ;lpText
-xor rcx, rcx			;hWnd
-call rax                ;display message box	
-title_str: 	db  '0xdeadbeef', 0
-hello_str:        db  'This is fun!', 0
+xor r9, r9            ;uType
+lea r8, [title_str]   ;lpCaptopn
+lea rdx, [hello_str]  ;lpText
+xor rcx, rcx          ;hWnd
+call rax              ;display message box	
+title_str:  db  '0xdeadbeef',   0
+hello_str:  db  'This is fun!', 0
 	
 {% endhighlight %}
 
@@ -492,16 +503,16 @@ global start
 
 start:
 ;get dll base addresses
-	sub rsp, 28h					;reserve stack space for called functions
-	and rsp, 0fffffffffffffff0h 			;make sure stack 16-byte aligned   
+	sub rsp, 28h                     ;reserve stack space for called functions
+	and rsp, 0fffffffffffffff0h      ;make sure stack 16-byte aligned   
  
-	mov r12, [gs:60h]       			 ;peb
-	mov r12, [r12 + 0x18]				 ;Peb --> LDR
-	mov r12, [r12 + 0x20]				;Peb.Ldr.InMemoryOrderModuleList
-	mov r12, [r12]					;2st entry
-	mov r15, [r12 + 0x20]				;ntdll.dll base address!
-	mov r12, [r12]					;3nd entry
-	mov r12, [r12 + 0x20]				;kernel32.dll base address!
+	mov r12, [gs:60h]                ;peb
+	mov r12, [r12 + 0x18]            ;Peb --> LDR
+	mov r12, [r12 + 0x20]            ;Peb.Ldr.InMemoryOrderModuleList
+	mov r12, [r12]                   ;2st entry
+	mov r15, [r12 + 0x20]            ;ntdll.dll base address!
+	mov r12, [r12]                   ;3nd entry
+	mov r12, [r12 + 0x20]            ;kernel32.dll base address!
  
 ;find address of loadLibraryA from kernel32.dll which was found above. 
 	mov rdx, 0xec0e4e8e
@@ -512,7 +523,7 @@ start:
 	jmp getUser32
 returnGetUser32:
 	pop rcx
-	call rax               				 ;load user32.dll
+	call rax                        ;load user32.dll
 	
 ;get messageBox address
 	mov rdx, 0xbc4da2a8
@@ -521,21 +532,21 @@ returnGetUser32:
 	mov rbx, rax
 
 ;messageBox
-	xor r9, r9            				  ;uType
+	xor r9, r9                     ;uType
 	jmp getText
 returnGetText:
-	pop r8	        				;lpCaption
+	pop r8                         ;lpCaption
 	jmp getTitle
 returnGetTitle:
-	pop rdx						;lpTitle
-	xor rcx, rcx					;hWnd
-	call rbx                			;display message box	
+	pop rdx                        ;lpTitle
+	xor rcx, rcx                   ;hWnd
+	call rbx                       ;display message box	
 	
 ;ExitProcess
 	mov rdx, 0x2d3fcd70				
 	mov rcx, r15
 	call GetProcessAddress
-	xor  rcx, rcx 					;uExitCode
+	xor  rcx, rcx                  ;uExitCode
 	call rax       
 
 ;get strings	
@@ -554,20 +565,20 @@ getText:
 
 ;Hashing section to resolve a function address	
 GetProcessAddress:		
-	mov r13, rcx					;base address of dll loaded 
-	mov eax, [r13d + 0x3c]				;skip DOS header and go to PE header
-	mov r14d, [r13d + eax + 0x88] 			;0x88 offset from the PE header is the export table. 
+	mov r13, rcx                     ;base address of dll loaded 
+	mov eax, [r13d + 0x3c]           ;skip DOS header and go to PE header
+	mov r14d, [r13d + eax + 0x88]   ;0x88 offset from the PE header is the export table. 
 
-	add r14d, r13d  				;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
-	mov r10d, [r14d + 0x18]				;go into the export table and get the numberOfNames 
-	mov ebx, [r14d + 0x20]				;get the AddressOfNames offset. 
-	add ebx, r13d					;AddressofNames base. 
+	add r14d, r13d                  ;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
+	mov r10d, [r14d + 0x18]         ;go into the export table and get the numberOfNames 
+	mov ebx, [r14d + 0x20]          ;get the AddressOfNames offset. 
+	add ebx, r13d                  ;AddressofNames base. 
 	
 find_function_loop:	
-	jecxz find_function_finished			;if ecx is zero, quit :( nothing found. 
-	dec r10d					;dec ECX by one for the loop until a match/none are found
-	mov esi, [ebx + r10d * 4]			;get a name to play with from the export table. 
-	add esi, r13d					;esi is now the current name to search on. 
+	jecxz find_function_finished   ;if ecx is zero, quit :( nothing found. 
+	dec r10d                       ;dec ECX by one for the loop until a match/none are found
+	mov esi, [ebx + r10d * 4]      ;get a name to play with from the export table. 
+	add esi, r13d                  ;esi is now the current name to search on. 
 	
 find_hashes:
 	xor edi, edi
@@ -575,23 +586,23 @@ find_hashes:
 	cld			
 	
 continue_hashing:	
-	lodsb						;get into al from esi
-	test al, al					;is the end of string resarched?
+	lodsb                        ;get into al from esi
+	test al, al                  ;is the end of string resarched?
 	jz compute_hash_finished
-	ror dword edi, 0xd				;ROR13 for hash calculation!
+	ror dword edi, 0xd            ;ROR13 for hash calculation!
 	add edi, eax		
 	jmp continue_hashing
 	
 compute_hash_finished:
-	cmp edi, edx					;edx has the function hash
-	jnz find_function_loop				;didn't match, keep trying!
-	mov ebx, [r14d + 0x24]				;put the address of the ordinal table and put it in ebx. 
-	add ebx, r13d					;absolute address
-	xor ecx, ecx					;ensure ecx is 0'd. 
-	mov cx, [ebx + 2 * r10d]			;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
-	mov ebx, [r14d + 0x1c]				;extract the address table offset
-	add ebx, r13d					;put absolute address in EBX.
-	mov eax, [ebx + 4 * ecx]			;relative address
+	cmp edi, edx                  ;edx has the function hash
+	jnz find_function_loop        ;didn't match, keep trying!
+	mov ebx, [r14d + 0x24]        ;put the address of the ordinal table and put it in ebx. 
+	add ebx, r13d                 ;absolute address
+	xor ecx, ecx                  ;ensure ecx is 0'd. 
+	mov cx, [ebx + 2 * r10d]      ;ordinal = 2 bytes. Get the current ordinal and put it in cx. ECX was our counter for which # we were in. 
+	mov ebx, [r14d + 0x1c]        ;extract the address table offset
+	add ebx, r13d                 ;put absolute address in EBX.
+	mov eax, [ebx + 4 * ecx]      ;relative address
 	add eax, r13d	
 	
 find_function_finished:
@@ -605,9 +616,9 @@ Now that our shellcode is complete, let's assemble it and test it.
 
 {% highlight bash %}
 
-	nasm -f win64 messageBox64bit.asm -o messageBox64bit.obj  
-	golink /console messageBox64bit.obj
-	./messageBox64bit.exe
+nasm -f win64 messageBox64bit.asm -o messageBox64bit.obj  
+golink /console messageBox64bit.obj
+./messageBox64bit.exe
 	
 {% endhighlight %}	
 
@@ -617,34 +628,34 @@ This ran our shellcode as a binary.. we want to use it as pure shellcode.
 
 {% highlight bash %}
 
-	nasm -f bin messageBox64bit.asm -o messageBox64bit.sc 
-	xxd -i messageBox64bit.sc
-	xxd -i messageBox64bit.sc
-	unsigned char messageBox64bit_sc[] = {
-	  0x48, 0x83, 0xec, 0x28, 0x48, 0x83, 0xe4, 0xf0, 0x65, 0x4c, 0x8b, 0x24,
-	  0x25, 0x60, 0x00, 0x00, 0x00, 0x4d, 0x8b, 0x64, 0x24, 0x18, 0x4d, 0x8b,
-	  0x64, 0x24, 0x20, 0x4d, 0x8b, 0x24, 0x24, 0x4d, 0x8b, 0x7c, 0x24, 0x20,
-	  0x4d, 0x8b, 0x24, 0x24, 0x4d, 0x8b, 0x64, 0x24, 0x20, 0xba, 0x8e, 0x4e,
-	  0x0e, 0xec, 0x4c, 0x89, 0xe1, 0xe8, 0x68, 0x00, 0x00, 0x00, 0xeb, 0x34,
-	  0x59, 0xff, 0xd0, 0xba, 0xa8, 0xa2, 0x4d, 0xbc, 0x48, 0x89, 0xc1, 0xe8,
-	  0x56, 0x00, 0x00, 0x00, 0x48, 0x89, 0xc3, 0x4d, 0x31, 0xc9, 0xeb, 0x2c,
-	  0x41, 0x58, 0xeb, 0x3a, 0x5a, 0x48, 0x31, 0xc9, 0xff, 0xd3, 0xba, 0x70,
-	  0xcd, 0x3f, 0x2d, 0x4c, 0x89, 0xf9, 0xe8, 0x37, 0x00, 0x00, 0x00, 0x48,
-	  0x31, 0xc9, 0xff, 0xd0, 0xe8, 0xc7, 0xff, 0xff, 0xff, 0x75, 0x73, 0x65,
-	  0x72, 0x33, 0x32, 0x2e, 0x64, 0x6c, 0x6c, 0x00, 0xe8, 0xcf, 0xff, 0xff,
-	  0xff, 0x54, 0x68, 0x69, 0x73, 0x20, 0x69, 0x73, 0x20, 0x66, 0x75, 0x6e,
-	  0x21, 0x00, 0xe8, 0xc1, 0xff, 0xff, 0xff, 0x30, 0x78, 0x64, 0x65, 0x61,
-	  0x64, 0x62, 0x65, 0x65, 0x66, 0x00, 0x49, 0x89, 0xcd, 0x67, 0x41, 0x8b,
-	  0x45, 0x3c, 0x67, 0x45, 0x8b, 0xb4, 0x05, 0x88, 0x00, 0x00, 0x00, 0x45,
-	  0x01, 0xee, 0x67, 0x45, 0x8b, 0x56, 0x18, 0x67, 0x41, 0x8b, 0x5e, 0x20,
-	  0x44, 0x01, 0xeb, 0x67, 0xe3, 0x3f, 0x41, 0xff, 0xca, 0x67, 0x42, 0x8b,
-	  0x34, 0x93, 0x44, 0x01, 0xee, 0x31, 0xff, 0x31, 0xc0, 0xfc, 0xac, 0x84,
-	  0xc0, 0x74, 0x07, 0xc1, 0xcf, 0x0d, 0x01, 0xc7, 0xeb, 0xf4, 0x39, 0xd7,
-	  0x75, 0xdd, 0x67, 0x41, 0x8b, 0x5e, 0x24, 0x44, 0x01, 0xeb, 0x31, 0xc9,
-	  0x66, 0x67, 0x42, 0x8b, 0x0c, 0x53, 0x67, 0x41, 0x8b, 0x5e, 0x1c, 0x44,
-	  0x01, 0xeb, 0x67, 0x8b, 0x04, 0x8b, 0x44, 0x01, 0xe8, 0xc3
-	};
-	unsigned int messageBox64bit_sc_len = 258;
+nasm -f bin messageBox64bit.asm -o messageBox64bit.sc 
+xxd -i messageBox64bit.sc
+xxd -i messageBox64bit.sc
+unsigned char messageBox64bit_sc[] = {
+  0x48, 0x83, 0xec, 0x28, 0x48, 0x83, 0xe4, 0xf0, 0x65, 0x4c, 0x8b, 0x24,
+  0x25, 0x60, 0x00, 0x00, 0x00, 0x4d, 0x8b, 0x64, 0x24, 0x18, 0x4d, 0x8b,
+  0x64, 0x24, 0x20, 0x4d, 0x8b, 0x24, 0x24, 0x4d, 0x8b, 0x7c, 0x24, 0x20,
+  0x4d, 0x8b, 0x24, 0x24, 0x4d, 0x8b, 0x64, 0x24, 0x20, 0xba, 0x8e, 0x4e,
+  0x0e, 0xec, 0x4c, 0x89, 0xe1, 0xe8, 0x68, 0x00, 0x00, 0x00, 0xeb, 0x34,
+  0x59, 0xff, 0xd0, 0xba, 0xa8, 0xa2, 0x4d, 0xbc, 0x48, 0x89, 0xc1, 0xe8,
+  0x56, 0x00, 0x00, 0x00, 0x48, 0x89, 0xc3, 0x4d, 0x31, 0xc9, 0xeb, 0x2c,
+  0x41, 0x58, 0xeb, 0x3a, 0x5a, 0x48, 0x31, 0xc9, 0xff, 0xd3, 0xba, 0x70,
+  0xcd, 0x3f, 0x2d, 0x4c, 0x89, 0xf9, 0xe8, 0x37, 0x00, 0x00, 0x00, 0x48,
+  0x31, 0xc9, 0xff, 0xd0, 0xe8, 0xc7, 0xff, 0xff, 0xff, 0x75, 0x73, 0x65,
+  0x72, 0x33, 0x32, 0x2e, 0x64, 0x6c, 0x6c, 0x00, 0xe8, 0xcf, 0xff, 0xff,
+  0xff, 0x54, 0x68, 0x69, 0x73, 0x20, 0x69, 0x73, 0x20, 0x66, 0x75, 0x6e,
+  0x21, 0x00, 0xe8, 0xc1, 0xff, 0xff, 0xff, 0x30, 0x78, 0x64, 0x65, 0x61,
+  0x64, 0x62, 0x65, 0x65, 0x66, 0x00, 0x49, 0x89, 0xcd, 0x67, 0x41, 0x8b,
+  0x45, 0x3c, 0x67, 0x45, 0x8b, 0xb4, 0x05, 0x88, 0x00, 0x00, 0x00, 0x45,
+  0x01, 0xee, 0x67, 0x45, 0x8b, 0x56, 0x18, 0x67, 0x41, 0x8b, 0x5e, 0x20,
+  0x44, 0x01, 0xeb, 0x67, 0xe3, 0x3f, 0x41, 0xff, 0xca, 0x67, 0x42, 0x8b,
+  0x34, 0x93, 0x44, 0x01, 0xee, 0x31, 0xff, 0x31, 0xc0, 0xfc, 0xac, 0x84,
+  0xc0, 0x74, 0x07, 0xc1, 0xcf, 0x0d, 0x01, 0xc7, 0xeb, 0xf4, 0x39, 0xd7,
+  0x75, 0xdd, 0x67, 0x41, 0x8b, 0x5e, 0x24, 0x44, 0x01, 0xeb, 0x31, 0xc9,
+  0x66, 0x67, 0x42, 0x8b, 0x0c, 0x53, 0x67, 0x41, 0x8b, 0x5e, 0x1c, 0x44,
+  0x01, 0xeb, 0x67, 0x8b, 0x04, 0x8b, 0x44, 0x01, 0xe8, 0xc3
+};
+unsigned int messageBox64bit_sc_len = 258;
 
 {% endhighlight %}	
 
