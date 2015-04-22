@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Memory Forensics 101</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\cs407\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\cs407\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\cs407\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Memory Forensics 101</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Who Am I?</h1></header>
+            
+            
+            <section><p>Topher Timzen / C.Timzen@gmail.com</p>
+<p>Security Researcher</p>
+<p>Guest lecturer for Computer Science department </p>
+<p>Worked for the Department of Defense </p>
+<p>Slides available at tophertimzen.com/cs369/memoryForensics.html</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Today</h1></header>
+            
+            
+            <section><p>Artifacts in memory</p>
+<ul>
+<li>
+<p>How malicious actors use it </p>
+</li>
+<li>
+<p>How analysts use it</p>
+</li>
+</ul>
+<p>Toolset for analysis</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Data Breaches</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            
+            <section><p><img alt="Target" src="http://i.forbesimg.com/media/lists/companies/target_416x416.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            
+            <section><p><img alt="" src="http://nfpa.typepad.com/.a/6a00d8351b9f3453ef01b7c6ecabb0970b-250wi" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>So What?</h1></header>
+            
+            
+            <section><p>Both Target and Home Depot suffered from attacks on their Point of Sale (POS) terminals.</p>
+<p><strong>Ram Scrapers</strong> were installed to the POS terminals and found credit card data living in memory. </p>
+<p>100+ million customer debit and credit cards stolen</p>
+<div class="highlight"><pre><span class="n">Visa</span><span class="p">:</span> <span class="o">^</span><span class="mi">4</span><span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]{</span><span class="mi">12</span><span class="p">}(</span><span class="err">?</span><span class="p">:[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]{</span><span class="mi">3</span><span class="p">})</span><span class="err">?$</span><span class="o">^</span><span class="mi">5</span><span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]{</span><span class="mi">14</span><span class="p">}</span><span class="err">$</span> 
+<span class="n">Amex</span><span class="p">:</span> <span class="o">^</span><span class="mi">3</span><span class="p">[</span><span class="mi">47</span><span class="p">][</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]{</span><span class="mi">13</span><span class="p">}</span><span class="err">$</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Memory Forensics</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>Random Access Memory</h1></header>
+            
+            
+            <section><p>RAM stores code and data that the processor accesses. </p>
+<p>Volatile and always changing. </p>
+<ul>
+<li>
+<p>Loss of power eliminates everything in RAM </p>
+</li>
+<li>
+<p>RAM is accessed frequently throughout operation and changes often</p>
+</li>
+</ul>
+<p><img alt="" src="http://s.hswstatic.com/gif/add-ram-laptop-2.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>RAM is Eventually put on Hard Drive</h1></header>
+            
+            
+            <section><p>Hibernation</p>
+<p>Pagefile</p>
+<p>Word Documents</p>
+<p>Files</p>
+<p>Web Browser Cache</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>What is in RAM?</h1></header>
+            
+            
+            <section><p>RAM contains the state of the computer</p>
+<ul>
+<li>Programs</li>
+<li>Files</li>
+<li>Internet Connections</li>
+<li>Web Browser Activity</li>
+<li>Credit Cards</li>
+<li>Passwords</li>
+<li>Recently Opened files</li>
+<li>E-Mails </li>
+<li>Network information</li>
+<li>Everything a user inputs.... </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>What do we care about?</h1></header>
+            
+            
+            <section><p>Programs running and terminated</p>
+<p>Browser History</p>
+<p>Encryption Keys</p>
+<p>Files recently opened</p>
+<p>Programs recently opened</p>
+<p>Commands recently ran </p>
+<p>Locating signs of Malware </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Ethical Issues</h1></header>
+            
+            
+            <section><p>Respect for suspects privacy and rights</p>
+<p>Collateral Damage</p>
+<p>Dual use of technology</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>Why memory?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Digital Evidence</h1></header>
+            
+            
+            <section><p>Digital Information that was party to a criminal offense. </p>
+<p>Used by investigators to reach reliable inferences through analysis </p>
+<p>Needs to be</p>
+<ul>
+<li>
+<p>Authentic </p>
+</li>
+<li>
+<p>Unaltered </p>
+</li>
+<li>
+<p>Acquired with permission or a warrant </p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Memory Acquisition</h1></header>
+            
+            
+            <section><p>RAM is Volatile and should be collected first!</p>
+<p>Artifacts of memory acquisition are leftover... </p>
+<ul>
+<li>Does not change disk contents, much. </li>
+</ul>
+<p>Could leave machine in an unexpected state</p>
+<p>Malware or other applications could crash the system..</p>
+<ul>
+<li>Measure the risk vs benefit of needing RAM</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            <header><h1>Tools of the Trade</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>Winpmem</h1></header>
+            
+            
+            <section><p>Open-source memory acquisition tool</p>
+<p>Reads contents of RAM and writes it to a file for analysis</p>
+<p>Ruins sanctity of the host machines evidence... use AFTER everything else is acquired (Disk, Photos, etc) </p>
+<p><img alt="" src="ram.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Volatility</h1></header>
+            
+            
+            <section><p>Framework for looking at a memory capture/image</p>
+<p>Uses plugins to parse through an image</p>
+<p><img alt="" src="http://www.wileyindia.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/9/7/9788126552214.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Examples of using Volatility</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
+          <div class="inner">
+            
+            <header><h1>Process Lists Live System</h1></header>
+            
+            
+            <section><p><img alt="" src="taskman.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Process Lists Volatility</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 pslist</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+0x823c8830 System                    <span class="m">4</span>      <span class="m">0</span>     <span class="m">58</span>      <span class="m">329</span> ------      0
+0x8231e020 smss.exe                <span class="m">544</span>      <span class="m">4</span>      <span class="m">3</span>       <span class="m">19</span> ------      <span class="m">0</span> 2015-04-04 00:08:35 UTC+0000
+0x82179020 csrss.exe               <span class="m">608</span>    <span class="m">544</span>     <span class="m">12</span>      <span class="m">445</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:38 UTC+0000
+0x81e72020 winlogon.exe            <span class="m">640</span>    <span class="m">544</span>     <span class="m">16</span>      <span class="m">334</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:38 UTC+0000
+0x82289228 services.exe            <span class="m">684</span>    <span class="m">640</span>     <span class="m">16</span>      <span class="m">299</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:38 UTC+0000
+0x81e6bc10 lsass.exe               <span class="m">696</span>    <span class="m">640</span>     <span class="m">19</span>      <span class="m">363</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:38 UTC+0000
+0x82247560 vmacthlp.exe            <span class="m">860</span>    <span class="m">684</span>      <span class="m">1</span>       <span class="m">25</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:40 UTC+0000
+0x822bada0 svchost.exe             <span class="m">876</span>    <span class="m">684</span>     <span class="m">21</span>      <span class="m">235</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:40 UTC+0000
+0x822bcda0 svchost.exe             <span class="m">980</span>    <span class="m">684</span>     <span class="m">10</span>      <span class="m">306</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:41 UTC+0000
+0x82249a80 svchost.exe            <span class="m">1076</span>    <span class="m">684</span>     <span class="m">63</span>     <span class="m">1220</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:41 UTC+0000
+0x81f737a8 svchost.exe            <span class="m">1232</span>    <span class="m">684</span>      <span class="m">4</span>       <span class="m">73</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:42 UTC+0000
+0x82290c10 svchost.exe            <span class="m">1372</span>    <span class="m">684</span>     <span class="m">12</span>      <span class="m">190</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:42 UTC+0000
+0x8217a558 spoolsv.exe            <span class="m">1472</span>    <span class="m">684</span>     <span class="m">13</span>      <span class="m">147</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:43 UTC+0000
+0x822ca988 explorer.exe           <span class="m">1756</span>   <span class="m">1680</span>     <span class="m">19</span>      <span class="m">717</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:55 UTC+0000
+0x82187218 vmtoolsd.exe           <span class="m">1892</span>   <span class="m">1756</span>      <span class="m">6</span>      <span class="m">163</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:59 UTC+0000
+0x822c87f0 ctfmon.exe             <span class="m">1900</span>   <span class="m">1756</span>      <span class="m">1</span>       <span class="m">88</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:08:59 UTC+0000
+0x81db4020 svchost.exe            <span class="m">1956</span>    <span class="m">684</span>      <span class="m">5</span>      <span class="m">108</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:00 UTC+0000
+0x81da4578 svchost.exe            <span class="m">1992</span>    <span class="m">684</span>     <span class="m">10</span>      <span class="m">343</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:00 UTC+0000
+0x81d8cd00 vmtoolsd.exe            <span class="m">248</span>    <span class="m">684</span>      <span class="m">7</span>      <span class="m">314</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:00 UTC+0000
+0x81d6a620 TPAutoConnSvc.e        <span class="m">1808</span>    <span class="m">684</span>      <span class="m">5</span>      <span class="m">116</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:10 UTC+0000
+0x821fd980 alg.exe                <span class="m">1752</span>    <span class="m">684</span>      <span class="m">5</span>      <span class="m">104</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:10 UTC+0000
+0x81d60020 wscntfy.exe            <span class="m">1912</span>   <span class="m">1076</span>      <span class="m">1</span>       <span class="m">37</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:11 UTC+0000
+0x81eef8a0 TPAutoConnect.e        <span class="m">1608</span>   <span class="m">1808</span>      <span class="m">1</span>       <span class="m">78</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:09:12 UTC+0000
+0x81ed5da0 wuauclt.exe            <span class="m">1680</span>   <span class="m">1076</span>      <span class="m">3</span>      <span class="m">111</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 00:10:10 UTC+0000
+0x81d495e0 TSVNCache.exe          <span class="m">1652</span>   <span class="m">1756</span>     <span class="m">10</span>       <span class="m">59</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-04 02:00:46 UTC+0000
+0x81d79da0 iexplore.exe           <span class="m">1052</span>   <span class="m">1756</span>     <span class="m">12</span>      <span class="m">484</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-06 19:03:42 UTC+0000
+0x81fa8ad0 iexplore.exe           <span class="m">1332</span>   <span class="m">1052</span>     <span class="m">20</span>      <span class="m">797</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-06 19:03:46 UTC+0000
+0x81cd57b8 taskmgr.exe            <span class="m">3924</span>   <span class="m">1756</span>      <span class="m">3</span>       <span class="m">84</span>      <span class="m">0</span>      <span class="m">0</span> 2015-04-07 03:21:23 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Web Browser History</h1></header>
+            
+            
+            <section><p><img alt="" src="history.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>Web Browser History</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 iehistory | grep Location</span>
+Location: https://www.python.org/static/js/libs/modernizr.js
+Location: https://www.python.org/static/stylesheets/style.css
+Location: https://www.python.org/static/fonts/Pythonicon.eot
+Location: http://www.zone62.com/templates/fagus_c2/images/blockheader.png
+Location: http://www.zone62.com/modules/mod_cblogin/mod_cblogin/username.png
+Location: http://www.zone62.com/modules/mod_cblogin/mod_cblogin/password.png
+Location: http://www.zone62.com/images/joomgallery/thumbnails/full_hd_wallpapers_2/nature_3/nature_picture_248_20130307_1345247686.jpg
+Location: http://www.zone62.com/images/joomgallery/thumbnails/full_hd_wallpapers_2/digital_art_9/digital_art_picture_41_20130307_1877512233.jpg
+Location: http://www.zone62.com/images/joomgallery/thumbnails/full_hd_wallpapers_2/digital_art_9/alienware_picture_1_20130616_1961807936.jpg
+Location: http://www.zone62.com/templates/fagus_c2/images/block.png
+Location: http://www.zone62.com/images/joomgallery/thumbnails/full_hd_wallpapers_2/nature_3/nature_picture_243_20130307_1894524863.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/7_3.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/4_3.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/8_4.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/8_7.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/2_5.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/3_8.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/7_3.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/4_3.jpg
+Location: http://www.microsoft.com/net/content/NetUniverse/GeneratedImages/dzc_output_files/12/8_4.jpg
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-25">
+          <div class="inner">
+            
+            <header><h1>Web Browser History</h1></header>
+            
+            
+            <section><p>Private browsing lives in RAM</p>
+<ul>
+<li>Not really private, anyway </li>
+</ul>
+<p>Passwords</p>
+<p>Pictures</p>
+<p>Files downloaded</p>
+<p>Search terms</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-26">
+          <div class="inner">
+            
+            <header><h1>Finding Malware</h1></header>
+            
+            
+            <section><p>Malware is a category of malicious code that includes viruses, worms, and Trojan horses.</p>
+<p>Primary goal of memory analysis</p>
+<p>Hard to do with live system</p>
+<ul>
+<li>
+<p>Malware hides itself</p>
+</li>
+<li>
+<p>Alters the system</p>
+</li>
+<li>
+<p>Prevents certain actions</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>Malware</h1></header>
+            
+            
+            <section><p>Zeus </p>
+<ul>
+<li>Computer worm that targeted banking information with key logging</li>
+</ul>
+<p>Stuxnet </p>
+<ul>
+<li>
+<p>Computer worm that targeted programmable logic controllers (PLCs).</p>
+</li>
+<li>
+<p>Damaged Iranian nucleear program</p>
+</li>
+</ul>
+<h1>Malicious Actors</h1>
+<p>APT1</p>
+<p>APT30</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>Malware and Volatility</h1></header>
+            
+            
+            <section><p>Volatility has several plugins that find and inform an investigator about malware</p>
+<p>Locate how, what and why malware was on a system</p>
+<p>Locate Malware persistence </p>
+<p>Discover Malware purpose</p>
+<p>Inform victim of breach </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-29">
+          <div class="inner">
+            
+            <header><h1>Conclusion</h1></header>
+            
+            
+            <section><p>Memory forensics is a new and evolving field</p>
+<p>Used to find indicators of Malware or foul play</p>
+<p>Used by malicious actors</p>
+<p>Requires low level understanding of operating system </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: cs369_memoryForensics.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>Questions?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="cs369_memoryForensics.md">cs369_memoryForensics.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Memory Forensics 101</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Who Am I?</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Today</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Data Breaches</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">-</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">-</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">So What?</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Memory Forensics</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Random Access Memory</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">RAM is Eventually put on Hard Drive</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">What is in RAM?</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">What do we care about?</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Ethical Issues</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Why memory?</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Digital Evidence</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Memory Acquisition</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Tools of the Trade</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Winpmem</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Volatility</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Examples of using Volatility</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Process Lists Live System</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Process Lists Volatility</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Web Browser History</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Web Browser History</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Web Browser History</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Finding Malware</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Malware</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Malware and Volatility</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Conclusion</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Questions?</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
