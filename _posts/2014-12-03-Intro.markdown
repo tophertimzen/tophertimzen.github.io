@@ -2,7 +2,7 @@
 layout: post
 title: "About this Blog"
 date: 2014-12-03
-categories: Introduction
+permalink: blog/intro/
 ---
 
 I am a Computer Security student at Southern Oregon University graduating in June and am interested in malware, reverse engineering and exploitation development.

@@ -2,7 +2,7 @@
 layout: post
 title: "Windows x64 Shellcode"
 date: 2014-12-04
-categories: shellcode
+permalink: blog/windowsx64Shellcode/
 ---
 
 ### Introduction

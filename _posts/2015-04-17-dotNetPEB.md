@@ -2,7 +2,7 @@
 layout: post
 title: "Shellcode in .NET - How the PEB Changes"
 date: 2015-04-17
-categories: shellcode
+permalink: blog/shellcodeDotNetPEB/
 ---
 
 Shellcode commonly uses a method to resolve Windows API functions by traversing through the Portable Environment Block (PEB) to find Kernel32's base address. This is done so shellcode remains position independent while still having the ability to call LoadLibraryA and GetProcAddress to resolve other dlls and functions. The PEB has a_PEB_LDR_DATA structure that contains three linked lists of DLLs that are loaded in a processes memory space.  The three linked lists are 
