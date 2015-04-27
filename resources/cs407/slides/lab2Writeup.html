@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Lab 2 Write-Up</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Lab 2 Write-Up</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Part 1 was a gimme...</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Part 2</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-4">
+          <div class="inner">
+            
+            <header><h1>A process or two have been unlinked from the PsActiveProcessList, which ones?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 psxview --apply-rules</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>  Name                    PID pslist psscan thrdproc pspcid csrss session deskthrd ExitTime
+---------- -------------------- ------ ------ ------ -------- ------ ----- ------- -------- --------
+0x01f8cd00 vmtoolsd.exe            <span class="m">248</span> True   True   False    True   True  True    True   
+0x02449a80 svchost.exe            <span class="m">1076</span> True   True   False    True   True  True    True   
+0x024ca988 explorer.exe           <span class="m">1756</span> True   True   False    True   True  True    True   
+0x020ef8a0 TPAutoConnect.e        <span class="m">1608</span> True   True   False    True   True  True    True   
+0x02490c10 svchost.exe            <span class="m">1372</span> True   True   False    True   True  True    True   
+0x02387218 vmtoolsd.exe           <span class="m">1892</span> True   True   False    True   True  True    True   
+0x02072020 winlogon.exe            <span class="m">640</span> True   True   False    True   True  True    True   
+0x01f547f0 OSRLOADER.exe          <span class="m">2140</span> False  True   False    True   True  True    True   
+0x02489228 services.exe            <span class="m">684</span> True   True   False    True   True  True    True   
+0x024bada0 svchost.exe             <span class="m">876</span> True   True   False    True   True  True    True   
+0x01ed57b8 taskmgr.exe            <span class="m">3924</span> True   True   False    True   True  True    True   
+0x0210d020 cmd.exe                <span class="m">2836</span> False  True   False    True   True  True    True   
+0x01fb4020 svchost.exe            <span class="m">1956</span> True   True   False    True   True  True    True   
+0x021a8ad0 iexplore.exe           <span class="m">1332</span> True   True   False    True   True  True    True   
+0x023fd980 alg.exe                <span class="m">1752</span> True   True   False    True   True  True    True   
+0x020d5da0 wuauclt.exe            <span class="m">1680</span> True   True   False    True   True  True    True   
+0x0237a558 spoolsv.exe            <span class="m">1472</span> True   True   False    True   True  True    True   
+0x02447560 vmacthlp.exe            <span class="m">860</span> True   True   False    True   True  True    True   
+0x0206bc10 lsass.exe               <span class="m">696</span> True   True   False    True   True  True    True   
+0x01f60020 wscntfy.exe            <span class="m">1912</span> True   True   False    True   True  True    True   
+0x01f79da0 iexplore.exe           <span class="m">1052</span> True   True   False    True   True  True    True   
+0x024c87f0 ctfmon.exe             <span class="m">1900</span> True   True   False    True   True  True    True   
+0x021737a8 svchost.exe            <span class="m">1232</span> True   True   False    True   True  True    True   
+0x024bcda0 svchost.exe             <span class="m">980</span> True   True   False    True   True  True    True   
+0x01f495e0 TSVNCache.exe          <span class="m">1652</span> True   True   False    True   True  True    True   
+0x01f6a620 TPAutoConnSvc.e        <span class="m">1808</span> True   True   False    True   True  True    True   
+0x01fa4578 svchost.exe            <span class="m">1992</span> True   True   False    True   True  True    True   
+0x025c8830 System                    <span class="m">4</span> True   True   False    True   Okay  Okay    Okay   
+0x02379020 csrss.exe               <span class="m">608</span> True   True   False    True   Okay  True    True   
+0x0251e020 smss.exe                <span class="m">544</span> True   True   False    True   Okay  Okay    Okay   
+0x02139b20 loader.exe             <span class="m">3928</span> Okay   True   Okay     Okay   Okay  Okay    Okay     2015-04-07 03:30:51 UTC+0000
+0x01417bc0 msiexec.exe            <span class="m">1320</span> Okay   True   Okay     Okay   Okay  Okay    Okay     2015-04-02 19:47:51 UTC+0000
+0x0143c360 msiexec.exe             <span class="m">668</span> Okay   True   Okay     Okay   Okay  Okay    Okay     2015-04-02 18:32:01 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>DKOM'd processes</h1></header>
+            
+            
+            <section><p>0x0210d020 cmd.exe                2836 False  True   False    True   True  True    True </p>
+<p>0x01f547f0 OSRLOADER.exe          2140 False  True   False    True   True  True    True </p>
+<p>Some gave me msiexec.exe, which had exited..</p>
+<p>Recall that DKOM unlinks from the PsActiveProcessList, which contains running processes! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Do the process/processes unlinked have any importance?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<p>CMD.exe = Windows command line</p>
+<p>OSRLOADER = Kernel driver loader</p>
+<h1>Why would an attacker want to use such a tool?</h1>
+<p>Kernel driver required for DKOM </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Describe in depth how DKOM works. What is needed and how do you get it there?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<p>If an attacker gets access to system and can write into kernel objects, they can hide information from certain lists.</p>
+<p>Kernel Drivers have unrestricted access to kernel memory.</p>
+<p>Hide Processes, files, network connections</p>
+<p>Adjust Privileges</p>
+<p>Add groups to tokens</p>
+<p>Manipulate event view</p>
+<p>Hide Ports</p>
+<p>Default Kernel mode IDS/IPS/AV</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Bonus: What are security mitigations, if any, in Windows 7 to make this harder?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<p>Sessions</p>
+<p>Signed drivers needed </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>Are there any children processes of one of the unlinked processes?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 psscan | grep 2140</span>
+Volatility Foundation Volatility Framework 2.4
+0x0000000001f547f0 OSRLOADER.exe      <span class="m">2140</span>   <span class="m">1756</span> 0x072c0100 2015-04-07 03:20:26 UTC+0000
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 psscan | grep 2836</span>
+Volatility Foundation Volatility Framework 2.4
+0x000000000210d020 cmd.exe            <span class="m">2836</span>   <span class="m">1756</span> 0x072c0300 2015-04-07 03:21:56 UTC+0000 
+0x0000000002139b20 loader.exe         <span class="m">3928</span>   <span class="m">2836</span> 0x072c01c0 2015-04-07 03:30:51 UTC+0000   2015-04-07 03:30:51 UTC+0000
+</pre></div>
+
+<p>Yes, loader.exe was the child of cmd.exe </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-10">
+          <div class="inner">
+            
+            <header><h1>When did the child from question 4 exit? Did it run long?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<p>0x0000000002139b20 loader.exe         3928   2836 0x072c01c0 2015-04-07 03:30:51 UTC+0000   2015-04-07 03:30:51 UTC+0000</p>
+<p>It ran for 0 seconds... quick operation.</p>
+<p>Loader.exe was a program to tell the kernel driver to hide a process </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 cmdscan</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+CommandProcess: csrss.exe Pid: 608
+CommandHistory: 0x529170 Application: cmd.exe Flags: Allocated, Reset
+CommandCount: <span class="m">4</span> LastAdded: <span class="m">3</span> LastDisplayed: 3
+FirstCommand: <span class="m">0</span> CommandCountMax: 50
+ProcessHandle: 0x254
+Cmd <span class="c">#0 @ 0x52db00: cd c:\bin</span>
+Cmd <span class="c">#1 @ 0x29039c8: hidepid.exe 2140</span>
+Cmd <span class="c">#2 @ 0x52dd08: loader.exe 2140</span>
+Cmd <span class="c">#3 @ 0x29032d8: loader.exe 2836</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>Parsing in volshell</h1></header>
+            
+            
+            <section><p>Address of loader.exe was 0x0000000002139b20</p>
+<p>Need to use a physical address</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 volshell</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">physical_space</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_as</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span> <span class="n">astype</span> <span class="o">=</span> <span class="s">&#39;physical&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_EPROCESS&quot;</span><span class="p">,</span><span class="mh">0x0000000002139b20</span><span class="p">,</span> <span class="n">physical_space</span><span class="p">)</span>
+<span class="p">[</span><span class="n">_EPROCESS</span> <span class="n">_EPROCESS</span><span class="p">]</span> <span class="err">@</span> <span class="mh">0x02139B20</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Pcb</span>                            <span class="mi">34839328</span>
+<span class="mh">0x84</span>  <span class="p">:</span> <span class="n">UniqueProcessId</span>                <span class="mi">3928</span>
+<span class="mh">0x24c</span> <span class="p">:</span> <span class="n">ExitStatus</span>                     <span class="mi">0</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>BONUS Can you spot the malicious driver that was used?</h1></header>
+            
+            
+            <section><p><br><br></p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 volshell</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">modules</span><span class="p">()</span>
+<span class="mh">0x81f526d8</span> <span class="mh">0xf8a32000</span> \<span class="err">??</span>\<span class="n">C</span><span class="p">:</span>\<span class="nb">bin</span>\<span class="n">driver</span><span class="o">.</span><span class="n">sys</span>
+</pre></div>
+
+<p>OR</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 modules    </span>
+0x81f526d8 driver.sys           0xf8a32000     0x6000 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\b</span>in<span class="se">\d</span>river.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab2Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab2Writeup.md">lab2Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Lab 2 Write-Up</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Part 1 was a gimme...</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Part 2</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">A process or two have been unlinked from the PsActiveProcessList, which ones?</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">DKOM'd processes</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Do the process/processes unlinked have any importance?</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Describe in depth how DKOM works. What is needed and how do you get it there?</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Bonus: What are security mitigations, if any, in Windows 7 to make this harder?</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Are there any children processes of one of the unlinked processes?</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">When did the child from question 4 exit? Did it run long?</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Parsing in volshell</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">BONUS Can you spot the malicious driver that was used?</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">EOF</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>

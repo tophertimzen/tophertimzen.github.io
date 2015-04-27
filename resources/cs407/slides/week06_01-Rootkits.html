@@ -1,0 +1,2934 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Kernel Forensics and Rootkits</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Kernel Forensics and Rootkits</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>Kernel Modules</p>
+<p>Kernel Drivers</p>
+<p>Evasion Techniques</p>
+<p>IDA and Modules</p>
+<p>SSDT</p>
+<p>Hooking</p>
+<p>Callbacks</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Hiding</h1></header>
+            
+            
+            <section><p>Recall Malware wants to hide itself.</p>
+<p>Kernel modules allow malware to hide from PsActiveProcess</p>
+<p>Also ability to </p>
+<ul>
+<li>Manipulate call tables</li>
+<li>Hook functions</li>
+<li>overwrite metadata structures / pool tags, etc</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>PsLoadedModuleList</h1></header>
+            
+            
+            <section><p>Doubly linked list of KLDR_DATA_TABLE_ENTRY structure in a _LIST_ENTRY. </p>
+<p>Metadata about each kernel module </p>
+<ul>
+<li>
+<p>Base address </p>
+</li>
+<li>
+<p>Size </p>
+</li>
+<li>
+<p>Full path on disk</p>
+</li>
+</ul>
+<p>Rootkits can overwrite this metadata </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>KDDEBUGGER_DATA64</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_KDDEBUGGER_DATA64&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_KDDEBUGGER_DATA64&#39;</span> <span class="p">(</span><span class="mi">832</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Header</span>                         <span class="p">[</span><span class="s">&#39;_DBGKD_DEBUG_DATA_HEADER64&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">KernBase</span>                       <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">BreakpointWithStatus</span>           <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">SavedContext</span>                   <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">ThCallbackStack</span>                <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x32</span>  <span class="p">:</span> <span class="n">NextCallback</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">FramePointer</span>                   <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">KiCallUserMode</span>                 <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">KeUserCallbackDispatcher</span>       <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">PsLoadedModuleList</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">PsActiveProcessHead</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">PspCidTable</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_PSP_CID_TABLE&#39;</span><span class="p">]]]</span>
+</pre></div>
+
+<p>_KDDEBUGGER_DATA64 -&gt; PsLoadedModuleList</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>KLDR_DATA_TABLE_ENTRY</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_KLDR_DATA_TABLE_ENTRY</span> 
+<span class="p">{</span>
+    <span class="n">LIST_ENTRY</span> <span class="n">InLoadOrderLinks</span><span class="p">;</span>
+    <span class="n">PVOID</span> <span class="n">ExceptionTable</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">ExceptionTableSize</span><span class="p">;</span>
+    <span class="c1">// ULONG padding on IA64</span>
+    <span class="n">PVOID</span> <span class="n">GpValue</span><span class="p">;</span>
+    <span class="n">PNON_PAGED_DEBUG_INFO</span> <span class="n">NonPagedDebugInfo</span><span class="p">;</span>
+    <span class="n">PVOID</span> <span class="n">DllBase</span><span class="p">;</span>
+    <span class="n">PVOID</span> <span class="n">EntryPoint</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">SizeOfImage</span><span class="p">;</span>
+    <span class="n">UNICODE_STRING</span> <span class="n">FullDllName</span><span class="p">;</span>
+    <span class="n">UNICODE_STRING</span> <span class="n">BaseDllName</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">Flags</span><span class="p">;</span>
+    <span class="n">USHORT</span> <span class="n">LoadCount</span><span class="p">;</span>
+    <span class="n">USHORT</span> <span class="n">__Unused5</span><span class="p">;</span>
+    <span class="n">PVOID</span> <span class="n">SectionPointer</span><span class="p">;</span>
+    <span class="n">ULONG</span> <span class="n">CheckSum</span><span class="p">;</span>
+    <span class="c1">// ULONG padding on IA64</span>
+    <span class="n">PVOID</span> <span class="n">LoadedImports</span><span class="p">;</span>
+    <span class="n">PVOID</span> <span class="n">PatchInformation</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">KLDR_DATA_TABLE_ENTRY</span><span class="p">,</span> <span class="o">*</span><span class="n">PKLDR_DATA_TABLE_ENTRY</span><span class="p">;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Other sources</h1></header>
+            
+            
+            <section><p>PE header not needed after OS loader.... Rootkits can 0 over all of it. </p>
+<p>Main code must remain in memory</p>
+<p>Threads can point to addresses within a module</p>
+<p>System Service Dispatcher Table (SSDT) can be hooked and pointed to malicious module </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>Graphical</h1></header>
+            
+            
+            <section><p><img alt="Finding metadata" src="..\slideResources\rootkits\blocks.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>What to look for?</h1></header>
+            
+            
+            <section><p>Unlinked modules</p>
+<p>Critial Interrupts (Page fault, breakpoint, ssdt)</p>
+<p>System APIs</p>
+<ul>
+<li>User mode -&gt; Kernel mode uses SSDT to resolve functions</li>
+<li>Pointers can be overwritten</li>
+</ul>
+<p>Signed drivers</p>
+<ul>
+<li>64 bit windows needs signed kernel modules</li>
+</ul>
+<p>Valid names and paths</p>
+<p>Callbacks</p>
+<p>Devices</p>
+<p>Signatures</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>Loading Modules</h1></header>
+            
+            
+            <section><p>Service Control Manager (SCM)</p>
+<ul>
+<li>Loads modules by creating a SERVICE_KERNEL_DRIVER serice and starting it. </li>
+<li>OSRLOADER does it this way</li>
+<li>Recall malware can just use the API calls</li>
+</ul>
+<p>NtLoadDriver</p>
+<ul>
+<li>Bypass SCM and use API pure.</li>
+<li>Still requires registry keys</li>
+</ul>
+<p>NtSetSystemInformation</p>
+<ul>
+<li>Cannot unload modules with this method </li>
+<li>System call to SystemLoadAndCallImage </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>Module Loading</h1></header>
+            
+            
+            <section><p><br>
+<br><br><br><br><br></p>
+<div class="highlight"><pre><span class="n">status</span> <span class="o">=</span> <span class="n">ZwSetSystemInformation</span><span class="p">(</span><span class="n">SystemLoadAndCallImage</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MyDeviceDriver</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">SYSTEM_LOAD_AND_CALL_IMAGE</span><span class="p">));</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Live System</h1></header>
+            
+            
+            <section><p>System.exe - PID 4 - Is container for Kernel threads and modules</p>
+<p>Windows API EnumDeviceDrivers can get load address for each module. </p>
+<div class="highlight"><pre><span class="n">BOOL</span> <span class="n">WINAPI</span> <span class="nf">EnumDeviceDrivers</span><span class="p">(</span>
+  <span class="n">_Out_</span>  <span class="n">LPVOID</span> <span class="o">*</span><span class="n">lpImageBase</span><span class="p">,</span>
+  <span class="n">_In_</span>   <span class="n">DWORD</span> <span class="n">cb</span><span class="p">,</span>
+  <span class="n">_Out_</span>  <span class="n">LPDWORD</span> <span class="n">lpcbNeeded</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>NtQuerySystemInformation is called by EnumDeviceDrivers</p>
+<div class="highlight"><pre><span class="n">NTSTATUS</span> <span class="n">WINAPI</span> <span class="nf">NtQuerySystemInformation</span><span class="p">(</span>
+  <span class="n">_In_</span>       <span class="n">SYSTEM_INFORMATION_CLASS</span> <span class="n">SystemInformationClass</span><span class="p">,</span>
+  <span class="n">_Inout_</span>    <span class="n">PVOID</span> <span class="n">SystemInformation</span><span class="p">,</span>
+  <span class="n">_In_</span>       <span class="n">ULONG</span> <span class="n">SystemInformationLength</span><span class="p">,</span>
+  <span class="n">_Out_opt_</span>  <span class="n">PULONG</span> <span class="n">ReturnLength</span>
+<span class="p">);</span>
+</pre></div>
+
+<p>_LIST_ENTRY of _KLDR_DATA_TABLE_ENTRY structures </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Process Explorer</h1></header>
+            
+            
+            <section><p>Open lower pane (^L) on System </p>
+<p><img alt="Process Explorer Drivers" src="..\slideResources\rootkits\procexp.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>Nirsoft DriverView</h1></header>
+            
+            
+            <section><p>Another GUI app to list kernel modules</p>
+<p>Shows all the metadata from _KLDR_DATA_TABLE_ENTRY</p>
+<p><img alt="nirsoft" src="..\slideResources\rootkits\nirsoft.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Volatility</h1></header>
+            
+            
+            <section><p>Modules </p>
+<ul>
+<li>Walk PsLoadedModuleList</li>
+<li>Order in which modules were loaded</li>
+</ul>
+<p>Modscan</p>
+<ul>
+<li>Pool tag scanning for MmLd tag </li>
+</ul>
+<p>Unloadedmodules</p>
+<ul>
+<li>Modules recently unloaded with timestamps of when they were unloaded</li>
+</ul>
+<p>Moddump</p>
+<ul>
+<li>Dump a kernel module to disk from a name or base address</li>
+<li>Must have a valid PE header, which rootkits can destory</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>Modules</h1></header>
+            
+            
+            <section><ul>
+<li>
+<p>Walk PsLoadedModuleList</p>
+</li>
+<li>
+<p>Order in which modules were loaded</p>
+</li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 modules</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                 Base             Size File
+---------- -------------------- ---------- ---------- ----
+0x823fc398 ntoskrnl.exe         0x804d7000   0x1f9680 <span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\n</span>tkrnlpa.exe
+0x823fc330 hal.dll              0x806d1000    0x20380 <span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\h</span>al.dll
+0x823fc2c8 kdcom.dll            0xf8b9a000     0x2000 <span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>DCOM.DLL
+0x823fc258 BOOTVID.dll          0xf8aaa000     0x3000 <span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\B</span>OOTVID.dll
+0x823fc1f0 ACPI.sys             0xf856b000    0x2e000 ACPI.sys
+<span class="o">[</span>snip<span class="o">]</span>
+0x81f526d8 driver.sys           0xf8a32000     0x6000 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\b</span>in<span class="se">\d</span>river.sys
+0x81ee42a0 kmixer.sys           0xb1564000    0x2b000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\d</span>rivers<span class="se">\k</span>mixer.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            <header><h1>Modules</h1></header>
+            
+            
+            <section><p>Offset (V) is the KLDR_DATA_TABLE_ENTRY</p>
+<p>Base is the PE header</p>
+<h1>Load Order</h1>
+<p>NT module is first and then the HAL (hardware abstraction layter)</p>
+<p>Several will always start</p>
+<ul>
+<li>Boot into safe mode and watch what modules load</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>Pooltag Approach with Modscan</h1></header>
+            
+            
+            <section><p>Displayed in order when they were found, not load order.</p>
+<p>Offset is now physical </p>
+<p>Audits free and deallocated memory like other pool tag scanners</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 modscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>          Name                 Base             Size File
+------------------ -------------------- ---------- ---------- ----
+0x0000000001712820 kbdclass.sys         0xf8952000     0x6000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\D</span>RIVERS<span class="se">\k</span>bdclass.sys
+0x0000000001bdd230 Dxapi.sys            0xf813d000     0x3000 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\D</span>xapi.sys
+0x0000000001bdd570 Fips.SYS             0xf88aa000     0xb000 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\D</span>rivers<span class="se">\F</span>ips.SYS
+0x0000000001bdd6d0 ndisuio.sys          0xb221c000     0x4000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\D</span>RIVERS<span class="se">\n</span>disuio.sys
+0x0000000001bdd740 rdbss.sys            0xb248c000    0x2b000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\D</span>RIVERS<span class="se">\r</span>dbss.sys
+0x0000000001bddcc0 afd.sys              0xb24dc000    0x22000 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\a</span>fd.sys
+0x0000000002065628 termdd.sys           0xf882a000     0xa000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\D</span>RIVERS<span class="se">\t</span>ermdd.sys
+0x00000000020691f0 mouclass.sys         0xf895a000     0x6000 <span class="se">\S</span>ystemRoot<span class="se">\s</span>ystem32<span class="se">\D</span>RIVERS<span class="se">\m</span>ouclass.sys
+0x000000000206a628 dump_atapi.sys       0xb233c000    0x18000 <span class="se">\S</span>ystemRoot<span class="se">\S</span>ystem32<span class="se">\D</span>rivers<span class="se">\d</span>ump_atapi.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Pooltags</h1></header>
+            
+            
+            <section><p>Rootkits can change all metadata</p>
+<p>PE and pool tags not needed by OS</p>
+<p>Learn Volatility signatures for pool tag scanners and wreak them with a rootkit!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>Unloaded modules</h1></header>
+            
+            
+            <section><p>Kernel maintains unloaded modules for debugging purposes</p>
+<p>Helps developers find bugs, dangling pointers, etc... prevent blue screens!</p>
+<p>Some rootkits get in and get out!</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 unloadedmodules</span>
+Volatility Foundation Volatility Framework 2.4
+Name                 StartAddress EndAddress Time
+-------------------- ------------ ---------- ----
+Sfloppy.SYS          0x00f8393000 0xf8396000 2015-04-04 00:08:35
+Cdaudio.SYS          0x00f89b2000 0xf89b7000 2015-04-04 00:08:35
+DumpDrv.SYS          0x00f8b46000 0xf8b49000 2015-04-04 00:08:35
+splitter.sys         0x00f8bb2000 0xf8bb4000 2015-04-04 00:09:19
+aec.sys              0x00b1f94000 0xb1fb7000 2015-04-04 00:09:19
+swmidi.sys           0x00f821d000 0xf822b000 2015-04-04 00:09:19
+DMusic.sys           0x00f820d000 0xf821a000 2015-04-04 00:09:19
+drmkaud.sys          0x00f8c78000 0xf8c79000 2015-04-04 00:09:19
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Extracting Kernel Modules</h1></header>
+            
+            
+            <section><p>Moddump - Dump a kernel driver to an executable file sample</p>
+<div class="highlight"><pre>  -n NAME, --name<span class="o">=</span>NAME  Operate on these process names <span class="o">(</span>regex<span class="o">)</span>
+  -D DUMP_DIR, --dump-dir<span class="o">=</span>DUMP_DIR
+                        Directory in which to dump executable files
+  -u, --unsafe          Bypasses certain sanity checks when creating image
+  -m, --memory          Carve as a memory sample rather than exe/disk
+  -x, --fix             Modify the image base of the dump to the im-memory
+                        base address
+  -r REGEX, --regex<span class="o">=</span>REGEX
+                        Dump modules matching REGEX
+  -i, --ignore-case     Ignore <span class="k">case</span> in pattern match
+  -b BASE, --base<span class="o">=</span>BASE  Dump driver with BASE address <span class="o">(</span>in hex<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Full Picture</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 modscan | grep driver.sys</span>
+Volatility Foundation Volatility Framework 2.4
+0x00000000021526d8 driver.sys           0xf8a32000     0x6000 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\b</span>in<span class="se">\d</span>river.sys
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#mkdir driverSys</span>
+/bin/mkdir: created directory <span class="sb">`</span>driverSys<span class="err">&#39;</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 moddump -b 0xf8a32000 -D driverSys/</span>
+Volatility Foundation Volatility Framework 2.4
+Module Base Module Name          Result
+----------- -------------------- ------
+0x0f8a32000 driver.sys           OK: driver.f8a32000.sys
+
+
+<span class="o">[</span>root<span class="p">&amp;</span>driverSys<span class="o">]</span><span class="c">#strings -a driverSys\driver.f8a32000.sys</span>
+!This program cannot be run in DOS mode.
+Rich
+.text
+h.rdata
+H.data
+INIT
+.reloc
+QhH3
+Rh^3
+DriverUnload ...
+Ipr_Write ...
+Hide succeeded on %d!
+Hide failed on %d
+Ipr_Nil ...
+DriverEntry ...
+RSDS
+C:<span class="se">\U</span>sers<span class="se">\T</span>opher<span class="se">\f</span>orIII<span class="se">\d</span>kom<span class="se">\d</span>river.pdb
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>With IDA</h1></header>
+            
+            
+            <section><p>IDA requires a proper ImageBase address to display function calls, jumps and strings... </p>
+<p>Use ImageBase from one of the mod plugins.</p>
+<p>Can clean up with a hex editor or with a python script</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>driverSys<span class="o">]</span><span class="c">#mv driver.f8a32000.sys driver.sys</span>
+<span class="o">[</span>root<span class="p">&amp;</span>driverSys<span class="o">]</span><span class="c">#pip install pefile </span>
+<span class="o">[</span>root<span class="p">&amp;</span>driverSys<span class="o">]</span><span class="c">#cat cleanDriver.py</span>
+<span class="c">#!/usr/bin/env python</span>
+import pefile
+<span class="nv">pe</span> <span class="o">=</span> pefile.PE<span class="o">(</span><span class="s2">&quot;driver.sys&quot;</span>, <span class="nv">fast_load</span> <span class="o">=</span> True<span class="o">)</span>
+pe.OPTIONAL_HEADER.ImageBase <span class="o">=</span> 0xf8a32000
+pe.write<span class="o">(</span><span class="s2">&quot;driver.sys&quot;</span><span class="o">)</span>
+
+<span class="o">[</span>root<span class="p">&amp;</span>driverSys<span class="o">]</span><span class="c">#./cleanDriver.py</span>
+</pre></div>
+
+<p>Also use impscan to generate IAT labels for IDA!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-24">
+          <div class="inner">
+            
+            <header><h1>Impscan</h1></header>
+            
+            
+            <section><p>Scan for calls to imported functions</p>
+<p>Need to give</p>
+<pre><code>- b &lt;base address&gt;
+
+- s &lt;size of memory&gt;
+
+- output=idc
+
+- output-file=&lt;filename&gt;
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Lab2.vmem --profile=WinXPSP2x86 impscan -b 0xf8a32000 -s 0x6000 --output=idc  --output-file=driver.idc</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat driver.idc</span>
+MakeDword<span class="o">(</span>0xF8A34004<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34004, <span class="s2">&quot;RtlInitUnicodeString&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A34008<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34008, <span class="s2">&quot;DbgPrint&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A3400C<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A3400C, <span class="s2">&quot;IofCompleteRequest&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A34010<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34010, <span class="s2">&quot;IoCreateDevice&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A34014<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34014, <span class="s2">&quot;IoCreateSymbolicLink&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A34018<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34018, <span class="s2">&quot;IoDeleteDevice&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A3401C<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A3401C, <span class="s2">&quot;IoDeleteSymbolicLink&quot;</span><span class="o">)</span><span class="p">;</span>
+MakeDword<span class="o">(</span>0xF8A34020<span class="o">)</span><span class="p">;</span>
+MakeName<span class="o">(</span>0xF8A34020, <span class="s2">&quot;PsGetCurrentProcess&quot;</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-26">
+          <div class="inner">
+            
+            <header><h1>IDA</h1></header>
+            
+            
+            <section><p>Open driver.sys as you would a binary or dll</p>
+<p>ImageBase address was adjusted by pefile</p>
+<p>Run or add our IDC file</p>
+<p><img alt="idc" src="..\slideResources\rootkits\idc.png" /></p>
+<p>This will add new Names to the names window</p>
+<p>MakeDword(0xF8A34020);
+MakeName(0xF8A34020, "PsGetCurrentProcess");</p>
+<p><img alt="idaName" src="..\slideResources\rootkits\idaName.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>Driver Objects</h1></header>
+            
+            
+            <section><p>When a module loads it creates KLDR_DATA_TABLE_ENTRY and a _DRIVER_OBJECT. </p>
+<p>Drivers contain a pointer to a list of handler functions </p>
+<p>Helpful to find destroyed or unlinked metadata structures </p>
+<h1>Driver Communication</h1>
+<p>User mode talks to kernel drivers with I/O Request Pakcets (IRP).</p>
+<p>IRP includes the desired operation (create, read, write, etc) and buffers for data that will be operated on by the driver. </p>
+<p>This table is known as the IRP Function or Major Function table. </p>
+<p>The table contains 28 pointers. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>_DRIVER_OBJECT</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_DRIVER_OBJECT&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_DRIVER_OBJECT&#39;</span> <span class="p">(</span><span class="mi">168</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Type</span>                           <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">Size</span>                           <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">DeviceObject</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DEVICE_OBJECT&#39;</span><span class="p">]]</span>     <span class="c">#first device created by the driver or a linked list. </span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">DriverStart</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>               <span class="c">#kernel modules base addr</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">DriverSize</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                   <span class="c">#kernel module size</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">DriverSection</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DriverExtension</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DRIVER_EXTENSION&#39;</span><span class="p">]]</span>  <span class="c">#registry path</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">DriverName</span>                     <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>                 <span class="c">#name</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">HardwareDatabase</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">FastIoDispatch</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_FAST_IO_DISPATCH&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">DriverInit</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>                <span class="c">#init()</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">DriverStartIo</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">DriverUnload</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>                <span class="c">#unload function </span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">MajorFunction</span>                  <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]]</span> <span class="c">#IRP Function Table</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>Driverscan</h1></header>
+            
+            
+            <section><p>Pool tag scanner for driver objects. </p>
+<p>Shows phyusical offset of _DRIVER_OBJECT and start address of the driver in kernel memory.</p>
+<ul>
+<li>Should be same as from modscan or modules plugins. </li>
+</ul>
+<p>If KLDR_DATA_TABLE_ENTRY is overwritten, this may still be intact. </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 driverscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>              <span class="c">#Ptr     #Hnd Start            Size Service Key          Name         Driver Name</span>
+------------------ -------- -------- ---------- ---------- -------------------- ------------ -----------
+0x000000003dc29398        <span class="m">2</span>        <span class="m">0</span> 0x95aa9000     0x6000 mmdrv                mmdrv        <span class="se">\D</span>river<span class="se">\m</span>mdrv
+0x000000003de0b988        <span class="m">4</span>        <span class="m">0</span> 0x92403000    0x85000 HTTP                 HTTP         <span class="se">\D</span>river<span class="se">\H</span>TTP
+0x000000003e010518        <span class="m">2</span>        <span class="m">0</span> 0x8725c000    0x1b000 luafv                luafv        <span class="se">\F</span>ileSystem<span class="se">\l</span>uafv
+0x000000003e016868        <span class="m">2</span>        <span class="m">0</span> 0x8728a000     0xd000 tcpipreg             tcpipreg     <span class="se">\D</span>river<span class="se">\t</span>cpipreg
+0x000000003e019ed0        <span class="m">3</span>        <span class="m">0</span> 0x95a50000    0x52000 srv                  srv          <span class="se">\F</span>ileSystem<span class="se">\s</span>rv
+0x000000003e021f38        <span class="m">3</span>        <span class="m">0</span> 0x95a00000    0x50000 srv2                 srv2         <span class="se">\F</span>ileSystem<span class="se">\s</span>rv2
+0x000000003e02f030        <span class="m">3</span>        <span class="m">0</span> 0x92488000    0x19000 bowser               bowser       <span class="se">\F</span>ileSystem<span class="se">\b</span>owser
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>Hooking</h1></header>
+            
+            
+            <section><p>Rootkits can hook entries in a drivers IRP/Major Function table. <em>Address of 28 pointers to functions</em>.</p>
+<p>Overwrite function address and <em>hook</em> into itself. </p>
+<p>Rootkits like to hook</p>
+<ul>
+<li>Network buffers</li>
+<li>File I/O</li>
+<li>Network connections</li>
+</ul>
+<p>To discover...</p>
+<ul>
+<li>Locate _DRIVER_OBJECT</li>
+<li>Read 28 values in IRP table</li>
+<li>Determine where reach function points and if it is malicious </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-31">
+          <div class="inner">
+            
+            <header><h1>Driverirp</h1></header>
+            
+            
+            <section><p>Shows IRP functions for a module</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 driverirp -r tcpip</span>
+--------------------------------------------------
+DriverName: Tcpip
+DriverStart: 0x8700c000
+DriverSize: 0x14c000
+DriverStartIo: 0x0
+   <span class="m">0</span> IRP_MJ_CREATE                        0x8701b669 tcpip.sys
+   <span class="m">1</span> IRP_MJ_CREATE_NAMED_PIPE             0x828b90e5 ntoskrnl.exe
+   <span class="m">2</span> IRP_MJ_CLOSE                         0x8701b669 tcpip.sys
+   <span class="m">3</span> IRP_MJ_READ                          0x828b90e5 ntoskrnl.exe
+   <span class="m">4</span> IRP_MJ_WRITE                         0x828b90e5 ntoskrnl.exe
+   <span class="m">5</span> IRP_MJ_QUERY_INFORMATION             0x828b90e5 ntoskrnl.exe
+   <span class="m">6</span> IRP_MJ_SET_INFORMATION               0x828b90e5 ntoskrnl.exe
+   <span class="m">7</span> IRP_MJ_QUERY_EA                      0x828b90e5 ntoskrnl.exe
+   <span class="m">8</span> IRP_MJ_SET_EA                        0x828b90e5 ntoskrnl.exe
+   <span class="m">9</span> IRP_MJ_FLUSH_BUFFERS                 0x828b90e5 ntoskrnl.exe
+  <span class="m">10</span> IRP_MJ_QUERY_VOLUME_INFORMATION      0x828b90e5 ntoskrnl.exe
+  <span class="m">11</span> IRP_MJ_SET_VOLUME_INFORMATION        0x828b90e5 ntoskrnl.exe
+  <span class="m">12</span> IRP_MJ_DIRECTORY_CONTROL             0x828b90e5 ntoskrnl.exe
+  <span class="m">13</span> IRP_MJ_FILE_SYSTEM_CONTROL           0x828b90e5 ntoskrnl.exe
+  <span class="m">14</span> IRP_MJ_DEVICE_CONTROL                0x87056c3d tcpip.sys
+  <span class="m">15</span> IRP_MJ_INTERNAL_DEVICE_CONTROL       0x8701b669 tcpip.sys
+  <span class="m">16</span> IRP_MJ_SHUTDOWN                      0x828b90e5 ntoskrnl.exe
+  <span class="m">17</span> IRP_MJ_LOCK_CONTROL                  0x828b90e5 ntoskrnl.exe
+  <span class="m">18</span> IRP_MJ_CLEANUP                       0x8701b669 tcpip.sys
+  <span class="m">19</span> IRP_MJ_CREATE_MAILSLOT               0x828b90e5 ntoskrnl.exe
+  <span class="m">20</span> IRP_MJ_QUERY_SECURITY                0x828b90e5 ntoskrnl.exe
+  <span class="m">21</span> IRP_MJ_SET_SECURITY                  0x828b90e5 ntoskrnl.exe
+  <span class="m">22</span> IRP_MJ_POWER                         0x828b90e5 ntoskrnl.exe
+  <span class="m">23</span> IRP_MJ_SYSTEM_CONTROL                0x828b90e5 ntoskrnl.exe
+  <span class="m">24</span> IRP_MJ_DEVICE_CHANGE                 0x828b90e5 ntoskrnl.exe
+  <span class="m">25</span> IRP_MJ_QUERY_QUOTA                   0x828b90e5 ntoskrnl.exe
+  <span class="m">26</span> IRP_MJ_SET_QUOTA                     0x828b90e5 ntoskrnl.exe
+  <span class="m">27</span> IRP_MJ_PNP                           0x828b90e5 ntoskrnl.exe
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Hooked function calls</h1></header>
+            
+            
+            <section><p>Would look something like.</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 driverirp -r tcpip</span>
+    --------------------------------------------------
+DriverName: Tcpip
+DriverStart: 0x8700c000
+DriverSize: 0x14c000
+DriverStartIo: 0x0
+   <span class="m">0</span> IRP_MJ_CREATE                        0x8701b669 tcpip.sys
+   <span class="m">1</span> IRP_MJ_CREATE_NAMED_PIPE             0x828b90e5 ntoskrnl.exe
+   <span class="m">2</span> IRP_MJ_CLOSE                         0x8701b669 tcpip.sys
+   <span class="m">3</span> IRP_MJ_READ                          0x828b90e5 ntoskrnl.exe
+   <span class="m">4</span> IRP_MJ_WRITE                         0x828b90e5 ntoskrnl.exe
+    <span class="o">[</span>snip<span class="o">]</span>
+  <span class="m">14</span> IRP_MJ_DEVICE_CONTROL                0x89503c3d driver.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>Stealthy Hooks</h1></header>
+            
+            
+            <section><p>Put a hooking stub in the main driver and call/jmp into malicious code</p>
+<p>Driverirp with --verbose will disassemble handler functions</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 driverirp -r tcpip --verbose</span>
+
+DriverName: Tcpip
+DriverStart: 0x8700c000
+DriverSize: 0x14c000
+DriverStartIo: 0x0
+<span class="o">[</span>snip<span class="o">]</span>
+  <span class="m">14</span> IRP_MJ_DEVICE_CONTROL                0x87056c3d tcpip.sys
+0x87056c3d 8bff             MOV EDI, EDI
+0x87056c3f <span class="m">55</span>               PUSH EBP
+0x87056c40 8bec             MOV EBP, ESP
+0x87056c42 8b4d08           MOV ECX, <span class="o">[</span>EBP+0x8<span class="o">]</span>
+0x87056c45 33c0             XOR EAX, EAX
+0x87056c47 3b0cc5e09b1087   CMP ECX, <span class="o">[</span>EAX*8-0x78ef6420<span class="o">]</span>
+0x87056c4e 741e             JZ 0x87056c6e
+0x87056c50 <span class="m">40</span>               INC EAX
+0x87056c51 83f805           CMP EAX, 0x5
+0x87056c54 7cf1             JL 0x87056c47
+0x87056c56 ff750c           PUSH DWORD <span class="o">[</span>EBP+0xc<span class="o">]</span>
+0x87056c59 6a00             PUSH 0x0
+0x87056c5b 68010000c0       PUSH DWORD 0xc0000001
+0x87056c60 e8204afcff       CALL 0x8701b685
+0x87056c65 b8010000c0       MOV EAX, 0xc0000001
+0x87056c6a 5d               POP EBP
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-34">
+          <div class="inner">
+            
+            <header><h1>TDL3 Rootkit</h1></header>
+            
+            
+            <section><p><img alt="tdl3" src="..\slideResources\rootkits\tdl3.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            <header><h1>Focus</h1></header>
+            
+            
+            <section><p>Lots of drivers</p>
+<p>Each with 28 IRP functions...</p>
+<p>Have fun.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>High Value Targets</h1></header>
+            
+            
+            <section><p>File Systems</p>
+<ul>
+<li>
+<p>IRP_MJ_READ</p>
+</li>
+<li>
+<p>IRP_MJ_WRITE</p>
+</li>
+</ul>
+<p>Network drivers</p>
+<ul>
+<li>IRP_MJ_DEVICE_CONTROL</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-37">
+          <div class="inner">
+            
+            <header><h1>Device Trees</h1></header>
+            
+            
+            <section><p>Multiple drivers can handle the same IRP.</p>
+<p>Windows uses a stacked approach to handling I/O. </p>
+<p>A rootkit can insert or attach to a device's stack/tree.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-38">
+          <div class="inner">
+            
+            
+            <section><p><img alt="deviceTree" src="..\slideResources\rootkits\deviceTree.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-39">
+          <div class="inner">
+            
+            <header><h1>Device Tree Structures</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_DEVICE_OBJECT&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_DEVICE_OBJECT&#39;</span> <span class="p">(</span><span class="mi">184</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Type</span>                           <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">Size</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">ReferenceCount</span>                 <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">DriverObject</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DRIVER_OBJECT&#39;</span><span class="p">]]</span>  <span class="c">#Pointer to actual driver </span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">NextDevice</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DEVICE_OBJECT&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">AttachedDevice</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DEVICE_OBJECT&#39;</span><span class="p">]]</span>  <span class="c">#Devices on the stack</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">CurrentIrp</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_IRP&#39;</span><span class="p">]]</span>            <span class="c">#IRP being processed</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">Timer</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_IO_TIMER&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">Characteristics</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Vpb</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_VPB&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">DeviceExtension</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">DeviceType</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                 <span class="c">#Type of device... FILE, NETWORK, DISK...</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">StackSize</span>                      <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">Queue</span>                          <span class="p">[</span><span class="s">&#39;__unnamed_1340&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">AlignmentRequirement</span>           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">DeviceQueue</span>                    <span class="p">[</span><span class="s">&#39;_KDEVICE_QUEUE&#39;</span><span class="p">]</span>
+<span class="mh">0x74</span>  <span class="p">:</span> <span class="n">Dpc</span>                            <span class="p">[</span><span class="s">&#39;_KDPC&#39;</span><span class="p">]</span>
+<span class="mh">0x94</span>  <span class="p">:</span> <span class="n">ActiveThreadCount</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">SecurityDescriptor</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x9c</span>  <span class="p">:</span> <span class="n">DeviceLock</span>                     <span class="p">[</span><span class="s">&#39;_KEVENT&#39;</span><span class="p">]</span>
+<span class="mh">0xac</span>  <span class="p">:</span> <span class="n">SectorSize</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xae</span>  <span class="p">:</span> <span class="n">Spare1</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xb0</span>  <span class="p">:</span> <span class="n">DeviceObjectExtension</span>          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_DEVOBJ_EXTENSION&#39;</span><span class="p">]]</span> <span class="c">#Custom data structs </span>
+<span class="mh">0xb4</span>  <span class="p">:</span> <span class="n">Reserved</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-40">
+          <div class="inner">
+            
+            <header><h1>Auditing Device Trees</h1></header>
+            
+            
+            <section><p>Device tree</p>
+<ul>
+<li>
+<p>Outer edge drivers (DRV)</p>
+</li>
+<li>
+<p>Devices (DEV)</p>
+</li>
+<li>
+<p>Attached devices (ATT) </p>
+</li>
+</ul>
+<p>Focus on critical devices... network, keyboard, disk.. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-41">
+          <div class="inner">
+            
+            <header><h1>Devicetree</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 devicetree </span>
+DRV 0x3f294950 <span class="se">\D</span>river<span class="se">\T</span>cpip
+---<span class="p">|</span> DEV 0x84caf648 eQoS FILE_DEVICE_NETWORK
+---<span class="p">|</span> DEV 0x84ca62f0 IPSECDOSP FILE_DEVICE_NETWORK
+---<span class="p">|</span> DEV 0x84cb6920 WfpAle FILE_DEVICE_NETWORK
+---<span class="p">|</span> DEV 0x84cb7208 WFP FILE_DEVICE_NETWORK
+---<span class="p">|</span> DEV 0x84cb5810 NXTIPSEC FILE_DEVICE_NETWORK
+---<span class="p">|</span> DEV 0x84c94560  FILE_DEVICE_NETWORK
+
+DRV 0x3fc221b8 <span class="se">\D</span>river<span class="se">\v</span>olmgr
+---<span class="p">|</span> DEV 0x84d11e20 HarddiskVolume1 FILE_DEVICE_DISK
+------<span class="p">|</span> ATT 0x84d115e0  - <span class="se">\D</span>river<span class="se">\f</span>vevol FILE_DEVICE_DISK
+---------<span class="p">|</span> ATT 0x84d04db8  - <span class="se">\D</span>river<span class="se">\r</span>dyboost FILE_DEVICE_DISK
+------------<span class="p">|</span> ATT 0x84d04358  - <span class="se">\D</span>river<span class="se">\v</span>olsnap FILE_DEVICE_DISK
+---<span class="p">|</span> DEV 0x84ac6638 VolMgrControl FILE_DEVICE_NETWORK
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>SSDT</h1></header>
+            
+            
+            <section><p>System Service Descriptor Table</p>
+<ul>
+<li>Pointers to kernel mode functions</li>
+</ul>
+<p>Interrupts to kernel mode</p>
+<p>KiSystemService looks up addresses in SSDT once in Kernel mode. </p>
+<p>Order and number of functions differ across OS and SP.</p>
+<p>More than one call table on systems..</p>
+<p>Primary and Secondary/shadow tables</p>
+<p>Shadow SSDT has GUI functions from win32k</p>
+<p>Primary is ntoskrnl.exe</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-43">
+          <div class="inner">
+            
+            <header><h1>SSDT</h1></header>
+            
+            
+            <section><p><img alt="ssdt" src="..\slideResources\rootkits\ssdt.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-44">
+          <div class="inner">
+            
+            <header><h1>Structs!</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_SERVICE_DESCRIPTOR_TABLE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_SERVICE_DESCRIPTOR_TABLE&#39;</span> <span class="p">(</span><span class="mi">64</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Descriptors</span>                    <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SERVICE_DESCRIPTOR_ENTRY&#39;</span><span class="p">]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_SERVICE_DESCRIPTOR_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_SERVICE_DESCRIPTOR_ENTRY&#39;</span> <span class="p">(</span><span class="mi">16</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">KiServiceTable</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">CounterBaseTable</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ServiceLimit</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">ArgumentTable</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-45">
+          <div class="inner">
+            
+            <header><h1>SSDT Enumeration</h1></header>
+            
+            
+            <section><p>32 bit os uses _ETHREAD.Tcb.ServiceTable</p>
+<p>64 bit os uses nt!KeAddSystemServiceTable and get RVA for the KeServiceDescriptorTable</p>
+<p>SSDT plugin</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 ssdt</span>
+Volatility Foundation Volatility Framework 2.4
+<span class="o">[</span>x86<span class="o">]</span> Gathering all referenced SSDTs from KTHREADs...
+Finding appropriate address space <span class="k">for</span> tables...
+SSDT<span class="o">[</span>0<span class="o">]</span> at 8288243c with <span class="m">401</span> entries
+  Entry 0x0000: 0x82a7df97 <span class="o">(</span>NtAcceptConnectPort<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0001: 0x828c5855 <span class="o">(</span>NtAccessCheck<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0002: 0x82a0dd35 <span class="o">(</span>NtAccessCheckAndAuditAlarm<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0003: 0x82829897 <span class="o">(</span>NtAccessCheckByType<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0004: 0x82a7f86d <span class="o">(</span>NtAccessCheckByTypeAndAuditAlarm<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0005: 0x82902112 <span class="o">(</span>NtAccessCheckByTypeResultList<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0006: 0x82af0127 <span class="o">(</span>NtAccessCheckByTypeResultListAndAuditAlarm<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0007: 0x82af0170 <span class="o">(</span>NtAccessCheckByTypeResultListAndAuditAlarmByHandle<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0008: 0x82a02551 <span class="o">(</span>NtAddAtom<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x0009: 0x82b09992 <span class="o">(</span>NtAddBootEntry<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x000a: 0x82b0abe7 <span class="o">(</span>NtAddDriverEntry<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x000b: 0x829f8d29 <span class="o">(</span>NtAdjustGroupsToken<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x000c: 0x82a89eab <span class="o">(</span>NtAdjustPrivilegesToken<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x000d: 0x82ae2df3 <span class="o">(</span>NtAlertResumeThread<span class="o">)</span> owned by ntoskrnl.exe
+  Entry 0x000e: 0x82a35cb7 <span class="o">(</span>NtAlertThread<span class="o">)</span> owned by ntoskrnl.exe
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-46">
+          <div class="inner">
+            
+            <header><h1>SSDT Enumeration</h1></header>
+            
+            
+            <section><p>0x31ff (12799) entries on my image</p>
+<p>SSDT[0] = First descreitpr table... native NT</p>
+<p>SSDT[1] = GUI subsystems</p>
+<p>SSDT[2-3] = Optional... typically server tables such as IIS.  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-47">
+          <div class="inner">
+            
+            <header><h1>SSDT Attacks</h1></header>
+            
+            
+            <section><p>Pointer Replacement</p>
+<ul>
+<li>Replace individual function pointers </li>
+<li>GUI -&gt; win32k.sys</li>
+<li>Native NT -&gt; ntoskrnl.exe</li>
+</ul>
+<p>Inline Hooking</p>
+<ul>
+<li>Hide a stub in a module and call into it</li>
+<li>Mov eax, value; jmp eax;</li>
+</ul>
+<p>Table Duplication</p>
+<ul>
+<li>_EHTREAD.Tcb.ServiceTable points to the SSDT a thread uses<ul>
+<li>Overwrite it on x86 systems</li>
+</ul>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-48">
+          <div class="inner">
+            
+            <header><h1>SSDT is Error Prone</h1></header>
+            
+            
+            <section><p>New security mitigations and architecture impose risk for SSDT hooking</p>
+<h2>Patchguard / Kernel Patch Protection on x64</h2>
+<p>Kernel monitors key resources used by the kernel and if code is modified the system will shut down. </p>
+<p>Prevents code patching and protects the kernel. </p>
+<p>Monitors </p>
+<ul>
+<li>
+<p>SSDT</p>
+</li>
+<li>
+<p>Interrupt Descriptor Table</p>
+</li>
+<li>
+<p>Global Descriptor Table</p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-49">
+          <div class="inner">
+            
+            <header><h1>Other disadvantages</h1></header>
+            
+            
+            <section><p>System Call tables are not a per-CPU strucutre</p>
+<p>Undocumented API functions</p>
+<p>Duplicate entries from third party drivers and unpredictable behavior</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-50">
+          <div class="inner">
+            
+            <header><h1>Kernel Threads</h1></header>
+            
+            
+            <section><p>System.exe | PID 4 owns Kernel theads.</p>
+<p>System threads are easily indentified</p>
+<ul>
+<li>_ETHREAD.SystemThread == 1</li>
+<li>_ETHREAD.CrossThreadFlags has PS_CROSS_THREAD_FLAGS_SYSTEM set</li>
+<li>Owning Process is 4 / System.exe</li>
+</ul>
+<p>PsCreateSystemThread is used after allocating code into a kernel pool to start a thread. </p>
+<div class="highlight"><pre>NTSTATUS PsCreateSystemThread(
+  _Out_      PHANDLE            ThreadHandle<span class="p">,</span>
+  _In_       ULONG              DesiredAccess<span class="p">,</span>
+  _In_opt_   POBJECT_ATTRIBUTES ObjectAttributes<span class="p">,</span>
+  _In_opt_   HANDLE             ProcessHandle<span class="p">,</span>
+  _Out_opt_  PCLIENT_ID         ClientId<span class="p">,</span>
+  _In_       PKSTART_ROUTINE    StartRoutine<span class="p">,</span>
+  _In_opt_   PVOID              StartContext
+);
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-51">
+          <div class="inner">
+            
+            <header><h1>Orphan Threads</h1></header>
+            
+            
+            <section><p>Detached or hidden threads</p>
+<p>Threads plugin walks _LIST_ENTRY for threads of loaded modules</p>
+<p>Checks startAddress for each system thad and matches it to the owning driver. </p>
+<p>If an Orphan Thread exists</p>
+<ul>
+<li>OrphanThread Tag and an UNKNOWN start address</li>
+<li>Start address if of the function, not PE space. </li>
+</ul>
+<p>Rootkits can adjust startAddress... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-52">
+          <div class="inner">
+            
+            <header><h1>Kernel Callbacks</h1></header>
+            
+            
+            <section><p>API Hooking Method</p>
+<p>Work on x64, are documented, are safe for multicore machines and common. . . Attackers wet dream! </p>
+<h2>What to callback on?</h2>
+<ul>
+<li>Process Creation</li>
+<li>Thread Creation</li>
+<li>Image Load</li>
+<li>System Shutdown</li>
+<li>File System Registration</li>
+<li>Debug Message</li>
+<li>Registry Modification</li>
+<li>Plug and play</li>
+<li>BugChecks</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-53">
+          <div class="inner">
+            
+            <header><h1>API Functions</h1></header>
+            
+            
+            <section><p>Windows API provides a way to register callbacks</p>
+<h2>Example</h2>
+<p>PsSetCreateProcessNotifyRoutine adds a callback for whenever a process is created or deleted. </p>
+<div class="highlight"><pre>NTSTATUS PsSetCreateProcessNotifyRoutine(
+  _In_  PCREATE_PROCESS_NOTIFY_ROUTINE NotifyRoutine<span class="p">,</span>   #entry point
+  _In_  BOOLEAN                        Remove           #remove to add
+);
+</pre></div>
+
+<p>Typically used with security software to monitor new processes</p>
+<p>PspCreateProcessNotifyRoutine is a linked list of pointers that have a callback</p>
+<ul>
+<li>Erase it with rootkit!</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              53/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-54">
+          <div class="inner">
+            
+            <header><h1>Callbacks in Memory</h1></header>
+            
+            
+            <section><p>Callbacks</p>
+<p>Shows address of the function that is invoked when an event occurs.</p>
+<p>Module column shows kernel module that the function resides in</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 callbacks</span>
+Volatility Foundation Volatility Framework 2.4
+Type                                 Callback   Module               Details
+------------------------------------ ---------- -------------------- -------
+GenericKernelCallback                0x925421d9 peauth.sys           -
+EventCategoryDeviceInterfaceChange   0x9134dbec win32k.sys           Win32k
+EventCategoryTargetDeviceChange      0x828f5764 ntoskrnl.exe         mouclass
+EventCategoryDeviceInterfaceChange   0x9134dbec win32k.sys           Win32k
+EventCategoryDeviceInterfaceChange   0x9134dbec win32k.sys           Win32k
+EventCategoryTargetDeviceChange      0x914ae629 win32k.sys           Win32k
+EventCategoryTargetDeviceChange      0x914ae629 win32k.sys           Win32k
+EventCategoryTargetDeviceChange      0x914ae629 win32k.sys           Win32k
+EventCategoryDeviceInterfaceChange   0x8b89a74f dxgkrnl.sys          DXGKrnl
+EventCategoryTargetDeviceChange      0x8b8e3c26 dxgkrnl.sys          DXGKrnl
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              54/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-55">
+          <div class="inner">
+            
+            <header><h1>Malicious Callbacks in Memory</h1></header>
+            
+            
+            <section><p>Look for UNKNOWN modules and strange names</p>
+<p>LoadImage is commonly infected.</p>
+<ul>
+<li>TLD4 Rootkit</li>
+</ul>
+<p>Know API functions</p>
+<p>Load Image</p>
+<ul>
+<li>PspLoadImageNotifyRoutine, PspCreateProcessNotifyRoutine, PspCreateThreadNotifyRoutine </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              55/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-56">
+          <div class="inner">
+            
+            <header><h1>Kernel Timers</h1></header>
+            
+            
+            <section><p>KeInitalizeTimer</p>
+<p>Rootkits set timers to receive notifications when time elapses. </p>
+<ul>
+<li>Did X get resolved?</li>
+<li>Did Y occur?</li>
+</ul>
+<p>Timers can set up Deferred Procedure Calls (DPC) in a _KTIMER strucutre</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_KTIMER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_KTIMER&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Header</span>                         <span class="p">[</span><span class="s">&#39;_DISPATCHER_HEADER&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">DueTime</span>                        <span class="p">[</span><span class="s">&#39;_ULARGE_INTEGER&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">TimerListEntry</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">Dpc</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_KDPC&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">Period</span>                         <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              56/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-57">
+          <div class="inner">
+            
+            <header><h1>Finding Kernel Timers</h1></header>
+            
+            
+            <section><p>Timers - Print kernel timers and associated module DPCs</p>
+<p>Shows module that owns the timer </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f zeroaccess2.vmem timers</span>
+Volatility Foundation Volatility Framework 2.1_alpha
+Offset DueTime Period<span class="o">(</span>ms<span class="o">)</span> Signaled Routine Module
+0x805598e0 0x00000084:0xce8b961c <span class="m">1000</span> Yes 0x80523dee ntoskrnl.exe
+0x820a1e08 0x00000084:0xdf3c0c1c <span class="m">30000</span> Yes 0xb2d2a385 afd.sys
+0x81ebf0b8 0x00000084:0xce951f84 <span class="m">0</span> - 0xf89c23f0 TDI.SYS
+<span class="o">[</span>snip<span class="o">]</span>
+0x81dbeb78 0x00000131:0x2e896402 <span class="m">0</span> - 0xf83faf6f NDIS.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              57/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-58">
+          <div class="inner">
+            
+            <header><h1>Extracting PE out of memory</h1></header>
+            
+            
+            <section><p>All of these plugins give an address to a function... </p>
+<p>Search backwards in memory for PE header!</p>
+<div class="highlight"><pre><span class="n">volshell</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">start</span> <span class="o">=</span> <span class="mh">0x81b99db0</span> <span class="o">-</span> <span class="mh">0x100000</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">end</span> <span class="o">=</span> <span class="mh">0x81b93690</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">while</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+<span class="o">...</span> <span class="k">if</span> <span class="n">addrspace</span><span class="p">()</span><span class="o">.</span><span class="n">zread</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;MZ</span><span class="se">\x90\x00</span><span class="s">&quot;</span><span class="p">:</span>
+<span class="o">...</span> <span class="k">print</span> <span class="nb">hex</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+<span class="o">...</span> <span class="k">break</span>
+<span class="o">...</span> <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+<p>If one is found, try extracting it with moddump and play with it in IDA! </p>
+<ul>
+<li>Fix base address</li>
+<li>Recover IAT</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              58/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06_01-Rootkits.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-59">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06_01-Rootkits.md">week06_01-Rootkits.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              59/59
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Kernel Forensics and Rootkits</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Hiding</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">PsLoadedModuleList</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">KDDEBUGGER_DATA64</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">KLDR_DATA_TABLE_ENTRY</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Other sources</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Graphical</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">What to look for?</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Loading Modules</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Module Loading</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Live System</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Process Explorer</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Nirsoft DriverView</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Volatility</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Modules</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Modules</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Pooltag Approach with Modscan</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Pooltags</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Unloaded modules</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Extracting Kernel Modules</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Full Picture</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">With IDA</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Impscan</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">-</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">IDA</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Driver Objects</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">_DRIVER_OBJECT</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Driverscan</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Hooking</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Driverirp</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Hooked function calls</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Stealthy Hooks</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">TDL3 Rootkit</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Focus</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">High Value Targets</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Device Trees</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">-</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Device Tree Structures</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Auditing Device Trees</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Devicetree</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">SSDT</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">SSDT</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Structs!</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">SSDT Enumeration</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">SSDT Enumeration</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">SSDT Attacks</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">SSDT is Error Prone</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Other disadvantages</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Kernel Threads</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">Orphan Threads</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">Kernel Callbacks</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-53">
+        <th><a href="#slide53">API Functions</a></th>
+        <td><a href="#slide53">53</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-54">
+        <th><a href="#slide54">Callbacks in Memory</a></th>
+        <td><a href="#slide54">54</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-55">
+        <th><a href="#slide55">Malicious Callbacks in Memory</a></th>
+        <td><a href="#slide55">55</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-56">
+        <th><a href="#slide56">Kernel Timers</a></th>
+        <td><a href="#slide56">56</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-57">
+        <th><a href="#slide57">Finding Kernel Timers</a></th>
+        <td><a href="#slide57">57</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-58">
+        <th><a href="#slide58">Extracting PE out of memory</a></th>
+        <td><a href="#slide58">58</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-59">
+        <th><a href="#slide59">EOF</a></th>
+        <td><a href="#slide59">59</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
