@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Looking at Rootkits</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Looking at Rootkits</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Six-step investigation (SANS)</h1></header>
+            
+            
+            <section><ol>
+<li>Identify rouge processes</li>
+<li>Analyze process DLLs and handles</li>
+<li>Review network artifacts</li>
+<li>Look for code injection</li>
+<li>Check for rootkits</li>
+<li>Dump suspicious processes and drivers</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1><a href="http://malwarecookbook.googlecode.com/svn/trunk/stuxnet.vmem.zip">Stuxnet</a> <br> Link attached</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-4">
+          <div class="inner">
+            
+            <header><h1>Step 0 Imageinfo</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem  imageinfo</span>
+Volatility Foundation Volatility Framework 2.4
+Determining profile based on KDBG search...
+
+          Suggested Profile<span class="o">(</span>s<span class="o">)</span> : WinXPSP2x86, WinXPSP3x86 <span class="o">(</span>Instantiated with WinXPSP2x86<span class="o">)</span>
+                     AS Layer1 : IA32PagedMemoryPae <span class="o">(</span>Kernel AS<span class="o">)</span>
+                     AS Layer2 : FileAddressSpace <span class="o">(</span>/root/amf/windows/stuxnet.vmem<span class="o">)</span>
+                      PAE <span class="nb">type</span> : PAE
+                           DTB : 0x319000L
+                          KDBG : 0x80545ae0L
+          Number of Processors : 1
+     Image Type <span class="o">(</span>Service Pack<span class="o">)</span> : 3
+                KPCR <span class="k">for</span> CPU <span class="m">0</span> : 0xffdff000L
+             KUSER_SHARED_DATA : 0xffdf0000L
+           Image date and <span class="nb">time</span> : 2011-06-03 04:31:36 UTC+0000
+     Image <span class="nb">local </span>date and <span class="nb">time</span> : 2011-06-03 00:31:36 -0400
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#export profile=WinXPSP3x86</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>Step 1 Rouge Processes</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile pslist</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+0x823c8830 System                    <span class="m">4</span>      <span class="m">0</span>     <span class="m">59</span>      <span class="m">403</span> ------      <span class="m">0</span>         
+0x820df020 smss.exe                <span class="m">376</span>      <span class="m">4</span>      <span class="m">3</span>       <span class="m">19</span> ------      <span class="m">0</span> 2010-10-29 17:08:53 UTC+0000
+0x821a2da0 csrss.exe               <span class="m">600</span>    <span class="m">376</span>     <span class="m">11</span>      <span class="m">395</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:54 UTC+0000
+0x81da5650 winlogon.exe            <span class="m">624</span>    <span class="m">376</span>     <span class="m">19</span>      <span class="m">570</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:54 UTC+0000
+0x82073020 services.exe            <span class="m">668</span>    <span class="m">624</span>     <span class="m">21</span>      <span class="m">431</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:54 UTC+0000
+0x81e70020 lsass.exe               <span class="m">680</span>    <span class="m">624</span>     <span class="m">19</span>      <span class="m">342</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:54 UTC+0000
+0x823315d8 vmacthlp.exe            <span class="m">844</span>    <span class="m">668</span>      <span class="m">1</span>       <span class="m">25</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x81db8da0 svchost.exe             <span class="m">856</span>    <span class="m">668</span>     <span class="m">17</span>      <span class="m">193</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x81e61da0 svchost.exe             <span class="m">940</span>    <span class="m">668</span>     <span class="m">13</span>      <span class="m">312</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x822843e8 svchost.exe            <span class="m">1032</span>    <span class="m">668</span>     <span class="m">61</span>     <span class="m">1169</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x81e18b28 svchost.exe            <span class="m">1080</span>    <span class="m">668</span>      <span class="m">5</span>       <span class="m">80</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x81ff7020 svchost.exe            <span class="m">1200</span>    <span class="m">668</span>     <span class="m">14</span>      <span class="m">197</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:55 UTC+0000
+0x81fee8b0 spoolsv.exe            <span class="m">1412</span>    <span class="m">668</span>     <span class="m">10</span>      <span class="m">118</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:56 UTC+0000
+0x81e0eda0 jqs.exe                <span class="m">1580</span>    <span class="m">668</span>      <span class="m">5</span>      <span class="m">148</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:09:05 UTC+0000
+0x81fe52d0 vmtoolsd.exe           <span class="m">1664</span>    <span class="m">668</span>      <span class="m">5</span>      <span class="m">284</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:09:05 UTC+0000
+0x821a0568 VMUpgradeHelper        <span class="m">1816</span>    <span class="m">668</span>      <span class="m">3</span>       <span class="m">96</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:09:08 UTC+0000
+0x8205ada0 alg.exe                 <span class="m">188</span>    <span class="m">668</span>      <span class="m">6</span>      <span class="m">107</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:09:09 UTC+0000
+0x820ec7e8 explorer.exe           <span class="m">1196</span>   <span class="m">1728</span>     <span class="m">16</span>      <span class="m">582</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:49 UTC+0000
+0x820ecc10 wscntfy.exe            <span class="m">2040</span>   <span class="m">1032</span>      <span class="m">1</span>       <span class="m">28</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:49 UTC+0000
+0x81e86978 TSVNCache.exe           <span class="m">324</span>   <span class="m">1196</span>      <span class="m">7</span>       <span class="m">54</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:49 UTC+0000
+0x81fc5da0 VMwareTray.exe         <span class="m">1912</span>   <span class="m">1196</span>      <span class="m">1</span>       <span class="m">50</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:50 UTC+0000
+0x81e6b660 VMwareUser.exe         <span class="m">1356</span>   <span class="m">1196</span>      <span class="m">9</span>      <span class="m">251</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:50 UTC+0000
+0x8210d478 jusched.exe            <span class="m">1712</span>   <span class="m">1196</span>      <span class="m">1</span>       <span class="m">26</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:50 UTC+0000
+0x82279998 imapi.exe               <span class="m">756</span>    <span class="m">668</span>      <span class="m">4</span>      <span class="m">116</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:11:54 UTC+0000
+0x822b9a10 wuauclt.exe             <span class="m">976</span>   <span class="m">1032</span>      <span class="m">3</span>      <span class="m">133</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:12:03 UTC+0000
+0x81c543a0 Procmon.exe             <span class="m">660</span>   <span class="m">1196</span>     <span class="m">13</span>      <span class="m">189</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:25:56 UTC+0000
+0x81fa5390 wmiprvse.exe           <span class="m">1872</span>    <span class="m">856</span>      <span class="m">5</span>      <span class="m">134</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:25:58 UTC+0000
+0x81c498c8 lsass.exe               <span class="m">868</span>    <span class="m">668</span>      <span class="m">2</span>       <span class="m">23</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:26:55 UTC+0000
+0x81c47c00 lsass.exe              <span class="m">1928</span>    <span class="m">668</span>      <span class="m">4</span>       <span class="m">65</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:26:55 UTC+0000
+0x81c0cda0 cmd.exe                 <span class="m">968</span>   <span class="m">1664</span>      <span class="m">0</span> --------      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:31:35 UTC+0000   2011-06-03 04:31:36 UTC+0000
+0x81f14938 ipconfig.exe            <span class="m">304</span>    <span class="m">968</span>      <span class="m">0</span> --------      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:31:35 UTC+0000   2011-06-03 04:31:36 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>More than one lsass!</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile pslist</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+Volatility Foundation Volatility Framework 2.4
+0x81e70020 lsass.exe               <span class="m">680</span>    <span class="m">624</span>     <span class="m">19</span>      <span class="m">342</span>      <span class="m">0</span>      <span class="m">0</span> 2010-10-29 17:08:54 UTC+0000
+0x81c498c8 lsass.exe               <span class="m">868</span>    <span class="m">668</span>      <span class="m">2</span>       <span class="m">23</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:26:55 UTC+0000
+0x81c47c00 lsass.exe              <span class="m">1928</span>    <span class="m">668</span>      <span class="m">4</span>       <span class="m">65</span>      <span class="m">0</span>      <span class="m">0</span> 2011-06-03 04:26:55 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>Who spanwed them?</h1></header>
+            
+            
+            <section><p>Lsass should be started from winlogon.exe.</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile psscan | grep 624</span>
+0x0000000001fa5650 winlogon.exe        <span class="m">624</span>    <span class="m">376</span> 0x0a940060 2010-10-29 17:08:54 UTC+0000
+0x0000000002070020 lsass.exe           <span class="m">680</span>    <span class="m">624</span> 0x0a9400a0 2010-10-29 17:08:54 UTC+0000
+</pre></div>
+
+<p>Winlogon spawned lsass with PID 680... which is legitimate. </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile psscan | grep 668</span>
+0x0000000001e47c00 lsass.exe          <span class="m">1928</span>    <span class="m">668</span> 0x0a9403c0 2011-06-03 04:26:55 UTC+0000
+0x0000000001e498c8 lsass.exe           <span class="m">868</span>    <span class="m">668</span> 0x0a940360 2011-06-03 04:26:55 UTC+0000
+0x0000000002273020 services.exe        <span class="m">668</span>    <span class="m">624</span> 0x0a940080 2010-10-29 17:08:54 UTC+0000
+</pre></div>
+
+<p>And services.exe created two new lsass! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Step 2 Analyze process DLLs and handles</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile dlllist -p 1928,868,668</span>
+Volatility Foundation Volatility Framework 2.4
+************************************************************************
+services.exe pid:    668
+Command line : C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>ervices.exe
+Service Pack 3
+
+Base             Size  LoadCount Path
+---------- ---------- ---------- ----
+0x01000000    0x1c000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\s</span>ervices.exe
+0x7c900000    0xaf000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\n</span>tdll.dll
+0x7c800000    0xf6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\k</span>ernel32.dll
+0x77dd0000    0x9b000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>DVAPI32.dll
+0x77e70000    0x92000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\R</span>PCRT4.dll
+0x77fe0000    0x11000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>ecur32.dll
+0x77c10000    0x58000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\m</span>svcrt.dll
+0x5f770000     0xc000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\N</span>CObjAPI.DLL
+0x76080000    0x65000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\M</span>SVCP60.dll
+0x7dbd0000    0x51000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>CESRV.dll
+0x776c0000    0x12000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>UTHZ.dll
+0x7e410000    0x91000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\U</span>SER32.dll
+0x77f10000    0x49000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\G</span>DI32.dll
+0x769c0000    0xb4000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\U</span>SERENV.dll
+0x7dba0000    0x21000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\u</span>mpnpmgr.dll
+0x76360000    0x10000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>INSTA.dll
+0x5b860000    0x55000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\N</span>ETAPI32.dll
+0x5cb70000    0x26000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>himEng.dll
+0x47260000     0xf000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\A</span>ppPatch<span class="se">\A</span>cAdProc.dll
+0x77b40000    0x22000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>pphelp.dll
+0x77c00000     0x8000        0x4 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\V</span>ERSION.dll
+0x77b70000    0x11000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\e</span>ventlog.dll
+0x76bf0000     0xb000        0x3 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\P</span>SAPI.DLL
+0x71ab0000    0x17000        0xb C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>S2_32.dll
+0x71aa0000     0x8000        0x9 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>S2HELP.dll
+0x76f50000     0x8000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\w</span>tsapi32.dll
+0x76c30000    0x2e000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>INTRUST.dll
+0x77a80000    0x95000        0x4 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\C</span>RYPT32.dll
+0x77b20000    0x12000        0x5 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\M</span>SASN1.dll
+0x76c90000    0x28000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\I</span>MAGEHLP.dll
+0x01020000   0x2c5000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\x</span>psp2res.dll
+0x68000000    0x36000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\r</span>saenh.dll
+0x5ad70000    0x38000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\u</span>xtheme.dll
+0x75150000    0x13000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\C</span>abinet.dll
+0x774e0000   0x13d000        0x6 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\o</span>le32.dll
+0x013f0000   0x138000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>ERNEL32.DLL.ASLR.0360c5e2
+0x76f20000    0x27000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>NSAPI.dll
+0x76d60000    0x19000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\I</span>PHLPAPI.DLL
+0x77120000    0x8b000        0x4 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\O</span>LEAUT32.dll
+0x7c9c0000   0x817000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>HELL32.dll
+0x77f60000    0x76000        0x8 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>HLWAPI.dll
+0x771b0000    0xaa000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>ININET.dll
+0x71ad0000     0x9000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>SOCK32.dll
+0x773d0000   0x103000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\W</span>inSxS<span class="se">\x</span>86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.2600.5512_x-ww_35d4ce83<span class="se">\c</span>omctl32.dll
+0x5d090000    0x9a000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>omctl32.dll
+************************************************************************
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            
+            <section><div class="highlight"><pre>lsass.exe pid:    868
+Command line : <span class="s2">&quot;C:\WINDOWS\\system32\\lsass.exe&quot;</span>
+Service Pack 3
+
+Base             Size  LoadCount Path
+---------- ---------- ---------- ----
+0x01000000     0x6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe
+0x7c900000    0xaf000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\n</span>tdll.dll
+0x7c800000    0xf6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\k</span>ernel32.dll
+0x77dd0000    0x9b000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>DVAPI32.dll
+0x77e70000    0x92000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\R</span>PCRT4.dll
+0x77fe0000    0x11000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>ecur32.dll
+0x7e410000    0x91000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\U</span>SER32.dll
+0x77f10000    0x49000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\G</span>DI32.dll
+************************************************************************
+lsass.exe pid:   1928
+Command line : <span class="s2">&quot;C:\WINDOWS\\system32\\lsass.exe&quot;</span>
+Service Pack 3
+
+Base             Size  LoadCount Path
+---------- ---------- ---------- ----
+0x01000000     0x6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe
+0x7c900000    0xaf000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\n</span>tdll.dll
+0x7c800000    0xf6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\k</span>ernel32.dll
+0x77dd0000    0x9b000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>DVAPI32.dll
+0x77e70000    0x92000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\R</span>PCRT4.dll
+0x77fe0000    0x11000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>ecur32.dll
+0x7e410000    0x91000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\U</span>SER32.dll
+0x77f10000    0x49000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\G</span>DI32.dll
+0x00870000   0x138000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>ERNEL32.DLL.ASLR.0360b7ab
+0x76f20000    0x27000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>NSAPI.dll
+0x77c10000    0x58000       0x27 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\m</span>svcrt.dll
+0x71ab0000    0x17000        0xa C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>S2_32.dll
+0x71aa0000     0x8000        0x8 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>S2HELP.dll
+0x76d60000    0x19000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\I</span>PHLPAPI.DLL
+0x5b860000    0x55000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\N</span>ETAPI32.dll
+0x774e0000   0x13d000        0x5 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\o</span>le32.dll
+0x77120000    0x8b000        0x4 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\O</span>LEAUT32.dll
+0x76bf0000     0xb000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\P</span>SAPI.DLL
+0x7c9c0000   0x817000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>HELL32.dll
+0x77f60000    0x76000        0x8 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\S</span>HLWAPI.dll
+0x769c0000    0xb4000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\U</span>SERENV.dll
+0x77c00000     0x8000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\V</span>ERSION.dll
+0x771b0000    0xaa000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>ININET.dll
+0x77a80000    0x95000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\C</span>RYPT32.dll
+0x77b20000    0x12000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\M</span>SASN1.dll
+0x71ad0000     0x9000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\W</span>SOCK32.dll
+0x773d0000   0x103000        0x2 C:<span class="se">\W</span>INDOWS<span class="se">\W</span>inSxS<span class="se">\x</span>86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.2600.5512_x-ww_35d4ce83<span class="se">\c</span>omctl32.dll
+0x5d090000    0x9a000        0x1 C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>omctl32.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>Rouge processes do not have many DLLs...</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>What about handles?</h1></header>
+            
+            
+            <section><p>Rouge processes also do not have many handles compared to the legit process </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile handles  -p 680 | wc -l</span>
+344
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile handles  -p 1928 | wc -l</span>
+67
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile handles  -p 868 | wc -l</span>
+25
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Specific handles?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile handles  -p 868</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>     Pid     Handle     Access Type                       Details
+---------- ------ ---------- ---------- -------------------------- -------
+0x8225b710    <span class="m">868</span>        0xc   0x100020 File                       <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x81eddc18    <span class="m">868</span>      0x7a4   0x1f03ff Thread                     TID <span class="m">592</span> PID 940
+0x82083a60    <span class="m">868</span>      0x7ac   0x1f0003 IoCompletion
+0x81c427a8    <span class="m">868</span>      0x7b0   0x1f0003 IoCompletion
+0x82083a60    <span class="m">868</span>      0x7b4   0x1f0003 IoCompletion
+0x822bbda8    <span class="m">868</span>      0x7b8   0x1f03ff Thread                     TID <span class="m">1884</span> PID 868
+0x81f9eae8    <span class="m">868</span>      0x7bc   0x1f0003 Event
+0x81c36ef8    <span class="m">868</span>      0x7c0   0x1f0003 Event
+0x81c8ee00    <span class="m">868</span>      0x7c4   0x1f0003 Event
+0x81f6cff0    <span class="m">868</span>      0x7c8   0x1f0003 Event
+0x81e61da0    <span class="m">868</span>      0x7cc   0x1f0fff Process                    svchost.exe<span class="o">(</span>940<span class="o">)</span>
+0x822bbda8    <span class="m">868</span>      0x7d0   0x1f03ff Thread                     TID <span class="m">1884</span> PID 868
+0x81d9c670    <span class="m">868</span>      0x7d4    0xf016e WindowStation              Service-0x0-3e7<span class="err">$</span>
+0x822563f0    <span class="m">868</span>      0x7d8    0xf00cf Desktop                    Default
+0x81d9c670    <span class="m">868</span>      0x7dc    0xf016e WindowStation              Service-0x0-3e7<span class="err">$</span>
+0x821a4678    <span class="m">868</span>      0x7e0  0x21f0003 Event
+0xe2a6e830    <span class="m">868</span>      0x7e4  0x20f003f Key                        MACHINE
+0x81c68458    <span class="m">868</span>      0x7e8   0x100003 Semaphore
+0xe2b19ae0    <span class="m">868</span>      0x7ec  0x21f0001 Port
+0xe1613978    <span class="m">868</span>      0x7f0    0xf000f Directory                  Windows
+0x81fb0a88    <span class="m">868</span>      0x7f4   0x100003 Semaphore
+0xe16008f8    <span class="m">868</span>      0x7f8        0x3 Directory                  KnownDlls
+0xe10096e0    <span class="m">868</span>      0x7fc    0xf0003 KeyedEvent                 CritSecOutOfMemoryEvent
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-13">
+          <div class="inner">
+            
+            <header><h1>Threads</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile threads -p 868</span>
+Volatility Foundation Volatility Framework 2.4
+<span class="o">[</span>x86<span class="o">]</span> Gathering all referenced SSDTs from KTHREADs...
+Finding appropriate address space <span class="k">for</span> tables...
+------
+ETHREAD: 0x822bbda8 Pid: <span class="m">868</span> Tid: 1884
+Tags: HookedSSDT
+Created: 2011-06-03 04:26:55 UTC+0000
+Exited: 1970-01-01 00:00:00 UTC+0000
+Owning Process: lsass.exe
+Attached Process: lsass.exe
+State: Waiting:UserRequest
+BasePriority: 0x8
+Priority: 0x9
+TEB: 0x7ffdc000
+StartAddress: 0x7c8106e9 kernel32.dll
+ServiceTable: 0x80552fa0
+  <span class="o">[</span>0<span class="o">]</span> 0x80501b8c
+      <span class="o">[</span>0x19<span class="o">]</span> NtClose 0xb240f80e PROCMON20.SYS
+      <span class="o">[</span>0x29<span class="o">]</span> NtCreateKey 0xb240f604 PROCMON20.SYS
+      <span class="o">[</span>0x3f<span class="o">]</span> NtDeleteKey 0xb240f4ac PROCMON20.SYS
+      <span class="o">[</span>0x41<span class="o">]</span> NtDeleteValueKey 0xb240f4f2 PROCMON20.SYS
+      <span class="o">[</span>0x47<span class="o">]</span> NtEnumerateKey 0xb240f3f2 PROCMON20.SYS
+      <span class="o">[</span>0x49<span class="o">]</span> NtEnumerateValueKey 0xb240f34e PROCMON20.SYS
+      <span class="o">[</span>0x4f<span class="o">]</span> NtFlushKey 0xb240f446 PROCMON20.SYS
+      <span class="o">[</span>0x62<span class="o">]</span> NtLoadKey 0xb240f972 PROCMON20.SYS
+      <span class="o">[</span>0x77<span class="o">]</span> NtOpenKey 0xb240f7d0 PROCMON20.SYS
+      <span class="o">[</span>0xa0<span class="o">]</span> NtQueryKey 0xb240f03e PROCMON20.SYS
+      <span class="o">[</span>0xb1<span class="o">]</span> NtQueryValueKey 0xb240f166 PROCMON20.SYS
+      <span class="o">[</span>0xf7<span class="o">]</span> NtSetValueKey 0xb240f28a PROCMON20.SYS
+      <span class="o">[</span>0x107<span class="o">]</span> NtUnloadKey 0xb240fac2 PROCMON20.SYS
+  <span class="o">[</span>1<span class="o">]</span> 0x00000000
+  <span class="o">[</span>2<span class="o">]</span> 0x00000000
+  <span class="o">[</span>3<span class="o">]</span> 0x00000000
+Win32Thread: 0x00000000
+CrossThreadFlags:
+Eip: 0x7c90e4f4
+  <span class="nv">eax</span><span class="o">=</span>0x0066feb8 <span class="nv">ebx</span><span class="o">=</span>0x00000000 <span class="nv">ecx</span><span class="o">=</span>0x000004a5 <span class="nv">edx</span><span class="o">=</span>0x7c90e4f4 <span class="nv">esi</span><span class="o">=</span>0x000007a4 <span class="nv">edi</span><span class="o">=</span>0x00000000
+  <span class="nv">eip</span><span class="o">=</span>0x7c90e4f4 <span class="nv">esp</span><span class="o">=</span>0x0066ff1c <span class="nv">ebp</span><span class="o">=</span>0x0066ff80 <span class="nv">err</span><span class="o">=</span>0x00000000
+  <span class="nv">cs</span><span class="o">=</span>0x1b <span class="nv">ss</span><span class="o">=</span>0x23 <span class="nv">ds</span><span class="o">=</span>0x23 <span class="nv">es</span><span class="o">=</span>0x23 <span class="nv">gs</span><span class="o">=</span>0x00 <span class="nv">fs</span><span class="o">=</span>0x3b <span class="nv">efl</span><span class="o">=</span>0x00000246
+  <span class="nv">dr0</span><span class="o">=</span>0x00000000 <span class="nv">dr1</span><span class="o">=</span>0x00000000 <span class="nv">dr2</span><span class="o">=</span>0x00000000 <span class="nv">dr3</span><span class="o">=</span>0x00000000 <span class="nv">dr6</span><span class="o">=</span>0x00000000 <span class="nv">dr7</span><span class="o">=</span>0x00000000
+0x7c8106e9 33ed             XOR EBP, EBP
+0x7c8106eb <span class="m">53</span>               PUSH EBX
+0x7c8106ec <span class="m">50</span>               PUSH EAX
+0x7c8106ed 6a00             PUSH 0x0
+0x7c8106ef e9e8afffff       JMP 0x7c80b6dc
+0x7c8106f4 <span class="m">90</span>               NOP
+0x7c8106f5 33ed             XOR EBP, EBP
+0x7c8106f7 <span class="m">50</span>               PUSH EAX
+0x7c8106f8 6a00             PUSH 0x0
+0x7c8106fa e945690000       JMP 0x7c817044
+0x7c8106ff <span class="m">90</span>               NOP
+0x7c810700 8b               DB 0x8b
+------
+ETHREAD: 0x81f2ec48 Pid: <span class="m">868</span> Tid: 112
+Tags: HookedSSDT
+Created: 2011-06-03 04:26:55 UTC+0000
+Exited: 1970-01-01 00:00:00 UTC+0000
+Owning Process: lsass.exe
+Attached Process: lsass.exe
+State: Waiting:UserRequest
+BasePriority: 0x8
+Priority: 0x8
+TEB: 0x7ffdd000
+StartAddress: 0x7c8106f5 kernel32.dll
+ServiceTable: 0x80552f60
+  <span class="o">[</span>0<span class="o">]</span> 0x80501b8c
+      <span class="o">[</span>0x19<span class="o">]</span> NtClose 0xb240f80e PROCMON20.SYS
+      <span class="o">[</span>0x29<span class="o">]</span> NtCreateKey 0xb240f604 PROCMON20.SYS
+      <span class="o">[</span>0x3f<span class="o">]</span> NtDeleteKey 0xb240f4ac PROCMON20.SYS
+      <span class="o">[</span>0x41<span class="o">]</span> NtDeleteValueKey 0xb240f4f2 PROCMON20.SYS
+      <span class="o">[</span>0x47<span class="o">]</span> NtEnumerateKey 0xb240f3f2 PROCMON20.SYS
+      <span class="o">[</span>0x49<span class="o">]</span> NtEnumerateValueKey 0xb240f34e PROCMON20.SYS
+      <span class="o">[</span>0x4f<span class="o">]</span> NtFlushKey 0xb240f446 PROCMON20.SYS
+      <span class="o">[</span>0x62<span class="o">]</span> NtLoadKey 0xb240f972 PROCMON20.SYS
+      <span class="o">[</span>0x77<span class="o">]</span> NtOpenKey 0xb240f7d0 PROCMON20.SYS
+      <span class="o">[</span>0xa0<span class="o">]</span> NtQueryKey 0xb240f03e PROCMON20.SYS
+      <span class="o">[</span>0xb1<span class="o">]</span> NtQueryValueKey 0xb240f166 PROCMON20.SYS
+      <span class="o">[</span>0xf7<span class="o">]</span> NtSetValueKey 0xb240f28a PROCMON20.SYS
+      <span class="o">[</span>0x107<span class="o">]</span> NtUnloadKey 0xb240fac2 PROCMON20.SYS
+  <span class="o">[</span>1<span class="o">]</span> 0xbf999b80
+  <span class="o">[</span>2<span class="o">]</span> 0x00000000
+  <span class="o">[</span>3<span class="o">]</span> 0x00000000
+Win32Thread: 0xe28044a0
+CrossThreadFlags:
+Eip: 0x7c90e4f4
+  <span class="nv">eax</span><span class="o">=</span>0x0006fda0 <span class="nv">ebx</span><span class="o">=</span>0x7ffde000 <span class="nv">ecx</span><span class="o">=</span>0x0006ff98 <span class="nv">edx</span><span class="o">=</span>0x7c90e4f4 <span class="nv">esi</span><span class="o">=</span>0x000007d0 <span class="nv">edi</span><span class="o">=</span>0x00000000
+  <span class="nv">eip</span><span class="o">=</span>0x7c90e4f4 <span class="nv">esp</span><span class="o">=</span>0x0006ff38 <span class="nv">ebp</span><span class="o">=</span>0x0006ff9c <span class="nv">err</span><span class="o">=</span>0x00000000
+  <span class="nv">cs</span><span class="o">=</span>0x1b <span class="nv">ss</span><span class="o">=</span>0x23 <span class="nv">ds</span><span class="o">=</span>0x23 <span class="nv">es</span><span class="o">=</span>0x23 <span class="nv">gs</span><span class="o">=</span>0x00 <span class="nv">fs</span><span class="o">=</span>0x3b <span class="nv">efl</span><span class="o">=</span>0x00000246
+  <span class="nv">dr0</span><span class="o">=</span>0x00000000 <span class="nv">dr1</span><span class="o">=</span>0x00000000 <span class="nv">dr2</span><span class="o">=</span>0x00000000 <span class="nv">dr3</span><span class="o">=</span>0x00000000 <span class="nv">dr6</span><span class="o">=</span>0x00000000 <span class="nv">dr7</span><span class="o">=</span>0x00000000
+0x7c8106f5 33ed             XOR EBP, EBP
+0x7c8106f7 <span class="m">50</span>               PUSH EAX
+0x7c8106f8 6a00             PUSH 0x0
+0x7c8106fa e945690000       JMP 0x7c817044
+0x7c8106ff <span class="m">90</span>               NOP
+0x7c810700 8bff             MOV EDI, EDI
+0x7c810702 648b1518000000   MOV EDX, <span class="o">[</span>FS:0x18<span class="o">]</span>
+0x7c810709 8b4210           MOV EAX, <span class="o">[</span>EDX+0x10<span class="o">]</span>
+0x7c81070c 8b               DB 0x8b
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>Step 3 Network Artifacts</h1></header>
+            
+            
+            <section><p>XP Images lets us use connscan and sockscan</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile connscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>  Local Address             Remote Address            Pid
+---------- ------------------------- ------------------------- ---
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile sockscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>       PID   Port  Proto Protocol        Address         Create Time
+---------- -------- ------ ------ --------------- --------------- -----------
+0x01e20898     <span class="m">1200</span>   <span class="m">1900</span>     <span class="m">17</span> UDP             127.0.0.1       2011-06-03 04:25:47 UTC+0000
+0x01e79778     <span class="m">1080</span>   <span class="m">1142</span>     <span class="m">17</span> UDP             0.0.0.0         2010-10-31 16:36:16 UTC+0000
+0x01eb3d70     <span class="m">1080</span>   <span class="m">1141</span>     <span class="m">17</span> UDP             0.0.0.0         2010-10-31 16:36:16 UTC+0000
+0x01eb9e98     <span class="m">1580</span>   <span class="m">5152</span>      <span class="m">6</span> TCP             127.0.0.1       2010-10-29 17:09:05 UTC+0000
+0x01fa4d18      <span class="m">680</span>      <span class="m">0</span>    <span class="m">255</span> Reserved        0.0.0.0         2010-10-29 17:09:05 UTC+0000
+0x01fa54b0        <span class="m">4</span>    <span class="m">445</span>     <span class="m">17</span> UDP             0.0.0.0         2010-10-29 17:08:53 UTC+0000
+0x01fc2008      <span class="m">680</span>    <span class="m">500</span>     <span class="m">17</span> UDP             0.0.0.0         2010-10-29 17:09:05 UTC+0000
+0x021dbe98     <span class="m">1032</span>    <span class="m">123</span>     <span class="m">17</span> UDP             127.0.0.1       2011-06-03 04:25:47 UTC+0000
+0x02260008      <span class="m">680</span>   <span class="m">4500</span>     <span class="m">17</span> UDP             0.0.0.0         2010-10-29 17:09:05 UTC+0000
+0x02261c08        <span class="m">4</span>    <span class="m">445</span>      <span class="m">6</span> TCP             0.0.0.0         2010-10-29 17:08:53 UTC+0000
+0x023a5008      <span class="m">188</span>   <span class="m">1025</span>      <span class="m">6</span> TCP             127.0.0.1       2010-10-29 17:09:09 UTC+0000
+0x02494aa8      <span class="m">940</span>    <span class="m">135</span>      <span class="m">6</span> TCP             0.0.0.0         2010-10-29 17:08:55 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Step 4 Code Injection</h1></header>
+            
+            
+            <section><p>Found a few locations in lsass that had RWX memory and had signs of code injection... </p>
+<p>Several results were "MZ" headers! </p>
+<p>Csrss, services, Svchost, explorer and Lsass had signs of code injection. </p>
+<p>PID 600, 668, 940, 1196, 868, 1928. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>More</h1></header>
+            
+            
+            <section><div class="highlight"><pre>Process: lsass.exe Pid: <span class="m">1928</span> Address: 0x870000
+Vad Tag: Vad  Protection: PAGE_EXECUTE_READWRITE
+Flags: Protection: 6
+
+Process: lsass.exe Pid: <span class="m">1928</span> Address: 0x1000000
+Vad Tag: Vad  Protection: PAGE_EXECUTE_READWRITE
+Flags: CommitCharge: 2, Protection: 6
+</pre></div>
+
+<p>With vadinfo we see there are no file objects backing these MZ headers</p>
+<div class="highlight"><pre><span class="o">(</span>also one at 0x80000, but snipped <span class="k">for</span> brevity<span class="o">)</span> 
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile vadinfo -p 1928 -a 0x870000</span>
+************************************************************************
+Pid:   1928
+VAD node @ 0x82232950 Start 0x00870000 End 0x009a7fff Tag Vad
+Flags: Protection: 6
+Protection: PAGE_EXECUTE_READWRITE
+ControlArea @822bbd38 Segment e107e600
+NumberOfSectionReferences:          <span class="m">0</span> NumberOfPfnReferences:           0
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          1
+Control Flags: Commit: 1, HadUserReference: 1
+First prototype PTE: e107e640 Last contiguous PTE: e107eff8
+Flags2: Inherit: 1
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile vadinfo -p 1928 -a 0x1000000</span>
+************************************************************************
+Pid:   1928
+VAD node @ 0x82086d40 Start 0x01000000 End 0x01005fff Tag Vad
+Flags: CommitCharge: 2, Protection: 6
+Protection: PAGE_EXECUTE_READWRITE
+ControlArea @81ff33e0 Segment e2343888
+NumberOfSectionReferences:          <span class="m">1</span> NumberOfPfnReferences:           0
+NumberOfMappedViews:                <span class="m">1</span> NumberOfUserReferences:          2
+Control Flags: Commit: 1, HadUserReference: 1
+First prototype PTE: e23438c8 Last contiguous PTE: e23438f0
+Flags2: Inherit: 1
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>No FileObject = code injection!</h1></header>
+            
+            
+            <section><p>Hidden DLLs?</p>
+<p>Addresses of interest 0x80000, 0x00870000 and 0x01000000</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile ldrmodules -p 1928</span>
+Volatility Foundation Volatility Framework 2.4
+Pid      Process              Base       InLoad InInit InMem MappedPath
+-------- -------------------- ---------- ------ ------ ----- ----------
+<span class="m">1928</span> lsass.exe            0x00080000 False  False  False
+<span class="m">1928</span> lsass.exe            0x01000000 True   False  True
+<span class="m">1928</span> lsass.exe            0x00870000 True   True   True
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>Verbose output?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile ldrmodules -p 1928</span>
+Volatility Foundation Volatility Framework 2.4
+Pid      Process              Base       InLoad InInit InMem MappedPath
+-------- -------------------- ---------- ------ ------ ----- ----------
+<span class="m">1928</span> lsass.exe            0x00080000 False  False  False
+<span class="m">1928</span> lsass.exe            0x00870000 True   True   True
+Load Path: C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>ERNEL32.DLL.ASLR.0360b7ab : KERNEL32.DLL.ASLR.0360b7ab
+Init Path: C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>ERNEL32.DLL.ASLR.0360b7ab : KERNEL32.DLL.ASLR.0360b7ab
+Mem Path:  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\K</span>ERNEL32.DLL.ASLR.0360b7ab : KERNEL32.DLL.ASLR.0360b7ab
+<span class="m">1928</span> lsass.exe            0x01000000 True   False  True
+Load Path: C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe : lsass.exe
+Mem Path:  C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\l</span>sass.exe : lsass.exe
+</pre></div>
+
+<p>0x01000000 appears to be the ImageBase for lsass... but it's path is blank! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Skipping to step 6... because excitement<br> Dump suspicious processes and drivers</h1></header>
+            
+            
+            <section><p><br></p>
+<p><img alt="" src="http://memecrunch.com/meme/255KV/im-so-excited/image.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>Hollow Process Injection</h1></header>
+            
+            
+            <section><p>Create process suspended, hollow its insides out and replace with mal code!</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile procdump -p 680,868,1928 -D stuxnetDump/</span>
+Process<span class="o">(</span>V<span class="o">)</span> ImageBase  Name                 Result
+---------- ---------- -------------------- ------
+0x81e70020 0x01000000 lsass.exe            OK: executable.680.exe
+0x81c498c8 0x01000000 lsass.exe            OK: executable.868.exe
+0x81c47c00 0x01000000 lsass.exe            OK: executable.1928.exe
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#ssdeep -d stuxnetDump/executable.680.exe stuxnetDump/executable.1928.exe -a</span>
+/root/amf/windows/stuxnetDump/executable.1928.exe matches /root/amf/windows/stuxnetDump/executable.680.exe <span class="o">(</span>0<span class="o">)</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#ssdeep -d stuxnetDump/*</span>
+/root/amf/windows/stuxnetDump/executable.868.exe matches /root/amf/windows/stuxnetDump/executable.1928.exe <span class="o">(</span>100<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>More artifacts</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#strings stuxnetDump/executable.868.exe</span>
+ZwMapViewOfSection
+ZwCreateSection
+ZwOpenFile
+ZwClose
+ZwQueryAttributesFile
+ZwQuerySection
+TerminateProcess
+GetCurrentProcess
+CloseHandle
+WaitForSingleObject
+OpenProcess
+ExitProcess
+CreateThread
+SetUnhandledExceptionFilter
+SetErrorMode
+KERNEL32.dll
+AdjustTokenPrivileges
+LookupPrivilegeValueW
+OpenProcessToken
+ADVAPI32.dll
+VirtualProtect
+GetModuleHandleW
+GetCurrentThreadId
+GetTickCount
+lstrcpyW
+lstrlenW
+GetProcAddress
+wsprintfW
+USER32.dll
+</pre></div>
+
+<p>ZwMapViewOfSection is used for Hollow Process Injection to unmap a section! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>VirusTotal?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>stuxnetDump<span class="o">]</span><span class="c">#../virus.py</span>
+<span class="o">[</span><span class="s1">&#39;executable.868.exe&#39;</span>, <span class="s1">&#39;executable.1928.exe&#39;</span>, <span class="s1">&#39;executable.680.exe&#39;</span><span class="o">]</span>
+executable.868.exe
+Report
+- Resource<span class="s1">&#39;s UID: 6f293f095e960461d897b688bf582a0c9a3890935a7d443a929ef587ed911760-1428734311</span>
+<span class="s1">- Scan&#39;</span>s UID: 6f293f095e960461d897b688bf582a0c9a3890935a7d443a929ef587ed911760-1428734311
+- Permalink: https://www.virustotal.com/file/6f293f095e960461d897b688bf582a0c9a3890935a7d443a929ef587ed911760/analysis/1428734311/
+- Resource<span class="s1">&#39;s MD5: 7b62da1a65ffc31c55da778b276ad1e2</span>
+<span class="s1">- Resource&#39;</span>s status: Scan finished, information embedded
+- Antivirus<span class="s1">&#39; total: 57</span>
+<span class="s1">- Antivirus&#39;</span>s positives: 35
+
+executable.1928.exe
+Report
+- Resource<span class="s1">&#39;s UID: 20a3c5f02b6b79bcac9adaef7ee138763054bbedc298fb2710b5adaf9b74a47d-1426221873</span>
+<span class="s1">- Scan&#39;</span>s UID: 20a3c5f02b6b79bcac9adaef7ee138763054bbedc298fb2710b5adaf9b74a47d-1426221873
+- Permalink: https://www.virustotal.com/file/20a3c5f02b6b79bcac9adaef7ee138763054bbedc298fb2710b5adaf9b74a47d/analysis/1426221873/
+- Resource<span class="s1">&#39;s MD5: e1e00c2d5815e4129d8ac503f6fac095</span>
+<span class="s1">- Resource&#39;</span>s status: Scan finished, information embedded
+- Antivirus<span class="s1">&#39; total: 57</span>
+<span class="s1">- Antivirus&#39;</span>s positives: 38
+
+
+executable.680.exe
+Report
+- Resource<span class="s1">&#39;s UID: 45f3b06cfb72ff8fc49fbb7076561b4ebf67a0953b1472ebeaec9d48c8c9dc92-1423774745</span>
+<span class="s1">- Scan&#39;</span>s UID: 45f3b06cfb72ff8fc49fbb7076561b4ebf67a0953b1472ebeaec9d48c8c9dc92-1423774745
+- Permalink: https://www.virustotal.com/file/45f3b06cfb72ff8fc49fbb7076561b4ebf67a0953b1472ebeaec9d48c8c9dc92/analysis/1423774745/
+- Resource<span class="s1">&#39;s MD5: f9e5dd3014390b8ead50deab4907dafe</span>
+<span class="s1">- Resource&#39;</span>s status: Scan finished, information embedded
+- Antivirus<span class="s1">&#39; total: 56</span>
+<span class="s1">- Antivirus&#39;</span>s positives: 1
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>Step 5 Check for Rootkits</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>lots of snip<span class="o">]</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile callbacks</span>
+Volatility Foundation Volatility Framework 2.4
+Type                                 Callback   Module               Details
+------------------------------------ ---------- -------------------- -------
+IoRegisterShutdownNotification       0xf86aa73a MountMgr.sys         <span class="se">\D</span>river<span class="se">\M</span>ountMgr
+IoRegisterShutdownNotification       0xf8bb05be Fs_Rec.SYS           <span class="se">\F</span>ileSystem<span class="se">\F</span>s_Rec
+IoRegisterShutdownNotification       0xf8bb05be Fs_Rec.SYS           <span class="se">\F</span>ileSystem<span class="se">\F</span>s_Rec
+IoRegisterShutdownNotification       0xf8bb05be Fs_Rec.SYS           <span class="se">\F</span>ileSystem<span class="se">\F</span>s_Rec
+IoRegisterShutdownNotification       0xf853c2be ftdisk.sys           <span class="se">\D</span>river<span class="se">\F</span>tdisk
+IoRegisterShutdownNotification       0x805cdef4 ntoskrnl.exe         <span class="se">\F</span>ileSystem<span class="se">\R</span>AW
+IoRegisterShutdownNotification       0xf83d98f1 Mup.sys              <span class="se">\F</span>ileSystem<span class="se">\M</span>up
+IoRegisterShutdownNotification       0x805f5d66 ntoskrnl.exe         <span class="se">\D</span>river<span class="se">\W</span>MIxWDM
+IoRegisterFsRegistrationChange       0xf84be876 sr.sys               -
+GenericKernelCallback                0xf87ad194 vmci.sys             -
+IoRegisterFsRegistrationChange       0xb21d89ec mrxnet.sys           -
+GenericKernelCallback                0xb240ce4c PROCMON20.SYS        -
+GenericKernelCallback                0x805f81a6 ntoskrnl.exe         -
+GenericKernelCallback                0xb240cc9a PROCMON20.SYS        -
+GenericKernelCallback                0xf895ad06 mrxcls.sys           -
+PsSetLoadImageNotifyRoutine          0xb240ce4c PROCMON20.SYS        -
+PsSetLoadImageNotifyRoutine          0x805f81a6 ntoskrnl.exe         -
+PsSetLoadImageNotifyRoutine          0xf895ad06 mrxcls.sys           -
+PsSetCreateThreadNotifyRoutine       0xb240cc9a PROCMON20.SYS        -
+PsSetCreateProcessNotifyRoutine      0xf87ad194 vmci.sys             -
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>Suspicious?</h1></header>
+            
+            
+            <section><p>PsSetLoadImageNotifyRoutine is good to check on... mrxcls.sys?</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile callbacks | grep mrxcls</span>
+Volatility Foundation Volatility Framework 2.4
+GenericKernelCallback                0xf895ad06 mrxcls.sys           -
+PsSetLoadImageNotifyRoutine          0xf895ad06 mrxcls.sys           -
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile modules | grep mrxcls</span>
+Volatility Foundation Volatility Framework 2.4
+0x81f8cb60 mrxcls.sys           0xf895a000     0x5000 <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>rivers<span class="se">\m</span>rxcls.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Devices and IRPs?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile devicetree  | grep -i mrxcls</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile devicetree | grep -i mrxcls</span>
+DRV 0x02126870 <span class="se">\D</span>river<span class="se">\M</span>RxCls
+---<span class="p">|</span> DEV 0x81bdbeb0 MRxClsDvX FILE_DEVICE_UNKNOWN
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Anything else?</h1></header>
+            
+            
+            <section><p>Another callback..</p>
+<div class="highlight"><pre>IoRegisterFsRegistrationChange       0xb21d89ec mrxnet.sys           -
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>Devices and IRPs?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile devicetree | grep -i mrxnet</span>
+Volatility Foundation Volatility Framework 2.4
+---------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x022e54f8 <span class="se">\D</span>river<span class="se">\M</span>RxNet
+---------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81c8b500  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81dc49c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x82125f10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81fd59c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>Main driver?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile devicetree | grep -i mrxnet -B 10 | grep Driver</span>
+Volatility Foundation Volatility Framework 2.4
+------<span class="p">|</span> ATT 0x81d9e020  - <span class="se">\D</span>river<span class="se">\m</span>ouhid FILE_DEVICE_MOUSE
+---------<span class="p">|</span> ATT 0x822c41e8 PointerClass2 - <span class="se">\D</span>river<span class="se">\M</span>ouclass FILE_DEVICE_MOUSE
+---------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x020a1ca0 <span class="se">\D</span>river<span class="se">\N</span>DIS
+DRV 0x020bcea0 <span class="se">\D</span>river<span class="se">\P</span>Sched
+------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x0228beb0 <span class="se">\D</span>river<span class="se">\S</span>erial
+------<span class="p">|</span> ATT 0x8208b2d0  - <span class="se">\D</span>river<span class="se">\s</span>erenum FILE_DEVICE_BUS_EXTENDER
+------<span class="p">|</span> ATT 0x8208b478  - <span class="se">\D</span>river<span class="se">\s</span>erenum FILE_DEVICE_BUS_EXTENDER
+---------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+DRV 0x022d7418 <span class="se">\D</span>river<span class="se">\B</span>eep
+DRV 0x022dba18 <span class="se">\D</span>river<span class="se">\N</span>etBT
+---------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x022e54f8 <span class="se">\D</span>river<span class="se">\M</span>RxNet
+DRV 0x023a2b10 <span class="se">\D</span>river<span class="se">\W</span>in32k
+DRV 0x023ad268 <span class="se">\D</span>river<span class="se">\N</span>disuio
+---------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x0246c0a8 <span class="se">\D</span>river<span class="se">\a</span>gp440
+DRV 0x0246c710 <span class="se">\D</span>river<span class="se">\d</span>mio
+---------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+DRV 0x02520618 <span class="se">\D</span>river<span class="se">\V</span>olSnap
+DRV 0x02520710 <span class="se">\D</span>river<span class="se">\P</span>artMgr
+DRV 0x02525030 <span class="se">\D</span>river<span class="se">\P</span>arVdm
+------<span class="p">|</span> ATT 0x81c8b500  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81dc49c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x82125f10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81fd59c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+DRV 0x0252fb60 <span class="se">\D</span>river<span class="se">\v</span>mci
+DRV 0x0253cee8 <span class="se">\D</span>river<span class="se">\F</span>tdisk
+------<span class="p">|</span> ATT 0x81de19b8  - <span class="se">\D</span>river<span class="se">\V</span>olSnap FILE_DEVICE_DISK
+------------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+------------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>A lot of FILE_DEVICE... IRPs?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile driverirp -r mrxnet -v</span>
+--------------------------------------------------
+DriverName: MRxNet
+DriverStart: 0xb21d8000
+DriverSize: 0x2980
+DriverStartIo: 0x0
+   <span class="m">0</span> IRP_MJ_CREATE                        0xb21d8486 mrxnet.sys
+   <span class="m">1</span> IRP_MJ_CREATE_NAMED_PIPE             0xb21d8486 mrxnet.sys
+   <span class="m">2</span> IRP_MJ_CLOSE                         0xb21d8486 mrxnet.sys
+   <span class="m">3</span> IRP_MJ_READ                          0xb21d8486 mrxnet.sys
+   <span class="m">4</span> IRP_MJ_WRITE                         0xb21d8486 mrxnet.sys
+   <span class="m">5</span> IRP_MJ_QUERY_INFORMATION             0xb21d8486 mrxnet.sys
+   <span class="m">6</span> IRP_MJ_SET_INFORMATION               0xb21d8486 mrxnet.sys
+   <span class="m">7</span> IRP_MJ_QUERY_EA                      0xb21d8486 mrxnet.sys
+   <span class="m">8</span> IRP_MJ_SET_EA                        0xb21d8486 mrxnet.sys
+   <span class="m">9</span> IRP_MJ_FLUSH_BUFFERS                 0xb21d8486 mrxnet.sys
+  <span class="m">10</span> IRP_MJ_QUERY_VOLUME_INFORMATION      0xb21d8486 mrxnet.sys
+  <span class="m">11</span> IRP_MJ_SET_VOLUME_INFORMATION        0xb21d8486 mrxnet.sys
+  <span class="m">12</span> IRP_MJ_DIRECTORY_CONTROL             0xb21d84ec mrxnet.sys
+  <span class="m">13</span> IRP_MJ_FILE_SYSTEM_CONTROL           0xb21d8496 mrxnet.sys
+  <span class="m">14</span> IRP_MJ_DEVICE_CONTROL                0xb21d8486 mrxnet.sys
+  <span class="m">15</span> IRP_MJ_INTERNAL_DEVICE_CONTROL       0xb21d8486 mrxnet.sys
+  <span class="m">16</span> IRP_MJ_SHUTDOWN                      0xb21d8486 mrxnet.sys
+  <span class="m">17</span> IRP_MJ_LOCK_CONTROL                  0xb21d8486 mrxnet.sys
+  <span class="m">18</span> IRP_MJ_CLEANUP                       0xb21d8486 mrxnet.sys
+  <span class="m">19</span> IRP_MJ_CREATE_MAILSLOT               0xb21d8486 mrxnet.sys
+  <span class="m">20</span> IRP_MJ_QUERY_SECURITY                0xb21d8486 mrxnet.sys
+  <span class="m">21</span> IRP_MJ_SET_SECURITY                  0xb21d8486 mrxnet.sysnn
+  <span class="m">22</span> IRP_MJ_POWER                         0xb21d8486 mrxnet.sys
+  <span class="m">23</span> IRP_MJ_SYSTEM_CONTROL                0xb21d8486 mrxnet.sys
+  <span class="m">24</span> IRP_MJ_DEVICE_CHANGE                 0xb21d8486 mrxnet.sys
+  <span class="m">25</span> IRP_MJ_QUERY_QUOTA                   0xb21d8486 mrxnet.sys
+  <span class="m">26</span> IRP_MJ_SET_QUOTA                     0xb21d8486 mrxnet.sys
+  <span class="m">27</span> IRP_MJ_PNP                           0xb21d8486 mrxnet.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week06-Stuxnet.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>EOF <br> Lots more to Stuxnet... have fun!</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week06-Stuxnet.md">week06-Stuxnet.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/30
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Looking at Rootkits</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Six-step investigation (SANS)</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3"><a href="http://malwarecookbook.googlecode.com/svn/trunk/stuxnet.vmem.zip">Stuxnet</a> <br> Link attached</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Step 0 Imageinfo</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Step 1 Rouge Processes</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">More than one lsass!</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Who spanwed them?</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Step 2 Analyze process DLLs and handles</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">-</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Rouge processes do not have many DLLs...</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">What about handles?</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Specific handles?</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Threads</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Step 3 Network Artifacts</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Step 4 Code Injection</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">More</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">No FileObject = code injection!</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Verbose output?</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Skipping to step 6... because excitement<br> Dump suspicious processes and drivers</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Hollow Process Injection</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">More artifacts</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">VirusTotal?</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Step 5 Check for Rootkits</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Suspicious?</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Devices and IRPs?</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Anything else?</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Devices and IRPs?</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Main driver?</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">A lot of FILE_DEVICE... IRPs?</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">EOF <br> Lots more to Stuxnet... have fun!</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>

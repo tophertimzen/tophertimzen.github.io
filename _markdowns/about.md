@@ -12,6 +12,6 @@ Outside of working on research or course material Topher enjoys hiking, mountain
 
 ### Contact
 
-[c.timzen@gmail.com](mailto:c.timzen@gmail.com)
+[c.timzen@gmail.com](mailto:c.timzen@gmail.com) | [pgp.asc](/resources/pgp/pgp.asc)
 
 [LinkedIn](https://www.linkedin.com/in/tophertimzen)
