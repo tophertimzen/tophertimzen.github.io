@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Windows GUI Artifacts</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Windows GUI Artifacts</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>Windows GUI</p>
+<p>Sessions</p>
+<p>Stations</p>
+<p>Desktops</p>
+<p>Windows</p>
+<p>Malware and the GUI</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Windows GUI</h1></header>
+            
+            
+            <section><p>Manages</p>
+<ul>
+<li>User Input</li>
+<li>Mouse Movements</li>
+<li>Draw display</li>
+<li>Windows, buttons, menus</li>
+<li>Isolation to support concurrent users </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>GUI landscape</h1></header>
+            
+            
+            <section><p><img alt="" src="..\slideResources\GUI\landscape.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Sessions</h1></header>
+            
+            
+            <section><p>Outermost layer of the GUI landscape</p>
+<p>Contains unique session ID </p>
+<p>Created when a user logs into the machine</p>
+<p>Sessions are tied to a particular users and resources can be attributed to them.</p>
+<h1>Session resources</h1>
+<p>Atom table - Group of strings shared between applications</p>
+<p>One or more windows stations</p>
+<p>handle table </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Windows Station</h1></header>
+            
+            
+            <section><p>Interactive </p>
+<p>Applications requiring input </p>
+<p>Each has its own</p>
+<ul>
+<li>Atom Table</li>
+<li>Clipboard</li>
+<li>One or more desktops</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Desktops</h1></header>
+            
+            
+            <section><p>User interface objects</p>
+<ul>
+<li>Menus</li>
+<li>Buttons</li>
+<li>Hooks</li>
+<li>Heap for allocating object</li>
+</ul>
+<p>Windows can be invisible or visible, have screen coordinates and procedures for messaging</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-8">
+          <div class="inner">
+            
+            <header><h1>GUI API</h1></header>
+            
+            
+            <section><p>user32.dll</p>
+<p>gdi32.dll</p>
+<p>Equivalent to ntdl.dll for native APIs</p>
+<p>Contain stubs to route through the SSDT[1] into win32k.sys. </p>
+<p><img alt="" src="..\slideResources\GUI\guiRouting.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>SSDT</h1></header>
+            
+            
+            <section><p>Recall the volatility plugin SSDT</p>
+<p>SSDT[1] contains all of the GUI functions </p>
+<div class="highlight"><pre>SSDT<span class="o">[</span>1<span class="o">]</span> at 9153b000 with <span class="m">825</span> entries
+  Entry 0x1000: 0x914c7cbd <span class="o">(</span>NtGdiAbortDoc<span class="o">)</span> owned by win32k.sys
+  Entry 0x1001: 0x914dfc7e <span class="o">(</span>NtGdiAbortPath<span class="o">)</span> owned by win32k.sys
+  Entry 0x1002: 0x91337252 <span class="o">(</span>NtGdiAddFontResourceW<span class="o">)</span> owned by win32k.sys
+  Entry 0x1003: 0x914d6ab6 <span class="o">(</span>NtGdiAddRemoteFontToDC<span class="o">)</span> owned by win32k.sys
+  Entry 0x1004: 0x914e1421 <span class="o">(</span>NtGdiAddFontMemResourceEx<span class="o">)</span> owned by win32k.sys
+  Entry 0x1005: 0x914c84da <span class="o">(</span>NtGdiRemoveMergeFont<span class="o">)</span> owned by win32k.sys
+  Entry 0x1006: 0x914c856e <span class="o">(</span>NtGdiAddRemoteMMInstanceToDC<span class="o">)</span> owned by win32k.sys
+  Entry 0x1007: 0x913ef93b <span class="o">(</span>NtGdiAlphaBlend<span class="o">)</span> owned by win32k.sys
+  Entry 0x1008: 0x914e0c57 <span class="o">(</span>NtGdiAngleArc<span class="o">)</span> owned by win32k.sys
+  Entry 0x1009: 0x913a36eb <span class="o">(</span>NtGdiAnyLinkedFonts<span class="o">)</span> owned by win32k.sys
+  Entry 0x100a: 0x913a3608 <span class="o">(</span>NtGdiFontIsLinked<span class="o">)</span> owned by win32k.sys
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>GUI Artifacts</h1></header>
+            
+            
+            <section><p>Debugging information only appears in Windows 7</p>
+<p>All other windows versions are undocumented </p>
+<p>Makes GUI forensics difficult... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>Volatility plugins</h1></header>
+            
+            
+            <section><pre><code>    | Plugin       | Description                                        |
+    |--------------|----------------------------------------------------|
+    | sessions     |  Lists details on user logon sessions              |
+    | wndscan      |  Enumerates window stations and their   properties |
+    | deskscan     |  Analyzes desktops and associated threads          |
+    | atomscan     |  Scans for atoms (globally shared strings)         |
+    | atoms        |  Prints session and window station atom   tables   |
+    | messagehooks |  Lists desktop and thread window message   hooks   |
+    | eventhooks   |  Prints details on windows event hooks             |
+    | windows      |  Enumerates windows                                |
+    | wintree      |  Prints Z-Order desktop windows trees              |
+    | gahti        |  Dumps the USER handle type information            |
+    | userhandles  |  Dumps the USER handle table objects               |
+    | gditimers    |  Examines the use of GDI timers                    |
+    | screenshot   |  Saves a pseudo screenshot based on GDI   windows  |
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-12">
+          <div class="inner">
+            
+            <header><h1>Sessions</h1></header>
+            
+            
+            <section><p>Outer layer of the GUI landscape</p>
+<p>User log on creates a new session</p>
+<p>Container for processes, objects, stations and desktops. </p>
+<p>Memory samples contain active and terminated logon sessions including processes, modules, pool allocations, etc... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-13">
+          <div class="inner">
+            
+            <header><h1>Session Structures</h1></header>
+            
+            
+            <section><p>_MM_SESSION_SPACE</p>
+<p>_EPROCESS.Session contain pointers to _MM_SESSION_SPACE </p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_MM_SESSION_SPACE&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_MM_SESSION_SPACE&#39;</span> <span class="p">(</span><span class="mi">8192</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">ReferenceCount</span>                 <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">u</span>                              <span class="p">[</span><span class="s">&#39;__unnamed_20df&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">SessionId</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">ProcessReferenceToSession</span>      <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span><span class="o">-</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">ProcessList</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">LastProcessSwappedOutTime</span>      <span class="p">[</span><span class="s">&#39;_LARGE_INTEGER&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">SessionPageDirectoryIndex</span>      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">NonPagablePages</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">CommittedPages</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">PagedPoolStart</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">PagedPoolEnd</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">SessionObject</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">SessionObjectHandle</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">ResidentProcessCount</span>           <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">SessionPoolAllocationFailures</span>  <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">ImageList</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">LocaleId</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">AttachCount</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">AttachGate</span>                     <span class="p">[</span><span class="s">&#39;_KGATE&#39;</span><span class="p">]</span>
+<span class="mh">0x70</span>  <span class="p">:</span> <span class="n">WsListEntry</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x80</span>  <span class="p">:</span> <span class="n">Lookaside</span>                      <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_GENERAL_LOOKASIDE&#39;</span><span class="p">]]</span>
+<span class="mh">0xd00</span> <span class="p">:</span> <span class="n">Session</span>                        <span class="p">[</span><span class="s">&#39;_MMSESSION&#39;</span><span class="p">]</span>
+<span class="mh">0xd38</span> <span class="p">:</span> <span class="n">PagedPoolInfo</span>                  <span class="p">[</span><span class="s">&#39;_MM_PAGED_POOL_INFO&#39;</span><span class="p">]</span>
+<span class="mh">0xd70</span> <span class="p">:</span> <span class="n">Vm</span>                             <span class="p">[</span><span class="s">&#39;_MMSUPPORT&#39;</span><span class="p">]</span>
+<span class="mh">0xddc</span> <span class="p">:</span> <span class="n">Wsle</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMWSLE&#39;</span><span class="p">]]</span>
+<span class="mh">0xde0</span> <span class="p">:</span> <span class="n">DriverUnload</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0xe00</span> <span class="p">:</span> <span class="n">PagedPool</span>                      <span class="p">[</span><span class="s">&#39;_POOL_DESCRIPTOR&#39;</span><span class="p">]</span>
+<span class="mh">0x1f40</span><span class="p">:</span> <span class="n">PageTables</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MMPTE&#39;</span><span class="p">]]</span>
+<span class="mh">0x1f44</span><span class="p">:</span> <span class="n">SpecialPool</span>                    <span class="p">[</span><span class="s">&#39;_MI_SPECIAL_POOL&#39;</span><span class="p">]</span>
+<span class="mh">0x1f68</span><span class="p">:</span> <span class="n">SessionPteLock</span>                 <span class="p">[</span><span class="s">&#39;_KGUARDED_MUTEX&#39;</span><span class="p">]</span>
+<span class="mh">0x1f88</span><span class="p">:</span> <span class="n">PoolBigEntriesInUse</span>            <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x1f8c</span><span class="p">:</span> <span class="n">PagedPoolPdeCount</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1f90</span><span class="p">:</span> <span class="n">SpecialPoolPdeCount</span>            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1f94</span><span class="p">:</span> <span class="n">DynamicSessionPdeCount</span>         <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1f98</span><span class="p">:</span> <span class="n">SystemPteInfo</span>                  <span class="p">[</span><span class="s">&#39;_MI_SYSTEM_PTE_TYPE&#39;</span><span class="p">]</span>
+<span class="mh">0x1fc8</span><span class="p">:</span> <span class="n">PoolTrackTableExpansion</span>        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1fcc</span><span class="p">:</span> <span class="n">PoolTrackTableExpansionSize</span>    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1fd0</span><span class="p">:</span> <span class="n">PoolTrackBigPages</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1fd4</span><span class="p">:</span> <span class="n">PoolTrackBigPagesSize</span>          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1fd8</span><span class="p">:</span> <span class="n">IoState</span>                        <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">&#39;IoSessionStateCreated&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">&#39;IoSessionStateInitialized&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">&#39;IoSessionStateConnected&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">&#39;IoSessionStateDisconnected&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">&#39;IoSessionStateDisconnectedLoggedOn&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s">&#39;IoSessionStateLoggedOn&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s">&#39;IoSessionStateLoggedOff&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s">&#39;IoSessionStateTerminated&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s">&#39;IoSessionStateMax&#39;</span><span class="p">}}]</span>
+<span class="mh">0x1fdc</span><span class="p">:</span> <span class="n">IoStateSequence</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1fe0</span><span class="p">:</span> <span class="n">IoNotificationEvent</span>            <span class="p">[</span><span class="s">&#39;_KEVENT&#39;</span><span class="p">]</span>
+<span class="mh">0x1ff0</span><span class="p">:</span> <span class="n">SessionPoolPdes</span>                <span class="p">[</span><span class="s">&#39;_RTL_BITMAP&#39;</span><span class="p">]</span>
+<span class="mh">0x1ff8</span><span class="p">:</span> <span class="n">CpuQuotaBlock</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_PS_CPU_QUOTA_BLOCK&#39;</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>Important points are</p>
+<p>SessionId: Unique SID for the session. Remember session 0 is isolated for system services</p>
+<p>ProcessList: each session has its own process list. Each process belongs to one session except System and smss.exe... </p>
+<p>ImageList: A list of _IMAGE_ENTRY_IN_SESSION structures for each device... each session has its own list, so two copies of win32k.sys </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>_IMAGE_ENTRY_IN_SESSION</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_ENTRY_IN_SESSION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_ENTRY_IN_SESSION&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Link</span>                           <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Address</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">LastAddress</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DataTableEntry</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LDR_DATA_TABLE_ENTRY&#39;</span><span class="p">]]</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_LDR_DATA_TABLE_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_LDR_DATA_TABLE_ENTRY&#39;</span> <span class="p">(</span><span class="mi">120</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">InLoadOrderLinks</span>               <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">InMemoryOrderLinks</span>             <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">InInitializationOrderLinks</span>     <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DllBase</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">EntryPoint</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">SizeOfImage</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">FullDllName</span>                    <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">BaseDllName</span>                    <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">LoadCount</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x3a</span>  <span class="p">:</span> <span class="n">TlsIndex</span>                       <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">HashLinks</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">SectionPointer</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">CheckSum</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">LoadedImports</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">TimeDateStamp</span>                  <span class="p">[</span><span class="s">&#39;UnixTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">EntryPointActivationContext</span>    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ACTIVATION_CONTEXT&#39;</span><span class="p">]]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">PatchInformation</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">ForwarderLinks</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">ServiceTagLinks</span>                <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">StaticLinks</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x68</span>  <span class="p">:</span> <span class="n">ContextInformation</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x6c</span>  <span class="p">:</span> <span class="n">OriginalBase</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x70</span>  <span class="p">:</span> <span class="n">LoadTime</span>                       <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>RDP</h1></header>
+            
+            
+            <section><p>Remote Desktop Protocol (RDP) allows remote connectivity to a windows machine. </p>
+<p>RDP uses its own video driver to render display through network packets </p>
+<p>All environment variables are determined by RCP-Tcp connection settings. </p>
+<p>Commonly used by attackers... MetaSploit makes it easy to get RDP sessions</p>
+<p>TCP and UDP Port 3389! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Detecting RDP</h1></header>
+            
+            
+            <section><p>RDPDD.dll and rdppclip.exe are running in a session. </p>
+<p>RDPDD is the display driver</p>
+<p>rdpclip handles remote clipboard operations</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>Sessions</h1></header>
+            
+            
+            <section><p>Volatility plugin to list details on user logon sessions</p>
+<p>Shows important fields in _MM_SESSION_SPACE</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 sessions</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+Session<span class="o">(</span>V<span class="o">)</span>: 88e63000 ID: <span class="m">0</span> Processes: 29
+PagedPoolStart: <span class="m">80000000</span> PagedPoolEnd ffbfffff
+ Process: <span class="m">348</span> csrss.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">400</span> wininit.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">504</span> services.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">520</span> lsass.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">528</span> lsm.exe 2013-10-15 18:45:53 UTC+0000
+<span class="o">[</span>SNIP<span class="o">]</span>
+**************************************************
+Session<span class="o">(</span>V<span class="o">)</span>: 88e76000 ID: <span class="m">1</span> Processes: 23
+PagedPoolStart: <span class="m">80000000</span> PagedPoolEnd ffbfffff
+ Process: <span class="m">412</span> csrss.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">468</span> winlogon.exe 2013-10-15 18:45:53 UTC+0000
+ Process: <span class="m">320</span> taskhost.exe 2013-10-15 18:45:59 UTC+0000
+ Process: <span class="m">1916</span> dwm.exe 2013-10-15 18:45:59 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>Get a user</h1></header>
+            
+            
+            <section><p>Use getsids on a process to get information about its owner</p>
+<p>Example: for Session ID 1 on process 1916 (dwm.exe) </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 getsids -p 1916</span>
+Volatility Foundation Volatility Framework 2.4
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-21-2833823845-3085568943-3082117713-1000 <span class="o">(</span>Daniel<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-21-2833823845-3085568943-3082117713-513 <span class="o">(</span>Domain Users<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-1-0 <span class="o">(</span>Everyone<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-32-544 <span class="o">(</span>Administrators<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-32-545 <span class="o">(</span>Users<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-4 <span class="o">(</span>Interactive<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-2-1 <span class="o">(</span>Console Logon <span class="o">(</span>Users who are logged onto the physical console<span class="o">))</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-11 <span class="o">(</span>Authenticated Users<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-15 <span class="o">(</span>This Organization<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-5-0-163520 <span class="o">(</span>Logon Session<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-2-0 <span class="o">(</span>Local <span class="o">(</span>Users with the ability to log in locally<span class="o">))</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-5-64-10 <span class="o">(</span>NTLM Authentication<span class="o">)</span>
+dwm.exe <span class="o">(</span>1916<span class="o">)</span>: S-1-16-8192 <span class="o">(</span>Medium Mandatory Level<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h1>RDP Session</h1></header>
+            
+            
+            <section><p>Would look like.. </p>
+<div class="highlight"><pre>python vol.py -f rdp.mem --profile<span class="o">=</span>Win2003SP2x86 sessions
+**************************************************
+Session<span class="o">(</span>V<span class="o">)</span>: f79ff000 ID: <span class="m">2</span> Processes: 10
+PagedPoolStart: bc000000 PagedPoolEnd bc3fffff
+Process: <span class="m">7888</span> csrss.exe 2012-05-23 02:51:43
+Process: <span class="m">3272</span> winlogon.exe 2012-05-23 02:51:43
+Process: <span class="m">6772</span> rdpclip.exe 2012-05-23 02:52:00   
+Image: 0x8a2fecc0, Address bf800000, Name: win32k.sys
+Image: 0x877d0478, Address bf9d3000, Name: dxg.sys
+Image: 0x8a1bdf38, Address bff60000, Name: RDPDD.dll
+Image: 0x8771a970, Address bfa1e000, Name: ATMFD.DLL
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Exfiltration</h1></header>
+            
+            
+            <section><p>Common for malware authors to use RDP file transfer</p>
+<p>Also FTP, Dropbox, S3... [insert name of file hoster] </p>
+<p>Find command history / MRUs to help discover how information was sent out </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Consoles</h1></header>
+            
+            
+            <section><p>Extracts command history by scanning for _CONSOLE_INFORMATION structures </p>
+<p>_CONSOLE_INFORMATION collects the entire screen buffer! Can see output of each command!</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_CONSOLE_INFORMATION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_CONSOLE_INFORMATION&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">ProcessList</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">CurrentScreenBuffer</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+<span class="mh">0x9c</span>  <span class="p">:</span> <span class="n">ScreenBuffer</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+<span class="mh">0xd4</span>  <span class="p">:</span> <span class="n">HistoryList</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">ExeAliasList</span>                   <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0xe4</span>  <span class="p">:</span> <span class="n">HistoryBufferCount</span>             <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe6</span>  <span class="p">:</span> <span class="n">HistoryBufferMax</span>               <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe8</span>  <span class="p">:</span> <span class="n">CommandHistorySize</span>             <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xec</span>  <span class="p">:</span> <span class="n">OriginalTitle</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+<span class="mh">0xf0</span>  <span class="p">:</span> <span class="n">Title</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_SCREEN_INFORMATION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_SCREEN_INFORMATION&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ScreenX</span>                        <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0xa</span>   <span class="p">:</span> <span class="n">ScreenY</span>                        <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">Rows</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0xa5298ec</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ROW&#39;</span><span class="p">]]]</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">Next</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Consoles</h1></header>
+            
+            
+            <section><p>Shows console window title </p>
+<p>Name and pid of processes</p>
+<p>Alias associated with command executed </p>
+<p>Screen coordinates of cmd.exe console</p>
+<div class="highlight"><pre><span class="nv">$ </span>python vol.py -f xp-laptop-2005-07-04-1430.img consoles
+<span class="o">[</span>csrss.exe @ 0x821c11a8 pid <span class="m">456</span> console @ 0x4e23b0<span class="o">]</span>
+  OriginalTitle: <span class="s1">&#39;%SystemRoot%\\system32\\cmd.exe&#39;</span>
+  Title: <span class="s1">&#39;C:\\WINDOWS\\system32\\cmd.exe - dd if=\\\\.\\PhysicalMemory of=c:\\xp-2005-07-04-1430.img conv=noerror&#39;</span>
+  HistoryBufferCount: 2
+  HistoryBufferMax: 4
+  CommandHistorySize: 50
+<span class="o">[</span><span class="nb">history</span> @ 0x4e4008<span class="o">]</span>
+  CommandCount: 0
+  CommandCountMax: 50
+  Application: <span class="s1">&#39;dd.exe&#39;</span>
+<span class="o">[</span><span class="nb">history</span> @ 0x4e4d88<span class="o">]</span>
+  CommandCount: 20
+  CommandCountMax: 50
+  Application: <span class="s1">&#39;cmd.exe&#39;</span>
+  Cmd <span class="c">#0 @ 0x4e1f90: &#39;dd&#39;</span>
+  Cmd <span class="c">#1 @ 0x4e2cb8: &#39;cd\\&#39;</span>
+  Cmd <span class="c">#2 @ 0x4e2d18: &#39;dr&#39;</span>
+  Cmd <span class="c">#3 @ 0x4e2d28: &#39;ee:&#39;</span>
+  Cmd <span class="c">#4 @ 0x4e2d38: &#39;e;&#39;</span>
+  Cmd <span class="c">#5 @ 0x4e2d48: &#39;e:&#39;</span>
+  Cmd <span class="c">#6 @ 0x4e2d58: &#39;dr&#39;</span>
+  Cmd <span class="c">#7 @ 0x4e2d68: &#39;d;&#39;</span>
+  Cmd <span class="c">#8 @ 0x4e2d78: &#39;d:&#39;</span>
+  Cmd <span class="c">#9 @ 0x4e2d88: &#39;dr&#39;</span>
+  Cmd <span class="c">#10 @ 0x4e2d98: &#39;ls&#39;</span>
+  Cmd <span class="c">#11 @ 0x4e2da8: &#39;cd Docu&#39;</span>
+  Cmd <span class="c">#12 @ 0x4e2dc0: &#39;cd Documents and&#39;</span>
+  Cmd <span class="c">#13 @ 0x4e2e58: &#39;dr&#39;</span>
+  Cmd <span class="c">#14 @ 0x4e2e68: &#39;d:&#39;</span>
+  Cmd <span class="c">#15 @ 0x4e2e78: &#39;cd dd\\&#39;</span>
+  Cmd <span class="c">#16 @ 0x4e2e90: &#39;cd UnicodeRelease&#39;</span>
+  Cmd <span class="c">#17 @ 0x4e2ec0: &#39;dr&#39;</span>
+  Cmd <span class="c">#18 @ 0x4e2ed0: &#39;dd &#39;</span>
+  Cmd <span class="c">#19 @ 0x4e4100: &#39;dd if=\\\\.\\PhysicalMemory of=c:\\xp-2005-07-04-1430.img conv=noerror&#39;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Windows Stations</h1></header>
+            
+            
+            <section><p>Contained within sessions</p>
+<p>Stations are security boundaries for processes and desktops</p>
+<p>Can detect clipboard activity and frequency of its usage</p>
+<p>tagWINDOWSTATION is the structure for stations . </p>
+<ul>
+<li>It is securable (allocated, managed and freed by object manager that handles processes and threads) </li>
+<li>Has a _POOL_HEADER and _OBJECT_HEADER</li>
+</ul>
+<p>win32k!grpWinStaList has the linked list of stations</p>
+<p>Only one station can interact with the user at the console (Winsta0) </p>
+<p><img alt="" src="http://blogs.technet.com/blogfiles/askperf/WindowsLiveWriter/SessionsDesktopsandWindowsStations_6A91/image_5aef41e5-0495-4e29-9349-620a6f95bf9c.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>In memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagWINDOWSTATION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;tagWINDOWSTATION&#39;</span> <span class="p">(</span><span class="mi">88</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">dwSessionId</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                     <span class="c">#window station to owning session _MM_SESSION_SPACE.SessionId</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">rpwinstaNext</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWINDOWSTATION&#39;</span><span class="p">]]</span>     <span class="c">#Doubly linked list </span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">rpdeskList</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOP&#39;</span><span class="p">]]</span>           <span class="c">#pointer to windows station&#39;s first desktop </span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">pTerm</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagTERMINAL&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">dwWSF_Flags</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                     <span class="c">#interative desktop flag (WSF_NOIO)</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">spklList</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagKL&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">ptiClipLock</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagTHREADINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">ptiDrawingClipboard</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagTHREADINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">spwndClipOpen</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">spwndClipViewer</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">spwndClipOwner</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">pClipBase</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0xb73723e4</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagCLIP&#39;</span><span class="p">]]]</span> <span class="c">#clipboard strucutres</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">cNumClipFormats</span>                <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">iClipSerialNumber</span>              <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                      <span class="c">#increments by 1 each time clipboard is used </span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">iClipSequenceNumber</span>            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">spwndClipboardListener</span>         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">pGlobalAtomTable</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>                  <span class="c">#atom table for the station </span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">luidEndSession</span>                 <span class="p">[</span><span class="s">&#39;_LUID&#39;</span><span class="p">]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">luidUser</span>                       <span class="p">[</span><span class="s">&#39;_LUID&#39;</span><span class="p">]</span>
+<span class="mh">0x54</span>  <span class="p">:</span> <span class="n">psidUser</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-25">
+          <div class="inner">
+            
+            <header><h1>Clipboard activity in a session</h1></header>
+            
+            
+            <section><p>Stations permitted to interact with the user have three desktops</p>
+<ul>
+<li>Winlogon, Default (user desktop) and disconnect. </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Wndscan</h1></header>
+            
+            
+            <section><p>Enumerates window stations and their properties using pool scanning</p>
+<div class="highlight"><pre><span class="nv">$ </span>python vol.py -f rdp.mem --profile<span class="o">=</span>Win2003SP2x86 wndscan
+**************************************************
+WindowStation: 0x8581e40, Name: WinSta0, Next: 0x0
+SessionId: 2, AtomTable: 0xe7981648, Interactive: True
+Desktops: Default, Disconnect, Winlogon
+ptiDrawingClipboard: pid - tid -
+spwndClipOpen: 0x0, spwndClipViewer: <span class="m">6772</span> rdpclip.exe
+cNumClipFormats: 4, iClipSerialNumber: <span class="m">9</span>                                   
+pClipBase: 0xe6fe8ec8, Formats: CF_UNICODETEXT,CF_LOCALE,CF_TEXT,CF_OEMTEXT
+<span class="o">[</span>snip/fabricated<span class="o">]</span>
+**************************************************
+WindowStation: 0x3e7c81f0, Name: WinSta0, Next: 0x85a358d8
+SessionId: 0, AtomTable: 0x91101ba8, Interactive: True
+Desktops: Default, Disconnect, Winlogon
+ptiDrawingClipboard: pid - tid -
+spwndClipOpen: 0x0, spwndClipViewer: 0x0
+cNumClipFormats: 0, iClipSerialNumber: 0
+pClipBase: 0x0, Formats:
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>First = 9 clipboard uses, all from RDP. </p>
+<p>Second = no clipboard </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>Clipboard snooping</h1></header>
+            
+            
+            <section><p>Malware snoops on clipboard operations for obvious reasons</p>
+<p>Can hook with SetClipboardData. </p>
+<div class="highlight"><pre>HANDLE WINAPI SetClipboardData(
+_In_ UINT uFormat<span class="p">,</span>
+_In_opt_ HANDLE hMem #handle to memory region where uFormat is copied 
+);
+</pre></div>
+
+<p>Obvious though... </p>
+<p>Malware can also call GetClipboardData at a fast paced interval to get the contents of the clipboard! </p>
+<ul>
+<li>Requires OpenClipboard to be used and only one session an have it opened at a time... could cause race conditions. </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>Microsoft helped!</h1></header>
+            
+            
+            <section><p>Microsoft suggests creating a clipboard viewer or format listener to receive notations when the clipboard changes. </p>
+<div class="highlight"><pre>HWND WINAPI SetClipboardViewer(
+  _In_ HWND hWndNewViewer  #A handle to the window to be added to the clipboard chain.
+);
+
+BOOL WINAPI AddClipboardFormatListener(
+  _In_ HWND hwnd           #A handle to the window to be placed in the clipboard format listener list.
+);
+</pre></div>
+
+<p>Both receive WM_DRAWCLIPBOARD messages and can then open the clipboard. </p>
+<p>CLIPBRDWNDCLASS will be used by using these APIs and a process will need to have access to these windows </p>
+<div class="highlight"><pre><span class="nv">$ </span>python vol.py -f memory.dmp --profile<span class="o">=</span>Win7SP1x86
+wintree <span class="p">|</span> grep CLIPBRDWNDCLASS
+Volatility Foundation Volatility Framework 2.4
+.#10062 explorer.exe:372 CLIPBRDWNDCLASS
+.#100f0 explorer.exe:372 CLIPBRDWNDCLASS
+.#1011e vmtoolsd.exe:2224 CLIPBRDWNDCLASS
+.#1014a SnagIt32.exe:2300 CLIPBRDWNDCLASS
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-29">
+          <div class="inner">
+            
+            <header><h1>Desktops</h1></header>
+            
+            
+            <section><p>Session-specific paged pool area loaded into kernel space. </p>
+<p>Session-private GUI objects are allocated from here. </p>
+<p>Container for application windows and user interface objects. </p>
+<p>Malware likes to create</p>
+<ul>
+<li>Hidden Desktops</li>
+<li>Ransomware</li>
+<li>Hidden threads </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>In memory</h1></header>
+            
+            
+            <section><p>tagDESKTOP</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagDESKTOP&quot;</span><span class="p">)</span>
+ <span class="s">&#39;tagDESKTOP&#39;</span> <span class="p">(</span><span class="mi">132</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">dwSessionId</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>                 <span class="c">#Session id from _MM_SESSION_SPACE</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">pDeskInfo</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOPINFO&#39;</span><span class="p">]]</span>   <span class="c">#Information on desktop&#39;s global hooks </span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">pDispInfo</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDISPLAYINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">rpdeskNext</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOP&#39;</span><span class="p">]]</span>       <span class="c">#linked list of desktops (all desktops in the same window station) </span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">rpwinstaParent</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWINDOWSTATION&#39;</span><span class="p">]]</span> <span class="c">#windows station where desktop belongs </span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">dwDTFlags</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">dwDesktopId</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">spmenuSys</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagMENU&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">spmenuDialogSys</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagMENU&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">spmenuHScroll</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagMENU&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">spmenuVScroll</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagMENU&#39;</span><span class="p">]]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">spwndForeground</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span>  <span class="p">:</span> <span class="n">spwndTray</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">spwndMessage</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">spwndTooltip</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">hsectionDesktop</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">pheapDesktop</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWIN32HEAP&#39;</span><span class="p">]]</span>    <span class="c">#desktop heap! </span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">ulHeapSize</span>                     <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">cciConsole</span>                     <span class="p">[</span><span class="s">&#39;_CONSOLE_CARET_INFO&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">PtiList</span>                        <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>                  <span class="c">#linked list of tagTHREADINFO strucutres</span>
+<span class="mh">0x64</span>  <span class="p">:</span> <span class="n">spwndTrack</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x68</span>  <span class="p">:</span> <span class="n">htEx</span>                           <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x6c</span>  <span class="p">:</span> <span class="n">rcMouseHover</span>                   <span class="p">[</span><span class="s">&#39;tagRECT&#39;</span><span class="p">]</span>
+<span class="mh">0x7c</span>  <span class="p">:</span> <span class="n">dwMouseHoverTime</span>               <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x80</span>  <span class="p">:</span> <span class="n">pMagInputTransform</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_MAGNIFICATION_INPUT_TRANSFORM&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-31">
+          <div class="inner">
+            
+            <header><h1>Deskscan</h1></header>
+            
+            
+            <section><p>Analyzes desktops and associated threads</p>
+<p>Scans for windows stations and walks rpdeskList </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 deskscan</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+Desktop: 0x3dd44e68, Name: msswindowstation<span class="se">\m</span>ssrestricteddesk, Next: 0x0
+SessionId: 0, DesktopInfo: 0xfe600578, fsHooks: 0
+spwnd: 0xfe600618, Windows: 29
+Heap: 0xfe600000, Size: 0x80000, Base: 0xfe600000, Limit: 0xfe680000
+**************************************************
+Desktop: 0x3e047630, Name: Service-0x0-3e4<span class="nv">$\</span>Default, Next: 0x0
+SessionId: 0, DesktopInfo: 0xff700578, fsHooks: 0
+spwnd: 0xff700618, Windows: 24
+Heap: 0xff700000, Size: 0x80000, Base: 0xff700000, Limit: 0xff780000
+ <span class="m">3168</span> <span class="o">(</span>svchost.exe <span class="m">1204</span> parent 504<span class="o">)</span>
+ <span class="m">3156</span> <span class="o">(</span>svchost.exe <span class="m">1204</span> parent 504<span class="o">)</span>
+ <span class="m">3096</span> <span class="o">(</span>FXSSVC.exe <span class="m">3092</span> parent 504<span class="o">)</span>
+ <span class="m">2000</span> <span class="o">(</span>msdtc.exe <span class="m">1980</span> parent 504<span class="o">)</span>
+ <span class="m">1984</span> <span class="o">(</span>msdtc.exe <span class="m">1980</span> parent 504<span class="o">)</span>
+ <span class="m">1208</span> <span class="o">(</span>svchost.exe <span class="m">1204</span> parent 504<span class="o">)</span>
+ <span class="m">716</span> <span class="o">(</span>svchost.exe <span class="m">700</span> parent 504<span class="o">)</span>
+ <span class="m">740</span> <span class="o">(</span>svchost.exe <span class="m">700</span> parent 504<span class="o">)</span>
+**************************************************
+Desktop: 0x3e090420, Name: Service-0x0-3e5<span class="nv">$\</span>Default, Next: 0x0
+SessionId: 0, DesktopInfo: 0xff780578, fsHooks: 0
+spwnd: 0xff780618, Windows: 27
+Heap: 0xff780000, Size: 0x80000, Base: 0xff780000, Limit: 0xff800000
+ <span class="m">864</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">3748</span> <span class="o">(</span>svchost.exe <span class="m">3744</span> parent 504<span class="o">)</span>
+ <span class="m">3244</span> <span class="o">(</span>svchost.exe <span class="m">3232</span> parent 504<span class="o">)</span>
+ <span class="m">3248</span> <span class="o">(</span>svchost.exe <span class="m">3232</span> parent 504<span class="o">)</span>
+ <span class="m">1380</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1828</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1760</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1704</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1724</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1428</span> <span class="o">(</span>svchost.exe <span class="m">1340</span> parent 504<span class="o">)</span>
+ <span class="m">1436</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">1344</span> <span class="o">(</span>svchost.exe <span class="m">1340</span> parent 504<span class="o">)</span>
+ <span class="m">1012</span> <span class="o">(</span>svchost.exe <span class="m">748</span> parent 504<span class="o">)</span>
+ <span class="m">1004</span> <span class="o">(</span>audiodg.exe <span class="m">1000</span> parent 748<span class="o">)</span>
+ <span class="m">912</span> <span class="o">(</span>svchost.exe <span class="m">908</span> parent 504<span class="o">)</span>
+ <span class="m">800</span> <span class="o">(</span>svchost.exe <span class="m">748</span> parent 504<span class="o">)</span>
+ <span class="m">752</span> <span class="o">(</span>svchost.exe <span class="m">748</span> parent 504<span class="o">)</span>
+**************************************************
+Desktop: 0x3e43f4e0, Name: WinSta0<span class="se">\D</span>efault, Next: 0x85a3f710
+SessionId: 1, DesktopInfo: 0xfea00578, fsHooks: 32768
+spwnd: 0xfea00618, Windows: 795
+Heap: 0xfea00000, Size: 0xc00000, Base: 0xfea00000, Limit: 0xff600000
+ <span class="m">3916</span> <span class="o">(</span>dllhost.exe <span class="m">884</span> parent 632<span class="o">)</span>
+ <span class="m">3888</span> <span class="o">(</span>dllhost.exe <span class="m">884</span> parent 632<span class="o">)</span>
+ <span class="m">1020</span> <span class="o">(</span>dllhost.exe <span class="m">884</span> parent 632<span class="o">)</span>
+ <span class="m">3492</span> <span class="o">(</span>explorer.exe <span class="m">352</span> parent 1848<span class="o">)</span>
+ <span class="m">3208</span> <span class="o">(</span>explorer.exe <span class="m">352</span> parent 1848<span class="o">)</span>
+ <span class="m">3480</span> <span class="o">(</span>explorer.exe <span class="m">352</span> parent 1848<span class="o">)</span>
+ <span class="m">3140</span> <span class="o">(</span>explorer.exe <span class="m">352</span> parent 1848<span class="o">)</span>
+ <span class="m">3500</span> <span class="o">(</span>explorer.exe <span class="m">352</span> parent 1848<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-32">
+          <div class="inner">
+            
+            <header><h1>Deskscan</h1></header>
+            
+            
+            <section><p>Shows desktops </p>
+<p>Winlogon = login prompt for user... if successful, it puts user into Default</p>
+<ul>
+<li>Only should contain threads in winlogon.exe </li>
+</ul>
+<p>Default contains explorer.exe </p>
+<h1>Graphical Desktops</h1>
+<p><img alt="" src="http://blogs.technet.com/blogfiles/askperf/WindowsLiveWriter/SessionsDesktopsandWindowsStations_6A91/image_14c7b24d-d3e0-4c6d-b3f5-c98707077cf6.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>Alternate Desktops</h1></header>
+            
+            
+            <section><p>Desktops can be hidden from the user by using alternative desktops</p>
+<p>Requires SwitchDesktop and the name to the proper desktop  (Not as easy as Linux)</p>
+<div class="highlight"><pre>BOOL WINAPI SwitchDesktop(
+  _In_ HDESK hDesktop
+);
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-34">
+          <div class="inner">
+            
+            <header><h1>Tigger created alternative desktops</h1></header>
+            
+            
+            <section><p><em>From book on page 427</em></p>
+<ol>
+<li>Create a new desktop named system_temp_.</li>
+<li>Generate a temporary filename that will capture the redirected output of console
+commands.</li>
+<li>Set STARTUPINFO.lpDesktop to WinSta0\system_temp_.</li>
+<li>Set dwFlags to indicate that the STARTUPINFO structure also has preferences for
+window visibility, standard output, and standard error handles for the process to
+be created.</li>
+<li>Create the new process. The full path to the process szCmd is passed into the function
+as an argument (originally taken from an attacker over the network).    </li>
+<li>Wait for the process to complete.</li>
+<li>Close the system_temp_ desktop.</li>
+<li>Read the process’ output (if any) from the specified output file and return it in a
+buffer.</li>
+</ol>
+<p>Bypassed Default desktop boundaries and evaded AV. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            <header><h1>Atoms</h1></header>
+            
+            
+            <section><p>Atoms are strings that can be shared between processes in the same session. </p>
+<p>Atoms Tables are hash buckets </p>
+<p>Atoms allow us to</p>
+<ul>
+<li>Detect windows class names</li>
+<li>Detect windows message names</li>
+<li>Identify injected DLLs</li>
+<li>System presence marking </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-36">
+          <div class="inner">
+            
+            <header><h1>Atom Tables</h1></header>
+            
+            
+            <section><p>_RTL_ATOM_TABLE stores information on atoms. </p>
+<p>User mode and kernel mode can both have atom tables</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_RTL_ATOM_TABLE&quot;</span><span class="p">)</span>
+<span class="s">&#39;_RTL_ATOM_TABLE&#39;</span> <span class="p">(</span><span class="mi">112</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">Signature</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>            <span class="c">#0x6d6f7441 (Atom) Pool tag is AtmT. </span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">CriticalSection</span> <span class="p">[</span><span class="s">&#39;_RTL_CRITICAL_SECTION&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span> <span class="p">:</span> <span class="n">NumBuckets</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>         <span class="c">#Number of _RTL_ATOM_TABLE_ENTRYs</span>
+<span class="mh">0x20</span> <span class="p">:</span> <span class="n">Buckets</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_RTL_ATOM_TABLE_ENTRY&#39;</span><span class="p">]]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_RTL_ATOM_TABLE_ENTRY&quot;</span><span class="p">)</span>
+<span class="s">&#39;_RTL_ATOM_TABLE_ENTRY&#39;</span> <span class="p">(</span><span class="mi">24</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">HashLink</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_RTL_ATOM_TABLE_ENTRY&#39;</span><span class="p">]]</span> <span class="c">#Used to enum all atoms in the bucket </span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">HandleIndex</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xa</span> <span class="p">:</span> <span class="n">Atom</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>                            <span class="c">#integer for the specific entry. Can be used with AddAtom and FindAtom </span>
+<span class="mh">0xc</span> <span class="p">:</span> <span class="n">ReferenceCount</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>                  <span class="c">#Incremented each time a string is added and decremented when one is taken away </span>
+<span class="mh">0xe</span> <span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0xf</span> <span class="p">:</span> <span class="n">NameLength</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span> 
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">Name</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">function</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]</span> <span class="c">#name of the atom</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Atomscan</h1></header>
+            
+            
+            <section><p>Pool tag scanner for atoms </p>
+<p>--sort-by=atom shows atoms from multiple atom tables sorted by ID</p>
+<p>--sort-by=refcount shows how many items atoms appear</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP3x86 atomscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span> AtomOfs<span class="o">(</span>V<span class="o">)</span>       Atom Refs   Pinned Name
+---------- ---------- ---------- ------ ------ ----
+0xcc05da8 0xe1000d10     0xc010      <span class="m">1</span>      <span class="m">1</span> OleDraw
+0xcc05da8 0xe100e080     0xc0e9      <span class="m">1</span>      <span class="m">0</span> image/x-wmf
+0xcc05da8 0xe1013830     0xc01b      <span class="m">1</span>      <span class="m">1</span> ScrollBar
+0xcc05da8 0xe1014800     0xc028      <span class="m">1</span>      <span class="m">1</span> SysICS
+0xcc05da8 0xe1017360     0xc00f      <span class="m">1</span>      <span class="m">1</span> Link Source Descriptor
+0xcc05da8 0xe101a810     0xc020      <span class="m">1</span>      <span class="m">1</span> DDEMLMom
+0xcc05da8 0xe220dd28     0xc10b      <span class="m">2</span>      <span class="m">0</span> C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\N</span>ETSHELL.dll
+0xcc05da8 0xe2371b50     0xc103     <span class="m">14</span>      <span class="m">0</span> AC_ItemActivate
+0xcc05da8 0xe2387c08     0xc122      <span class="m">2</span>      <span class="m">0</span> Rich Text Format Without Objects
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-38">
+          <div class="inner">
+            
+            <header><h1>Atoms</h1></header>
+            
+            
+            <section><p>Lots of them..</p>
+<p>RegisterClassEx is used to register a new window class and that name is added to atom table. </p>
+<ul>
+<li>win32k.sys creates an atom from the ClassName member in the parameters </li>
+<li>Some malware will try to be sneaky and not name their windows</li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre>Offset<span class="o">(</span>P<span class="o">)</span> AtomOfs<span class="o">(</span>V<span class="o">)</span>       Atom Refs   Pinned Name
+---------- ---------- ---------- ------ ------ ----
+0xe17d40a0 0xc0ff               <span class="m">2</span>           0
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-39">
+          <div class="inner">
+            
+            <header><h1>Atoms</h1></header>
+            
+            
+            <section><p>Mutexes are common with malware, but easy to spot!</p>
+<p>Atoms are harder to spot and malware is starting to use them <em>Pg: 434</em></p>
+<p>Tigger used atoms</p>
+<p>Can check to see if an atom name exists on the system with GlobalFindAtomA and can create one with GLobalAddAtomA</p>
+<div class="highlight"><pre>ATOM WINAPI GlobalAddAtom(
+  _In_ LPCTSTR lpString
+);
+
+ATOM WINAPI GlobalFindAtom(
+  _In_ LPCTSTR lpString
+);
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-40">
+          <div class="inner">
+            
+            <header><h1>StuxNet used Atoms</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP3x86 atomscan | grep AFX64</span>
+Volatility Foundation Volatility Framework 2.4
+ 0xcc05da8 0xe20514d8     0xc118      <span class="m">2</span>      <span class="m">0</span> AFX64c313
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-41">
+          <div class="inner">
+            
+            <header><h1>Windows</h1></header>
+            
+            
+            <section><p>Windows are containers for</p>
+<ul>
+<li>Buttons</li>
+<li>Scroll Bars</li>
+<li>Text/edit areas</li>
+</ul>
+<p>They have</p>
+<ul>
+<li>Titles</li>
+<li>Coordinates</li>
+<li>Visibility properties (max, min, transparent, overlapped)</li>
+</ul>
+<p>Windows are commonly used for disabling AV, debugger attacks, USB insertions.. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>Windows</h1></header>
+            
+            
+            <section><p>Can</p>
+<ul>
+<li>Cross reference window names with owning process</li>
+<li>Explorer.exe always has a window called SysFader!</li>
+</ul>
+<p>Detect Anti-monitoring software</p>
+<ul>
+<li>AV uses windows names...</li>
+<li>FindWindow easily finds processes with registered names</li>
+</ul>
+<p>Contains metadata</p>
+<ul>
+<li>System Time</li>
+<li>Logged-on users</li>
+<li>Viewed web pages</li>
+<li>screen positions</li>
+<li>cmd.exe commands..</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-43">
+          <div class="inner">
+            
+            <header><h1>Memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagWND&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagWND&#39;</span> <span class="p">(</span><span class="mi">296</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">head</span> <span class="p">[</span><span class="s">&#39;_THRDESKHEAD&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0x30</span> <span class="p">:</span> <span class="n">ExStyle</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>             <span class="c">#Style flags (Droppable files, transparent.. etc) </span>
+<span class="mh">0x34</span> <span class="p">:</span> <span class="n">style</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>               <span class="c">#More style flags! </span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0x48</span> <span class="p">:</span> <span class="n">spwndNext</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span> <span class="p">:</span> <span class="n">spwndPrev</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x58</span> <span class="p">:</span> <span class="n">spwndParent</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x60</span> <span class="p">:</span> <span class="n">spwndChild</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x68</span> <span class="p">:</span> <span class="n">spwndOwner</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x70</span> <span class="p">:</span> <span class="n">rcWindow</span> <span class="p">[</span><span class="s">&#39;tagRECT&#39;</span><span class="p">]</span>                  <span class="c">#position of the window within desktop</span>
+<span class="mh">0x80</span> <span class="p">:</span> <span class="n">rcClient</span> <span class="p">[</span><span class="s">&#39;tagRECT&#39;</span><span class="p">]</span>                  <span class="c">#position of the window within desktop</span>
+<span class="mh">0x90</span> <span class="p">:</span> <span class="n">lpfnWndProc</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>   <span class="c">#Window procedure function </span>
+<span class="mh">0x98</span> <span class="p">:</span> <span class="n">pcls</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagCLS&#39;</span><span class="p">]]</span>        <span class="c">#pointer to tagCLS for windows class </span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0xd8</span> <span class="p">:</span> <span class="n">strName</span> <span class="p">[</span><span class="s">&#39;_LARGE_UNICODE_STRING&#39;</span><span class="p">]</span>     <span class="c">#string name</span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0x118</span> <span class="p">:</span> <span class="n">spwndClipboardListenerNext</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagWND&#39;</span><span class="p">]]</span>
+<span class="mh">0x120</span> <span class="p">:</span> <span class="n">ExStyle2</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x120</span> <span class="p">:</span> <span class="n">bChildNoActivate</span> <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;long&#39;</span><span class="p">}]</span>
+<span class="mh">0x120</span> <span class="p">:</span> <span class="n">bClipboardListener</span> <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;long&#39;</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-44">
+          <div class="inner">
+            
+            <header><h1>Creating Windows</h1></header>
+            
+            
+            <section><div class="highlight"><pre>HWND WINAPI CreateWindowEx(
+  _In_     DWORD     dwExStyle<span class="p">,</span>
+  _In_opt_ LPCTSTR   lpClassName<span class="p">,</span>
+  _In_opt_ LPCTSTR   lpWindowName<span class="p">,</span>
+  _In_     DWORD     dwStyle<span class="p">,</span>
+  _In_     int       x<span class="p">,</span>
+  _In_     int       y<span class="p">,</span>
+  _In_     int       nWidth<span class="p">,</span>
+  _In_     int       nHeight<span class="p">,</span>
+  _In_opt_ HWND      hWndParent<span class="p">,</span>
+  _In_opt_ HMENU     hMenu<span class="p">,</span>
+  _In_opt_ HINSTANCE hInstance<span class="p">,</span>
+  _In_opt_ LPVOID    lpParam
+);
+</pre></div>
+
+<p>Styles</p>
+<ul>
+<li>Drag-drop files</li>
+<li>Top-level window</li>
+<li>border with sunken edge</li>
+<li>Help men</li>
+<li>scroll bar position</li>
+<li>. . . <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx">MSDN</a> </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-45">
+          <div class="inner">
+            
+            <header><h1>Windows</h1></header>
+            
+            
+            <section><p>Enumerate all windows (desktops)</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP3x86 windows</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+Window context: 0<span class="se">\S</span>ervice-0x0-3e7<span class="nv">$\</span>Default
+
+Window Handle: <span class="c">#e00e8 at 0xbc940720, Name: AFX64c313</span>
+ClassAtom: 0xc118, Class: AFX64c313
+SuperClassAtom: 0xc118, SuperClass: AFX64c313
+pti: 0xe1e81380, Tid: <span class="m">1420</span> at 0x82126bf0
+ppi: 0xe163f008, Process: services.exe, Pid: 668
+Visible: No
+Left: 92, Top: 146, Bottom: 923, Right: 695
+Style Flags: WS_MINIMIZEBOX,WS_TABSTOP,WS_DLGFRAME,WS_BORDER,WS_THICKFRAME,WS_CAPTION,WS_SYSMENU,WS_MAXIMIZEBOX,WS_GROUP,WS_OVERLAPPED,WS_CLIPSIBLINGS
+ExStyle Flags: WS_EX_LTRREADING,WS_EX_RIGHTSCROLLBAR,WS_EX_WINDOWEDGE,WS_EX_LEFT
+Window procedure: 0x13fe695
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-46">
+          <div class="inner">
+            
+            <header><h1>Wintree</h1></header>
+            
+            
+            <section><p>Shows parent/child relationships between windows in the desktop</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP3x86 wintree</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+**************************************************
+Window context: 0<span class="se">\W</span>inSta0<span class="se">\D</span>efault
+
+<span class="c">#1000c (visible) csrss.exe:600 -</span>
+<span class="c">#10004 (visible) csrss.exe:600 -</span>
+.SAS window  winlogon.exe:624 SAS window class
+.Winlogon generic control dialog  winlogon.exe:624 -
+..#4004c <span class="o">(</span>visible<span class="o">)</span> winlogon.exe:624 6.0.2600.5512!Static
+.MCI <span class="nb">command </span>handling window  winlogon.exe:624 -
+<span class="c">#10006  csrss.exe:600 Message</span>
+.#10008  csrss.exe:600 -
+.#1000a  csrss.exe:600 -
+.#10026  winlogon.exe:624 WinscardSessionChangeWndClass
+<span class="c">#1000e  csrss.exe:600 Message</span>
+.#10010  csrss.exe:600 -
+.#10012  csrss.exe:600 -
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-47">
+          <div class="inner">
+            
+            <header><h1>Screenshot</h1></header>
+            
+            
+            <section><p>Saves a pseudo screenshot based on GDI windows</p>
+<p>Takes screenshot of each window from tagWND and draws them with Python Imaging Library. </p>
+<p>Requires PIL</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#pip install --no-index -f http://dist.plone.org/thirdparty/ -U PIL</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 screenshot --dump-dir screenShots/</span>
+Volatility Foundation Volatility Framework 2.4
+Wrote screenShots/session_0.msswindowstation.mssrestricteddesk.png
+Wrote screenShots/session_0.Service-0x0-3e4<span class="nv">$.</span>Default.png
+Wrote screenShots/session_0.Service-0x0-3e5<span class="nv">$.</span>Default.png
+Wrote screenShots/session_1.WinSta0.Default.png
+Wrote screenShots/session_1.WinSta0.Disconnect.png
+Wrote screenShots/session_1.WinSta0.Winlogon.png
+Wrote screenShots/session_0.Service-0x0-3e7<span class="nv">$.</span>Default.png
+Wrote screenShots/session_0.WinSta0.Default.png
+Wrote screenShots/session_0.WinSta0.Disconnect.png
+Wrote screenShots/session_0.WinSta0.Winlogon.png
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-48">
+          <div class="inner">
+            
+            
+            <section><p><img alt="" src="..\slideResources\GUI\session_1.WinSta0.Default.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-49">
+          <div class="inner">
+            
+            <header><h1>Screenshot</h1></header>
+            
+            
+            <section><p>A lot of images will be blank because not all desktops have windows..</p>
+<p>WinSta0 is the only interactive desktop per user</p>
+<p>Can see screen position, user names, time... </p>
+<p>Possibly use to correlate events and build a time line! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-50">
+          <div class="inner">
+            
+            <header><h1>Usb Monitoring</h1></header>
+            
+            
+            <section><p>There was a POC written to find usb monitoring applications in memory. </p>
+<p>Not included with Volatility</p>
+<p><a href="https://code.google.com/p/volatility/issues/detail?id=443">Source Here</a></p>
+<p><em>Download the quick fix I commented :)</em></p>
+<p>Place in volatility/plugins</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP3x86 usbwindows</span>
+Volatility Foundation Volatility Framework 2.4
+Context                        Process              Window               Procedure
+------------------------------ -------------------- -------------------- ----------
+0<span class="se">\S</span>ervice-0x0-3e7<span class="nv">$\</span>Default     services.exe         AFX64c313            0x013fe695
+0<span class="se">\S</span>ervice-0x0-3e5<span class="nv">$\</span>Default     services.exe         AFX64c313            0x013fe695
+0<span class="se">\S</span>AWinSta<span class="se">\S</span>ADesktop           services.exe         AFX64c313            0x013fe695
+0<span class="se">\S</span>ervice-0x0-3e4<span class="nv">$\</span>Default     services.exe         AFX64c313            0x013fe695
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-51">
+          <div class="inner">
+            
+            <header><h1>Disassembling procedures may be a good idea</h1></header>
+            
+            
+            <section><p><br><br></p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cc</span><span class="p">(</span><span class="n">pid</span> <span class="o">=</span> <span class="mi">668</span><span class="p">)</span>
+<span class="n">Current</span> <span class="n">context</span><span class="p">:</span> <span class="n">services</span><span class="o">.</span><span class="n">exe</span> <span class="err">@</span> <span class="mh">0x82073020</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="mi">668</span><span class="p">,</span> <span class="n">ppid</span><span class="o">=</span><span class="mi">624</span> <span class="n">DTB</span><span class="o">=</span><span class="mh">0xa940080</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="mh">0x013fe695</span><span class="p">)</span>
+<span class="mh">0x13fe695</span> <span class="mi">55</span>                               <span class="n">PUSH</span> <span class="n">EBP</span>
+<span class="mh">0x13fe696</span> <span class="mi">8</span><span class="n">bec</span>                             <span class="n">MOV</span> <span class="n">EBP</span><span class="p">,</span> <span class="n">ESP</span>
+<span class="mh">0x13fe698</span> <span class="mi">817</span><span class="n">d0c19020000</span>                   <span class="n">CMP</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">EBP</span><span class="o">+</span><span class="mh">0xc</span><span class="p">],</span> <span class="mh">0x219</span>
+<span class="mh">0x13fe69f</span> <span class="mi">7514</span>                             <span class="n">JNZ</span> <span class="mh">0x13fe6b5</span>
+<span class="mh">0x13fe6a1</span> <span class="n">ff7514</span>                           <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">EBP</span><span class="o">+</span><span class="mh">0x14</span><span class="p">]</span>
+<span class="mh">0x13fe6a4</span> <span class="n">ff7510</span>                           <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">EBP</span><span class="o">+</span><span class="mh">0x10</span><span class="p">]</span>
+<span class="mh">0x13fe6a7</span> <span class="n">e810000000</span>                       <span class="n">CALL</span> <span class="mh">0x13fe6bc</span>
+</pre></div>
+
+<p>Of course, IDA would make this easier. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_01-GUI.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-52">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_01-GUI.md">week07_01-GUI.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/52
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Windows GUI Artifacts</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Windows GUI</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">GUI landscape</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Sessions</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Windows Station</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Desktops</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">GUI API</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">SSDT</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">GUI Artifacts</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Volatility plugins</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Sessions</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Session Structures</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">_IMAGE_ENTRY_IN_SESSION</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">RDP</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Detecting RDP</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Sessions</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Get a user</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">RDP Session</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Exfiltration</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Consoles</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Consoles</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Windows Stations</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">In memory</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Clipboard activity in a session</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Wndscan</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Clipboard snooping</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Microsoft helped!</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Desktops</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">In memory</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Deskscan</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Deskscan</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Alternate Desktops</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Tigger created alternative desktops</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Atoms</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Atom Tables</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Atomscan</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Atoms</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Atoms</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">StuxNet used Atoms</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Windows</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">Windows</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Memory</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Creating Windows</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">Windows</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Wintree</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Screenshot</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">-</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Screenshot</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Usb Monitoring</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">Disassembling procedures may be a good idea</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">EOF</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
