@@ -11,7 +11,7 @@ permalink: blog/windowsx64Shellcode/
  There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. I not going to touch much on the basics of assembly, although I will talk about calling conventions, register clobbering and registers. 
 
  Refer to papers such as Skape's [*Understanding Windows Shell code*](http://repo.hackerzvoice.net/depot_madchat/windoz/vulns/win32-shellcode.pdf).
- or resources like [*project-shellcode*](http://www.projectshellcode.com) for indepth shellcode writing tutorials.
+ or resources like [*project-shellcode*](http://www.projectshellcode.com) for in-depth shellcode writing tutorials.
 
  I will go over the differences between 32 and 64 bit assembly that I have noticed and how to work with them as well as some of the structures windows uses that are useful to know about for shellcode in the 64bit environment. I will also introduce two tools that I have created in helping my exploit development process.
 
@@ -23,7 +23,7 @@ permalink: blog/windowsx64Shellcode/
 
 ## x86
  
- Normally on a x86 processer, there are 8 general purpose registers that are all 32 bits wide. 
+ Normally on a x86 processor, there are 8 general purpose registers that are all 32 bits wide. 
  
 - eax - Accumulator register
 
@@ -368,7 +368,7 @@ mov r12, [r12 + 0x20]   ;Peb.Ldr.InMemoryOrderModuleList
 mov r12, [r12]          ;2st entry
 mov r15, [r12 + 0x20]   ;ntdll.dll base address!
 mov r12, [r12]          ;3nd entry
-mov r12, [r12 + 0x20]   ;kernel32.dll base address! 
+mov r12, [r12 + 0x20]   ;kernel32.dll base address! We go 20 bytes in here as we are already 10 bytes into the _LDR_DATA_TABLE_ENTRY from the InMemoryOrderModuleList 
 
 {% endhighlight %}
 
@@ -404,7 +404,7 @@ This function takes two arguments, the handle to the module that contains the fu
 {% highlight asm %}
 
 ;find address of loadLibraryA from kernel32.dll which was found above. 
-mov rdx, 0xec0e4e8e  ;lpProcName (loadLibraryA hash from rot13)
+mov rdx, 0xec0e4e8e  ;lpProcName (loadLibraryA hash from ror13)
 mov rcx, r12         ;hModule
 call GetProcessAddress        
 
@@ -567,12 +567,12 @@ getText:
 GetProcessAddress:		
 	mov r13, rcx                     ;base address of dll loaded 
 	mov eax, [r13d + 0x3c]           ;skip DOS header and go to PE header
-	mov r14d, [r13d + eax + 0x88]   ;0x88 offset from the PE header is the export table. 
+	mov r14d, [r13d + eax + 0x88]    ;0x88 offset from the PE header is the export table. 
 
-	add r14d, r13d                  ;make the export table an absolute base address and put it in. MSDOS header + Import table = address. 
+	add r14d, r13d                  ;make the export table an absolute base address and put it in r14d.
 	mov r10d, [r14d + 0x18]         ;go into the export table and get the numberOfNames 
 	mov ebx, [r14d + 0x20]          ;get the AddressOfNames offset. 
-	add ebx, r13d                  ;AddressofNames base. 
+	add ebx, r13d                   ;AddressofNames base. 
 	
 find_function_loop:	
 	jecxz find_function_finished   ;if ecx is zero, quit :( nothing found. 
@@ -586,8 +586,8 @@ find_hashes:
 	cld			
 	
 continue_hashing:	
-	lodsb                        ;get into al from esi
-	test al, al                  ;is the end of string resarched?
+	lodsb                         ;get into al from esi
+	test al, al                   ;is the end of string resarched?
 	jz compute_hash_finished
 	ror dword edi, 0xd            ;ROR13 for hash calculation!
 	add edi, eax		
@@ -680,4 +680,4 @@ I hope that this blog post has helped in aiding the development of Win64 shellco
 
 To download the applications I used I have zipped them up here: [Resources](http://www.tophertimzen.com/resources/win64BlogPost/Windows-x64-Shellcode-resources.zip)
 
-Update 3/18/2015: I have open sourced my Shellcode Tester and put the repository on my github page [*here*](https://github.com/tophertimzen/shellcodeTester).
+Update 3/18/2015: I have open sourced my shellcode Tester and put the repository on my github page [*here*](https://github.com/tophertimzen/shellcodeTester).
