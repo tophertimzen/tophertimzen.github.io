@@ -87,9 +87,15 @@
             
             <section><p>Windows Internals</p>
 <ul>
-<li>SSDT</li>
-<li>IDT</li>
-<li>GDT</li>
+<li>
+<p>SSDT</p>
+</li>
+<li>
+<p>IDT</p>
+</li>
+<li>
+<p>GDT</p>
+</li>
 </ul>
 <p>Rootkit Analysis</p></section>
             
@@ -485,7 +491,9 @@ Volatility Foundation Volatility Framework 2.4
 <p>A FAR CALL instruction is used by user mode to call into kernel mode.</p>
 <p>Each processor can have a GDT. </p>
 <p>Should be in protected memory</p>
-<p>System memory segmentation </p></section>
+<p>System memory segmentation </p>
+<p>These are suspicious... </p>
+<p>All IDT entries except task gates should point at GDT index 1</p></section>
             
           </div>
           <div class="presenter_notes">

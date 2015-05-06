@@ -26,6 +26,8 @@ Lab will be graded on the following criteria
 
 - Used a variety of plugins and described accurately what you learned about the system through them
 - Discovered the malicious driver(s) and/or executable(s) the rootkit used/left behind.
+- Timelining
+- Utilized the 6 steps of memory investigations 
 
 I am looking for an analysis of the rootkit.. this one is open ended and will be graded based on your current progress through the term. I want an in depth analysis of the memory sample presented. Using additional tools aside from Volatility, such as IDA, will earn you more valuable valueless prizes. Do not just send me pictures or results of tools... elaborate. 
 

@@ -1427,44 +1427,25 @@ DRV 0x022e54f8 <span class="se">\D</span>river<span class="se">\M</span>RxNet
             
             <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=$profile devicetree | grep -i mrxnet -B 10 | grep Driver</span>
 Volatility Foundation Volatility Framework 2.4
-------<span class="p">|</span> ATT 0x81d9e020  - <span class="se">\D</span>river<span class="se">\m</span>ouhid FILE_DEVICE_MOUSE
----------<span class="p">|</span> ATT 0x822c41e8 PointerClass2 - <span class="se">\D</span>river<span class="se">\M</span>ouclass FILE_DEVICE_MOUSE
----------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-DRV 0x020a1ca0 <span class="se">\D</span>river<span class="se">\N</span>DIS
-DRV 0x020bcea0 <span class="se">\D</span>river<span class="se">\P</span>Sched
-------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x821354b8  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-DRV 0x0228beb0 <span class="se">\D</span>river<span class="se">\S</span>erial
-------<span class="p">|</span> ATT 0x8208b2d0  - <span class="se">\D</span>river<span class="se">\s</span>erenum FILE_DEVICE_BUS_EXTENDER
-------<span class="p">|</span> ATT 0x8208b478  - <span class="se">\D</span>river<span class="se">\s</span>erenum FILE_DEVICE_BUS_EXTENDER
----------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
----------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-DRV 0x022d7418 <span class="se">\D</span>river<span class="se">\B</span>eep
-DRV 0x022dba18 <span class="se">\D</span>river<span class="se">\N</span>etBT
----------<span class="p">|</span> ATT 0x81c0a910  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-DRV 0x022e54f8 <span class="se">\D</span>river<span class="se">\M</span>RxNet
-DRV 0x023a2b10 <span class="se">\D</span>river<span class="se">\W</span>in32k
-DRV 0x023ad268 <span class="se">\D</span>river<span class="se">\N</span>disuio
----------<span class="p">|</span> ATT 0x81f0fc58  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
-DRV 0x0246c0a8 <span class="se">\D</span>river<span class="se">\a</span>gp440
-DRV 0x0246c710 <span class="se">\D</span>river<span class="se">\d</span>mio
----------<span class="p">|</span> ATT 0x8226ef10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
-DRV 0x02520618 <span class="se">\D</span>river<span class="se">\V</span>olSnap
-DRV 0x02520710 <span class="se">\D</span>river<span class="se">\P</span>artMgr
-DRV 0x02525030 <span class="se">\D</span>river<span class="se">\P</span>arVdm
-------<span class="p">|</span> ATT 0x81c8b500  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x81dc49c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x82125f10  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-------<span class="p">|</span> ATT 0x81fd59c0  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
-DRV 0x0252fb60 <span class="se">\D</span>river<span class="se">\v</span>mci
-DRV 0x0253cee8 <span class="se">\D</span>river<span class="se">\F</span>tdisk
-------<span class="p">|</span> ATT 0x81de19b8  - <span class="se">\D</span>river<span class="se">\V</span>olSnap FILE_DEVICE_DISK
-------------<span class="p">|</span> ATT 0x81fb9680  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
-------------<span class="p">|</span> ATT 0x81f0ab90  - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
+DRV 0x0205e5a8 <span class="se">\F</span>ileSystem<span class="se">\v</span>mhgfs
+---<span class="p">|</span> DEV 0x820f0030 hgfsInternal UNKNOWN
+---<span class="p">|</span> DEV 0x821a1030 HGFS FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81f5d020 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\F</span>ileSystem<span class="se">\F</span>ltMgr FILE_DEVICE_NETWORK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x821354b8 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x023ae880 <span class="se">\F</span>ileSystem<span class="se">\M</span>RxSmb
+---<span class="p">|</span> DEV 0x81da95d0 LanmanDatagramReceiver FILE_DEVICE_NETWORK_BROWSER
+---<span class="p">|</span> DEV 0x81ee5030 LanmanRedirector FILE_DEVICE_NETWORK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81bf1020 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\F</span>ileSystem<span class="se">\F</span>ltMgr FILE_DEVICE_NETWORK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81f0fc58 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_NETWORK_FILE_SYSTEM
+DRV 0x02476da0 <span class="se">\F</span>ileSystem<span class="se">\C</span>dfs
+---<span class="p">|</span> DEV 0x81e636c8 Cdfs FILE_DEVICE_CD_ROM_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x81fac548 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\F</span>ileSystem<span class="se">\F</span>ltMgr FILE_DEVICE_CD_ROM_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x8226ef10 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_CD_ROM_FILE_SYSTEM
+DRV 0x0253d180 <span class="se">\F</span>ileSystem<span class="se">\N</span>tfs
+---<span class="p">|</span> DEV 0x82166020 FILE_DEVICE_DISK_FILE_SYSTEM
+------<span class="p">|</span> ATT 0x8228c6b0 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\F</span>ileSystem<span class="se">\s</span>r FILE_DEVICE_DISK_FILE_SYSTEM
+---------<span class="p">|</span> ATT 0x81f47020 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\F</span>ileSystem<span class="se">\F</span>ltMgr FILE_DEVICE_DISK_FILE_SYSTEM
+------------<span class="p">|</span> ATT 0x81fb9680 <span class="o">(</span>?<span class="o">)</span> - <span class="se">\D</span>river<span class="se">\M</span>RxNet FILE_DEVICE_DISK_FILE_SYSTEM
 </pre></div>
 </section>
             
