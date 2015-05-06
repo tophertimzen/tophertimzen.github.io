@@ -8,7 +8,7 @@ permalink: /cs407/labs/lab4.html
 
 Assigned: May 6th
 
-Due: May 15th
+Due: May 18th
 
 Requirements
 
