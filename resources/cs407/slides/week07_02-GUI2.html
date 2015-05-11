@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Windows GUI Artifacts Part II</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Windows GUI Artifacts Part II</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            
+            <section><pre><code>    | Plugin       | Description                                        |
+    |--------------|----------------------------------------------------|
+    | sessions     |  Lists details on user logon sessions              |
+    | wndscan      |  Enumerates window stations and their   properties |
+    | deskscan     |  Analyzes desktops and associated threads          |
+    | atomscan     |  Scans for atoms (globally shared strings)         |
+    | atoms        |  Prints session and window station atom   tables   |
+    | messagehooks |  Lists desktop and thread window message   hooks   |
+    | eventhooks   |  Prints details on windows event hooks             |
+    | windows      |  Enumerates windows                                |
+    | wintree      |  Prints Z-Order desktop windows trees              |
+    | gahti        |  Dumps the USER handle type information            |
+    | userhandles  |  Dumps the USER handle table objects               |
+    | gditimers    |  Examines the use of GDI timers                    |
+    | screenshot   |  Saves a pseudo screenshot based on GDI            |
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>We still haven't looked at . . .</h1></header>
+            
+            
+            <section><p><br><br></p>
+<pre><code>    | Plugin       | Description                                        |
+    |--------------|----------------------------------------------------|
+    | messagehooks |  Lists desktop and thread window message   hooks   |
+    | eventhooks   |  Prints details on windows event hooks             |
+    | gahti        |  Dumps the USER handle type information            |
+    | userhandles  |  Dumps the USER handle table objects               |
+    | gditimers    |  Examines the use of GDI timers                    |
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>GUI Hooks</h1></header>
+            
+            
+            <section><p>Applications hook the GUI to</p>
+<ul>
+<li>Customize UI</li>
+<li>Receive notifications</li>
+<li>Record user</li>
+</ul>
+<p>Malware</p>
+<ul>
+<li>Keylogging</li>
+<li>DLL Injection</li>
+<li>. . .</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Windows Station</h1></header>
+            
+            
+            <section><p>Interactive </p>
+<p>Applications requiring input </p>
+<p>Each has its own</p>
+<ul>
+<li>Atom Table</li>
+<li>Clipboard</li>
+<li>One or more desktops</li>
+</ul>
+<p>Windows can be invisible or visible, have screen coordinates and procedures for messaging</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Keylogging</h1></header>
+            
+            
+            <section><p>WM_KEYDOWN = event to target window's queue.</p>
+<p>Owning window wakes up and processes message </p>
+<p><img alt="" src="..\slideResources\GUI\nonHook.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Keylogging</h1></header>
+            
+            
+            <section><p>Message hooks can be intercepted before they reach the target window</p>
+<p>Receive notifications on WM_KEYDOWN</p>
+<p><img alt="" src="..\slideResources\GUI\hook.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>How?</h1></header>
+            
+            
+            <section><div class="highlight"><pre>HHOOK WINAPI SetWindowsHookEx(
+_In_ int idHook<span class="p">,</span>      #WH_* (WM_KEYDOWN<span class="p">,</span> WH_MOUSE_
+_In_ HOOKPROC lpfn<span class="p">,</span>   #address of the hook procedure. Can pass down chain with CallNextHookEx.
+_In_ HINSTANCE hMod<span class="p">,</span>  #DLL that contains hook procedure
+_In_ DWORD dwThreadId #thread <span class="k">for</span> the hook (specific or <span class="m">0</span> <span class="k">for</span> all threads in desktop)
+);
+</pre></div>
+
+<p>Hooks registered with dwTheadId of 0 are <strong>global hooks</strong></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>tagHOOK</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagHOOK&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagHOOK&#39;</span> <span class="p">(</span><span class="mi">96</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">head</span> <span class="p">[</span><span class="s">&#39;_THRDESKHEAD&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span> <span class="p">:</span> <span class="n">phkNext</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagHOOK&#39;</span><span class="p">]]</span>
+<span class="mh">0x30</span> <span class="p">:</span> <span class="n">iHook</span> <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span> <span class="p">:</span> <span class="n">offPfn</span> <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>
+<span class="mh">0x40</span> <span class="p">:</span> <span class="n">flags</span> <span class="p">[</span><span class="s">&#39;Flags&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;bitmap&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;HF_INCHECKWHF&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span><span class="s">&#39;HF_HOOKFAULTED&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;HF_WX86KNOWNDLL&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">&#39;HF_HUNG&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;HF_FREED&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span><span class="s">&#39;HF_ANSI&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">HF_GLOBAL</span><span class="s">&#39;: 0, &#39;</span><span class="n">HF_DESTROYED</span><span class="s">&#39;: 7}}]</span>
+<span class="mh">0x44</span> <span class="p">:</span> <span class="n">ihmod</span> <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+<span class="mh">0x48</span> <span class="p">:</span> <span class="n">ptiHooked</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagTHREADINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span> <span class="p">:</span> <span class="n">rpdesk</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOP&#39;</span><span class="p">]]</span>
+<span class="mh">0x58</span> <span class="p">:</span> <span class="n">fLastHookHung</span> <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span><span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;long&#39;</span><span class="p">}]</span>
+<span class="mh">0x58</span> <span class="p">:</span> <span class="n">nTimeout</span> <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span><span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>HEAD = common header for USER objects</p>
+<p>phkNext = next hook in the chain (CallNextHookEx)</p>
+<p>offPfn = RVA of hook. Local = -1... global = index into atoms array </p>
+<p>ptiHooked = hooked thread</p>
+<p>rpdesk = desktop for hook</p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>messagehooks</h1></header>
+            
+            
+            <section><p>Enumerate global hooks (threadId 0 in SetWindowsHookEx) by finding all desktops</p>
+<p>tagDESKTOP.pDeskInfo.aphkStart </p>
+<ul>
+<li>Array of tagHOOK structures </li>
+<li>Show which messages are filtered (WM_*)</li>
+<li>with tagTHREADINFO.fsHooks show each thread-specific hook</li>
+</ul>
+<p>tagDESKTOP.pDeskInfo.fsHooks</p>
+<ul>
+<li>Used as bitmap to show positions in array that are in used</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>messagehooks</h1></header>
+            
+            
+            <section><p>WM_GETMESSAGE is hooked below with SetWindowsHookEx</p>
+<p>lpfnWndProc passes control with CallNextHookEx</p>
+<p>dwThreadId is 0 (global/HF_GLOBAL)</p>
+<div class="highlight"><pre>python vol.py -f laqma.vmem --profile<span class="o">=</span>WinXPSP3x86 messagehooks --output<span class="o">=</span>block
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span> : 0xbc693988
+Session : 0
+Desktop : WinSta0<span class="se">\D</span>efault
+Thread : &lt;any&gt;
+Filter : WH_GETMESSAGE
+Flags : HF_ANSI, HF_GLOBAL
+Procedure : 0x1fd9
+ihmod : 1
+Module : C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>ll.dll
+Offset<span class="o">(</span>V<span class="o">)</span> : 0xbc693988
+Session : 0
+Desktop : WinSta0<span class="se">\D</span>efault
+
+Thread : <span class="m">1584</span> <span class="o">(</span>explorer.exe 1624<span class="o">)</span>
+Filter : WH_GETMESSAGE
+Flags : HF_ANSI, HF_GLOBAL
+Procedure : 0x1fd9
+ihmod : 1
+Module : C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>ll.dll
+Offset<span class="o">(</span>V<span class="o">)</span> : 0xbc693988
+Session : 0
+Desktop : WinSta0<span class="se">\D</span>efault
+Thread : <span class="m">252</span> <span class="o">(</span>VMwareUser.exe 1768<span class="o">)</span>
+Filter : WH_GETMESSAGE
+Flags : HF_ANSI, HF_GLOBAL
+Procedure : 0x1fd9
+ihmod : 1
+Module : C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>ll.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Hooks</h1></header>
+            
+            
+            <section><p>Thread <any> = global hooks from tagDESKTOP structure.</p>
+<p>Remember Desktop naming conventions</p>
+<div class="highlight"><pre>Thread : &lt;any&gt;
+<span class="o">[</span>snip<span class="o">]</span>
+Desktop : WinSta0<span class="se">\D</span>efault
+</pre></div>
+
+<p>Disassemble Procedure RVA from module base address (use dlllist)</p>
+<div class="highlight"><pre>Procedure : 0x1fd9
+Module : C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>ll.dll <span class="c">#dllList shows offset of 0x00ac0000</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-13">
+          <div class="inner">
+            
+            <header><h1>Disassemble RVA</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="mh">0x00ac0000</span> <span class="o">+</span> <span class="mh">0x00001fd9</span><span class="p">)</span> <span class="c">#DLL Base + Procedure offset </span>
+<span class="mh">0xac1fd9</span> <span class="n">ff74240c</span> <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">ESP</span><span class="o">+</span><span class="mh">0xc</span><span class="p">]</span>
+<span class="mh">0xac1fdd</span> <span class="n">ff74240c</span> <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">ESP</span><span class="o">+</span><span class="mh">0xc</span><span class="p">]</span>
+<span class="mh">0xac1fe1</span> <span class="n">ff74240c</span> <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="n">ESP</span><span class="o">+</span><span class="mh">0xc</span><span class="p">]</span>
+<span class="mh">0xac1fe5</span> <span class="n">ff350060ac00</span> <span class="n">PUSH</span> <span class="n">DWORD</span> <span class="p">[</span><span class="mh">0xac6000</span><span class="p">]</span>
+<span class="mh">0xac1feb</span> <span class="n">ff157c40ac00</span> <span class="n">CALL</span> <span class="n">DWORD</span> <span class="p">[</span><span class="mh">0xac407c</span><span class="p">]</span> <span class="p">;</span> <span class="n">CallNextHookEx</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>Atoms</h1></header>
+            
+            
+            <section><p>With DLL injection and message hooks, the full path on disk of DLL is in atom table.</p>
+<p>atom or atomscan would reveal an injected DLL in atom table for message hooking</p>
+<div class="highlight"><pre>python vol.py –f laqma.vmem --profile<span class="o">=</span>WinXPSP3x86 atoms
+0xe1f8bc30 0xc1c3 <span class="m">1</span> <span class="m">0</span> C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\p</span>sbase.dll
+0xe28ed818 0xc1c7 <span class="m">1</span> <span class="m">0</span> BCGP_TEXT
+0xe2950c98 0xc19f <span class="m">1</span> <span class="m">0</span> ControlOfs01420000000000FC
+0xe11d6290 0xc1a0 <span class="m">1</span> <span class="m">0</span> C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\D</span>ll.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>User Handles</h1></header>
+            
+            
+            <section><p>table of object references </p>
+<p>CreateWindow -&gt; HWND (tagWND) to GUI subsystem</p>
+<p>20+ user objects in Windows</p>
+<p>Can hide with DKOM...</p>
+<p>One USER handle table per session and all processes share it. </p>
+<ul>
+<li>But still separated by process/thread owner </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>win32k!_gahti</h1></header>
+            
+            
+            <section><h3>Global Array of Handle Table Information</h3>
+<p>Array of tagHANDLETYPEINFO structures </p>
+<ul>
+<li>one for each object type</li>
+</ul>
+<p>Similar to nt!_OBJECT_TYPE from executive layer</p>
+<p>Contains</p>
+<ul>
+<li>Pool tag</li>
+<li>Where object is allocated</li>
+<li>Who owns the object</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>gahti</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagHANDLETYPEINFO&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagHANDLETYPEINFO&#39;</span> <span class="p">(</span><span class="mi">16</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">fnDestroy</span>                      <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>     <span class="c"># deallocation/cleanup function for the object type</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">dwAllocTag</span>                     <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span> <span class="c">#32-bit pool tag</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">bObjectCreateFlags</span>             <span class="p">[</span><span class="s">&#39;Flags&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">,</span> <span class="s">&#39;bitmap&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;OCF_VARIABLESIZE&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">&#39;OCF_DESKTOPHEAP&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;OCF_THREADOWNED&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;OCF_SHAREDHEAP&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">&#39;OCF_USEPOOLIFNODESKTOP&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;OCF_USEPOOLQUOTA&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;OCF_MARKPROCESS&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;OCF_PROCESSOWNED&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}]</span>
+</pre></div>
+
+<p>First struct is TYPE_FREE with a tag of Uswd</p>
+<p>GDI Timers (TYPE_TIMER) are process owned</p>
+<p>TYPE_CLIPDATA (not owned by processes or threads)</p>
+<ul>
+<li>accessible by any process in a session</li>
+</ul>
+<p>TYPE_FREE is used as "deletion" flag </p>
+<p>TYPE_WINDOW</p>
+<ul>
+<li>Owned by threads and allocated from desktop heap </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>gahti</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 gahti</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="n">Session</span>  <span class="n">Type</span>                 <span class="n">Tag</span>      <span class="n">fnDestroy</span>  <span class="n">Flags</span>
+<span class="o">--------</span> <span class="o">--------------------</span> <span class="o">--------</span> <span class="o">----------</span> <span class="o">-----</span>
+       <span class="mi">0</span> <span class="n">TYPE_FREE</span>                     <span class="mh">0x00000000</span>
+       <span class="mi">0</span> <span class="n">TYPE_WINDOW</span>          <span class="n">Uswd</span>     <span class="mh">0x913b7a66</span> <span class="n">OCF_DESKTOPHEAP</span><span class="p">,</span> <span class="n">OCF_THREADOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLIFNODESKTOP</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_MENU</span>                     <span class="mh">0x913c2bdf</span> <span class="n">OCF_DESKTOPHEAP</span><span class="p">,</span> <span class="n">OCF_PROCESSOWNED</span>
+       <span class="mi">0</span> <span class="n">TYPE_CURSOR</span>          <span class="n">Uscu</span>     <span class="mh">0x913aaee9</span> <span class="n">OCF_MARKPROCESS</span><span class="p">,</span> <span class="n">OCF_PROCESSOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_SETWINDOWPOS</span>    <span class="n">Ussw</span>     <span class="mh">0x913bb801</span> <span class="n">OCF_THREADOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_HOOK</span>                     <span class="mh">0x913aae91</span> <span class="n">OCF_DESKTOPHEAP</span><span class="p">,</span> <span class="n">OCF_THREADOWNED</span>
+       <span class="mi">0</span> <span class="n">TYPE_CLIPDATA</span>        <span class="n">Uscb</span>     <span class="mh">0x91496dc0</span>
+       <span class="mi">0</span> <span class="n">TYPE_CALLPROC</span>                 <span class="mh">0x9137b3f3</span> <span class="n">OCF_DESKTOPHEAP</span><span class="p">,</span> <span class="n">OCF_PROCESSOWNED</span>
+       <span class="mi">0</span> <span class="n">TYPE_ACCELTABLE</span>      <span class="n">Usac</span>     <span class="mh">0x9137b3f3</span> <span class="n">OCF_PROCESSOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_DDEACCESS</span>       <span class="n">Usd9</span>     <span class="mh">0x91496dc0</span> <span class="n">OCF_THREADOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_DDECONV</span>         <span class="n">UsdA</span>     <span class="mh">0x91433eac</span> <span class="n">OCF_THREADOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_DDEXACT</span>         <span class="n">UsdB</span>     <span class="mh">0x91433b75</span> <span class="n">OCF_THREADOWNED</span><span class="p">,</span> <span class="n">OCF_USEPOOLQUOTA</span>
+       <span class="mi">0</span> <span class="n">TYPE_MONITOR</span>         <span class="n">Usdi</span>     <span class="mh">0x91412c5c</span> <span class="n">OCF_SHAREDHEAP</span>
+       <span class="mi">0</span> <span class="n">TYPE_KBDLAYOUT</span>       <span class="n">Uskb</span>     <span class="mh">0x914140d6</span>
+       <span class="mi">0</span> <span class="n">TYPE_KBDFILE</span>         <span class="n">Uskf</span>     <span class="mh">0x91414177</span>
+       <span class="mi">0</span> <span class="n">TYPE_WINEVENTHOOK</span>    <span class="n">Uswe</span>     <span class="mh">0x913db7f9</span> <span class="n">OCF_THREADOWNED</span>
+       <span class="mi">0</span> <span class="n">TYPE_TIMER</span>           <span class="n">Ustm</span>     <span class="mh">0x913ede8c</span> <span class="n">OCF_PROCESSOWNED</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>gahti</h1></header>
+            
+            
+            <section><p>dwAllocTag can be used to locate USER objects</p>
+<p>win32k!_gSharedInfo symbol points to a tagSHAREDINFO</p>
+<p>tagSHAREDINFO</p>
+<ul>
+<li>Location of session's USER handle table</li>
+<li>all USER objects in use on the system</li>
+<li>_gSharedInfo </li>
+</ul>
+<p>_gSharedInfo </p>
+<ul>
+<li>Symbol in win32k!</li>
+<li>not documented </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>_gSharedInfo</h1></header>
+            
+            
+            <section><p>Volatility discovered symbol in win32k.sys </p>
+<p><img alt="" src="..\slideResources\GUI\gSharedInfo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>sharedInfo</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagSHAREDINFO&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagSHAREDINFO&#39;</span> <span class="p">(</span><span class="mi">568</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">psi</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagSERVERINFO&#39;</span><span class="p">]]</span>        <span class="c">#tagSERVERINFO </span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">aheList</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HANDLEENTRY&#39;</span><span class="p">]]</span>     <span class="c">#array of _HANDLEENTRY (one for each in the table) (tagSHAREDINFO.psi.cHandleEntries)</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">HeEntrySize</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>              <span class="c">#size of HANDLEENTRY</span>
+<span class="mh">0x18</span> <span class="p">:</span> <span class="n">pDispInfo</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDISPLAYINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span> <span class="p">:</span> <span class="n">ulSharedDelta</span> <span class="p">[</span><span class="s">&#39;unsigned long long&#39;</span><span class="p">]</span>       <span class="c">#delta to USER objects </span>
+<span class="mh">0x28</span> <span class="p">:</span> <span class="n">awmControl</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_WNDMSG&#39;</span><span class="p">]]</span>
+<span class="mh">0x218</span> <span class="p">:</span> <span class="n">DefWindowMsgs</span> <span class="p">[</span><span class="s">&#39;_WNDMSG&#39;</span><span class="p">]</span>
+<span class="mh">0x228</span> <span class="p">:</span> <span class="n">DefWindowSpecMsgs</span> <span class="p">[</span><span class="s">&#39;_WNDMSG&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>How to find objects?</h1></header>
+            
+            
+            <section><ol>
+<li>Determine base addr of win32k.sys</li>
+<li>Locate PE data<ol>
+<li>If PE header is paged or damaged, brute force the 3-5 MB of win32k.sys </li>
+<li>ELSE go to data section</li>
+</ol>
+</li>
+<li>Look for tagSHAREDINFO object by creating one at each address and checking if it is valid </li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>Some code</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="k">def</span> <span class="nf">Win32KBase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">modules</span><span class="o">.</span><span class="n">lsmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj_vm</span><span class="p">):</span>
+   <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">BaseDllName</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;win32k.sys&quot;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">mod</span><span class="o">.</span><span class="n">DllBase</span>
+
+<span class="k">def</span> <span class="nf">_section_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sec_name</span><span class="p">):</span>
+   <span class="n">dos_header</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="s">&quot;_IMAGE_DOS_HEADER&quot;</span><span class="p">,</span> \
+      <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Win32KBase</span><span class="p">,</span> <span class="n">vm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj_vm</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">dos_header</span><span class="p">:</span>
+      <span class="k">try</span><span class="p">:</span>
+         <span class="n">nt_header</span> <span class="o">=</span> <span class="n">dos_header</span><span class="o">.</span><span class="n">get_nt_header</span><span class="p">()</span>
+
+      <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span>
+         <span class="n">sec</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">nt_header</span><span class="o">.</span><span class="n">get_sections</span><span class="p">()</span>
+          <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">sec</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="o">==</span> <span class="n">sec_name</span>
+        <span class="p">]</span>
+</pre></div>
+
+<p>Source code on <a href="https://github.com/botherder/volatility/blob/master/volatility/plugins/gui/win32k_core.py">GitHub</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>_HANDLEENTRY</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HANDLEENTRY&quot;</span><span class="p">)</span>
+<span class="s">&#39;_HANDLEENTRY&#39;</span> <span class="p">(</span><span class="mi">24</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">phead</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_HEAD&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">pOwner</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">bType</span> <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span>
+<span class="s">&#39;unsigned char&#39;</span><span class="p">,</span> <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;TYPE_FREE&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">&#39;TYPE_WINDOW&#39;</span><span class="p">,</span>
+<span class="mi">2</span><span class="p">:</span> <span class="s">&#39;TYPE_MENU&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">&#39;TYPE_CURSOR&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">&#39;TYPE_SETWINDOWPOS&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0x11</span> <span class="p">:</span> <span class="n">bFlags</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x12</span> <span class="p">:</span> <span class="n">wUniq</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>_HANDLEENTRY.phead is common USER object herader</p>
+<p>bType = type of object</p>
+<p>THRDESKHEAD, = thread</p>
+<p>PROCDESKHEAD = Proc</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Head types</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_HEAD&quot;</span><span class="p">)</span>
+<span class="s">&#39;_HEAD&#39;</span> <span class="p">(</span><span class="mi">16</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">h</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">cLockObj</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_THRDESKHEAD&quot;</span><span class="p">)</span>
+<span class="s">&#39;_THRDESKHEAD&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">h</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">cLockObj</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">pti</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagTHREADINFO&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span> <span class="p">:</span> <span class="n">rpdesk</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOP&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span> <span class="p">:</span> <span class="n">pSelf</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]]</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_PROCDESKHEAD&quot;</span><span class="p">)</span>
+<span class="s">&#39;_PROCDESKHEAD&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">h</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">cLockObj</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">hTaskWow</span> <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span> <span class="p">:</span> <span class="n">rpdesk</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagDESKTOP&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span> <span class="p">:</span> <span class="n">pSelf</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>userhandles</h1></header>
+            
+            
+            <section><p>Dumps the USER handle table objects </p>
+<p>Locates shared information for each session and prints of contents of handle table</p>
+<p>Can filter by PID and type </p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="o">&amp;</span><span class="n">windows</span><span class="p">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 userhandles</span>
+<span class="n">Volatility</span> <span class="n">Foundation</span> <span class="n">Volatility</span> <span class="n">Framework</span> <span class="mf">2.4</span>
+<span class="o">**************************************************</span>
+<span class="n">SharedInfo</span><span class="p">:</span> <span class="mh">0x91552440</span><span class="p">,</span> <span class="n">SessionId</span><span class="p">:</span> <span class="mi">0</span> <span class="n">Shared</span> <span class="n">delta</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">aheList</span><span class="p">:</span> <span class="mh">0xff910000</span><span class="p">,</span> <span class="n">Table</span> <span class="n">size</span><span class="p">:</span> <span class="mh">0x1000</span><span class="p">,</span> <span class="n">Entry</span> <span class="n">size</span><span class="p">:</span> <span class="mh">0xc</span>
+
+<span class="n">Object</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>      <span class="n">Handle</span> <span class="n">bType</span>                 <span class="n">Flags</span>    <span class="n">Thread</span>  <span class="n">Process</span>
+<span class="o">----------</span> <span class="o">----------</span> <span class="o">--------------------</span> <span class="o">--------</span> <span class="o">--------</span> <span class="o">-------</span>
+<span class="mh">0xff9d1d28</span>    <span class="mh">0x10001</span> <span class="n">TYPE_MONITOR</span>            <span class="mi">0</span>     <span class="o">--------</span> <span class="o">-</span>
+<span class="mh">0xffbbd148</span>    <span class="mh">0x10002</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">64</span>      <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb7b908</span>    <span class="mh">0x10003</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff650618</span>    <span class="mh">0x10004</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb7aa88</span>    <span class="mh">0x10005</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff6507c8</span>    <span class="mh">0x10006</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb7a9c8</span>    <span class="mh">0x10007</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff650900</span>    <span class="mh">0x10008</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb7a908</span>    <span class="mh">0x10009</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff670618</span>    <span class="mh">0x1000a</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb79a88</span>    <span class="mh">0x1000b</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff670748</span>    <span class="mh">0x1000c</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb799c8</span>    <span class="mh">0x1000d</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xff670880</span>    <span class="mh">0x1000e</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb79908</span>    <span class="mh">0x1000f</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+<span class="mh">0xfea00618</span>    <span class="mh">0x10010</span> <span class="n">TYPE_WINDOW</span>             <span class="mi">0</span>       <span class="mi">444</span>    <span class="mi">348</span>
+<span class="mh">0xffb78828</span>    <span class="mh">0x10011</span> <span class="n">TYPE_CURSOR</span>             <span class="mi">0</span>     <span class="o">--------</span> <span class="mi">348</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-27">
+          <div class="inner">
+            
+            <header><h1>Why care?</h1></header>
+            
+            
+            <section><p>Thread owned = _TREDDESKHEAD.pti -&gt; tagTHREADINFO -&gt; tagTHREADINFO.pTHread -&gt; _ETHREAD -&gt; _KTHREAD -&gt; _KPROCESS</p>
+<ul>
+<li>Rootkit detection!</li>
+<li>psxview . . .</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>Event Hooks</h1></header>
+            
+            
+            <section><p>Like hooking the GUI, GUI Events can also be hooked. </p>
+<ul>
+<li>Certain UI events</li>
+</ul>
+<p>Those annoying windows sounds? <em>Events</em></p>
+<p>Smaller icons / icons appear for actions on the taskbar</p>
+<p>Uses a loaded DLL to hook events</p>
+<p>All undocumented structs... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>Event Hooks</h1></header>
+            
+            
+            <section><p>tagEVENTHOOK in memory. </p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagEVENTHOOK&quot;</span><span class="p">)</span>
+ <span class="s">&#39;tagEVENTHOOK&#39;</span> <span class="p">(</span><span class="mi">48</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">phkNext</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;tagEVENTHOOK&#39;</span><span class="p">]]</span> <span class="c">#linked list of hooks</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">eventMin</span>                       <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="p">}]</span> <span class="c">#lowest system event</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">eventMax</span>                       <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="p">}]</span> <span class="c">#highest sysem event</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">dwFlags</span>                        <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>             <span class="c">#if DLL is in address space and if thread that installed the hook is exempt from the hook</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">idProcess</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>             <span class="c">#PID (0 if global)</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">idThread</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>             <span class="c">#TID (0 if global) </span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">offPfn</span>                         <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>             <span class="c">#RVA to procedure</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">ihmod</span>                          <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>                      <span class="c">#win32k!_aatomSysLoaded (full DLL path)</span>
+</pre></div>
+
+<p>Events?</p>
+<div class="highlight"><pre> <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned long&#39;</span><span class="p">,</span> <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">19968</span><span class="p">:</span> 
+    <span class="s">&#39;EVENT_UIA_EVENTID_START&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">&#39;EVENT_MIN&#39;</span><span class="p">,</span> 
+ <span class="mi">2</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_ALERT&#39;</span><span class="p">,</span> 
+ <span class="mi">3</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_FOREGROUND&#39;</span><span class="p">,</span>
+ <span class="mi">4</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_MENUSTART&#39;</span><span class="p">,</span> 
+ <span class="mi">5</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_MENUEND&#39;</span><span class="p">,</span> 
+ <span class="mi">6</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_MENUPOPUPSTART&#39;</span><span class="p">,</span> 
+ <span class="mi">7</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_MENUPOPUPEND&#39;</span><span class="p">,</span> 
+ <span class="mi">8</span><span class="p">:</span> <span class="s">&#39;EVENT_SYSTEM_CAPTURESTART&#39;</span><span class="p">,</span> 
+     <span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>Installing</h1></header>
+            
+            
+            <section><div class="highlight"><pre>HWINEVENTHOOK WINAPI SetWinEventHook(
+_In_ UINT eventMin<span class="p">,</span>
+_In_ UINT eventMax<span class="p">,</span>
+_In_ HMODULE hmodWinEventProc<span class="p">,</span>
+_In_ WINEVENTPROC lpfnWinEventProc<span class="p">,</span>
+_In_ DWORD idProcess<span class="p">,</span>
+_In_ DWORD idThread<span class="p">,</span>
+_In_ UINT dwflags
+);
+</pre></div>
+
+<p>To hook all events give EVENT_MIN and EVENT_MAX as the eventMin and eventMax params. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-31">
+          <div class="inner">
+            
+            <header><h1>Eventhooks</h1></header>
+            
+            
+            <section><p>Prints details on windows event hooks </p>
+<p>Shows </p>
+<ul>
+<li>
+<p>PID and TID</p>
+</li>
+<li>
+<p>Event range</p>
+</li>
+<li>
+<p>offset</p>
+</li>
+<li>
+<p>ihmod (-1 is within process) </p>
+</li>
+<li>
+<p>Session </p>
+</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Eventhooks</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 eventhooks</span>
+Volatility Foundation Volatility Framework 2.4
+Handle: 0x20071, Object: 0xfe9e3898, Session: 1
+Type: TYPE_WINEVENTHOOK, Flags: 0, Thread: 1400, Process: 352
+eventMin: 0x4 EVENT_SYSTEM_MENUSTART
+eventMax: 0x7 EVENT_SYSTEM_MENUPOPUPEND
+Flags: , offPfn: 0x9c6264, idProcess: 0, idThread: 0
+ihmod: -1
+
+Handle: 0x20567, Object: 0xffa6f4d8, Session: 1
+Type: TYPE_WINEVENTHOOK, Flags: 0, Thread: 3680, Process: 3676
+eventMin: 0x8001 EVENT_OBJECT_DESTROY
+eventMax: 0x8001 EVENT_OBJECT_DESTROY
+Flags: WINEVENT_INCONTEXT, offPfn: 0x3309, idProcess: 3676, idThread: 0
+ihmod: 1
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-33">
+          <div class="inner">
+            
+            <header><h1>Clipboard</h1></header>
+            
+            
+            <section><p>Data stored in RAM and can be extracted</p>
+<p>File artifacts from Windows Explorer </p>
+<p>Clipboard really lives in user32.dll </p>
+<p>Allows data to be shared between applications </p>
+<p>tagCLIP and tagCLIPDATA</p>
+<p>tagWINDOWSTATION.pClipBase -&gt; array of tagCLIP -&gt; tagClip points to tagCLIPDATA</p>
+<p>Walk handle table and look for TYPE_CLIPDATA</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-34">
+          <div class="inner">
+            
+            <header><h1>Structs</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagCLIP&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagCLIP&#39;</span> <span class="p">(</span><span class="mi">24</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span> <span class="p">:</span> <span class="n">fmt</span> <span class="c">#clipboard format. </span>
+    <span class="p">[</span><span class="s">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;target&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned</span>
+    <span class="nb">long</span><span class="s">&#39;, &#39;</span><span class="n">choices</span><span class="s">&#39;: {128: &#39;</span><span class="n">CF_OWNERDISPLAY</span><span class="s">&#39;, 1: &#39;</span><span class="n">CF_TEXT</span><span class="s">&#39;, 2: &#39;</span><span class="n">CF_BITMAP</span><span class="s">&#39;, 3:</span>
+    <span class="s">&#39;CF_METAFILEPICT&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">&#39;CF_SYLK&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">&#39;CF_DIF&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s">&#39;CF_TIFF&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s">&#39;CF_OEMTEXT&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span>
+    <span class="s">&#39;CF_DIB&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s">&#39;CF_PALETTE&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s">&#39;CF_PENDATA&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s">&#39;CF_RIFF&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s">&#39;CF_WAVE&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span>
+    <span class="s">&#39;CF_UNICODETEXT&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="s">&#39;CF_ENHMETAFILE&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="s">&#39;CF_HDROP&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="s">&#39;CF_LOCALE&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="s">&#39;CF_</span>
+    <span class="n">DIBV5</span><span class="s">&#39;, 131: &#39;</span><span class="n">CF_DSPMETAFILEPICT</span><span class="s">&#39;, 129: &#39;</span><span class="n">CF_DSPTEXT</span><span class="s">&#39;, 130: &#39;</span><span class="n">CF_DSPBITMAP</span><span class="s">&#39;, 142:</span>
+    <span class="s">&#39;CF_DSPENHMETAFILE&#39;</span><span class="p">}}]</span>
+<span class="mh">0x8</span> <span class="p">:</span> <span class="n">hData</span> <span class="p">[</span><span class="s">&#39;pointer64&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span> <span class="c">#handle to tagCLIPDATA</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">fGlobalHandle</span> <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;tagCLIPDATA&quot;</span><span class="p">)</span>
+<span class="s">&#39;tagCLIPDATA&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x10</span> <span class="p">:</span> <span class="n">cbData</span> <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span> <span class="p">:</span> <span class="n">abData</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x1048e5500</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]]</span> 
+    <span class="c">#actual clipboard data!</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-35">
+          <div class="inner">
+            
+            <header><h1>Early Methods</h1></header>
+            
+            
+            <section><p><a href="http://www.dfrws.org/2011/proceedings/18-350.pdf">James Okolica and Gilbert L. Peterson - Compiled Memory Analysis Tool (CMAT)
+</a></p>
+<p>user32!gphn and win32k!gSharedInfo</p>
+<p><img alt="" src="..\slideResources\GUI\earlyClip.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Volatility's Method</h1></header>
+            
+            
+            <section><ol>
+<li>Find all _MM_SESSIONS_SPACE structs</li>
+<li>Locate tagSHAREDINFO for each session and walk USER handle table for TYPE_CLIPDATA</li>
+<li>Scan RAM for Windows station objects and enumerate tagCLIP from tagWINDOWSTATION.pClipBase</li>
+<li>Associate tagCLIP.hData with tagCLIPDATA</li>
+<li>Cycle through remaining tagCLIPDATA objects and print them without station object </li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Clipboard</h1></header>
+            
+            
+            <section><p>Extract the contents of the windows clipboard</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 clipboard</span>
+Volatility Foundation Volatility Framework 2.4
+Session    WindowStation Format                 Handle Object     Data
+---------- ------------- ------------------ ---------- ---------- --------------------------------------------------
+         <span class="m">1</span> WinSta0       0xc009L               0x70327 0xfdf27168
+         <span class="m">1</span> WinSta0       CF_TEXT                   0xd ----------
+         <span class="m">1</span> WinSta0       0x2000L                   0x0 ----------
+         <span class="m">1</span> WinSta0       CF_TEXT                0x2000 ----------
+         <span class="m">1</span> WinSta0       0x1032bL                  0x0 ----------
+         <span class="m">1</span> WinSta0       CF_TEXT                   0x1 ----------
+         <span class="m">1</span> ------------- ------------------    0x10329 0xfce63b70
+         <span class="m">1</span> ------------- ------------------    0x1032b 0xffac40c8
+</pre></div>
+
+<p>-v for verbose</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-38">
+          <div class="inner">
+            
+            <header><h1>gditimers</h1></header>
+            
+            
+            <section><p>Like _KTIMER</p>
+<p>User-mode GUI threads </p>
+<p>Callback function when runs timer expires</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x86 gditimers</span>
+Volatility Foundation Volatility Framework 2.4
+ Sess      Handle Object     Thread   Process                     nID Rate<span class="o">(</span>ms<span class="o">)</span>   Countdown<span class="o">(</span>ms<span class="o">)</span> Func
+------ ---------- ---------- -------- -------------------- ---------- ---------- ------------- ----------
+  <span class="m">0</span>       0x10083 0xffaafb70      <span class="m">436</span> csrss.exe:348            0x7ffe      <span class="m">35000</span>         <span class="m">54203</span> 0x913a636b
+  <span class="m">0</span>       0x10088 0xfe9c24f8     <span class="m">3796</span> svchost.exe:948             0x0     <span class="m">300000</span>        <span class="m">265516</span> 0x75c219a5
+  <span class="m">0</span>       0x100f1 0xffa1bd10     <span class="m">1836</span> dllhost.exe:1804            0x0     <span class="m">300000</span>        <span class="m">218047</span> 0x75c219a5
+  <span class="m">0</span>       0x10101 0xfe9e4bc8     <span class="m">1924</span> dllhost.exe:1868            0x0     <span class="m">300000</span>        <span class="m">218094</span> 0x75c219a5
+  <span class="m">0</span>       0x10117 0xfe9d0270      <span class="m">364</span> dllhost.exe:1804         0x7ffd     <span class="m">300000</span>        <span class="m">218875</span> 0x7068e453
+  <span class="m">0</span>       0x1011b 0xfe9cd1e8      <span class="m">344</span> dllhost.exe:1804         0x7ffc     <span class="m">300000</span>        <span class="m">218875</span> 0x7068e453
+  <span class="m">0</span>       0x1011f 0xfe9ca928      <span class="m">340</span> dllhost.exe:1804         0x7ffb     <span class="m">300000</span>        <span class="m">218875</span> 0x7068e453
+  <span class="m">0</span>       0x10123 0xfe9cc288      <span class="m">416</span> dllhost.exe:1804         0x7ffa     <span class="m">300000</span>        <span class="m">218891</span> 0x7068e453
+  <span class="m">0</span>       0x10127 0xfe9cc238      <span class="m">396</span> dllhost.exe:1804         0x7ff9     <span class="m">300000</span>        <span class="m">218906</span> 0x7068e453
+  <span class="m">0</span>       0x1012b 0xffa17a18      <span class="m">392</span> dllhost.exe:1804         0x7ff8     <span class="m">300000</span>        <span class="m">218937</span> 0x7068e453
+  <span class="m">0</span>       0x1012f 0xffa179c8      <span class="m">296</span> dllhost.exe:1804         0x7ff7     <span class="m">300000</span>        <span class="m">218937</span> 0x7068e453
+  <span class="m">0</span>       0x10133 0xffa15ea0      <span class="m">492</span> dllhost.exe:1804         0x7ff6     <span class="m">300000</span>        <span class="m">218937</span> 0x7068e453
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week07_02-GUI2.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-39">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week07_02-GUI2.md">week07_02-GUI2.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/39
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Windows GUI Artifacts Part II</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">-</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">We still haven't looked at . . .</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">GUI Hooks</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Windows Station</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Keylogging</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Keylogging</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">How?</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">tagHOOK</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">messagehooks</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">messagehooks</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Hooks</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Disassemble RVA</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Atoms</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">User Handles</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">win32k!_gahti</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">gahti</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">gahti</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">gahti</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">_gSharedInfo</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">sharedInfo</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">How to find objects?</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Some code</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">_HANDLEENTRY</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Head types</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">userhandles</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Why care?</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Event Hooks</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Event Hooks</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Installing</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Eventhooks</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Eventhooks</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Clipboard</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Structs</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Early Methods</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Volatility's Method</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Clipboard</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">gditimers</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">EOF</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
