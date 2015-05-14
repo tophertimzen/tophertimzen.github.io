@@ -8,7 +8,7 @@ permalink: /cs407/labs/lab4.html
 
 Assigned: May 6th
 
-Due: May 18th
+Due: May 18th by 11:59 PM PST 
 
 Requirements
 
@@ -29,7 +29,7 @@ Lab will be graded on the following criteria
 - Timelining
 - Utilized the 6 steps of memory investigations 
 
-I am looking for an analysis of the rootkit.. this one is open ended and will be graded based on your current progress through the term. I want an in depth analysis of the memory sample presented. Using additional tools aside from Volatility, such as IDA, will earn you more valuable valueless prizes. Do not just send me pictures or results of tools... elaborate. 
+I am looking for an analysis of the rootkit.. this one is open ended and will be graded based on your current progress through the term. I want an in depth analysis of the memory sample presented. Using additional tools aside from Volatility, such as IDA, will earn you more valuable valueless prize tokens. Do not just send me pictures or results of tools... elaborate. 
 
 ---
 

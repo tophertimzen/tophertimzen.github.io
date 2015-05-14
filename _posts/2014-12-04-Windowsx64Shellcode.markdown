@@ -5,7 +5,6 @@ date: 2014-12-04
 permalink: blog/windowsx64Shellcode/
 ---
 
-### Introduction
  Recently I have been rewriting several pieces of shellcode that I have implemented for x86 Windows into x64 and have had a hard time finding resources online that aided in my endeavors. I wanted to write a blog post (my first one) in order to hopefully help someone that is or will be in the position that I was in while trying to port over shellcode. 
 
  There are already several tutorials out on the internet that help in beginning to learn shellcode and I am not going to go over that. I not going to touch much on the basics of assembly, although I will talk about calling conventions, register clobbering and registers. 
