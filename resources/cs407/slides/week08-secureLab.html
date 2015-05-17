@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Building a Secure Lab Environment</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Building a Secure Lab Environment</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>Why</h1></header>
+            
+            
+            <section><p>Do not run malware in host environment...</p>
+<p>More control </p>
+<ul>
+<li>Networking, File Systems, easy to remove infeection</li>
+</ul>
+<p>However</p>
+<ul>
+<li>It is easy to know if running in VM and Malware can change what it does</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Use a Virtual Machine</h1></header>
+            
+            
+            <section><p>Inception. . . OS within an OS</p>
+<p>Host = base machine</p>
+<p>Guests = virtual machines within host</p>
+<p>Snapshot the VM regularly (Before running malware, possibly during to capture key moments in time)</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Create a new VM with whatever tool you prefer</h1></header>
+            
+            
+            <section><p><br><br></p>
+<p>Windows is common in Malware Analysis</p>
+<p>Preload it with tools</p>
+<ul>
+<li>PEView</li>
+<li>A Debugger</li>
+<li>IDA</li>
+<li>Fake Net</li>
+<li>iNetsim</li>
+<li>Winpmem </li>
+<li>Volatility</li>
+<li>PEiD</li>
+<li>All the tools </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>Disable internet connectivity (at first)</h1></header>
+            
+            
+            <section><p>Do not allow malware sample to phone home or connect to the internet...</p>
+<p>Only allow malware to connect to controlled networks such as iNetsim</p>
+<p>Host-only networking can be useful for an external server</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Sandboxes</h1></header>
+            
+            
+            <section><p>Security mechanism to seperate running programs.</p>
+<p>Execute untrusted code and observe what it does.</p>
+<p>Will show </p>
+<ul>
+<li>Network communication</li>
+<li>General information about file</li>
+<li>DLLs used </li>
+<li>Registry activity</li>
+<li>File activity</li>
+<li>Process activity</li>
+<li></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Common Malware Sandboxes</h1></header>
+            
+            
+            <section><p><a href="https://anubis.iseclab.org/">Anubis</a></p>
+<ul>
+<li>Upload a file </li>
+<li>View Report</li>
+</ul>
+<p><a href="https://malwr.com/">Malwr</a></p>
+<ul>
+<li>Uses cuckoo to produce report</li>
+</ul>
+<p><a href="http://www.cuckoosandbox.org/">cuckoo</a></p>
+<ul>
+<li><a href="https://github.com/cuckoobox">Open source</a> automated malware analysis system</li>
+<li>Run a file in the sandbox and an extensive report is produced</li>
+<li>Remember YARA?</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Cuckoo</h1></header>
+            
+            
+            <section><p>Matches signatures to actions </p>
+<p>Shows API calls!</p>
+<p><a href="https://github.com/cuckoobox/community/blob/master/modules/signatures/injection_runpe.py">Finds Hollow Process Injection </a></p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;CreateProcessInternalW&quot;</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">process_handles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ProcessHandle&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">thread_handles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ThreadHandle&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtUnmapViewOfSection&quot;</span> <span class="ow">or</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtAllocateVirtualMemory&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ProcessHandle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_handles</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtGetContextThread&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+   <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ThreadHandle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_handles</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtWriteVirtualMemory&quot;</span> <span class="ow">or</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;WriteProcessMemory&quot;</span> <span class="ow">or</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;ZwMapViewOfSection&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ProcessHandle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_handles</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;SetThreadContext&quot;</span> <span class="ow">or</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtSetContextThread&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ThreadHandle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_handles</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">call</span><span class="p">[</span><span class="s">&quot;api&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;NtResumeThread&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_argument</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="s">&quot;ThreadHandle&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_handles</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_match</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="s">&#39;api&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signs</span><span class="p">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week08-secureLab.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week08-secureLab.md">week08-secureLab.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Building a Secure Lab Environment</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Why</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Use a Virtual Machine</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Create a new VM with whatever tool you prefer</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Disable internet connectivity (at first)</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Sandboxes</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Common Malware Sandboxes</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Cuckoo</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">EOF</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
