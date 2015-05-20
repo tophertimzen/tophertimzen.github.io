@@ -27,7 +27,7 @@ Lab will be graded on the following criteria
 - What did the malware do?
 - How did malware stay persistent?
 - How did the malware resolve API functions?
-	- Where any API functions used without obfuscation? If so, which ones? 
+	- Were any API functions used without obfuscation? If so, which ones? 
 - How did the malware ensure only one version of itself was running? 
 - How did the malware exfiltrate data?
 	- Did any data get exfiltrated while this machine was running? 
