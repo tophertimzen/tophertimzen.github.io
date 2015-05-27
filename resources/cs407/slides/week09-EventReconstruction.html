@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Event Reconstruction</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Event Reconstruction</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>String Encodings</p>
+<p>Strings in memory</p>
+<p>Command and Console history </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>String Encodings</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Strings</h1></header>
+            
+            
+            <section><p>ASCII v. Unicode</p>
+<p>Windows API</p>
+<ul>
+<li>A = ASCII</li>
+<li>W = Unicode (wide) </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-5">
+          <div class="inner">
+            
+            <header><h1>ASCII</h1></header>
+            
+            
+            <section><p>255 code positions</p>
+<p>single byte</p>
+<p>0 -&gt; 127 = normal characters</p>
+<p>128 -&gt; 255 = special characters</p>
+<p>Strings -a </p>
+<ul>
+<li>for ascii-only</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Unicode</h1></header>
+            
+            
+            <section><p>1,114,112 code positions</p>
+<p>2 bytes</p>
+<p>Allows other languages other than English</p>
+<p>Searched with "wide" options</p>
+<p>Strings -u </p>
+<ul>
+<li>for ascii-only</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-7">
+          <div class="inner">
+            
+            <header><h1>Base64</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Base64</h1></header>
+            
+            
+            <section><p>Binary data in an ASCII string with radix-64 representation. </p>
+<p>ASCII String -&gt; Each 6 bits creates index -&gt; index into base64 for encoded character</p>
+<p>Pads with '=' to indicate padding</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#echo &quot;Man&quot; | base64</span>
+<span class="nv">TWFuCg</span><span class="o">==</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#echo &quot;TWFuCg==&quot; | base64 -d</span>
+Man
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#echo &quot;woman&quot; | base64</span>
+d29tYW4K
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-9">
+          <div class="inner">
+            
+            
+            <section><p><img alt="" src="..\slideResources\events\base64.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            
+            <section><p><img alt="" src="..\slideResources\events\base64Example.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1>In Memory</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>Extracting Strings</h1></header>
+            
+            
+            <section><p>Volatility does not extract strings for you</p>
+<ul>
+<li>Python too slow</li>
+</ul>
+<p>Volatility requires tool to output strings in form of</p>
+<div class="highlight"><pre>&lt;decimal_offset&gt;:&lt;string&gt;
+&lt;decimal_offset&gt; &lt;string&gt;
+</pre></div>
+
+<p>Get ASCII and Unicode strings</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-13">
+          <div class="inner">
+            
+            <header><h1>How</h1></header>
+            
+            
+            <section><p>Get strings from a raw physical memory sample</p>
+<ul>
+<li>if you want to map them back to virtual, that is. </li>
+<li>Can use "imagecopy" to make a crash dump/hibernation file into a raw dump! </li>
+</ul>
+<h1>Windows</h1>
+<p>Sysinternals strings does both ASCII and Unicode by default </p>
+<div class="highlight"><pre>strings.exe –q –o memory.dmp &gt; strings.txt
+</pre></div>
+
+<h1>Linux</h1>
+<p>GNU strings requires ASCII and Unicode separately </p>
+<div class="highlight"><pre><span class="nv">$ </span>strings -td -a memory.dmp &gt; strings.txt
+<span class="nv">$ </span>strings -td -el -a memory.dmp &gt;&gt; strings.txt
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-14">
+          <div class="inner">
+            
+            <header><h1>Now</h1></header>
+            
+            
+            <section><p>We have a text file of strings with the offset of where that string is in the memory dump</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#wc -l strings.txt    </span>
+<span class="m">6284806</span> strings.txt
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#cat strings.txt</span>
+<span class="o">[</span>snip<span class="o">]</span>
+<span class="m">88064077</span> !This program cannot be run in DOS mode.
+<span class="m">88064215</span> ?Rich1
+<span class="m">88064308</span> CS P
+<span class="m">88064504</span> .pexe
+<span class="o">[</span>snip<span class="o">]</span>
+<span class="m">88850456</span> AuthzInitializeContextFromToken
+<span class="m">88850488</span> AuthzInitializeObjectAccessAuditEvent2
+<span class="m">88850528</span> AuthzAccessCheck
+<span class="m">88850552</span> AuthzFreeAuditEvent
+<span class="m">88850576</span> AuthzFreeContext
+<span class="m">88850600</span> AuthzInitializeResourceManager
+<span class="m">88850632</span> AuthzFreeResourceManager
+<span class="m">88850760</span> RegCloseKey
+<span class="m">88850840</span>  <span class="nv">__SuperClass</span> <span class="o">=</span> <span class="err">&#39;</span>
+<span class="m">88853408</span> string too long
+<span class="m">88853424</span> invalid string position
+<span class="m">88853448</span> Invalid parameter passed to C runtime <span class="k">function</span>.
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-15">
+          <div class="inner">
+            
+            <header><h1>Volatility</h1></header>
+            
+            
+            <section><p>With a strings file, volatility can translate them to a virtual address if a mapping exists between the physical offset and virtual offset. </p>
+<h1>Strings</h1>
+<p>Match physical offsets to virtual addresses (may take a while, VERY verbose)</p>
+<div class="highlight"><pre> -s STRING_FILE, --string-file<span class="o">=</span>STRING_FILE
+                        File output in strings format <span class="o">(</span>offset:string<span class="o">)</span>
+  -S, --scan            Use PSScan <span class="k">if</span> no offset is provided
+  -o OFFSET, --offset<span class="o">=</span>OFFSET
+                        EPROCESS offset <span class="o">(</span>in hex<span class="o">)</span> in the physical address space
+  -p PID, --pid<span class="o">=</span>PID     Operate on these Process IDs <span class="o">(</span>comma-separated<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-16">
+          <div class="inner">
+            
+            <header><h1>Volatility Strings</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f lab5.vmem --profile Win7SP1x64 strings -s strings.txt &gt; translated.txt</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-17">
+          <div class="inner">
+            
+            
+            <section><p><img alt="" src="https://athanasioskefalas.files.wordpress.com/2011/01/coffeebreak.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h1>Translated.txt</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#head -n 50 translated.txt</span>
+<span class="m">1631</span> <span class="o">[</span>kernel:f88000a0565f kernel:ffffffd0e65f<span class="o">]</span> t<span class="p">&amp;</span>fh
+<span class="m">1775</span> <span class="o">[</span>kernel:f88000a056ef kernel:ffffffd0e6ef<span class="o">]</span> TCPAu2
+<span class="o">[</span>snip<span class="o">]</span>
+<span class="m">4273468</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> L<span class="nv">$@</span>H3
+<span class="m">4273481</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> <span class="se">\$</span>hH
+<span class="m">4273486</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> t<span class="nv">$pH</span>
+<span class="o">[</span>snip<span class="o">]</span>
+<span class="m">4293475</span> <span class="o">[</span>1244:03483363<span class="o">]</span> cag<span class="se">\\</span>V
+<span class="m">4293546</span> <span class="o">[</span>1244:034833aa<span class="o">]</span> <span class="o">)</span>46NPTl/3K%<span class="o">)</span>A8?Sjq
+<span class="m">4293565</span> <span class="o">[</span>1244:034833bd<span class="o">]</span> <span class="o">(</span>/&gt;IOV<span class="nv">$*</span>1<span class="p">&amp;</span>.<span class="p">;</span>09M@Hf2<span class="p">;</span>aMW
+<span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+
+<p>Shows PID that owned the string and at what virtual address. </p>
+<p>See what region of memory an address is in for a specific process/dll/kernel module... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-19">
+          <div class="inner">
+            
+            <header><h1>Noise</h1></header>
+            
+            
+            <section><p><img alt="" src="http://i2.kym-cdn.com/photos/images/facebook/000/141/103/pIUIo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-20">
+          <div class="inner">
+            
+            <header><h1>Eliminate</h1></header>
+            
+            
+            <section><p>ftrings with </p>
+<ul>
+<li>a certain length</li>
+<li>a certain extension</li>
+<li>an IP </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Grep</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#grep &quot;\.pf&quot; translated.txt | grep -i .exe</span>
+<span class="m">15508352</span> <span class="o">[</span>kernel:f8a002c83380<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\S</span>VCHOST.EXE-18D06B2E.pf
+<span class="m">32931346</span> <span class="o">[</span>kernel:f8a002a3ee12<span class="o">]</span> WMIPRVSE.EXE-43972D0F.pfWMIPRVSE.EXE-43972D0F.PF
+<span class="m">33072096</span> <span class="o">[</span>kernel:f8a002d323e0<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\S</span>VCHOST.EXE-135A30D8.pf
+<span class="m">1031395400</span> <span class="o">[</span>kernel:fa8001b9d848<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\V</span>SSVC.EXE-04D079CC.pf
+<span class="m">1031395552</span> <span class="o">[</span>kernel:fa8001b9d8e0<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\W</span>32TM.EXE-5D2265F4.pf
+<span class="m">1031395704</span> <span class="o">[</span>kernel:fa8001b9d978<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\W</span>ERFAULT.EXE-0897AE09.pf
+<span class="m">1031395864</span> <span class="o">[</span>kernel:fa8001b9da18<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\W</span>ERMGR.EXE-2A1BCBC7.pf
+<span class="m">1031396016</span> <span class="o">[</span>kernel:fa8001b9dab0<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\W</span>MIADAP.EXE-369DF1CD.pf
+<span class="m">1031396176</span> <span class="o">[</span>kernel:fa8001b9db50<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\W</span>MIPRVSE.EXE-43972D0F.pf
+<span class="m">1033059648</span> <span class="o">[</span>kernel:fa8001933d40<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\I</span>PCONFIG.EXE-62724FE6.pf
+<span class="m">1033067264</span> <span class="o">[</span>kernel:fa8001935b00<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\S</span>LUI.EXE-A65918C4.pf
+<span class="m">1033072632</span> <span class="o">[</span>kernel:fa8001936ff8<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\P</span>ING.EXE-B29F6629.pf
+<span class="m">1033307768</span> <span class="o">[</span>kernel:fa8001970678<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\M</span>SCORSVW.EXE-FAA88858.pf
+<span class="m">1033325216</span> <span class="o">[</span>kernel:fa8001974aa0<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\M</span>SCORSVW.EXE-98F0699A.pf
+<span class="m">1033330800</span> <span class="o">[</span>kernel:fa8001976070<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\S</span>VCHOST.EXE-135A30D8.pf
+<span class="m">1033336752</span> <span class="o">[</span>kernel:fa80019777b0<span class="o">]</span> <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>indows<span class="se">\P</span>refetch<span class="se">\S</span>VCHOST.EXE-18D06B2E.pf
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Grep</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#grep &quot;iexplorer&quot; translated.txt</span>
+<span class="m">714446624</span> <span class="o">[</span>2844:028f5720<span class="o">]</span> %temp%<span class="se">\i</span>explorer.exe
+<span class="m">715546636</span> <span class="o">[</span>2844:02b7600c<span class="o">]</span> ifexist%temp%<span class="se">\i</span>explorers.dllgotocon
+<span class="m">715546722</span> <span class="o">[</span>2844:02b76062<span class="o">]</span> 0%temp%<span class="se">\i</span>explorer.exe
+<span class="m">973140368</span> <span class="o">[</span>2844:026ec190<span class="o">]</span> hyiexplorerbarclass
+<span class="m">973140388</span> <span class="o">[</span>2844:026ec1a4<span class="o">]</span> hyiexplorerbarclass
+<span class="m">947465176</span> <span class="o">[</span>2844:02a0abd8<span class="o">]</span> c:<span class="se">\w</span>indows<span class="se">\f</span>onts<span class="se">\i</span>explorer.exe
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>Free memory</h1></header>
+            
+            
+            <section><p>Strings can be in freed or unallocated pages</p>
+<div class="highlight"><pre><span class="m">31059195</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> Washington1
+<span class="m">31059216</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> Redmond1
+<span class="m">31059234</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> Microsoft Corporation1#0!
+<span class="m">31059266</span> <span class="o">[</span>FREE MEMORY<span class="o">]</span> Microsoft Code Signing PCA0
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>Shared Pages</h1></header>
+            
+            
+            <section><p>DLLs are shared</p>
+<p>Files can be shared</p>
+<p>Named shared memory </p>
+<p>Stings shows strings of shared things with addr [thing1:addr thing2:addr ...]</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#grep -E &#39;[[0-9]+:[0-9]+ [0-9]+&#39; translated.txt</span>
+<span class="m">96149592</span> <span class="o">[</span>1244:74212058 1352:74212058<span class="o">]</span> cname.comodoca.com
+<span class="m">146513920</span> <span class="o">[</span>372:00de2000 372:f900c0602000 424:f900c0602000 528:f900c0602000 536:f900c0602000 544:f900c0602000 644:f900c0602000 720:f900c0602000 812:f900c0602000 856:f900c0602000 884:f900c0602000 972:f900c0602000 248:f900c0602000 300:f900c0602000 1064:00782000 1064:f900c0602000 1104:f900c0602000 1252:f900c0602000 1560:f900c0602000 1608:f900c0602000 1864:f900c0602000 2012:f900c0602000 1552:f900c0602000 2164:f900c0602000 2812:f900c0602000 2924:f900c0602000 2640:f900c0602000 2844:f900c0602000 1928:f900c0602000 2272:f900c0602000 920:f900c0602000 2396:f900c0602000<span class="o">]</span> F9B-9EF4-7114B42285A9<span class="o">}</span>
+<span class="m">131777536</span> <span class="o">[</span>2448:73347400 1244:73347400 1352:73347400<span class="o">]</span> OLEACC.dll
+<span class="m">131777552</span> <span class="o">[</span>2448:73347410 1244:73347410 1352:73347410<span class="o">]</span> OLEAUT32.dll
+<span class="m">131777600</span> <span class="o">[</span>2448:73347440 1244:73347440 1352:73347440<span class="o">]</span> WINMM.dll
+<span class="m">131777616</span> <span class="o">[</span>2448:73347450 1244:73347450 1352:73347450<span class="o">]</span> WindowsCodecs.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Shared things</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="m">131777616</span> <span class="o">[</span>2448:73347450 1244:73347450 1352:73347450<span class="o">]</span> WindowsCodecs.dll
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f lab5.vmem --profile Win7SP1x64 pslist -p 2448,1244,1352</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>V<span class="o">)</span>          Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+------------------ -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+0xfffffa8000dd0630 iexplore.exe           <span class="m">2448</span>   <span class="m">2508</span>     <span class="m">22</span>      <span class="m">684</span>      <span class="m">1</span>      <span class="m">1</span> 2015-05-20 16:10:09 UTC+0000
+0xfffffa8000f263a0 iexplore.exe           <span class="m">1244</span>   <span class="m">2448</span>     <span class="m">46</span>      <span class="m">886</span>      <span class="m">1</span>      <span class="m">1</span> 2015-05-20 16:10:11 UTC+0000
+0xfffffa8001105b30 iexplore.exe           <span class="m">1352</span>   <span class="m">2448</span>     <span class="m">37</span>      <span class="m">925</span>      <span class="m">1</span>      <span class="m">1</span> 2015-05-20 16:11:00 UTC+0000
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f lab5.vmem --profile Win7SP1x64 dlllist -p 2448,1244,1352</span>
+Volatility Foundation Volatility Framework 2.4
+************************************************************************
+iexplore.exe pid:   2448
+Command line : <span class="s2">&quot;C:\Program Files (x86)\Internet Explorer\iexplore.exe&quot;</span>
+Note: use ldrmodules <span class="k">for</span> listing DLLs in Wow64 processes
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Looking for 2448:73347450</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f lab5.vmem --profile Win7SP1x64 ldrmodules  -p 2448</span>
+Volatility Foundation Volatility Framework 2.4
+Pid      Process              Base               InLoad InInit InMem MappedPath
+-------- -------------------- ------------------ ------ ------ ----- ----------
+ <span class="m">2448</span> iexplore.exe         0x0000000073200000 False  False  False <span class="se">\W</span>indows<span class="se">\w</span>insxs<span class="se">\x</span>86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2<span class="se">\c</span>omctl32.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>Dump DLL and view Strings</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#mkdir comctl32</span>
+/bin/mkdir: created directory <span class="sb">`</span>comctl32<span class="err">&#39;</span>
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f lab5.vmem --profile Win7SP1x64 dlldump -p 2448 -b 0x0000000073200000 -D comctl32/</span>
+Volatility Foundation Volatility Framework 2.4
+Process<span class="o">(</span>V<span class="o">)</span>         Name                 Module Base        Module Name          Result
+------------------ -------------------- ------------------ -------------------- ------
+0xfffffa8000dd0630 iexplore.exe         0x0000000073200000 UNKNOWN              OK: module.2448.3e5d0630.73200000.dll
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#strings comctl32/module.2448.3e5d0630.73200000.dll | grep WindowsCodecs</span>
+WindowsCodecs.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-28">
+          <div class="inner">
+            
+            <header><h1>WoW64</h1></header>
+            
+            
+            <section><p>Windows On Windows </p>
+<p>Interface between 32-bit NtDll.dll</p>
+<p>Wow64.dll is interface between 32-bit applications and a 64-bit Kernel</p>
+<p>Loads a x86 version of Ntdll.dll with all thunks (values) to Ntoskrnl.exe entry-point functions </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-29">
+          <div class="inner">
+            
+            <header><h1>Command History</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-30">
+          <div class="inner">
+            
+            <header><h1>Cmd.exe</h1></header>
+            
+            
+            <section><p>No command history on disk like UNIX bash shell</p>
+<p>Windows &lt; 7 used csrss.exe with SYSTEM privileges to broker commands</p>
+<ul>
+<li>Always running with machine powered on </li>
+<li>Contains history buffer and stdio, stdout, stderr</li>
+</ul>
+<p>Windows &gt; 7 uses conhost.exe (console host) and runs with same permissions as user </p>
+<p>Cmd.exe is a client-server architecture </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-31">
+          <div class="inner">
+            
+            <header><h1>Conhost.exe</h1></header>
+            
+            
+            <section><p>Undocumented functions </p>
+<ul>
+<li>SrvAllocCOnsole</li>
+<li>AllocateCommandHistory</li>
+<li>AddCommand</li>
+<li>FindCommandHistory</li>
+<li>RemoveCommand</li>
+<li>FindMachingCommand</li>
+<li>FindCommandHistory</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-32">
+          <div class="inner">
+            
+            <header><h1>Finding History</h1></header>
+            
+            
+            <section><p>conhost.exe!_gConsoleInformation</p>
+<p>Contains _COMMAND_HISTORY and _SCREEN_INFORMATION</p>
+<p>Each history buffer has a _COMMAND for each command typed </p>
+<p>Screen contains _ROW structs to show console windows height </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>conhost.exe!_gConsoleInformation</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_CONSOLE_INFORMATION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_CONSOLE_INFORMATION&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">ProcessList</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span> <span class="c">#_CONSOLE_PROCESS </span>
+<span class="mh">0x98</span>  <span class="p">:</span> <span class="n">CurrentScreenBuffer</span>            <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+<span class="mh">0x9c</span>  <span class="p">:</span> <span class="n">ScreenBuffer</span>                   <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+<span class="mh">0xd4</span>  <span class="p">:</span> <span class="n">HistoryList</span>                    <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span> <span class="c">#_COMMAND_HISTORY</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">ExeAliasList</span>                   <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0xe4</span>  <span class="p">:</span> <span class="n">HistoryBufferCount</span>             <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe6</span>  <span class="p">:</span> <span class="n">HistoryBufferMax</span>               <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xe8</span>  <span class="p">:</span> <span class="n">CommandHistorySize</span>             <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0xec</span>  <span class="p">:</span> <span class="n">OriginalTitle</span>                  <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+<span class="mh">0xf0</span>  <span class="p">:</span> <span class="n">Title</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-34">
+          <div class="inner">
+            
+            <header><h1>_COMMAND_HISTORY In Memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_COMMAND_HISTORY&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_COMMAND_HISTORY&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">ListEntry</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Flags</span>                          <span class="p">[</span><span class="s">&#39;Flags&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;bitmap&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;Reset&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;Allocated&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}}]</span>
+<span class="mh">0xc</span>   <span class="p">:</span> <span class="n">Application</span>                    <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+<span class="mh">0x10</span>  <span class="p">:</span> <span class="n">CommandCount</span>                   <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x12</span>  <span class="p">:</span> <span class="n">LastAdded</span>                      <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x14</span>  <span class="p">:</span> <span class="n">LastDisplayed</span>                  <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x16</span>  <span class="p">:</span> <span class="n">FirstCommand</span>                   <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x18</span>  <span class="p">:</span> <span class="n">CommandCountMax</span>                <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x1c</span>  <span class="p">:</span> <span class="n">ProcessHandle</span>                  <span class="p">[</span><span class="s">&#39;unsigned int&#39;</span><span class="p">]</span>
+<span class="mh">0x20</span>  <span class="p">:</span> <span class="n">PopupList</span>                      <span class="p">[</span><span class="s">&#39;_LIST_ENTRY&#39;</span><span class="p">]</span>
+<span class="mh">0x28</span>  <span class="p">:</span> <span class="n">CommandBucket</span>                  <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0xa0ed10c</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_COMMAND&#39;</span><span class="p">]]]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_COMMAND&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_COMMAND&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x0</span>   <span class="p">:</span> <span class="n">CmdLength</span>                      <span class="p">[</span><span class="s">&#39;unsigned short&#39;</span><span class="p">]</span>
+<span class="mh">0x2</span>   <span class="p">:</span> <span class="n">Cmd</span>                            <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0xa0ed0d4</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-35">
+          <div class="inner">
+            
+            <header><h1>_SCREEN_INFORMATION in Memory</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_SCREEN_INFORMATION&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_SCREEN_INFORMATION&#39;</span> <span class="p">(</span><span class="bp">None</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">ScreenX</span>                        <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0xa</span>   <span class="p">:</span> <span class="n">ScreenY</span>                        <span class="p">[</span><span class="s">&#39;short&#39;</span><span class="p">]</span>
+<span class="mh">0x3c</span>  <span class="p">:</span> <span class="n">Rows</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;array&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0xa0ed1ec</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_ROW&#39;</span><span class="p">]]]</span>
+<span class="mh">0xdc</span>  <span class="p">:</span> <span class="n">Next</span>                           <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;_SCREEN_INFORMATION&#39;</span><span class="p">]]</span>
+
+<span class="c">#Content within screen buffer </span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span><span class="p">(</span><span class="s">&quot;_ROW&quot;</span><span class="p">)</span>
+ <span class="s">&#39;_ROW&#39;</span> <span class="p">(</span><span class="mi">28</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="mh">0x8</span>   <span class="p">:</span> <span class="n">Chars</span>                          <span class="p">[</span><span class="s">&#39;pointer&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;String&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;length&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span> <span class="s">&#39;encoding&#39;</span><span class="p">:</span> <span class="s">&#39;utf16&#39;</span><span class="p">}]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-36">
+          <div class="inner">
+            
+            <header><h1>Graphical</h1></header>
+            
+            
+            <section><p><img alt="" src="..\slideResources\events\command.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-37">
+          <div class="inner">
+            
+            <header><h1>Console Settings?</h1></header>
+            
+            
+            <section><p>HKEY_CURRENT_USER\Console</p>
+<ul>
+<li>HistoryBufferSize</li>
+<li>NumberOfHistoryBuffers</li>
+</ul>
+<p>Changed from cmd.exe itself... screen buffer, window size, font, etc...</p>
+<p>Volatility allows configurable settings to be altered </p>
+<ul>
+<li>-h on plugins shows how to adjust size </li>
+<li>biffer size and command count </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-38">
+          <div class="inner">
+            
+            <header><h1>CmdScan</h1></header>
+            
+            
+            <section><p>Extract command history by scanning for _COMMAND_HISTORY</p>
+<p>Locate command history with default size (50)</p>
+<p>Searches in pages owned by csrss or conhost </p>
+<p>Validates _COMMAND_HISTORY</p>
+<p>Traverse CommandBucket </p>
+<p>Shows which broker is being used and which applications used it </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-39">
+          <div class="inner">
+            
+            <header><h1>CmdScan</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f Win7.bin --profile=Win7SP0x64 cmdscan</span>
+Volatility Foundation Volatility Framework 2.4
+**************************************************
+CommandProcess: conhost.exe Pid: 2132
+CommandHistory: 0x1de4c0 Application: TPAutoConnect.exe Flags: Allocated
+CommandCount: <span class="m">0</span> LastAdded: -1 LastDisplayed: -1
+FirstCommand: <span class="m">0</span> CommandCountMax: 50
+ProcessHandle: 0x60
+**************************************************
+CommandProcess: conhost.exe Pid: 112
+CommandHistory: 0x2cf9e0 Application: cmd.exe Flags: Allocated, Reset
+CommandCount: <span class="m">9</span> LastAdded: <span class="m">8</span> LastDisplayed: 8
+FirstCommand: <span class="m">0</span> CommandCountMax: 50
+ProcessHandle: 0x68
+Cmd <span class="c">#0 @ 0x2ce4b0: ipconfig</span>
+Cmd <span class="c">#1 @ 0x2ceee0: ping 4.2.2.2</span>
+Cmd <span class="c">#2 @ 0x2cef10: ping google.com</span>
+Cmd <span class="c">#3 @ 0x2ce4f0: cd ..</span>
+Cmd <span class="c">#4 @ 0x2ce1b0: dir</span>
+Cmd <span class="c">#5 @ 0x2ce510: cd ..</span>
+Cmd <span class="c">#6 @ 0x2ce250: dir</span>
+Cmd <span class="c">#7 @ 0x2ce530: cd bin</span>
+Cmd <span class="c">#8 @ 0x2cfc70: dir</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-40">
+          <div class="inner">
+            
+            <header><h1>Consoles</h1></header>
+            
+            
+            <section><p>Scans for _CONSOLE_INFORMATION</p>
+<p>Access to screen buffers</p>
+<ul>
+<li>stdout, stderr, stdin </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-41">
+          <div class="inner">
+            
+            <header><h1>Consoles</h1></header>
+            
+            
+            <section><div class="highlight"><pre>**************************************************
+ConsoleProcess: csrss.exe Pid: 7888
+Console: 0x4c2404 CommandHistorySize: 50
+HistoryBufferCount: <span class="m">4</span> HistoryBufferMax: 4
+OriginalTitle: Command Prompt
+Title: Command Prompt
+AttachedProcess: cmd.exe Pid: <span class="m">5544</span> Handle: 0x25c
+----
+CommandHistory: 0x4c2c30 Application: cmd.exe Flags: Allocated, Reset
+CommandCount: <span class="m">12</span> LastAdded: <span class="m">11</span> LastDisplayed: 11
+FirstCommand: <span class="m">0</span> CommandCountMax: 50
+ProcessHandle: 0x25c
+Cmd <span class="c">#0 at 0x4c1f90: d:</span>
+Cmd <span class="c">#1 at 0xf41280: cd inetlogs</span>
+Cmd <span class="c">#2 at 0xf412e8: cd w*46</span>
+Cmd <span class="c">#3 at 0xf41340: type &lt;REDACTED&gt;.log | find &quot;&lt;REDACTED&gt;.jpg&quot; | find &quot;GET&quot;</span>
+Cmd <span class="c">#4 at 0xf41b10: c:</span>
+Cmd <span class="c">#5 at 0xf412a0: cd\windows\system32\&lt;REDACTED&gt;\sample</span>
+Cmd <span class="c">#6 at 0xf41b20: ftp &lt;REDACTED&gt;.com</span>
+Cmd <span class="c">#7 at 0xf41948: notepad &lt;REDACTED&gt;.log</span>
+Cmd <span class="c">#8 at 0x4c2388: notepad &lt;REDACTED&gt;.log</span>
+Cmd <span class="c">#9 at 0xf43e70: ftp &lt;REDACTED&gt;.com</span>
+Cmd <span class="c">#10 at 0xf43fb0: dir</span>
+Cmd <span class="c">#11 at 0xf41550: notepad &lt;REDACTED&gt;.log</span>
+----
+Screen 0x4c2b10 X:80 Y:3000
+Dump:
+Microsoft Windows <span class="o">[</span>Version 5.2.3790<span class="o">]</span>
+<span class="o">(</span>C<span class="o">)</span> Copyright 1985-2003 Microsoft Corp.
+C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\&lt;</span>REDACTED&gt;<span class="se">\s</span>ample&gt;dir
+Volume in drive C has no label.
+Volume Serial Number is AC20-A7D1
+Directory of C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\&lt;</span>REDACTED&gt;<span class="se">\s</span>ample
+05/22/2012 09:18 PM &lt;DIR&gt; .
+05/22/2012 09:18 PM &lt;DIR&gt; ..
+02/28/2012 08:30 AM <span class="m">0</span> &lt;REDACTED&gt;.att
+02/28/2012 08:30 AM <span class="m">341</span> &lt;REDACTED&gt;.bdy
+02/28/2012 08:30 AM <span class="m">474</span> &lt;REDACTED&gt;.epj
+02/28/2012 08:30 AM <span class="m">0</span> &lt;REDACTED&gt;.fad
+02/28/2012 08:27 AM <span class="m">100</span> &lt;REDACTED&gt;.txt
+02/28/2012 08:30 AM <span class="m">0</span> &lt;REDACTED&gt;.vad
+08/03/2011 06:48 AM <span class="m">323</span> &lt;REDACTED&gt;.vbs
+02/28/2012 08:05 AM 501,760 &lt;REDACTED&gt;.hlp
+05/22/2012 09:18 PM 44,184,520 &lt;REDACTED&gt;.log
+05/22/2012 09:10 PM 24,686,680 &lt;REDACTED&gt;.log
+05/22/2012 09:09 PM 3,272,096 &lt;REDACTED&gt;.log
+05/21/2012 01:25 AM 28,672 JpgCommand.exe
+08/03/2011 06:49 AM 4,608 &lt;REDACTED&gt;.exe
+01/20/2012 09:07 AM 57,344 &lt;REDACTED&gt;.hlp
+<span class="m">14</span> File<span class="o">(</span>s<span class="o">)</span> 72,736,918 bytes
+<span class="m">2</span> Dir<span class="o">(</span>s<span class="o">)</span> 39,034,490,880 bytes free
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week09-EventReconstruction.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-42">
+          <div class="inner">
+            
+            <header><h1>EOF</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week09-EventReconstruction.md">week09-EventReconstruction.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/42
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Event Reconstruction</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">String Encodings</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Strings</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">ASCII</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Unicode</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Base64</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Base64</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">-</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">-</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">In Memory</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Extracting Strings</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">How</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Now</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Volatility</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Volatility Strings</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">-</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Translated.txt</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Noise</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Eliminate</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Grep</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Grep</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Free memory</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Shared Pages</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Shared things</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Looking for 2448:73347450</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Dump DLL and view Strings</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">WoW64</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Command History</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Cmd.exe</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Conhost.exe</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Finding History</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">conhost.exe!_gConsoleInformation</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">_COMMAND_HISTORY In Memory</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">_SCREEN_INFORMATION in Memory</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Graphical</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Console Settings?</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">CmdScan</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">CmdScan</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Consoles</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Consoles</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">EOF</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
