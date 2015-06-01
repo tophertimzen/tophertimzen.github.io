@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Timelining</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="..\slideResources\theme\css\print.css">
+    <link rel="stylesheet" media="screen, projection" href="..\slideResources\theme\css\screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="..\slideResources\theme\js\slides.js"></script>
+    
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-1">
+          <div class="inner">
+            
+            <header><h1>Timelining</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-2">
+          <div class="inner">
+            
+            <header><h1>What</h1></header>
+            
+            
+            <section><p>Reconstructing Events through Analysis</p>
+<p>Develop footprints to identify tools, techniques and actors </p>
+<p>Using Volatility and external tools </p>
+<p>Theories + Information = ????</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-3">
+          <div class="inner">
+            
+            <header><h1>Timestamp formats</h1></header>
+            
+            
+            <section><p>WinTimeStamp</p>
+<ul>
+<li>8-bytes</li>
+<li>100-nanosecond intervals since Janurary 1, 1601 UTC</li>
+</ul>
+<p>UnixTimeStamp </p>
+<ul>
+<li>4-bytes</li>
+<li>seconds since Janurary 1, 1970 UTC</li>
+</ul>
+<p>DosDate</p>
+<ul>
+<li>4-bytes </li>
+<li>Shortcut files and registry data</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-4">
+          <div class="inner">
+            
+            <header><h1>Timestamp Sources</h1></header>
+            
+            
+            <section><p>System Tie</p>
+<p>Process start and end times</p>
+<p>Thread start and end times</p>
+<p>Symlink creation</p>
+<p>Registry key </p>
+<p>Disk Artifacts</p>
+<p>MRU Lists</p>
+<p>PE compilation time</p>
+<p>Socket creation </p>
+<p>Event logs</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-5">
+          <div class="inner">
+            
+            <header><h1>Volatility and Timelining</h1></header>
+            
+            
+            <section><p>Timeliner</p>
+<div class="highlight"><pre>timeliner 
+--output-file<span class="o">=</span>timeliner.txt --output<span class="o">=</span>body
+</pre></div>
+
+<p>Mftparser</p>
+<div class="highlight"><pre>mftparser
+--output-file<span class="o">=</span>mft.txt --output<span class="o">=</span>body
+</pre></div>
+
+<p>Shellbags</p>
+<div class="highlight"><pre>shellbags
+--output-file<span class="o">=</span>shellbags.txt --output<span class="o">=</span>body
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-6">
+          <div class="inner">
+            
+            <header><h1>Timeliner</h1></header>
+            
+            
+            <section><p>Creates a timeline from various artifacts in memory</p>
+<p>Extracts a large number of artifacts and output options</p>
+<p>Timestamps are in UTC by default! --tz for timezone </p>
+<p>Output</p>
+<ul>
+<li>text: Date/Time | Type | details</li>
+<li>xlsx: Office 2007 Excel file with OpenPyxl. Time | Type | Item | Details | Reason</li>
+<li>body: Usable with mactime from TSK </li>
+<li>xml: Simile data-visualization </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-7">
+          <div class="inner">
+            
+            <header><h1>Timeliner</h1></header>
+            
+            
+            <section><div class="highlight"><pre>--type<span class="o">=</span>EvtLog,IEHistory,ImageDate,LoadTime,Process,Shimcache,Socket,Symlink,Thread,TimeDateStamp,Userassist,_CMHIVE,_CM_KEY_BODY,_HBASE_BLOCK
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP2x86 timeliner </span>
+2010-06-25 12:42:00 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\l</span>n.exe<span class="p">|</span>  End: 2010-10-08 03:59:17 UTC+0000
+2010-08-31 08:01:28 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\m</span>kgroup.exe<span class="p">|</span>  End: 2010-10-08 03:58:54 UTC+0000
+2010-08-31 08:01:28 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\m</span>kpasswd.exe<span class="p">|</span>  End: 2010-10-08 03:58:54 UTC+0000
+2010-06-25 12:41:49 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\c</span>p.exe<span class="p">|</span>  End: 2010-10-08 03:59:17 UTC+0000
+2010-06-25 12:42:09 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\r</span>m.exe<span class="p">|</span>  End: 2010-10-08 03:59:05 UTC+0000
+1970-01-01 00:00:00 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> C:<span class="se">\W</span>INDOWS<span class="se">\M</span>icrosoft.NET<span class="se">\F</span>ramework<span class="se">\v</span>2.0.50727<span class="se">\m</span>scorwks.dll<span class="p">|</span>  End: 2010-08-27 14:49:18 UTC+0000
+2010-06-25 12:41:47 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\c</span>hgrp.exe<span class="p">|</span>  End: 2010-10-08 03:58:54 UTC+0000
+2009-03-30 16:23:54 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\i</span>nstall-info.exe<span class="p">|</span>  End: 2010-10-08 03:59:05 UTC+0000
+2010-06-25 12:41:52 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\d</span>irname.exe<span class="p">|</span>  End: 2010-10-08 03:59:16 UTC+0000
+2010-08-13 16:58:31 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\s</span>h.exe<span class="p">|</span>  End: 2010-10-08 03:59:05 UTC+0000
+2010-06-25 12:42:18 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\t</span>est.exe<span class="p">|</span>  End: 2010-10-08 03:59:15 UTC+0000
+2007-07-23 21:14:24 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\g</span>zip.exe<span class="p">|</span>  End: 2010-10-08 03:59:05 UTC+0000
+2010-06-25 12:41:53 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\e</span>cho.exe<span class="p">|</span>  End: 2010-10-08 03:59:17 UTC+0000
+2010-06-25 12:42:19 UTC+0000<span class="p">|</span><span class="o">[</span>SHIMCACHE<span class="o">]</span><span class="p">|</span> <span class="se">\?</span>?<span class="se">\C</span>:<span class="se">\c</span>ygwin<span class="se">\b</span>in<span class="se">\t</span>ouch.exe<span class="p">|</span>  End: 2010-10-08 03:59:17 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-8">
+          <div class="inner">
+            
+            <header><h1>Event Logs</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP2x86 timeliner --type=EvtLog</span>
+Volatility Foundation Volatility Framework 2.4
+2010-08-22 17:34:29 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/LoadPerf/1000/Info/RSVP<span class="p">;</span>QoS RSVP
+2010-08-22 17:34:42 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/LoadPerf/1000/Info/PSched<span class="p">;</span>PSched
+2010-08-22 17:34:44 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/LoadPerf/1000/Info/RemoteAccess<span class="p">;</span>Routing and Remote Access
+2010-08-22 17:34:56 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/LoadPerf/1000/Info/TermService<span class="p">;</span>Terminal Services
+2010-08-22 17:34:57 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/LoadPerf/1000/Info/MSDTC<span class="p">;</span>MSDTC
+2010-08-22 17:34:57 UTC+0000<span class="p">|</span><span class="o">[</span>EVT LOG<span class="o">]</span><span class="p">|</span> appevent.evt<span class="p">|</span> JAN-DF663B3DBF1/N/A/MSDTC/4104/Info/N/A
+<span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-9">
+          <div class="inner">
+            
+            <header><h1>Mactime</h1></header>
+            
+            
+            <section><div class="highlight"><pre>-b &lt;body file&gt;
+-d &lt;each line <span class="nb">command </span>delimited
+-z &lt;timezone&gt;
+
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP2x86 timeliner --type=EvtLog --output=body --output-file=stuxnetEvents.body</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#mactime -b stuxnetEvents.body -d -z UTC </span>
+Date,Size,Type,Mode,UID,GID,Meta,File Name
+Sun Aug <span class="m">22</span> <span class="m">2010</span> 13:32:25,0,macb,---------------,0,0,0,<span class="s2">&quot;[EVT LOG] sysevent.evt MACHINENAME/N/A/EventLog/6005/Info/N/A&quot;</span>
+Sun Aug <span class="m">22</span> <span class="m">2010</span> 13:32:25,0,macb,---------------,0,0,0,<span class="s2">&quot;[EVT LOG] sysevent.evt MACHINENAME/N/A/EventLog/6009/Info/5.01.;2600;Service Pack 3;Uniprocessor Free&quot;</span>
+Sun Aug <span class="m">22</span> <span class="m">2010</span> 13:32:54,0,macb,---------------,0,0,0,<span class="s2">&quot;[EVT LOG] sysevent.evt MACHINENAME/N/A/Serial/2/Info/\Device\Serial0;\Device\Serial0&quot;</span>
+Sun Aug <span class="m">22</span> <span class="m">2010</span> 13:32:54,0,macb,---------------,0,0,0,<span class="s2">&quot;[EVT LOG] sysevent.evt MACHINENAME/N/A/Serial/2/Info/\Device\Serial1;\Device\Serial1&quot;</span>
+<span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-10">
+          <div class="inner">
+            
+            <header><h1>Mactime</h1></header>
+            
+            
+            <section><p>Shows human readable timestamp and event</p>
+<p>Also shows what timestamp is presented</p>
+<ul>
+<li>m = modified time</li>
+<li>a = accessed time</li>
+<li>c = creation time</li>
+<li>b = MFT mpodified time (for MFT entries) </li>
+<li>. = missing </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-11">
+          <div class="inner">
+            
+            <header><h1><a href="http://www.tophertimzen.com/resources/cs407/slides/week08-diskArtifacts.html">Disk Artifacts</a></h1></header>
+            
+            
+            <section><p>Several can be used for timelining</p>
+<p>NTFS $STANDARD_INFORMATION</p>
+<ul>
+<li>Creation</li>
+<li>Altered Time</li>
+<li>Accessed Time</li>
+</ul>
+<p>Prefetch files</p>
+<ul>
+<li>When executables were executed </li>
+</ul>
+<p>Trashed Files</p>
+<ul>
+<li>Timestamp of removal </li>
+</ul>
+<p>MFT</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-12">
+          <div class="inner">
+            
+            <header><h1>MFTParser and Mactime</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#volatility -f stuxnet.vmem --profile=WinXPSP2x86 mftparser -D . --output=body --output-file=stuxnetMFT</span>
+Volatility Foundation Volatility Framework 2.4
+Scanning <span class="k">for</span> MFT entries and building directory, this can take a <span class="k">while</span>
+<span class="o">[</span>root<span class="p">&amp;</span>windows<span class="o">]</span><span class="c">#mactime stuxnetMFT | tail</span>
+Thu Jun <span class="m">02</span> <span class="m">2011</span> 21:28:33        <span class="m">0</span> mac. -h-a----------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">10544</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> DOCUME~1<span class="se">\A</span>dministrator<span class="se">\N</span>TUSER~1.LOG <span class="o">(</span>Offset: 0x3f7b000<span class="o">)</span>
+Thu Jun <span class="m">02</span> <span class="m">2011</span> 21:29:13        <span class="m">0</span> .a.. --------------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">82621</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> Python26<span class="se">\L</span>ib<span class="se">\l</span>ib2to3 <span class="o">(</span>Offset: 0x15b45400<span class="o">)</span>
+                                <span class="m">0</span> .a.. --------------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">82632</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> Python26<span class="se">\L</span>ib<span class="se">\l</span>ib2to3<span class="se">\t</span>ests <span class="o">(</span>Offset: 0x1eb87000<span class="o">)</span>
+                                <span class="m">0</span> .a.. --------------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">82643</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> Python26<span class="se">\L</span>ib<span class="se">\l</span>ib2to3<span class="se">\t</span>ests<span class="se">\d</span>ata <span class="o">(</span>Offset: 0x1ea89c00<span class="o">)</span>
+                                <span class="m">0</span> .a.. --------------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">82650</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> Python26<span class="se">\L</span>ib<span class="se">\l</span>ib2to3<span class="se">\t</span>ests<span class="se">\d</span>ata<span class="se">\f</span>ixers <span class="o">(</span>Offset: 0x11e4b800<span class="o">)</span>
+Thu Jun <span class="m">02</span> <span class="m">2011</span> 21:30:14        <span class="m">0</span> .a.. r-------------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">6279</span>     <span class="o">[</span>MFT STD_INFO<span class="o">]</span> DOCUME~1<span class="se">\A</span>LLUSE~1<span class="se">\D</span>OCUME~1<span class="se">\M</span>YPICT~1<span class="se">\S</span>AMPLE~1 <span class="o">(</span>Offset: 0x236bc00<span class="o">)</span>
+Thu Jun <span class="m">02</span> <span class="m">2011</span> 21:31:35        <span class="m">0</span> .a.. r--a----------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">10932</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> PROGRA~1<span class="se">\V</span>Mware<span class="se">\V</span>MWARE~1<span class="se">\S</span>USPEN~1.BAT <span class="o">(</span>Offset: 0x3fd6000<span class="o">)</span>
+                           <span class="m">389120</span> .ac. ---a----------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">2121</span>     <span class="o">[</span>MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>md.exe <span class="o">(</span>Offset: 0x3f44400<span class="o">)</span>
+                                <span class="m">0</span> .a.. ---a----------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">94638</span>    <span class="o">[</span>MFT STD_INFO<span class="o">]</span> Documents and Settings<span class="se">\A</span>dministrator<span class="se">\D</span>esktop<span class="se">\I</span>DAPRO~1.LNK <span class="o">(</span>Offset: 0x3fe9800<span class="o">)</span>
+Thu Jun <span class="m">02</span> <span class="m">2011</span> 21:31:36        <span class="m">0</span> m.c. -h-a----------- <span class="m">0</span>        <span class="m">0</span>        <span class="m">3646</span>     <span class="o">[</span>MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\s</span>oftware.LOG <span class="o">(</span>Offset: 0x40c1800<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>Focus Points</h1></header>
+            
+            
+            <section><p>Prefetch: execution results </p>
+<ul>
+<li>Some windows OS disable prefetch by default </li>
+<li>SSD disables prefetch </li>
+</ul>
+<p>Shimcache registry keys</p>
+<ul>
+<li>When programs were executed </li>
+</ul>
+<p>Network Activity</p>
+<ul>
+<li>Socket creation</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
+          <div class="inner">
+            
+            <header><h1>More Focus Points</h1></header>
+            
+            
+            <section><p>Job files</p>
+<ul>
+<li>Jobs with "at" command </li>
+</ul>
+<p>Registry Keys</p>
+<ul>
+<li>Modified time, creation time...</li>
+<li>Service creation</li>
+<li>Persistence Mechanisms </li>
+</ul>
+<p>Disk Artifacts </p>
+<p>Shellbags</p>
+<ul>
+<li>User window viewing </li>
+<li>MRU Lists</li>
+<li>Network shares</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-15">
+          <div class="inner">
+            
+            <header><h1>Gh0st in the Enterprise</h1></header>
+            
+            
+            <section><p>Walk-through from the text. </p>
+<p>Starts @ Page 543</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-16">
+          <div class="inner">
+            
+            <header><h1>Gh0st in the Enterprise</h1></header>
+            
+            
+            <section><p>Forensics challenge hosted by Jack Crook for 2012 DFIR Challenge </p>
+<p>An organization is the victim of a targeted attack and attackers moved between machines. </p>
+<p>An IDS alert flagged traffic from ENG-USTXHOU-148 to an IP 58.64.132.141</p>
+<p>Machines:</p>
+<ul>
+<li>ENG-USTXHOU-148: 172.16.150.20 / WinXPSP3x86</li>
+<li>FLD-SARIYADH-43: 172.16.223.187 / WinXPSP3x86</li>
+<li>IIS-SARIYADH-03: 172.16.223.47 / Win2003SP0x86</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h1>Timeliner</h1></header>
+            
+            
+            <section><p>Combine timeliner from multiple machines! </p>
+<p>--machine adds a name to the timeline header </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f IIS-SARIYADH-03/memdump.bin  --profile=Win2003SP0x86 mftparser --output=body -D IIS_FILES/ --machine=IIS --output-file=challenge/IIS_mft.body</span>
+
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f IIS-SARIYADH-03/memdump.bin --profile=Win2003SP0x86 timeliner --output=body --machine=IIS --output-file=challenge/IIS_timeliner.body</span>
+
+
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f IIS-SARIYADH-03/memdump.bin --profile=Win2003SP0x86 shellbags --output=body --machine=IIS --output-file=challenge/IIS_shellbags.body</span>
+</pre></div>
+
+<p>Do the same for all three machines. . . </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-18">
+          <div class="inner">
+            
+            <header><h1>Log2timeline</h1></header>
+            
+            
+            <section><p>Extract data from </p>
+<ul>
+<li>event logs</li>
+<li>registry files</li>
+<li>prefetch files</li>
+<li>recycle bin</li>
+<li>packet captures (pcaps)</li>
+</ul>
+<p>Can be run against a disk images or files that have been dumped from the image </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h1>Packet Capture Data</h1></header>
+            
+            
+            <section><p>log2timeline can create a timeline from data in a pcap</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#log2timeline -f pcap -z UTC jackcr-challenge.pcap -w IIS_pcap.body</span>
+</pre></div>
+
+<h1>Combine all logs into one file!</h1>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat IIS_* &gt;&gt; IIS_logs.body</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-20">
+          <div class="inner">
+            
+            <header><h1>Vector of Compromise</h1></header>
+            
+            
+            <section><p>ENG-USTXHOU-148 was in IDS alert from IP 58.64.132.141</p>
+<p>PID 1024 has two connections to 58.64.132.141</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin imageinfo</span>
+Determining profile based on KDBG search...
+Suggested Profile<span class="o">(</span>s<span class="o">)</span> : WinXPSP2x86, WinXPSP3x86 <span class="o">(</span>Instantiated with WinXPSP2x86<span class="o">)</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP2x86 connscan</span>
+Volatility Foundation Volatility Framework 2.4
+Offset<span class="o">(</span>P<span class="o">)</span>  Local Address             Remote Address            Pid
+---------- ------------------------- ------------------------- ---
+0x01f60850 0.0.0.0:0                 1.0.0.0:0                 36569092
+0x01ffa850 172.16.150.20:1291        58.64.132.141:80          1024
+0x0201f850 172.16.150.20:1292        172.16.150.10:445         4
+0x02084e68 172.16.150.20:1281        172.16.150.10:389         628
+0x020f8988 172.16.150.20:2862        172.16.150.10:135         696
+0x02201008 172.16.150.20:1280        172.16.150.10:389         628
+0x18615850 172.16.150.20:1292        172.16.150.10:445         4
+0x189e8850 172.16.150.20:1291        58.64.132.141:80          1024
+0x18a97008 172.16.150.20:1280        172.16.150.10:389         628
+0x18b8e850 0.0.0.0:0                 1.0.0.0:0                 36569092
+0x18dce988 172.16.150.20:2862        172.16.150.10:135         696
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP2x86 pslist -p 1024</span>
+Offset<span class="o">(</span>V<span class="o">)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+0x820b3da0 svchost.exe            <span class="m">1024</span>    <span class="m">680</span>     <span class="m">76</span>     <span class="m">1645</span>      <span class="m">0</span>      <span class="m">0</span> 2012-11-26 22:03:32 UTC+0000
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-21">
+          <div class="inner">
+            
+            <header><h1>Executed Programs</h1></header>
+            
+            
+            <section><p>Using the ENG_logs.body file we generated let's look at prefetch files</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#grep -i pf ENG_logs.body  | grep -i exe | cut -d\| -f2</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\N</span>ETEXE~1.PF <span class="o">(</span>Offset: 0x12d588<span class="o">)</span>
+<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\N</span>ETEXE~1.PF <span class="o">(</span>Offset: 0x12d588<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\N</span>ET.EXE-01A53C2F.pf <span class="o">(</span>Offset: 0x12d588<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\S</span>LEXE-~1.PF <span class="o">(</span>Offset: 0x311400<span class="o">)</span>
+<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\S</span>LEXE-~1.PF <span class="o">(</span>Offset: 0x311400<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\S</span>L.EXE-010E2A23.pf <span class="o">(</span>Offset: 0x311400<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\G</span>SEXE-~1.PF <span class="o">(</span>Offset: 0x311800<span class="o">)</span>
+<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\G</span>SEXE-~1.PF <span class="o">(</span>Offset: 0x311800<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\G</span>S.EXE-3796DDD9.pf <span class="o">(</span>Offset: 0x311800<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\P</span>ING.EXE-31216D26.pf <span class="o">(</span>Offset: 0x311c00<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\M</span>DDEXE~1.PF <span class="o">(</span>Offset: 0x230ed10<span class="o">)</span>
+<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\M</span>DDEXE~1.PF <span class="o">(</span>Offset: 0x230ed10<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\M</span>DD.EXE-07B34726.pf <span class="o">(</span>Offset: 0x230ed10<span class="o">)</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\D</span>EFRAG.EXE-273F131E.pf <span class="o">(</span>Offset: 0x3234c00<span class="o">)</span>
+<span class="o">[</span>snip<span class="o">]</span>
+<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\S</span>YMANTEC-1.43-1<span class="o">[</span>2<span class="o">]</span>.EXE-3793B625.pf <span class="o">(</span>Offset: 0x17779800<span class="o">)</span>
+</pre></div>
+
+<p>Some look suspicious.... SL.EXE, GS.EXE, PS.EXE and SYMANTEC-1.43-1[2].EXE.</p>
+<p>There is also AT.exe (scheduling) and PING and NET.... </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-22">
+          <div class="inner">
+            
+            <header><h1>Chronological Order</h1></header>
+            
+            
+            <section><p><em>Note: grep thought I had a binary file...</em></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#mactime -b ENG_logs.body -d -z UTC &gt; ENG_logsOrdered.body</span>
+<span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep -i symantec</span>
+<span class="m">26</span> <span class="m">2012</span> 23:01:53,macb,<span class="o">[</span>ENG IEHISTORY<span class="o">]</span> explorer.exe-&gt;Visited: callb@http://58.64.132.8/download/Symantec-1.43-1.exe PID: 284/Cache <span class="nb">type</span> <span class="s2">&quot;URL &quot;</span> at 0x2895000
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,0,macb,---a-------I---,0,0,11722,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\Prefetch\SYMANTEC-1.43-1[2].EXE-3793B625.pf (Offset</span>
+</pre></div>
+
+<p>Download of Symantec-1.43-1.exe at 23:01:53 and execution of it at 23:01:54.... </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#whois 58.64.132.8</span>
+<span class="o">[</span>snip<span class="o">]</span>
+address:        Hong Kong
+<span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-23">
+          <div class="inner">
+            
+            <header><h1>E-mail artifacts</h1></header>
+            
+            
+            <section><p>Running strings on the memdump shows an e-mail with the link to the Symantec executable</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#strings -td -a ENG-USTXHOU-148/memdump.bin &gt; ENG_strings.txt</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat ENG_strings.txt | grep -i received:</span>
+<span class="m">34435239</span> Received: from d0793h <span class="o">(</span>d0793h.petro-markets.info <span class="o">[</span>58.64.132.141<span class="o">])</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat ENG_strings.txt | grep 34435239 -B 1 -A 100</span>
+<span class="m">34435204</span>         Mon, <span class="m">26</span> Nov <span class="m">2012</span> 14:00:08 -0600
+<span class="m">34435239</span> Received: from d0793h <span class="o">(</span>d0793h.petro-markets.info <span class="o">[</span>58.64.132.141<span class="o">])</span>
+<span class="m">34435306</span>        by ubuntu-router <span class="o">(</span>8.14.3/8.14.3/Debian-9.2ubuntu1<span class="o">)</span> with SMTP id qAQK06Co005842<span class="p">;</span>
+<span class="m">34435388</span>        Mon, <span class="m">26</span> Nov <span class="m">2012</span> 15:00:07 -0500
+<span class="m">34435422</span> Message-ID: &lt;FCE1C36C7BBC46AFB7C2A251EA868B8B@d0793h&gt;
+<span class="m">34435477</span> From: <span class="s2">&quot;Security Department&quot;</span> &lt;isd@petro-markets.info&gt;
+<span class="m">34435531</span> To: &lt;amirs@petro-market.org&gt;, &lt;callb@petro-market.org&gt;,
+<span class="m">34435588</span>         &lt;wrightd@petro-market.org&gt;
+<span class="m">34435624</span> Subject: Immediate Action
+<span class="m">34435651</span> Date: Mon, <span class="m">26</span> Nov <span class="m">2012</span> 14:59:38 -0500
+<span class="m">34435690</span> MIME-Version: 1.0
+<span class="m">34435709</span> Content-Type: multipart/alternative<span class="p">;</span>
+<span class="m">34435747</span>        <span class="nv">boundary</span><span class="o">=</span><span class="s2">&quot;----=_NextPart_000_0015_01CDCBE6.A7B92DE0&quot;</span>
+<span class="m">34435802</span> X-Priority: 3
+<span class="m">34435817</span> X-MSMail-Priority: Normal
+<span class="m">34435844</span> X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+<span class="m">34435896</span> X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+<span class="m">34435954</span> Return-Path: isd@petro-markets.info
+<span class="m">34435991</span> X-OriginalArrivalTime: <span class="m">26</span> Nov <span class="m">2012</span> 20:00:08.0432 <span class="o">(</span>UTC<span class="o">)</span> <span class="nv">FILETIME</span><span class="o">=[</span>A2ABBF00:01CDCC10<span class="o">]</span>
+<span class="m">34436078</span> This is a multi-part message in MIME format.
+<span class="m">34436126</span> ------<span class="o">=</span>_NextPart_000_0015_01CDCBE6.A7B92DE0
+<span class="m">34436171</span> Content-Type: text/plain<span class="p">;</span>
+<span class="m">34436198</span>        <span class="nv">charset</span><span class="o">=</span><span class="s2">&quot;iso-8859-1&quot;</span>
+<span class="m">34436221</span> Content-Transfer-Encoding: quoted-printable
+<span class="m">34436268</span> Attn: Immediate Action is Required!!
+<span class="m">34436308</span> The IS department is requiring that all associates update to the <span class="nv">new</span> <span class="o">=</span>
+<span class="m">34436380</span> version of anti-virus.  This is critical and must be <span class="k">done</span> ASAP!  <span class="nv">Failure</span> <span class="o">=</span>
+<span class="m">34436456</span> to update anti-virus may result in negative actions.
+<span class="m">34436512</span> Please download the new anti-virus and follow the instructions.  <span class="nv">Failure</span> <span class="o">=</span>
+<span class="m">34436588</span> to install this anti-virus may result in loosing your job!
+<span class="m">34436650</span> Please donwload at http://58.64.132.8/download/Symantec-1.43-1.exe
+<span class="m">34436720</span> Regards,
+<span class="m">34436730</span> The IS Department
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-24">
+          <div class="inner">
+            
+            <header><h1>Lolz</h1></header>
+            
+            
+            <section><div class="highlight"><pre>Attn: Immediate Action is Required!!
+The IS department is requiring that all associates update to the <span class="nv">new</span> <span class="o">=</span>
+version of anti-virus.  This is critical and must be <span class="k">done</span> ASAP!  <span class="nv">Failure</span> <span class="o">=</span>
+to update anti-virus may result in negative actions.
+Please download the new anti-virus and follow the instructions.  <span class="nv">Failure</span> <span class="o">=</span>
+to install this anti-virus may result in loosing your job!
+Please donwload at http://58.64.132.8/download/Symantec-1.43-1.exe
+Regards,
+The IS Department
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-25">
+          <div class="inner">
+            
+            <header><h1>Anything else near file download? <br></h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep -i 23:01:54</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,0,macb,---a-------I---,0,0,11722,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\Prefetch\SYMANTEC-1.43-1[2].EXE-3793B625.pf (Offset: 0x17779800)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,100895,.ac.,---a-----------,0,0,8610,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\system32\6to4ex.dll (Offset: 0x324c800)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,100895,.ac.,-h-------------,0,0,8610,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\system32\6to4ex.dll (Offset: 0x324c800)&quot;</span>
+</pre></div>
+
+<p>6to4ex.dll seems odd...</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-26">
+          <div class="inner">
+            
+            <header><h1>Registry Artifacts</h1></header>
+            
+            
+            <section><p>Extract registry hives with dumpfiles and use timeline.py from <a href="https://github.com/williballenthin/python-registry">python-registry</a></p>
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="nv">volatility</span><span class="o">=</span>/opt/volatility-2.4/volatility-2.4/vol.py
+<span class="nv">timeline</span><span class="o">=</span>/opt/python-registry/sample/timeline.py
+<span class="nv">file</span><span class="o">=</span>jackcr-challenge/ENG-USTXHOU-148/memdump.bin
+<span class="nv">loc</span><span class="o">=</span>challenge/REG/ENG-USTXHOU-148/
+<span class="nv">short</span><span class="o">=</span><span class="s1">&#39;echo ENG-USTXHOU-148 |cut -d\- -f1&#39;</span>
+mkdir -p <span class="nv">$loc</span>
+    <span class="k">for</span> i in config.system config.security config.sam <span class="se">\</span>
+  config.default config.software ntuser.dat usrclass.dat
+<span class="k">do</span>
+ <span class="nv">$volatility</span> -f <span class="nv">$file</span> --profile WinXPSP2x86 dumpfiles -i -r <span class="nv">$i</span><span class="se">\$</span> -D <span class="nv">$loc</span>
+<span class="k">done</span>
+find <span class="nv">$loc</span> -type f -exec python <span class="nv">$timeline</span> <span class="se">\</span>
+  --body <span class="s1">&#39;{}&#39;</span> &gt;&gt; <span class="nv">$loc</span> <span class="se">\;</span>
+    cat <span class="nv">$loc</span>.temp <span class="p">|</span>sed <span class="s2">&quot;s/\[Registry None/\[</span><span class="nv">$short</span><span class="s2"> Registry/&quot;</span> <span class="se">\</span>
+      &gt;&gt; <span class="nv">$loc</span>.registry.body
+rm <span class="nv">$loc</span>.temp
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-27">
+          <div class="inner">
+            
+            <header><h1>6to4ex.dll</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep -i 23:01:54</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span>
+<span class="nv">$$$PROTO</span>.HIV<span class="se">\C</span>ontrolSet001<span class="se">\E</span>num<span class="se">\R</span>oot<span class="se">\L</span>EGACY_6TO4
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span>
+<span class="nv">$$$PROTO</span>.HIV<span class="se">\C</span>ontrolSet001<span class="se">\E</span>num<span class="se">\R</span>oot<span class="se">\L</span>EGACY_6TO4<span class="se">\0</span>000
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span>
+<span class="nv">$$$PROTO</span>.HIV<span class="se">\C</span>ontrolSet001<span class="se">\S</span>ervices<span class="se">\6</span>to4<span class="se">\P</span>arameters
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span>
+<span class="nv">$$$PROTO</span>.HIV<span class="se">\C</span>ontrolSet001<span class="se">\S</span>ervices<span class="se">\6</span>to4<span class="se">\S</span>ecurity
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-28">
+          <div class="inner">
+            
+            <header><h1>More enumeration</h1></header>
+            
+            
+            <section><p>DLL runs inside svchost.exe</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP2x86 printkey -K &quot;ControlSet001\Services\6to4&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\s</span>ystem
+Key name: 6to4 <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2012-11-26 23:01:55 UTC+0000
+
+Subkeys:
+  <span class="o">(</span>S<span class="o">)</span> Parameters
+  <span class="o">(</span>S<span class="o">)</span> Security
+  <span class="o">(</span>V<span class="o">)</span> Enum
+
+Values:
+REG_DWORD     Type            : <span class="o">(</span>S<span class="o">)</span> 288
+REG_DWORD     Start           : <span class="o">(</span>S<span class="o">)</span> 2
+REG_DWORD     ErrorControl    : <span class="o">(</span>S<span class="o">)</span> 1
+REG_EXPAND_SZ ImagePath       : <span class="o">(</span>S<span class="o">)</span> %SystemRoot%<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k netsvcs
+REG_SZ        DisplayName     : <span class="o">(</span>S<span class="o">)</span> Microsoft Device Manager
+REG_SZ        ObjectName      : <span class="o">(</span>S<span class="o">)</span> LocalSystem
+REG_SZ        Description     : <span class="o">(</span>S<span class="o">)</span> Service Description
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-29">
+          <div class="inner">
+            
+            <header><h1>Parameters?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP2x86 printkey -K &quot;ControlSet001\Services\6to4\Parameters&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\s</span>ystem
+Key name: Parameters <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2012-11-26 23:01:54 UTC+0000
+
+Subkeys:
+
+Values:
+REG_EXPAND_SZ ServiceDll      : <span class="o">(</span>S<span class="o">)</span> C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\6</span>to4ex.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-30">
+          <div class="inner">
+            
+            <header><h1>Other events around 23:01:54?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep 23:01:54</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 276
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 508
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 528
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 536
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 652
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:54,.acb,<span class="o">[</span>ENG THREAD<span class="o">]</span> svchost.exe PID: 1024/TID: 936
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-31">
+          <div class="inner">
+            
+            <header><h1>DLL Loaded?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 dlllist -p 1024</span>
+Volatility Foundation Volatility Framework 2.4
+************************************************************************
+svchost.exe pid:   1024
+Command line : C:<span class="se">\W</span>INDOWS<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k netsvcs
+Service Pack 3
+
+Base             Size  LoadCount Path
+---------- ---------- ---------- ----
+0x01000000     0x6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe
+0x7c900000    0xaf000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\n</span>tdll.dll
+0x7c800000    0xf6000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\k</span>ernel32.dll
+0x77dd0000    0x9b000     0xffff C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\A</span>DVAPI32.dll
+<span class="o">[</span>snip<span class="o">]</span>
+0x10000000    0x1c000        0x1 c:<span class="se">\w</span>indows<span class="se">\s</span>ystem32<span class="se">\6</span>to4ex.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-32">
+          <div class="inner">
+            
+            <header><h1>Service load order?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 svcscan</span>
+Offset: 0x389d60
+Order: 228
+Start: SERVICE_AUTO_START
+Process ID: 1024
+Service Name: 6to4
+Display Name: Microsoft Device Manager
+Service Type: SERVICE_WIN32_SHARE_PROCESS
+Service State: SERVICE_RUNNING
+Binary Path: C:<span class="se">\W</span>INDOWS<span class="se">\S</span>ystem32<span class="se">\s</span>vchost.exe -k netsvcs
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-33">
+          <div class="inner">
+            
+            <header><h1>Finding an Active Attacker</h1></header>
+            
+            
+            <section><p>ipconfig.exe was used...</p>
+<div class="highlight"><pre>Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:03:21,55808,.a..,---a-----------,0,0,24145,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\system32\ipconfig.exe (Offset: 0xc826400)&quot;</span>
+</pre></div>
+
+<p>WINDOWS/webui appears </p>
+<div class="highlight"><pre>Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:03:10,macb,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui <span class="o">(</span>Offset: 0x1bc21000<span class="o">)</span>
+</pre></div>
+
+<p>net.exe was used </p>
+<div class="highlight"><pre>Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:53,macb,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch <span class="se">\N</span>ET.EXE-01A53C2F.pf <span class="o">(</span>Offset: 0x12d588<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-34">
+          <div class="inner">
+            
+            <header><h1>Webui?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep -i webui</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:03:10,0,macb,-------------D-,0,0,7556,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui (Offset: 0x1bc21000)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:03:10,0,...b,---------------,0,0,7556,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui (Offset: 0x1bc21000)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:47,0,macb,---a-----------,0,0,11719,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\gs.exe (Offset: 0x16267c00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:47,0,...b,---a-----------,0,0,11719,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\gs.exe (Offset: 0x16267c00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:48,0,mac.,---a-----------,0,0,11719,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\gs.exe (Offset: 0x16267c00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:52,0,macb,---a-----------,0,0,11723,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\ra.exe (Offset: 0x17779c00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:52,0,macb,---a-----------,0,0,11723,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\ra.exe (Offset: 0x17779c00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:56,0,macb,---a-----------,0,0,11724,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\sl.exe (Offset: 0x1f5ff000)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:56,0,macb,---a-----------,0,0,11724,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\sl.exe (Offset: 0x1f5ff000)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:59,0,macb,---a-----------,0,0,11725,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\wc.exe (Offset: 0x1f5ff400)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:06:59,0,m.cb,---a-----------,0,0,11725,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\wc.exe (Offset: 0x1f5ff400)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:31,0,macb,---a-----------,0,0,11726,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\netuse.dll (Offset: 0xde4e48)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:31,0,macb,---a-----------,0,0,11726,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\netuse.dll (Offset: 0xde4e48)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:44:16,0,m...,---a-----------,0,0,11734,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\system.dll (Offset: 0x924e800)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:49:01,0,macb,---a-----------,0,0,11734,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\system.dll (Offset: 0x924e800)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:49:01,0,.acb,---a-----------,0,0,11734,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\system.dll (Offset: 0x924e800)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:56:43,0,m...,---a-----------,0,0,11735,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\svchost.dll (Offset: 0x924ec00)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:57:20,0,macb,---a-----------,0,0,11735,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\svchost.dll (Offset: 0x924ec00)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:57:20,0,.acb,---a-----------,0,0,11735,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\svchost.dll (Offset: 0x924ec00)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:01:39,0,macb,---a-----------,0,0,11736,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\https.dll (Offset: 0x109cf7a8)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:01:39,0,macb,---a-----------,0,0,11736,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\https.dll (Offset: 0x109cf7a8)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:11:40,0,m...,---a-----------,0,0,11737,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\netstat.dll (Offset: 0x10b97400)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:14:48,0,macb,---a-----------,0,0,11737,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\netstat.dll (Offset: 0x10b97400)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:14:48,0,.acb,---a-----------,0,0,11737,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\netstat.dll (Offset: 0x10b97400)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:26:47,0,macb,---a-----------,0,0,11738,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\webui\system5.bat (Offset: 0x10b97800)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:26:47,0,macb,---a-----------,0,0,11738,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\system5.bat (Offset: 0x10b97800)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:26:47,0,mac.,---------------,0,0,7556,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui (Offset: 0x1bc21000)&quot;</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:27:03,0,.a..,---a-----------,0,0,11725,<span class="s2">&quot;[ENG MFT STD_INFO] WINDOWS\webui\wc.exe (Offset: 0x1f5ff400)&quot;</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-35">
+          <div class="inner">
+            
+            <header><h1>Mon Nov 26 2012 23:06:47-&gt;23:06:59</h1></header>
+            
+            
+            <section><p>GS, RA, SL and WC.exe ran in close proximity to our compromise time of 23:01:53</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | egrep -i &#39;(GS|RA|SL)+.EXE-+&#39;</span>
+Sat Nov <span class="m">24</span> <span class="m">2012</span> 18:06:27,0,macb,---a-------I---,0,0,11583,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\Prefetch\MSMSGS.EXE-2B6052DE.pf (Offset: 0xff0cc00)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:10:35,0,macb,---a-------I---,0,0,11729,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\Prefetch\SL.EXE-010E2A23.pf (Offset: 0x311400)&quot;</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:11:58,0,macb,---a-------I---,0,0,11730,<span class="s2">&quot;[ENG MFT FILE_NAME] WINDOWS\Prefetch\GS.EXE-3796DDD9.pf (Offset: 0x311800)&quot;</span>
+</pre></div>
+
+<p>Other?</p>
+<div class="highlight"><pre>Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:11:58,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span> SECURITY<span class="se">\P</span>olicy<span class="se">\S</span>ecrets
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-36">
+          <div class="inner">
+            
+            <header><h1>GS.exe</h1></header>
+            
+            
+            <section><p>SECURITY\Policy\Secrets contains Local Security Authority (LSA) secrets</p>
+<h1>cachedump</h1>
+<p>Dumps cached domain hashes from memory</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 cachedump</span>
+Volatility Foundation Volatility Framework 2.4
+administrator:00c2bcc2230054581d3551a9fdcf4893:petro-market:petro-market.org
+callb:178526e1cb2fdfc36d764595f1ddd0f7:petro-market:petro-market.org
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-37">
+          <div class="inner">
+            
+            <header><h1>Did GS.exe get LSA?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 filescan | grep -i gs.exe</span>
+Volatility Foundation Volatility Framework 2.4
+0x00000000020bb938      <span class="m">1</span>      <span class="m">0</span> R--r-d <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\g</span>s.exe
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 dumpfiles -Q 0x020bb938 -D ENG_OUT/</span>
+Volatility Foundation Volatility Framework 2.4
+ImageSectionObject 0x020bb938   None   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\g</span>s.exe
+DataSectionObject 0x020bb938   None   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\g</span>s.exe
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#strings -a -el ENG_OUT/file.None.0x822cf6e8.img &gt; gsStrings</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#strings -a ENG_OUT/file.None.0x822cf6e8.img &gt;&gt; gsStrings</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat gs.strings</span>
+SECURITY<span class="se">\P</span>olicy<span class="se">\S</span>ecrets
+rerror <span class="o">[</span>
+error:
+info: you must run as LocalSystem to dump LSA secrets
+kerberos tickets dump is not yet available
+crap :<span class="o">)</span>
+ntdll.dll
+crap#! :<span class="o">)</span>
+ycrap! :<span class="o">(</span>
+crap! :<span class="o">)</span>
+ycrap!? :<span class="o">)</span>
+<span class="o">[</span>snip<span class="o">]</span>
+unable to start gsecdump as service
+system
+<span class="nb">help</span>
+dump_all,a
+dump all secrets
+dump_hashes,s
+dump hashes from SAM/AD
+dump_lsa,l
+dump lsa secrets
+dump_usedhashes,u
+dump hashes from active logon sessions
+dump_wireless,w
+dump microsoft wireless connections
+<span class="nb">help</span>,h
+show <span class="nb">help</span>
+system,S
+run as localsystem
+gsecdump v0.7 by Johannes Gumbel <span class="o">(</span>johannes.gumbel@truesec.se<span class="o">)</span>
+usage: gsecdump <span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>gs.exe is <a href="http://en.truesec.com/Tools/Tool/gsecdump_v2.0b5">gsecdump</a> (from book) </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-38">
+          <div class="inner">
+            
+            <header><h1>Remote File Shares</h1></header>
+            
+            
+            <section><p>Networking executables are good indicator </p>
+<p>Look for symlinks with symlinkscan!  </p>
+<ul>
+<li>[a-zA-Z]: are drives </li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-39">
+          <div class="inner">
+            
+            <header><h1>Remote File Shares</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 symlinkscan | grep -i [a-zA-Z]:</span>
+Volatility Foundation Volatility Framework 2.4
+0x0000000002707bd8      <span class="m">1</span>      <span class="m">0</span> 2012-11-26 22:03:21 UTC+0000   C:                   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1
+0x00000000056eb400      <span class="m">1</span>      <span class="m">0</span> 2012-11-26 22:03:27 UTC+0000   A:                   <span class="se">\D</span>evice<span class="se">\F</span>loppy0
+0x000000000578d4a8      <span class="m">1</span>      <span class="m">0</span> 2012-11-26 22:03:27 UTC+0000   D:                   <span class="se">\D</span>evice<span class="se">\C</span>dRom0
+0x0000000005aaf1b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000000ab96398      <span class="m">1</span>      <span class="m">0</span> 2012-11-27 01:56:50 UTC+0000   R:                   <span class="se">\D</span>evice<span class="se">\L</span>anmanRedirector<span class="se">\;</span>R:0...00c21e<span class="se">\1</span>72.16.150.10<span class="se">\I</span>TShare
+0x000000000b0a3608      <span class="m">1</span>      <span class="m">0</span> 2012-11-27 00:48:19 UTC+0000   Z:                   <span class="se">\D</span>evice<span class="se">\L</span>anmanRedirector<span class="se">\;</span>Z:00000000000003e7<span class="se">\1</span>72.16.223.47<span class="se">\z</span>
+0x00000000194ffbd8      <span class="m">1</span>      <span class="m">0</span> 2012-11-26 22:03:21 UTC+0000   C:                   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1
+0x00000000196f0bd8      <span class="m">1</span>      <span class="m">0</span> 2012-11-26 22:03:21 UTC+0000   C:                   <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1
+0x000000001c8931b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001ce5c1b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001d2cf1b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001d4e21b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001d7d51b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001db881b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001ddbb1b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001e2501b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+0x000000001e6ad1b8      <span class="m">2</span>      <span class="m">1</span> 2012-11-26 22:03:28 UTC+0000   KnownDllPath         C:<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-40">
+          <div class="inner">
+            
+            <header><h1>Network Share In Timeline</h1></header>
+            
+            
+            <section><div class="highlight"><pre>Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:48:19,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span> <span class="nv">$$$PROTO</span>.HIV<span class="se">\N</span>etwork
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:48:19,macb,<span class="o">[</span>ENG SYMLINK<span class="o">]</span>     Z:-&gt;<span class="se">\D</span>evice<span class="se">\L</span>anmanRedirector<span class="se">\;</span>Z:00000000000003e7<span class="se">\1</span>72.16.223.47<span class="se">\z</span>    POffset: 185218568/tr: 1/Hnd: 0
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:49:28,.a..,<span class="o">[</span>ENG Registry<span class="o">]</span> <span class="nv">$$$PROTO</span>.HIV<span class="se">\S</span>oftware<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\C</span>urrentVersion<span class="se">\E</span>xplorer<span class="se">\M</span>ountPoints2##172.16.223.47#z
+</pre></div>
+
+<p>Network drives are in Network\<drive letter> key</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 printkey -K &quot;network\z&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\d</span>efault
+Key name: z <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2012-11-27 00:48:20 UTC+0000
+
+Subkeys:
+
+Values:
+REG_SZ        RemotePath      : <span class="o">(</span>S<span class="o">)</span> <span class="se">\\</span>172.16.223.47<span class="se">\z</span>
+REG_SZ        UserName        : <span class="o">(</span>S<span class="o">)</span> PETRO-MARKET<span class="se">\E</span>NG-USTXHOU-148<span class="err">$</span>
+REG_SZ        ProviderName    : <span class="o">(</span>S<span class="o">)</span> Microsoft Windows Network
+REG_DWORD     ProviderType    : <span class="o">(</span>S<span class="o">)</span> <span class="m">131072</span> <span class="c">#LanMan</span>
+REG_DWORD     ConnectionType  : <span class="o">(</span>S<span class="o">)</span> <span class="m">1</span>      <span class="c">#drive redirection</span>
+REG_DWORD     DeferFlags      : <span class="o">(</span>S<span class="o">)</span> <span class="m">4</span>      <span class="c">#DeferFlags (creds saved)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-41">
+          <div class="inner">
+            
+            <header><h1>Scheduled Jobs</h1></header>
+            
+            
+            <section><div class="highlight"><pre>Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:26:47,macb,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui<span class="se">\s</span>ystem5.bat <span class="o">(</span>Offset: 0x10b97800<span class="o">)</span>
+</pre></div>
+
+<p>System5.bat is resident in the MFT </p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat ENG_FILES/*0x10b97800* -n</span>
+ <span class="m">1</span>  @echo off
+ <span class="m">2</span>  copy c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\w</span>c.exe c:<span class="se">\w</span>indows<span class="se">\s</span>ystem32
+ <span class="m">3</span>  at 19:30 wc.exe -e -o h.out
+</pre></div>
+
+<p>At.exe schedules jobs</p>
+<div class="highlight"><pre>Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:27:03,macb,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\T</span>asks<span class="se">\A</span>t1.job <span class="o">(</span>Offset: 0x12ab2000<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:27:03,macb,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\A</span>T.EXE-2770DD18.pf <span class="o">(</span>Offset: 0x12ab2400<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-42">
+          <div class="inner">
+            
+            <header><h1>More Scheduled Jobs</h1></header>
+            
+            
+            <section><p>Microsoft\SchedulingAgent gets updated with jobs</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#volatility -f ENG-USTXHOU-148/memdump.bin --profile=WinXPSP3x86 printkey -K &quot;Microsoft\SchedulingAgent&quot;</span>
+Volatility Foundation Volatility Framework 2.4
+Legend: <span class="o">(</span>S<span class="o">)</span> <span class="o">=</span> Stable   <span class="o">(</span>V<span class="o">)</span> <span class="o">=</span> Volatile
+
+----------------------------
+Registry: <span class="se">\D</span>evice<span class="se">\H</span>arddiskVolume1<span class="se">\W</span>INDOWS<span class="se">\s</span>ystem32<span class="se">\c</span>onfig<span class="se">\s</span>oftware
+Key name: SchedulingAgent <span class="o">(</span>S<span class="o">)</span>
+Last updated: 2012-11-27 01:30:00 UTC+0000
+
+Subkeys:
+
+Values:
+REG_EXPAND_SZ TasksFolder     : <span class="o">(</span>S<span class="o">)</span> %SystemRoot%<span class="se">\T</span>asks
+REG_EXPAND_SZ LogPath         : <span class="o">(</span>S<span class="o">)</span> %SystemRoot%<span class="se">\S</span>chedLgU.Txt
+REG_DWORD     MinutesBeforeIdle : <span class="o">(</span>S<span class="o">)</span> 15
+REG_DWORD     MaxLogSizeKB    : <span class="o">(</span>S<span class="o">)</span> 32
+REG_SZ        OldName         : <span class="o">(</span>S<span class="o">)</span> ENG-USTXHOU-148
+REG_DWORD     DataVersion     : <span class="o">(</span>S<span class="o">)</span> 3
+REG_DWORD     PriorDataVersion : <span class="o">(</span>S<span class="o">)</span> 0
+REG_BINARY    LastTaskRun     : <span class="o">(</span>S<span class="o">)</span>
+0x00000000  dc <span class="m">07</span> 0b <span class="m">00</span> <span class="m">01</span> <span class="m">00</span> 1a <span class="m">00</span> <span class="m">13</span> <span class="m">00</span> 1e <span class="m">00</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>   ................
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+              <p>LastTaskRun is updated when a task runs! </p>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-43">
+          <div class="inner">
+            
+            <header><h1>Wc.exe?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat ENG_logsOrdered.body | tr -d &#39;\000&#39; | grep -i h.out</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:30:00,560,macb,,0,0,11742,<span class="o">[</span>ENG MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem32<span class="se">\h</span>.out <span class="o">(</span>Offset: 0x12ab2800<span class="o">)</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat ENG_FILES/*0x12ab2800*</span>
+callb:PETRO-MARKET:115B24322C11908C85140F5D33B6232F:40D1D232D5F731EA966
+913EA458A16E7
+ENG-USTXHOU-148<span class="nv">$:</span>PETRO-MARKET:00000000000000000000000000000000:D6717F1E
+5252FA87ED40AF8C46D8B1E2
+sysbackup:current:C2A3915DF2EC79EE73108EB48073ACB7:E7A6F270F1BA562A90E2
+C133A95D2057
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-44">
+          <div class="inner">
+            
+            <header><h1>Other machines also infected?</h1></header>
+            
+            
+            <section><p>Look for SYMANTEC-1.43-1[2].EXE on all machines! </p>
+<ul>
+<li>initial infection vector</li>
+</ul>
+<p><br></p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#grep -Hi symantec IIS_all FLD_all | cut -d\| -f1,2</span>
+FLD_all:0<span class="p">|</span><span class="o">[</span>MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\P</span>refetch<span class="se">\S</span>YMANTEC-1.43-1<span class="o">[</span>2<span class="o">]</span>.EXE-330FB7E3.pf
+<span class="o">(</span>Offset: 0x1d75cc00<span class="o">)</span>
+</pre></div>
+
+<p>Looking into FLD-SARIYADH-43, 6to4 was also created and some artifacts are similar.</p>
+<ul>
+<li>Some do differ, though</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-45">
+          <div class="inner">
+            
+            <header><h1>More Batch on FLD</h1></header>
+            
+            
+            <section><div class="highlight"><pre>Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:31:39,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem1.bat
+<span class="o">(</span>Offset: 0x1787f000<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:33:32,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span>
+WINDOWS<span class="se">\P</span>refetch<span class="se">\P</span>S.EXE-09745CC1.pf <span class="o">(</span>Offset: 0x1787f400<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:43:45,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem6.bat
+<span class="o">(</span>Offset: 0x1787f800<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:43:45,macb,<span class="o">[</span>FLD MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem6.bat
+<span class="o">(</span>Offset: 0x1787f800<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:53:29,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui<span class="se">\s</span>ystem2.bat
+<span class="o">(</span>Offset: 0x1787fc00<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 00:59:00,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui<span class="se">\s</span>ystem3.bat
+<span class="o">(</span>Offset: 0x1b773000<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:04:59,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui<span class="se">\s</span>ystem4.bat
+<span class="o">(</span>Offset: 0x1b773400<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:19:41,macb,<span class="o">[</span>FLD MFT FILE_NAME<span class="o">]</span> WINDOWS<span class="se">\w</span>ebui<span class="se">\s</span>ystem5.bat
+<span class="o">(</span>Offset: 0x1b773800<span class="o">)</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat *0x1787f000*</span>
+@echo off
+mkdir c:<span class="se">\w</span>indows<span class="se">\w</span>ebui
+net share <span class="nv">z</span><span class="o">=</span>c:<span class="se">\w</span>indows<span class="se">\w</span>ebui /GRANT:sysbackup,FULL
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat *0x1787f800*</span>
+@echo off
+ipconfig /all &gt;&gt; c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\s</span>ystem.dll
+net share &gt;&gt; c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\s</span>ystem.dll
+net start &gt;&gt; c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\s</span>ystem.dll
+net view &gt;&gt; c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\s</span>ystem.dll
+<span class="o">[</span>snip<span class="o">]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-46">
+          <div class="inner">
+            
+            <header><h1>Data Exfil?</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat *0x1b773400*</span>
+@echo off
+c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\r</span>a.exe a -hphclllsddlsdiddklljh -r
+c:<span class="se">\w</span>indows<span class="se">\w</span>ebui<span class="se">\n</span>etstat.dll <span class="s2">&quot;C:\Engineering\Designs\Pumps&quot;</span> -x*.dll
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-47">
+          <div class="inner">
+            
+            <header><h1>Theories</h1></header>
+            
+            
+            <section><p>Lots of indicators of compromise</p>
+<p>New services, malicious executable ran, files zipped...</p>
+<p>Did anything get exfiltrated? </p>
+<p>What about network traffic?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-48">
+          <div class="inner">
+            
+            <header><h1>Pcap</h1></header>
+            
+            
+            <section><p>Recall 58.64.132.141 was the IDS alert</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat networking.body | tr -d &#39;\000&#39; | grep 58.64.132.141</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:58,0,macb,0,0,0,108494,<span class="o">[</span>PCAP file<span class="o">]</span> <span class="o">(</span>Time Written<span class="o">)</span> &lt;172.16.150.20&gt; TCP SYN packet 172.16.150.20:1097 -&gt; 58.64.132.141:80
+seq <span class="o">[</span>2669490555<span class="o">]</span> <span class="o">(</span>file: jackcr-challenge.pcap<span class="o">)</span>  
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:58,0,macb,0,0,0,108494,<span class="o">[</span>PCAP file<span class="o">]</span> <span class="o">(</span>Time Written<span class="o">)</span> &lt;172.16.150.20&gt; TCP packet flags <span class="o">[</span>0x10: ACK <span class="o">]</span> 172.16.150.20:1097    -&gt; 58.64.132.141:80 seq <span class="o">[</span>2669490556<span class="o">]</span> <span class="o">(</span>file: jackcr-challenge.pcap<span class="o">)</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:01:58,0,macb,0,0,0,108494,<span class="o">[</span>PCAP file<span class="o">]</span> <span class="o">(</span>Time Written<span class="o">)</span> &lt;172.16.150.20&gt; TCP packet flags <span class="o">[</span>0x10: ACK <span class="o">]</span> 172.16.150.20:1097-&gt; 58.64.132.141:80 seq <span class="o">[</span>2669490715<span class="o">]</span> <span class="o">(</span>file: jackcr-challenge.pcap<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              48/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-49">
+          <div class="inner">
+            
+            <header><h1>Traffic is encoded</h1></header>
+            
+            
+            <section><p>Gh0st RAT can be decoded with <a href="https://github.com/MITRECND/chopshop">ChopShop</a> a Protocol Analysis/Decoder Framework.</p>
+<p>Requires some dependencies...</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>pynids<span class="o">]</span><span class="c">#git clone https://github.com/MITRECND/pynids &amp;&amp; cd pynids</span>
+<span class="o">[</span>root<span class="p">&amp;</span>pynids<span class="o">]</span><span class="c">#chmod +x setup.py</span>
+<span class="o">[</span>root<span class="p">&amp;</span>pynids<span class="o">]</span><span class="c">#./setup.py build &amp;&amp; ./setup.py install</span>
+</pre></div>
+
+<p>Then Run it!</p>
+<div class="highlight"><pre><span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#/opt/chopshop/chopshop -f jackcr-challenge.pcap gh0st_decode -F decrypted.txt</span>
+<span class="o">[</span>root<span class="p">&amp;</span>jackcr-challenge<span class="o">]</span><span class="c">#cat decrypted.txt</span>
+TOKEN: LOGIN: eng-ustxhou-148: Windows XP Service Pack <span class="m">3</span> - Build: <span class="m">2600</span> - Clock: <span class="m">3056</span> Mhz - IP: 172.16.150.20 Webcam: no
+COMMAND: ACTIVED
+COMMAND: SHELL
+TOShutting Down Modules ...
+        Shutting Down gh0st_decode
+Module Shutdown Complete ...
+ChopShop Complete
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              49/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-50">
+          <div class="inner">
+            
+            <header><h1>Traffic is now decrypted</h1></header>
+            
+            
+            <section><p>Look at all the things...</p>
+<div class="highlight"><pre>    ipconfig
+
+    Windows IP Configuration
+    Ethernet adapter Local Area Connection:
+            Connection-specific DNS Suffix  . :
+            IP Address. . . . . . . . . . . . : <span class="m">172</span>.<span class="m">16</span>.<span class="m">150</span>.<span class="m">20</span>
+            Subnet Mask . . . . . . . . . . . : <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">0</span>
+            Default Gateway . . . . . . . . . : <span class="m">172</span>.<span class="m">16</span>.<span class="m">150</span>.<span class="m">2</span>
+
+C:\WINDOWS\webui<span class="p">&gt;</span>
+
+<span class="n">net</span> view &gt;<span class="p">&gt;</span> <span class="n">netuse</span>.dll
+
+
+net view &gt;<span class="p">&gt;</span> <span class="n">netuse</span>.dll
+
+wc.exe -s sysbackup:current<span class="nl">:c2a3915df2ec79ee73108eb48073acb7:e7a6f270f1ba562a90e2c133a95d2057</span>
+WCE v<span class="m">1</span>.<span class="m">3</span>beta (Windows Credentials Editor) - (c) <span class="m">2010</span><span class="p">,</span><span class="m">2011</span><span class="p">,</span><span class="m">2012</span> Amplia Security - by Hernan Ochoa (hernan@ampliasecurity.com)
+Use -h <span class="k">for</span> help.
+
+Changing NTLM credentials of current logon session (<span class="m">000003</span>E<span class="m">7</span>h) to:
+Username: sysbackup
+domain: current
+LMHash: c<span class="m">2</span>a<span class="m">3915</span>df<span class="m">2</span>ec<span class="m">79</span>ee<span class="m">73108</span>eb<span class="m">48073</span>acb<span class="m">7</span>
+NTHash: e<span class="m">7</span>a<span class="m">6</span>f<span class="m">270</span>f<span class="m">1</span>ba<span class="m">562</span>a<span class="m">90</span>e<span class="m">2</span>c<span class="m">133</span>a<span class="m">95</span>d<span class="m">2057</span>
+NTLM credentials successfully changed!
+
+C:\WINDOWS\webui<span class="p">&gt;</span>
+
+<span class="n">net</span> use z: \\<span class="m">172</span>.<span class="m">16</span>.<span class="m">223</span>.<span class="m">47</span>\z
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              50/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-51">
+          <div class="inner">
+            
+            <header><h1>Uploading files</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="o">[</span>snip<span class="o">]</span>
+COMMAND: FILE SIZE <span class="o">(</span>C:<span class="se">\W</span>INDOWS<span class="se">\p</span>s.exe: 381816<span class="o">)</span>
+TOKEN: DATA CONTINUE
+COMMAND: FILE DATA <span class="o">(</span>8183<span class="o">)</span>
+TOKEN: DATA CONTINUE
+<span class="o">[</span>snip<span class="o">]</span>
+COMMAND: FILE SIZE <span class="o">(</span>C:<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\g</span>s.exe: 303104<span class="o">)</span>
+TOKEN: DATA CONTINUE
+COMMAND: FILE DATA <span class="o">(</span>8183<span class="o">)</span>
+TOKEN: DATA CONTINUE
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              51/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-52">
+          <div class="inner">
+            
+            <header><h1>Book Section</h1></header>
+            
+            
+            <section><p>The book used a modified gh0st_decode module that put pcap information into a timeline...</p>
+<div class="highlight"><pre><span class="nv">$ </span>chopshop -f jackcr-challenge.pcap gh0st_decode_body -F decrypted.body
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:31,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1098-&gt;58.64.132.141:80 SHELL: ipconfig /all &gt;&gt; netuse.dll
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:31,.a..,<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem32<span class="se">\i</span>ertutil.dll
+<span class="o">(</span>Offset: 0x5ba2800<span class="o">)</span>
+Mon Nov <span class="m">26</span> <span class="m">2012</span> 23:07:31,.a..,<span class="o">[</span>ENG MFT STD_INFO<span class="o">]</span> WINDOWS<span class="se">\s</span>ystem32<span class="se">\u</span>rlmon.dll
+<span class="o">(</span>Offset: 0x328a800<span class="o">)</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              52/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-53">
+          <div class="inner">
+            
+            <header><h1>Winrar</h1></header>
+            
+            
+            <section><p>Winrar into netstat.dll!</p>
+<div class="highlight"><pre>Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:15:44,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1238-&gt;58.64.132.141:80 COMMAND: DOWN FILES
+<span class="o">(</span>C:<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\n</span>etstat.dll<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:15:44,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1238-&gt;58.64.132.141:80 TOKEN: FILE DATA <span class="o">(</span>2713<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:15:44,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1238-&gt;58.64.132.141:80 TOKEN: FILE DATA <span class="o">(</span>8183<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:15:44,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1238-&gt;58.64.132.141:80 TOKEN: FILE SIZE
+<span class="o">(</span>C:<span class="se">\W</span>INDOWS<span class="se">\w</span>ebui<span class="se">\n</span>etstat.dll: 109092<span class="o">)</span>
+Tue Nov <span class="m">27</span> <span class="m">2012</span> 01:15:44,macb,<span class="o">[</span>Gh0st Decode<span class="o">]</span>
+172.16.150.20:1238-&gt;58.64.132.141:80 TOKEN: TRANSFER FINISH
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              53/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-54">
+          <div class="inner">
+            
+            <header><h1>Timeline / tl;dr for</h1></header>
+            
+            
+            <section><p>Mon, 26 Nov 2012 14:00:08 -0600 = E-mail sent</p>
+<p>Mon Nov 26 2012 23:01:53 : Download of Symantec-1.43-1.exe from phishing </p>
+<p>Mon Nov 26 2012 23:01:54: Symantec-1.43-1.exe runs</p>
+<p>Mon Nov 26 2012 23:01:54: Registry updated and 6to4 added as service, threads started on svchost.exe </p>
+<p>Mon Nov 26 2012 23:11:58: gs.exe accessed LSA secrets</p>
+<p>Tue Nov 27 2012 00:31:39: batch files begin to get created on FLD-SARIYADH-43</p>
+<p>Tue Nov 27 2012 00:43:45: Batch files start to run until Tue Nov 27 2012 01:19:41</p>
+<p>Tue Nov 27 2012 01:15:44: Data extracted </p>
+<p>Tue Nov 27 2012 01:27:03: Z:-&gt;\Device\LanmanRedirector\;Z:00000000000003e7\172.16.223.47\z mapped</p>
+<p>Tue Nov 27 2012 01:27:03: At1.job scheduled for 19:30 with wc.exe  </p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              54/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-55">
+          <div class="inner">
+            
+            <header><h1>More To gh0st</h1></header>
+            
+            
+            <section><p><img alt="" src="http://m.memegen.com/i84nb9.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              55/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-56">
+          <div class="inner">
+            
+            <header><h1>Tips</h1></header>
+            
+            
+            <section><p>Analyze prefetch files because they often tell you when suspicious programs executed</p>
+<p>Analyze the Shimcache registry keys </p>
+<p>Look for the creation of unknown executable files and DLLs </p>
+<p>Focus on network activity (newly opened ports and outgoing connections)</p>
+<p>Look for creation of job files, which attackers often use to automate tasks </p>
+<p>Once you have a point of reference, you can correlate events among other systems involved in the attack</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              56/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: week10-Timelining.md -->
+      <div class="slide-wrapper">
+        <div class="slide slide-57">
+          <div class="inner">
+            
+            <header><h1>End Of Course <br> <img alt="" src="http://nedroid.com/shopimages/partycat-partytime-med.jpg" /></h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="week10-Timelining.md">week10-Timelining.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              57/57
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Timelining</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">What</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Timestamp formats</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Timestamp Sources</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Volatility and Timelining</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Timeliner</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Timeliner</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Event Logs</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Mactime</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Mactime</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11"><a href="http://www.tophertimzen.com/resources/cs407/slides/week08-diskArtifacts.html">Disk Artifacts</a></a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">MFTParser and Mactime</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Focus Points</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">More Focus Points</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Gh0st in the Enterprise</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Gh0st in the Enterprise</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Timeliner</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Log2timeline</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Packet Capture Data</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Vector of Compromise</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Executed Programs</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Chronological Order</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">E-mail artifacts</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Lolz</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Anything else near file download? <br></a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Registry Artifacts</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">6to4ex.dll</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">More enumeration</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Parameters?</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Other events around 23:01:54?</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">DLL Loaded?</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Service load order?</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Finding an Active Attacker</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Webui?</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Mon Nov 26 2012 23:06:47-&gt;23:06:59</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">GS.exe</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">Did GS.exe get LSA?</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Remote File Shares</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Remote File Shares</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Network Share In Timeline</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Scheduled Jobs</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">More Scheduled Jobs</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Wc.exe?</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Other machines also infected?</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">More Batch on FLD</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Data Exfil?</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Theories</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-48">
+        <th><a href="#slide48">Pcap</a></th>
+        <td><a href="#slide48">48</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-49">
+        <th><a href="#slide49">Traffic is encoded</a></th>
+        <td><a href="#slide49">49</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-50">
+        <th><a href="#slide50">Traffic is now decrypted</a></th>
+        <td><a href="#slide50">50</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-51">
+        <th><a href="#slide51">Uploading files</a></th>
+        <td><a href="#slide51">51</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-52">
+        <th><a href="#slide52">Book Section</a></th>
+        <td><a href="#slide52">52</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-53">
+        <th><a href="#slide53">Winrar</a></th>
+        <td><a href="#slide53">53</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-54">
+        <th><a href="#slide54">Timeline / tl;dr for</a></th>
+        <td><a href="#slide54">54</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-55">
+        <th><a href="#slide55">More To gh0st</a></th>
+        <td><a href="#slide55">55</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-56">
+        <th><a href="#slide56">Tips</a></th>
+        <td><a href="#slide56">56</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-57">
+        <th><a href="#slide57">End Of Course <br> <img alt="" src="http://nedroid.com/shopimages/partycat-partytime-med.jpg" /></a></th>
+        <td><a href="#slide57">57</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
