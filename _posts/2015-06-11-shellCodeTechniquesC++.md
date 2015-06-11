@@ -198,7 +198,7 @@ CreateMutexExA can now be called
 
 {% highlight cpp %}
 
-HANDLE created = MyCreateMutex(0, "IkFyZSB5b3UgaGF2aW5nIGZ1biB3aXRoIHRoaXMgbGFiPyIgDQo=", 0, MUTEX_ALL_ACCESS);
+HANDLE created = CreateMutex_Func(0, "IkFyZSB5b3UgaGF2aW5nIGZ1biB3aXRoIHRoaXMgbGFiPyIgDQo=", 0, MUTEX_ALL_ACCESS);
 
 {% endhighlight %}
 
