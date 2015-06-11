@@ -79,8 +79,8 @@ unsigned int __stdcall findSymbolByHash(unsigned int dllBase, unsigned int symHa
 		push ecx; 
 		push ebx;
 		push edi;
-		push esi;
-		call hashString;              //setup stack frame and has the export while saving clobber registers
+		push esi;                     //setup stack frame and save clobber registers 
+		call hashString;              
 		pop edi;
 		pop ebx;
 		pop ecx;                      //restore clobber registers              
