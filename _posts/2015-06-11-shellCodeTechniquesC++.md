@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Shellode Techniques in C++"
+title: "Shellcode Techniques in C++"
 date: 2015-06-11
 permalink: blog/shellcodeTechniquesCPP/
 ---
