@@ -22,4 +22,4 @@ exclude:
 enable_disqus: false
 
 gems:
-- VideoTag
+- 'jekyll-video-tag'
