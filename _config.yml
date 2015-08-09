@@ -20,6 +20,3 @@ exclude:
 #permalink: pretty
 
 enable_disqus: false
-
-gems:
-- 'jekyll-video-tag'

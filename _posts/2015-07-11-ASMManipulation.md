@@ -163,8 +163,7 @@ public static void writeFunction(byte[] returnTrue, IntPtr targetAddress)
 
 To see this in action, a video demo is prepared below:
 
-{% video /resources/grayStorm/methodOverwriteDemo.mp4 640 480 /resources/grayStorm/storm.jpg %}
-
+[/resources/grayStorm/methodOverwriteDemo.mp4](/resources/grayStorm/methodOverwriteDemo.mp4 "videoDemo")
 
 ##Using This Chain
 
@@ -253,7 +252,8 @@ namespace attackingDemo
 
 Once compiled, we now have an attack payload for our demoAttack. Bundling this executable into GrayFrost an injectable DLL will be created. Now while *demoAttack* is running and stuck in the "return FALSE" output, inject *attackingDemo* and it will change to "return TRUE". For demonstration, I have prepared a video using [GrayDragon](https://www.digitalbodyguard.com/graydragon.html) to inject GrayFrost into my target. 
 
-{% video /resources/grayStorm/attacking.mp4 640 480 /resources/grayStorm/storm.jpg %}
+
+[/resources/grayStorm/attacking.mp4](/resources/grayStorm/attacking.mp4 "demoVideo")
 
 Note: both applications were compiled in x86, but the same techniques work in x64 (with a x64 payload). 
 
