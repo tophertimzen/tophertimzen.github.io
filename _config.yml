@@ -20,3 +20,6 @@ exclude:
 #permalink: pretty
 
 enable_disqus: false
+
+gems:
+- VideoTag
