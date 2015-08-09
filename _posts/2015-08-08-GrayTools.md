@@ -2,7 +2,7 @@
 layout: post
 title: "Gray Tools"
 date: 2015-08-08
-permalink: blog/GrayStorm/
+permalink: blog/GrayTools/
 ---
 
 It is with great pleasure that I open source all materials for my DEF CON 23 talk "Hijacking Arbitrary .NET Application Control Flow". The github repo for all code is located [https://github.com/GrayKernel](https://github.com/GrayKernel "here").

@@ -2,7 +2,7 @@
 layout: post
 title: ".NET Machine Code Manipulation"
 date: 2015-07-17
-permalink: blog/GrayStorm/
+permalink: blog/dotNetMachineCodeManipulation/
 ---
 
 This is the first entry in a series of blog entries describing [GrayStorm](https://github.com/GrayKernel/GrayStorm), a memory reconnaissance platform released at DEF CON 23. In this entry, I will describe how to overwrite a Method's Machine Code after Just-In-Time Compilation (JIT) with techniques implemented in GrayStorm. 
