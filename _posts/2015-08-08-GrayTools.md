@@ -12,6 +12,8 @@ For those interested, there are two white papers associated with these tools tha
 - [Acquiring .NET Objects From the Managed Heap](/resources/grayStorm/AcquiringDotNetObjectsFromTheManagedHeap.pdf)
 - [Hijacking Arbitrary .NET Application Control Flow](/resources/grayStorm/HijackingArbitraryDotnetApplicationControlFlow.pdf)
 
+And the slides for the talk are [here](/resources/grayStorm/DEFCON-23-Topher-Timzen-Hijacking-Arbitrary-NET.pdf). 
+
 There are also some associated blog entries on these tools on my blog.
 
 If you want to reach out, don't hesitate! 
