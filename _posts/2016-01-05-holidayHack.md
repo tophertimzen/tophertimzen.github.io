@@ -295,7 +295,7 @@ It is an image of a Josh's room in the Dosis home. The photo says says GnoneNET-
 
 <a name="Part 2"></a>
 
-Before I start here I must say the overuse of "for Fun and Profit" for the Counter Hack team is a little excessive. They have [blog articles](https://pen-testing.sans.org/blog/) also using this naming convention from the famous Aleph One paper (if you don't know who I am referring to Google is your friend). Oh well... they are doing it for fun and profit. 
+Before I start here I must say the overuse of "for Fun and Profit" for the Counter Hack team is a little excessive. They have [blog articles](https://pen-testing.sans.org/blog/) also using this naming convention from the famous Aleph One paper (if you don't know who I am referring to Google is your friend). Oh well it's all in good fun!
 
 The Dosis children mention there was a video camera behind the gnomes eye that took the photo from part 1 in Josh's room. 
 
@@ -1834,7 +1834,7 @@ Files directory: /gnome/www/files/
 
 Serial: 4CKL3R43V4. 
 
-This serial will be unknown to some but it reads "Ackler 4 eva". Ackler was a professor at Southern Oregon University and was the professor to a member of the Count Hack team (will not mention whom as I do not know if they want to remain anonymous). This makes [Lynn Ackler](http://www.sou.edu/cs/lynnackler.html)! 
+This serial will be unknown to some but it reads "Ackler 4 eva". Ackler was a professor at Southern Oregon University and was the professor to a member of the Counter Hack team (will not mention whom as I do not know if they want to remain anonymous). This makes [Lynn Ackler](http://www.sou.edu/cs/lynnackler.html)! 
 
 Confession: I also attended SOU and got this inside joke. No I did not have outside help from anyone at Counter Hack. I also agree, Ackler 4 eva! (He is a great professor and an inspiration to many.) 
 
@@ -2280,3 +2280,5 @@ Here are some other write-ups I found that are also amazing!
 [0x31](http://0x31.de/sans-holiday-hack-challenge-2015/)
 
 [Christophe rieunier](http://christophe.rieunier.name/securite/A_2015_SANS_Holiday_Hack_Challenge_Journey/journey.php)
+
+[Cory Duplantis](http://ctfhacker.com/ctf/pcap/pwn/web/2016/01/06/counterhack-holiday.html)
