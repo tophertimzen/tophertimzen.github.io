@@ -280,14 +280,14 @@ START_STATEwlan0     Scan completed :
 
 and it can be seen the C2 server used the commands "iwconfig" and "cat /tmp/iwlistscan.txt"
 
-##1) Which commands are sent across the Gnome’s command-and-control channel?
+**1) Which commands are sent across the Gnome’s command-and-control channel?**
 
 The commands sent aross the C2 were
 
 - iwconfig
 - cat /tmp/iwlistscan.txt
 
-##2) What image appears in the photo the Gnome sent across the channel from the Dosis home?
+**2) What image appears in the photo the Gnome sent across the channel from the Dosis home?**
 
 It is an image of a Josh's room in the Dosis home. The photo says says GnoneNET-NorthAmerica on the footer! 
 
@@ -519,13 +519,13 @@ Navigating again to the IP in our [browser](http://52.2.229.189) we can log in a
 
 Upon telling Jessica of my feats she yells out in excitement "Wow, that's right!" and tells me a job well done! She even tells me to "sho Dan" the password information and that Noode.js is for web services, which I already knew. She does go on to inform me that SSJS programming uses an event-driven non-blocking architecture and scales to great levels! 
 
-##3) What operating system and CPU type are used in the Gnome?  What type of web framework is the Gnome web interface built in?
+**3) What operating system and CPU type are used in the Gnome?  What type of web framework is the Gnome web interface built in?**
 
 The Gnome is running OpenWrt and has a 32-bit ARM CPU. 
 
 The web interface is using the monk framework with Node.JS and MongoDB. 
  
-##4) What kind of a database engine is used to support the Gnome web interface? What is the plaintext password stored in the Gnome database?
+**4) What kind of a database engine is used to support the Gnome web interface? What is the plaintext password stored in the Gnome database?**
 
 The database engine is using MongoDB as shown in app.js from 'www' and from the /opt/mongodb folder. 
 
@@ -603,9 +603,9 @@ United States, Boardman
 
 To confirm my findings the great and powerful oracle, Tom Hessman, granted me permission to attack these 5 IP addresses!
 
-##5) What are the IP addresses of the five SuperGnomes scattered around the world, as verified by Tom Hessman in the Dosis neighborhood?
+**5) What are the IP addresses of the five SuperGnomes scattered around the world, as verified by Tom Hessman in the Dosis neighborhood?**
 
-##6) Where is each SuperGnome located geographically?
+**6) Where is each SuperGnome located geographically?**
 
 The table below answers both questions
 
@@ -1864,9 +1864,9 @@ Linux sg5 3.13.0-48-generic #80-Ubuntu SMP Thu Mar 12 11:16:15 UTC 2015 x86_64 x
 
 The above is the reason why I could not get the jmp esp correct when compiling on my Kali machine! I should have looked around the system more for compiled form of the binary.. I could have saved over a day of scratching my head. I also could have done a more complicated payload, but hey my exploit works!
 
-##7) Please describe the vulnerabilities you discovered in the Gnome firmware.
+**7) Please describe the vulnerabilities you discovered in the Gnome firmware.**
  
-##8) Attempt to remotely exploit each of the SuperGnomes.  Describe the technique you used to gain access to each SuperGnome’s gnome.conf file.
+**8) Attempt to remotely exploit each of the SuperGnomes.  Describe the technique you used to gain access to each SuperGnome’s gnome.conf file.**
 
 I answered both of the questions above for each SG. For brevity, here are goto links in case you missed them! 
 
@@ -2016,11 +2016,11 @@ I started by taking camera_feed_overlap_error and XORing with factory_cam_1. I t
 
 The scrambled image is none other than Cindy Lou Who, age 62, with a framed picture of none other than the Grinch! 
 
-##9) Based on evidence you recover from the SuperGnomes’ packet capture ZIP files and any staticky images you find, what is the nefarious plot of ATNAS Corporation?
+**9) Based on evidence you recover from the SuperGnomes’ packet capture ZIP files and any staticky images you find, what is the nefarious plot of ATNAS Corporation?**
 
 The plot of ATNAS Corp is to ruin Christmas and make the people cry out "BOO-HOO!"
  
-##10) Who is the villain behind the nefarious plot.
+**10) Who is the villain behind the nefarious plot.**
 
 Cindy Lou Who, age 62, President and CEO of ATNAS Corporation.
 
@@ -2032,7 +2032,7 @@ Cindy Lou Who, age 62, President and CEO of ATNAS Corporation.
 
 The following shows how I finished the quests in the game and some of the hints each member of the team gave. 
 
-##Jessica: Chat with Jessica Dosis
+**Jessica: Chat with Jessica Dosis**
 
 <a name="JessicaDosis"></a>
 
@@ -2040,7 +2040,7 @@ Jessica is in the house on Einstein and Lovelace.
 
 She has the firmware.
 
-##Josh: Chat with Josh Dosis
+**Josh: Chat with Josh Dosis**
 
 <a name="JoshDosis"></a>
 
@@ -2048,7 +2048,7 @@ Josh was found in [Part 1](#Part 1).
 
 Josh is in the house on Einstein and Lovelace. He gives us the [pcap](https://www.holidayhackchallenge.com/2015/giyh-capture.pcap) of the gnome traffic for Part 1. He even started a [script](https://www.holidayhackchallenge.com/2015/gnomeitall.py) to pull the image from it, but it doesn't work! He said the JPG might be in the PCAP but he couldn't find the magic bytes of 0xFFD8 tat signify the start of the file. Josh mentions Tim in SE Park has some network analysis foo and to ask him if we are stuck. 
 
-##Ed Skoudis: Chat with Ed Skoudis
+**Ed Skoudis: Chat with Ed Skoudis**
 
 <a name="Skoudis"></a>
 
@@ -2060,13 +2060,13 @@ Once we discover the Interns plot and tell Ed about it he angers! Ed finds it sk
 
 After finishing the talk with Ed we are granted Star Wars themed credits! Telling Ed about the Intern was my last achievement so I unlocked Victory!
 
-##Lynn Schifano: Chat with Lynn Schifano
+**Lynn Schifano: Chat with Lynn Schifano**
 
 <a name="Lynn"></a>
 
 At first entrance into the Dosis Neighbourhood on the intersection of Einstein and Boole Lynn stands. Lynn shows us the Counter Hack office with a [tour](http://www.counterhack.net/Counter_Hack/Just_Your_Typical_Office.html). We are also told that Lynn is our source news and events. Lynn tells us the Intern is missing and to tell Ed when we find him! 
 
-##The Intern: Chat with The Intern
+**The Intern: Chat with The Intern**
 
 <a name="intern"></a>
 
@@ -2074,7 +2074,7 @@ Hidden inside the NOC after we use the [Konami](https://pen-testing.sans.org/blo
 
 After completing [part 2](#Part 2) the Intern responds to us that he has a Gnome in his backpack! He was on a convert mission to place a Gnome inside the Counter Hack data center and it was all planned by ATNAS! He was sent to plant the Gnome so ATNAS could monitor the communications between Counter Hack and the Holiday Hack participants! The big plot must be something scary to send an insider. I'm sure Ed will want to know about this!
 
-##Tom VanNorman: Chat with Tom VanNorman
+**Tom VanNorman: Chat with Tom VanNorman**
 
 <a name="VanNorman"></a>
 
@@ -2085,7 +2085,7 @@ After bringing him the lights Tom tells us he likes to do vulnerability discover
 - some systems disable DEP / exec stack
 - how to bypass ASLR with [jmp](https://penturalabs.wordpress.com/2011/03/31/vulnerability-development-buffer-overflows-how-to-bypass-full-aslr/) instructions 
 
-##Tim Medin: Chat with Tim Medin
+**Tim Medin: Chat with Tim Medin**
 
 <a name="Medin"></a>
 
@@ -2108,13 +2108,13 @@ He links us to [two](https://media.blackhat.com/bh-us-11/Sullivan/BH_US_11_Sulli
 
 Lastly he tells us the Intern is still lost but that Tom VanNorman is working on some amazing stuff. 
 
-##Tom Hessman: Chat with Tom Hessman
+**Tom Hessman: Chat with Tom Hessman**
 
 <a name="Hessman"></a>
 
 Hidden inside the secret room we find the great and powerful oracle, Tom! Any text we type is a question! He will validate our IPs for [part 3](#Part 3) to deem them in scope. 
 
-##Josh Wright: Chat with Josh Wright
+**Josh Wright: Chat with Josh Wright**
 
 <a name="JoshW"></a>
 
@@ -2130,7 +2130,7 @@ He also gives us a link to a [SANS Penetration Testing](http://pen-testing.sans.
 
 Lastly, he gives us a gift to give to Dan and tells us the Intern is out by the dumpsters! 
 
-##Dan Pendolino: Chat with Dan Pendolino
+**Dan Pendolino: Chat with Dan Pendolino**
 
 <a name="Pendolino"></a>
 
@@ -2144,7 +2144,7 @@ He does tell us that MongoDB and NoSQL databases are just as vulnerable to the c
 
 Lastly he mentions Tim knows a lot about Server Side JavaScript injection!
 
-##Jeff Mcjunkin: Chat with Jeff Mcjunkin
+**Jeff Mcjunkin: Chat with Jeff Mcjunkin**
 
 <a name="Mcjunkin"></a>
 
@@ -2156,43 +2156,43 @@ Jeff is stoked when we give him a [cookie](#cookie)!
 
 Jeff tells us all about firmware analysis and how the file is typically constructed. He mentions [binwalk](http://binwalk.org/) is a handy tool to parse through a binary image! He links us to a paper by [Niel Jones](https://www.sans.org/reading-room/whitepapers/testing/exploiting-embedded-devices-34022) that will be useful. Jeff also mentions Ed has Command Line Kung Fu, [CLKF](http://blog.commandlinekungfu.com/).
 
-##Secret Room: Find the Secret Room
+**Secret Room: Find the Secret Room**
 
 <a name="Secret"></a>
 
 The Secret Room is hidden in Ed's room! It is tucked away in the corner on the left wall by the Christmas hat! Inside is Tom H!
 
-##Secret*2 Room: Find the Secret Secret Room
+**Secret*2 Room: Find the Secret Secret Room**
 
 <a name="Secret*2"></a>
 
 Hidden inside of Secret room in the top right!
 
-##Jo's Cookie: Find one of Jo's delicious cookies!
+**Jo's Cookie: Find one of Jo's delicious cookies!**
 
 <a name="cookie"></a>
 
 Hidden in Secret*2 room! Jeff will love this!
 
-##Candy Cane: Now great for getting rid of Sushi-Fusion taste!
+**Candy Cane: Now great for getting rid of Sushi-Fusion taste!**
 
 <a name="candy"></a>
 
 Located by the fence on Tesla and Boole! JoshW will love this!
 
-##Hot Chocolate: Hot chocolate warms the body and soul
+**Hot Chocolate: Hot chocolate warms the body and soul**
 
 <a name="Chocolate"></a>
 
 Inside of Brittiny's house (Cuppa-Josephine's Coffee) on Turing and Lovelace is the hot chocolate that Tim wants as he is from Texas and is cold in the park. 
 
-##Holiday Lights: a tangled knot of blinky holiday lights
+**Holiday Lights: a tangled knot of blinky holiday lights**
 
 <a name="lights"></a>
 
 Located inside of Dan's apartment at Einstein and Boole. 
 
-##The Gift: A gift from Josh to Dan
+**The Gift: A gift from Josh to Dan**
 
 <a name="gift"></a>
 
@@ -2204,7 +2204,7 @@ It reads
 
 "Dan, Thank you for your great work as a volunteer at my restaurant. You're fired. :). Happy holidays, your friend, JoshW.".
 
-##Pin Code: Find the PIN code for the NOC door.
+**Pin Code: Find the PIN code for the NOC door.**
 
 <a name="pinCode"></a>
 
@@ -2214,7 +2214,7 @@ There is a hole in the fence that allows us to go up to the NOC door!
 
 The pin code is "0262" and putting that into the game chat opens the door for us!
 
-##Data Maze: Find your way through the NOC maze.
+**Data Maze: Find your way through the NOC maze.**
 
 <a name="maze"></a>
 
@@ -2226,7 +2226,7 @@ I started to see something cute at play here and had remembered Jeff made a blog
 
 I then tried the Konami code ^^vv<><> and boom! I was through the data maze and found the intern!
 
-##Victory: YAY!
+**Victory: YAY!**
 
 <a name="Victory"></a>
 
