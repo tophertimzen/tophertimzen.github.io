@@ -874,7 +874,7 @@ We also want the zip file, 20150225093040.zip, for pcaps and the static image, f
 /cam?camera=../upload/XoWsWzBB/../1337/exploit.png/../../../../files/factory_cam_2.zip
 {% endhighlight %}
 
-###SG2 Firmware Analysis
+####SG2 Firmware Analysis
 
 I decided it would be a good idea to dump 'index.js' out of 'www/routes' so I had a better idea of what was going on for this specific SG. This will possibly help with what is to come with future SGs assuming my idea is correct of each SG having an updated piece of firmware. 
 
