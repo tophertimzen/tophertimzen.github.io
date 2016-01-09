@@ -534,7 +534,7 @@ The Gnome database in /opt/mongodb had the following plaintext passwords
 - user:user
 - admin:SittingOnAShelf
 
-#Part 3: Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt
+#Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt
 
 <a name="Part 3"></a>
 
