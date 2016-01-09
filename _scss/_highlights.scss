@@ -10,10 +10,11 @@
     border: 1px solid #2d6472;
     border-radius: 3px 3px 3px 3px;
     padding: 6px 10px;
-	white-space: wrapall;
+	white-space: pre-wrap;
 	word-break: break-all;
     word-wrap: break-word;
 	overflow: auto;
+	overflow-x: hidden;
 }
  
 code {
