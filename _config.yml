@@ -22,5 +22,4 @@ exclude:
 enable_disqus: false
 
 # Build settings
-paginate: 5
-paginate_path: "/page:num/"
+paginate: 15
