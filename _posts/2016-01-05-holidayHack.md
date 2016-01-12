@@ -2267,7 +2267,7 @@ I hope you enjoyed my write-up! This was an incredibly fun challenge and I learn
 
 I am confident there a ton more Easter eggs that I missed and cannot wait to see what others found! 
 
-January 12th, 2016: I recieved [Super Honorable Mention](https://holidayhackchallenge.com/winning-entry.html) for my write-up! Thanks Counter Hack! 
+January 12th, 2016: I received [Super Honorable Mention](https://holidayhackchallenge.com/winning-entry.html) for my write-up! Thanks Counter Hack! 
 
 #Other Write-ups
 
