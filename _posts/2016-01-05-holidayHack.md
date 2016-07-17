@@ -10,7 +10,7 @@ permalink: blog/sansHoliday2015/
 * toc
 {:toc}
 
-#Introduction
+# Introduction
 
 Every year the team at [Counter Hack Challenges](https://www.counterhackchallenges.com/) in cooperation with [SANS](https://pen-testing.sans.org/) puts on a holiday themed hacking challenge. This year the challenge involved firmware analysis, network analysis, common web application vulnerabilities and IoT!
 
@@ -20,7 +20,7 @@ Below you will find my somewhat detailed write-up of the methods I took to solve
 
 I hope you enjoy! 
 
-#Prologue 
+# Prologue 
 
 The hit of the holiday season were Gnomes that could watch over children to tell whether they're naughty or nice! The product, "Gnome in your Home." 
 
@@ -28,7 +28,7 @@ ATNAS Corporation, the company behind the product, encouraged parents to move th
 
 Duke Dosis, father of Josh and Jessica, acquired one and brought it home to his tech savy kids. 
 
-#Part 1: Dance of the Sugar Gnome Fairies: Curious Wireless Packets
+# Part 1: Dance of the Sugar Gnome Fairies: Curious Wireless Packets
 
 <a name="Part 1"></a>
 
@@ -39,7 +39,7 @@ We are entered into the [Dosis Neighborhood](https://quest.holidayhackchallenge.
 Josh is in the house on Einstein and Lovelace. He gives us the [pcap, giyh-capture.pcap,](https://www.holidayhackchallenge.com/2015/giyh-capture.pcap) of the gnome traffic. He even started a [script](https://www.holidayhackchallenge.com/2015/gnomeitall.py) using [Sacpy](http://www.secdev.org/projects/scapy/) to pull the image from it, but it doesn't work! He said the JPG might be in the PCAP but he couldn't find the magic bytes of 0xFFD8 that signify the start of the file. Josh mentions Tim in SE Park has some network analysis foo and to ask him if we are stuck. 
 
 
-##Analysis
+## Analysis
 
 Running strings on the pcap shows base64 values such as "RVhFQzogICAgICAgICAgCg==C" which turns out to be "EXEC". 
 
@@ -291,7 +291,7 @@ The commands sent aross the C2 were
 
 It is an image of a Josh's room in the Dosis home. The photo says says GnoneNET-NorthAmerica on the footer! 
 
-#Part 2: I’ll be Gnome for Christmas: Firmware Analysis for Fun and Profit
+# Part 2: I’ll be Gnome for Christmas: Firmware Analysis for Fun and Profit
 
 <a name="Part 2"></a>
 
@@ -303,7 +303,7 @@ Jessica scratched her head and pointed out the obvious, “Maybe Santa and the g
 
 Jessica pulled a copy of the firmware she ripped out of the Gnome using her Xeltek SuperPro 6100, a rather expensive 144-pin universal programmer. 
 
-##Analysis
+## Analysis
 
 Jessica provides us with the NAND storage used by the Gnome. The [firmware](https://www.holidayhackchallenge.com/2015/giyh-firmware-dump.bin) image is ~17mb in size. She asks us to find the password within the image for the Gnome database!
 
@@ -534,7 +534,7 @@ The Gnome database in /opt/mongodb had the following plaintext passwords
 - user:user
 - admin:SittingOnAShelf
 
-#Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt
+# Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt
 
 <a name="Part 3"></a>
 
@@ -544,7 +544,7 @@ We are told to look for them on the internet based on the firmware analysis and 
 
 SG IP can be confirmed by the great and powerful oracle, [Tom Hessman](#Hessman), to ensure they are inscope. 
 
-##Analysis
+## Analysis
 
 For this I logged into [sho Dan](shodan.io) and used the IP I had already known from the 1st Gnome in my search [query](https://www.shodan.io/host/52.2.229.189). I looked at the services field and noticed the 'X-Powered-By' field in the HTTP header listed some information about the Gnome.
 
@@ -621,7 +621,7 @@ The table below answers both questions
 	
 {% endhighlight %}
 
-#Part 4: There’s No Place Like Gnome for the Holidays: Gnomage Pwnage
+# Part 4: There’s No Place Like Gnome for the Holidays: Gnomage Pwnage
 
 <a name="Part 4"></a>
 
@@ -645,7 +645,7 @@ Game hints:
 - And, you can’t beat [Josh Wright](#JoshW) when it comes to fun and fanciful discussions about Node.js architecture, LFI
   attacks, and directory traversal.
   
-##Analysis
+## Analysis
 
 The below table lists the IP for each SG
 
@@ -678,7 +678,7 @@ www
 
 {% endhighlight %}
 
-###SG1 : 52.2.229.189
+### SG1 : 52.2.229.189
 
 <a name="SG1"></a>
 
@@ -703,7 +703,7 @@ Files directory: /gnome/www/files/
 
 [USS Enterprise](https://en.wikipedia.org/wiki/USS_Enterprise_(NCC-1701)) also shared this serial! 
 
-####Useful notes from SG1
+#### Useful notes from SG1
 
 We are also able to download factory_cam_1.zip which tells us nothing important for now but might come in handy for future SGs as in gnomenet user PS tells us they uploaded a cam image to each SG with the convention factory_cam_#.png due to an overlapping issue with cameras named the same with pixels being XORed. 
 
@@ -711,7 +711,7 @@ Another interesting file is sgnet.zip which contains a program written in C for 
 
 Perhaps sgnet will come in useful for future SuperGnomes. 
 
-###SG2 : 52.34.3.80 
+### SG2 : 52.34.3.80 
 
 <a name="SG2"></a>
 
@@ -759,6 +759,7 @@ This SuperGnome also allows us to upload files in the [/settings](http://52.34.3
 When uploading a file we pick the Destination filename and choose a file to upload. 
 
 {% highlight bash %}
+
 POST /settings HTTP/1.1
 
 Host: 52.34.3.80
@@ -942,7 +943,7 @@ The only addition was some error checking on directory naming and did not matter
 
 Onto SG3! Hopefully this updated firmware comes in handy! 
 
-###SG3 : 52.64.191.71  
+### SG3 : 52.64.191.71  
 
 <a name="SG3"></a>
 
@@ -1073,7 +1074,7 @@ db.get('users').findOne({username: (req.body.username || "").toString(10), passw
 
 which allowed us to pass in a param with no value to the password field!
 
-###SG4: 52.192.152.132
+### SG4: 52.192.152.132
 
 <a name="SG4"></a>
 
@@ -1227,7 +1228,7 @@ And the same for factory_cam_4.zip
 require('fs').readFileSync('/gnome/www/files/factory_cam_4.zip', {encoding: 'hex'})
 {% endhighlight %}
 
-####SG4 Detailed Analysis:
+#### SG4 Detailed Analysis:
 
 I figured I could dump the index.js from SG4 as I could read files from disk so I went ahead and did that! 
 
@@ -1262,7 +1263,7 @@ router.post('/files', upload.single('file'), function(req, res, next) {
 
 Other than the obvious use of eval() not much in the code changed other than the SuperGnome admin name and the purging of "execSync" in our injected command. 
 
-###SG5: 54.233.105.81
+### SG5: 54.233.105.81
 
 <a name="SG5"></a>
 
@@ -1853,7 +1854,7 @@ COPY HEX STRING
 gnet ~ echo "HEX STRING" | xxd -r -p > factory_cam_5.zip
 {% endhighlight %}
 
-####Bonus
+#### Bonus
 
 On SG05 we can enumerate a bit more if we want
 
@@ -1880,7 +1881,7 @@ I answered both of the questions above for each SG. For brevity, here are goto l
 
 [SG5](#SG5)
 
-#Part 5: Baby, It’s Gnome Outside: Sinister Plot and Attribution
+# Part 5: Baby, It’s Gnome Outside: Sinister Plot and Attribution
 
 <a name="Part 5"></a>
 
@@ -1888,7 +1889,7 @@ I answered both of the questions above for each SG. For brevity, here are goto l
 
 “I’ll bet that the other SuperGnomes have similar packet capture files on them as well, with each SuperGnome having different sets of email messages.  Let’s try to grab them and see if all those emails together let us unravel who is behind ATNAS Corporation and this plot!”
 
-##Analysis
+## Analysis
 
 Good thing I grabbed all of those zip files during my exploitation of the 5 SuperGnomes in [part4](#Part 4)! I also grabbed all of the factory cam images. 
 
@@ -1920,7 +1921,7 @@ I then used tcpflow to extract flow data from the pcaps
 fromGnomes/pcap ~ for pcap in *.pcap; do tcpflow -r $pcap -o $pcap.Results; done
 {% endhighlight %}
 
-###PCAP1:
+### PCAP1:
 
 Pcap one showed an e-mail to "JoJo", jojo@atnascorp.com, from "C", c@atnascorp.com, from December 26th 2014. The e-mail reminded JoJo of involvement in Gnome in Your Home and the need to scale to 2 million Gnomes! C mentions that hardware would start to be produced in the Feburary 2015 timeframe. Furthermore, C attched an image "GiYH_Architecture.jpg" that was encoded as base64. 
 
@@ -1933,7 +1934,7 @@ The architecture shows more of the plan of ATNSA Corp.
 
 ![](/resources/posts/holidayhack2015/Architecture.jpg)
 
-###PCAP2
+### PCAP2
 
 This pcap contained another e-mail from "C" to Martha at ginormous electronics supplier, supplier@ginormouselectronicssupplier.com. 
 
@@ -1956,7 +1957,7 @@ CW also tells Martha the project is of utmost secrecy and not to tell law enforc
 
 Those Gnomes were pretty robust! This also confirms the use of a 32-bit ARM [CPU](https://en.wikipedia.org/wiki/ARM_Cortex-A9)!
 
-###PCAP3
+### PCAP3
 
 Another e-mail from C. This time it is to burglar lackeys, burglerlackeys@atnascorp.com. 
 
@@ -1979,7 +1980,7 @@ above all, avoid Mount Crumpit!
 
 C signed off as CLW, President and CEO of ATNAS Corporation this time. CLW? The Grinch? Could it be Cindy Lou Who is behind this horrendous plot!?
 
-###PCAP4
+### PCAP4
 
 This pcap had another e-mail from C. This e-mail was to a doctor at whoville psychiatrists, psychdoctor@whovillepsychiatrists.com. 
 
@@ -1989,7 +1990,7 @@ She mentions he had tried to ruin Christmas but had a change of heart and how sh
 
 This time C signs the e-mail with her full name, Cindy Lou Who!
 
-###PCAP5
+### PCAP5
 
 Pcap 5 starts with a login of "c" and we see her password is "AllYourPresentsAreBelongToMe". Cute. 
 
@@ -2004,7 +2005,7 @@ Please use your skills wisely
 and to help and support your fellow Who, especially during the holidays.
 {% endhighlight %}
 
-##Staticky Image Analysis
+## Staticky Image Analysis
 
 Each SG had a factory_cam image uploaded to it as in [gnomenet](http://54.233.105.81/gnomenet) a user had reported an issue with camera feeds being scrambled together. Admin PS uploaded factory test cameras along with "camera_feed_overlap_error.png" (pulled from SG01) to each SG. PS mentions that one of the cameras was in the boss' office! Admin DW mentions that each pixcel is XORed when camera feeds are named the same and to avoid that in the future. 
 
@@ -2024,11 +2025,11 @@ The plot of ATNAS Corp is to ruin Christmas and make the people cry out "BOO-HOO
 
 Cindy Lou Who, age 62, President and CEO of ATNAS Corporation.
 
-#Epilogue: ‘Twas the Gnome Before Christmas:  Wrapping It All Up
+# Epilogue: ‘Twas the Gnome Before Christmas:  Wrapping It All Up
 
 “With the details from each of the five SuperGnomes, we’ve got extremely incriminating evidence of the sinister plot and the villain behind it.  Let’s package up all our findings and take them to Dad’s friends in law enforcement!  They’ll be able to stop the bad guys.”
 
-#Achievements / Quests
+# Achievements / Quests
 
 The following shows how I finished the quests in the game and some of the hints each member of the team gave. 
 
@@ -2232,7 +2233,7 @@ I then tried the Konami code ^^vv<><> and boom! I was through the data maze and 
 
 After finishing the talk with Ed about the Intern (and completing all other achievements) we are granted Star Wars themed credits!
 
-#The Map
+# The Map
 
 Enjoy the crummy map I made to avoid retracing my steps to find people! 
 
@@ -2261,7 +2262,7 @@ CR = control room
  
 {% endhighlight %}
 
-#Conclusion
+# Conclusion
 
 I hope you enjoyed my write-up! This was an incredibly fun challenge and I learned a ton. Kudos to the team at Counter Hack for their time investment to make challenges that scaled in difficulty.
 
@@ -2269,7 +2270,7 @@ I am confident there a ton more Easter eggs that I missed and cannot wait to see
 
 January 12th, 2016: I received [Super Honorable Mention](https://holidayhackchallenge.com/winning-entry.html) for my write-up! Thanks Counter Hack! 
 
-#Other Write-ups
+# Other Write-ups 
 
 Here are some other write-ups I found that are also amazing!
 

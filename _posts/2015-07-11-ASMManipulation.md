@@ -7,7 +7,7 @@ permalink: blog/dotNetMachineCodeManipulation/
 
 This is the first entry in a series of blog entries describing [GrayStorm](https://github.com/GrayKernel/GrayStorm), a memory reconnaissance platform released at DEF CON 23. In this entry, I will describe how to overwrite a Method's Machine Code after Just-In-Time Compilation (JIT) with techniques implemented in GrayStorm. 
 
-##Introduction to .NET Machine Code 
+## Introduction to .NET Machine Code 
 
 When an application is compiled, IL code is generated through implicit compilation. The .NET Framework will then generate machine code at runtime. The common language runtime (CLR) is used by the framework to generate assembly code from IL code. IL code is an independent set of instructions that are converted to native machine code at JIT. When a method is about to be executed, the framework uses JIT to generate assembly code that the CPU can execute by accessing a JIT stub.
 
@@ -91,7 +91,7 @@ public static void testMethod()
 
 {% endhighlight %}
 
-##Utilizing Machine Code
+## Utilizing Machine Code
 
 The JIT process leaves the executable memory with rwx permissions. Because of this, an attacker can overwrite a method's memory at the machine code level. Note that even if the JIT didn't leave rwx, once an application is injected into another memory permissions could be changed with [VirtualProtect](https://msdn.microsoft.com/en-us/library/windows/desktop/aa366898(v=vs.85).aspx). 
 
@@ -111,7 +111,7 @@ The address IntPtr will now contain the function pointer to the executable machi
 
 Using this address, machine code can be read and written over. 
 
-##Writing Machine Code
+## Writing Machine Code
 
 To write machine code over a method, a byte array must be construed that would be suitable for the targeted method. The possibilities are endless here and the imagination of the attacker can come into play! For demonstration purposes, a simple return true payload will be used. 
 
@@ -165,11 +165,11 @@ To see this in action, a video demo is prepared below:
 
 [/resources/grayStorm/methodOverwriteDemo.mp4](/resources/grayStorm/methodOverwriteDemo.mp4 "videoDemo")
 
-##Using This Chain
+## Using This Chain
 
 This chain opens up quite a few possibilities for attacking .NET applications post-exploitation. Machine code payloads can be constructed to steal parameters to methods and pass them along to logs/exfil (such as passwords, keys, e-mails, etc), change events (button presses, timers), overwrite core logic (password validation, licensing) and more. The bounds of this technique are up to the developer/attacker. Metasploit payloads can even be brought into play, given they handle parsing the PEB [correctly](http://www.tophertimzen.com/blog/shellcodeDotNetPEB/). 
 
-##Outside of Gray Storm
+## Outside of Gray Storm
 
 If you want to perform similar tasks without the use of GrayStorm a payload specific to your purposes can be created and injected into a target with [GrayFrost](https://github.com/GrayKernel/GrayFrost). 
 
@@ -252,14 +252,13 @@ namespace attackingDemo
 
 Once compiled, we now have an attack payload for our demoAttack. Bundling this executable into GrayFrost an injectable DLL will be created. Now while *demoAttack* is running and stuck in the "return FALSE" output, inject *attackingDemo* and it will change to "return TRUE". For demonstration, I have prepared a video using [GrayDragon](https://www.digitalbodyguard.com/graydragon.html) to inject GrayFrost into my target. 
 
-
 [/resources/grayStorm/attacking.mp4](/resources/grayStorm/attacking.mp4 "demoVideo")
 
 Note: both applications were compiled in x86, but the same techniques work in x64 (with a x64 payload). 
 
 ---
 
-###Conclusion
+### Conclusion
 
 All resources used (demoAttack, attackingDemo & GrayFrost32.dll) are included [here](/resources/grayStorm/machineCode/resources.zip). Inject GrayFrost32.dll into demoAttack with any DLL injector you wish.
 

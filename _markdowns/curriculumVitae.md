@@ -7,7 +7,7 @@ permalink: /curriculumVitae/
 
 # Instructor
 
-#####[ CS407 Forensics III / Memory Forensics](/cs407/) - 10 week course at Southern Oregon University Spring 2015
+##### [ CS407 Forensics III / Memory Forensics](/cs407/) - 10 week course at Southern Oregon University Spring 2015
 	
 Topics included: Windows Kernel structures, malware techniques, malware analysis, shellcode construction, and parsing several key elements out of memory for digital forensics and incident response utilizing Volatility.
 

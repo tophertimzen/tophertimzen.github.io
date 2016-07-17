@@ -674,7 +674,7 @@ Success!
 
 ---
 
-###EOF
+### EOF
 
 I hope that this blog post has helped in aiding the development of Win64 shellcode... I am just getting started with writing what I have learned in my research and am hopefully going to continue to write/document on my website. 
 
