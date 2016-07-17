@@ -33,4 +33,10 @@ This presentation gives an overview of how to use these tools in a real attack s
 - [Slides](https://speakerdeck.com/tophertimzen)
 - [Tools](https://github.com/GrayKernel "GitHub")
 
+#####Reverse Engineering and Attacking .NET Applications - ToorCamp 2016
 
+<p class="tab">This talk will demonstrate reverse engineering and attacking .NET applications. I will start by discussing reverse engineering as it pertains to .NET and show how to get a glimpse into a binaries code base. Moving forward I will show how to modify running applications with advanced .NET and assembly level attacks using open source tools I developed. By discussing internal framework structures you will leave understanding why and how these attacks work. You will also be able to implement defense and attack scenarios in test cases.</p>
+
+<p class="tab">You will leave with an overview of how to use reverse engineering to discover weaknesses in .NET applications and how to leverage those as an attacker.</p>
+
+- [Slides](https://speakerdeck.com/tophertimzen/toorcamp-2016-reverse-engineering-and-attacking-net-applications)

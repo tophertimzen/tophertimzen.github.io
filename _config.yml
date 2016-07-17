@@ -1,7 +1,7 @@
 name: Topher Timzen
 url: http://www.tophertimzen.com
 markdown: kramdown
-highlighter: pygments
+highlighter: rouge
 
 sass:
   sass_dir: _scss
