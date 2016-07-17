@@ -98,6 +98,7 @@ RAX and EAX are used to return parameters from a function for both x86 and x64.
 Win32 uses the stdcall calling convection and passes arguments on the stack backwards. 
  
 A call to a function foo with the arguments int x and int y
+
 {% highlight c %}
 
 foo(int x, int y)
