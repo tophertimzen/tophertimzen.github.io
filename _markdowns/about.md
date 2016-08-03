@@ -4,9 +4,9 @@ title: About
 permalink: /about/
 ---
 
-Topher has recently finished studying Computer Science with an emphasis in Security and Information Assurance at Southern Oregon University. Graduating Summa Cum Laude, Topher had a research emphasis on reverse engineering, malware, exploitation development, incident response and live memory hacking. He has also had exposure to Linux and Windows system administration, networking, flow data analysis, cryptography and security design principles. Furthermore, he has had two successful internships in industry, one focused on systems administration and the other on cyber operations. 
+Topher is currently a Security Researcher at Intel's Security Center of Excellence (SeCoE) learning the dark insides of hardware. He holds a bachelors in Computer Science with an emphasis in Security and Information Assurance from Southern Oregon University. Graduating Summa Cum Laude, Topher had a research emphasis on reverse engineering, malware, exploitation development, incident response and live memory hacking. 
 
-Topher has instructed college courses on malware analysis and memory forensics while also managing a cybersecurity research lab for SOU. Mainly focusing on .NET memory hijacking, he has produced tools that allow for new post exploitation attack sequences and discussed them at DEF CON 23, BSidesPDX, and SecTor 2015. He is currently a Security Researcher at Intel's Security Center of Excellence learning the dark insides of hardware.
+Topher instructed courses on malware analysis and memory forensics at SOU while also managing their cybersecurity research lab. Mainly focusing on .NET memory hijacking, he has produced tools that allow for new post exploitation attack sequences and discussed them at DEF CON 23, BSidesPDX, and SecTor 2015.
 
 Outside of working on research or course material Topher enjoys hiking, mountain biking, playing guitar and discovering new music. 
 
