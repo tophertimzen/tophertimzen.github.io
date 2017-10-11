@@ -3,8 +3,6 @@ layout: page
 permalink: /curriculumVitae/
 ---
 
-# Curriculum Vitae
-
 # Instructor
 
 ##### [ CS407 Forensics III / Memory Forensics](/cs407/) - 10 week course at Southern Oregon University Spring 2015
