@@ -1,0 +1,53 @@
+https://keybase.io/ttimzen
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.tophertimzen.com
+  * I am ttimzen (https://keybase.io/ttimzen) on keybase.
+  * I have a public key ASDujVwoiebsWPA5e5Xk4wd9blw29002bROa67GXKNbZ5Qo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01200b1f522b916cac109a508e83d742ad823126431f5779b96f6ca4c8e4bebce33a0a",
+      "host": "keybase.io",
+      "kid": "0120ee8d5c2889e6ec58f0397b95e4e3077d6e5c36f74d366d139aebb19728d6d9e50a",
+      "uid": "6599fc17dfbc742bd5341e5a77e3b819",
+      "username": "ttimzen"
+    },
+    "merkle_root": {
+      "ctime": 1507680428,
+      "hash": "b3ce4d46faf6b0a13a45407b9f59ee70a1c5b2c8f47394640cc307294932934f164750db4baf9d5cb3aea72803ec01d7ab3b8630c9cb42218adf5c7b309b1626",
+      "hash_meta": "b60db9b90f56e1c741c1810bd9dabf0c6cb4da22a9075a12f4498ece038ed6c2",
+      "seqno": 1555837
+    },
+    "service": {
+      "hostname": "www.tophertimzen.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.34"
+  },
+  "ctime": 1507680465,
+  "expire_in": 504576000,
+  "prev": "1b93ea575d3497caaf75c11132d84cecac925e756e9571bc090351847abadf19",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg7o1cKInm7FjwOXuV5OMHfW5cNvdNNm0TmuuxlyjW2eUKp3BheWxvYWTFA0t7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwMGIxZjUyMmI5MTZjYWMxMDlhNTA4ZTgzZDc0MmFkODIzMTI2NDMxZjU3NzliOTZmNmNhNGM4ZTRiZWJjZTMzYTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZWU4ZDVjMjg4OWU2ZWM1OGYwMzk3Yjk1ZTRlMzA3N2Q2ZTVjMzZmNzRkMzY2ZDEzOWFlYmIxOTcyOGQ2ZDllNTBhIiwidWlkIjoiNjU5OWZjMTdkZmJjNzQyYmQ1MzQxZTVhNzdlM2I4MTkiLCJ1c2VybmFtZSI6InR0aW16ZW4ifSwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE1MDc2ODA0MjgsImhhc2giOiJiM2NlNGQ0NmZhZjZiMGExM2E0NTQwN2I5ZjU5ZWU3MGExYzViMmM4ZjQ3Mzk0NjQwY2MzMDcyOTQ5MzI5MzRmMTY0NzUwZGI0YmFmOWQ1Y2IzYWVhNzI4MDNlYzAxZDdhYjNiODYzMGM5Y2I0MjIxOGFkZjVjN2IzMDliMTYyNiIsImhhc2hfbWV0YSI6ImI2MGRiOWI5MGY1NmUxYzc0MWMxODEwYmQ5ZGFiZjBjNmNiNGRhMjJhOTA3NWExMmY0NDk4ZWNlMDM4ZWQ2YzIiLCJzZXFubyI6MTU1NTgzN30sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJ3d3cudG9waGVydGltemVuLmNvbSIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjM0In0sImN0aW1lIjoxNTA3NjgwNDY1LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwicHJldiI6IjFiOTNlYTU3NWQzNDk3Y2FhZjc1YzExMTMyZDg0Y2VjYWM5MjVlNzU2ZTk1NzFiYzA5MDM1MTg0N2FiYWRmMTkiLCJzZXFubyI6OCwidGFnIjoic2lnbmF0dXJlIn2jc2lnxEA4lDaBHK5oJjM422jz7mIXpP2Mc6pa1ev8pkmKaE8Opz4/OlWEGohb1qp/b7EPjDMVwhG+e3BwjPjEKDR86kMHqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQgFfYlnoyqlbMu2pZVl5shD42UD2pR18an0BQkxmPvG96jdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/ttimzen
+
