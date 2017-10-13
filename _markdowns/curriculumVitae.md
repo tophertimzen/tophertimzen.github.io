@@ -1,12 +1,13 @@
 ---
 layout: page
+title: Curriculum Vitae
 permalink: /curriculumVitae/
 ---
 
 # Instructor
 
 ##### [ CS407 Forensics III / Memory Forensics](/cs407/) - 10 week course at Southern Oregon University Spring 2015
-	
+
 Topics included: Windows Kernel structures, malware techniques, malware analysis, shellcode construction, and parsing several key elements out of memory for digital forensics and incident response utilizing Volatility.
 
 
@@ -16,7 +17,7 @@ This class covered attack techniques against .NET applications with a focus on R
 
 # Presentations and Publications
 
-##### [CS 346 Computer Forensics - Memory Forensics 101](/resources/cs346/cs346.html) - Southern Oregon University April 27th and 28th, 2015. 
+##### [CS 346 Computer Forensics - Memory Forensics 101](/resources/cs346/cs346.html) - Southern Oregon University April 27th and 28th, 2015.
 
 Guest talk for an introduction to forensics class at SOU.
 
