@@ -17,9 +17,6 @@ exclude:
  - LICENSE
  - README.md
  - _includes
-#permalink: pretty
-
-enable_disqus: false
 
 # Build settings
 paginate: 5
