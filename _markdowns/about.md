@@ -19,3 +19,5 @@ Outside of working on research or course material Topher enjoys hiking, mountain
 [LinkedIn](https://www.linkedin.com/in/tophertimzen)
 
 [Twitter](https://twitter.com/TTimzen)
+
+[Keybase](https://keybase.io/ttimzen)
