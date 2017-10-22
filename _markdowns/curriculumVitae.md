@@ -40,7 +40,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 
 - [Slides](https://speakerdeck.com/tophertimzen/toorcamp-2016-reverse-engineering-and-attacking-net-applications)
 
-#### The Trials and Tribulations of Building Your Own CTF and Shooting Gallery - BSidesPDX 2017
+##### The Trials and Tribulations of Building Your Own CTF and Shooting Gallery - BSidesPDX 2017
 
 <p class="tab">It is said that “the best defense is a good offense” which means organizations and defenders need to think offensively in order to detect and evade threats. A good method for instilling an offensive mindset into defenders is to place them in offensive scenarios. This is where the CTF and Shooting Gallery concepts comes into play. By creating an internal shooting gallery in your organization, you can have an isolated playground for anyone to practice offensive security techniques. Furthermore, Capture The Flag (CTF) events are becoming increasingly popular at security conferences and inside of organizations. Unfortunately, there is a barrier of entry for those that have never played CTF before and occasionally individuals feel overwhelmed with all there is to know about participating, creating or hosting one. Over the last 2 years Topher has put together several CTF events - each being hosted in a drastically different way. This talk will cover the basics of building a shooting gallery, CTF challenges along with hosting and deploying them in order to increase organizational effectiveness and knowledge.</p>
 
