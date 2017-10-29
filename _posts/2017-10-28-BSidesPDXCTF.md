@@ -186,7 +186,7 @@ Personally, I would love to see more base reference implementations of CTF build
 
 As previously hinted at, our challenges, including source and solutions (minus RE) are available at [CTF-2017](https://github.com/BSidesPDX/CTF-2017). 
 
-We also made it such that you can play the CTF locally. Due to the fact we wanted to give players binaries for some challenges, we decided to do all of the src building outside of the containers. They were all built on Ubuntu 16.04 with gcc version 6.3.0 20170406 (Ubuntu 6.3.0-12ubuntu2) 
+We also made it such that you can play the CTF locally (instructions on the README of the CTF-2017 repo). Due to the fact we wanted to give players binaries for some challenges, we decided to do all of the src building outside of the containers. They were all built on Ubuntu 16.04 with gcc version 6.3.0 20170406 (Ubuntu 6.3.0-12ubuntu2) 
 and ldd (Ubuntu GLIBC 2.24-9ubuntu2.2) 2.24. Because of this, our solutions might not work on your platform in this method (which are in the /solutions/ directory of each challenge). 
 
 ## What To do Better
