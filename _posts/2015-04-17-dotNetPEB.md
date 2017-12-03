@@ -126,7 +126,7 @@ This trick will also work with 64 bit .NET applications, although the offsets ar
 mov rbx, [gs:60h]          // get a pointer to the PEB
 mov rbx, [rbx + 0x18]      // get PEB->Ldr
 mov rbx, [rbx + 0x20]      // get PEB->Ldr.InMemoryOrderModuleList.Flink
-mov rbx, [rbx              // get the next entry (2nd entry)
+mov rbx, [rbx]              // get the next entry (2nd entry)
 mov rbx, [rbx]             // get the next entry (3rd entry)
 mov rbx, [rbx]             // get the next entry (4th entry)
 mov rbx, [rbx + 0x20]      // get the 4th entries base address (kernel32.dll)
