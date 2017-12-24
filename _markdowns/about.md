@@ -11,6 +11,7 @@ He holds a bachelors in Computer Science with an emphasis in Security and Inform
 Topher currently holds the following professional certifications:
 
 - [Offensive Security Certified Professional (OSCP)](https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/)
+- [Offensive Security Certified Expert (OSCE)](https://www.offensive-security.com/information-security-certifications/osce-offensive-security-certified-expert/)
 
 Outside of working on research or course material Topher enjoys hiking, mountain biking, playing guitar and discovering new music.
 
