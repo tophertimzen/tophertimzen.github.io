@@ -21,7 +21,7 @@ This class covered attack techniques against .NET applications with a focus on R
 
 Guest talk for an introduction to forensics class at SOU.
 
-##### Hijacking Arbitrary .NET Application Control Flow - DEF CON 23 / BSidesPDX / SecTor
+##### Hijacking Arbitrary .NET Application Control Flow - DEF CON 23 / BSidesPDX / SecTor (2015)
 
 <p class="tab">This speech will demonstrate attacking .NET applications at runtime. I will show how to modify running applications with advanced .NET and assembly level attacks that alter the control flow of any .NET application. New attack techniques and tools will be released to allow penetration testers and attackers to carry out advanced post exploitation attacks</p>
 
@@ -45,3 +45,18 @@ This presentation gives an overview of how to use these tools in a real attack s
 <p class="tab">It is said that “the best defense is a good offense” which means organizations and defenders need to think offensively in order to detect and evade threats. A good method for instilling an offensive mindset into defenders is to place them in offensive scenarios. This is where the CTF and Shooting Gallery concepts comes into play. By creating an internal shooting gallery in your organization, you can have an isolated playground for anyone to practice offensive security techniques. Furthermore, Capture The Flag (CTF) events are becoming increasingly popular at security conferences and inside of organizations. Unfortunately, there is a barrier of entry for those that have never played CTF before and occasionally individuals feel overwhelmed with all there is to know about participating, creating or hosting one. Over the last 2 years Topher has put together several CTF events - each being hosted in a drastically different way. This talk will cover the basics of building a shooting gallery, CTF challenges along with hosting and deploying them in order to increase organizational effectiveness and knowledge.</p>
 
 - [Slides](https://speakerdeck.com/tophertimzen/the-trials-and-tribulations-of-building-your-own-ctf-and-shooting-gallery)
+
+##### [Trusted Platform Modules and Their Applicability to Hardware and Software Security Mitigations - IEEE HOST, 2017](https://www.computer.org/csdl/proceedings/host/2017/3929/00/07951728.pdf)
+ 
+<p class="tab">This tutorial seeks to showcase the use of Trusted Platform Modules (TPM) and Trusted Execution Environments
+(TEE) as they pertain to providing isolated security environments and metrics usable by every major component of a
+platform. Hardware security implementations, modern operating systems including some of their software and
+firmware utilize measurements from TPMs to ensure the reliability of platforms. We will discuss Intel technologies
+such as Intel Trusted Execution Technology (TXT) and how it uses TPMs to measure platform components. We will
+also showcase how BIOS platforms utilize TPMs to ensure the SPI flash has not been tampered with and explain
+Intel boot guard technology. Furthermore, modern operating systems have dependencies on TPMs and we will
+discuss how Windows 10 uses them to ensure Virtualization Based Security (VBS) has not been tampered with.
+Lastly we will also discuss modern TEEs such as ARM TrustZone, and Intel SGX and how those can be used to
+provide secure code isolation. We will engage with the audience to showcase the usage of TPMs and TEEs by going
+over their history, their applicability and showing how both are used in hardware, platform firmware and on
+operating system security features. </p>
