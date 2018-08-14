@@ -17,6 +17,8 @@ This class covered attack techniques against .NET applications with a focus on R
 
 # Presentations and Publications
 
+### 2015
+
 ##### [CS 346 Computer Forensics - Memory Forensics 101](/resources/cs346/cs346.html) - Southern Oregon University April 27th and 28th, 2015.
 
 Guest talk for an introduction to forensics class at SOU.
@@ -32,6 +34,8 @@ This presentation gives an overview of how to use these tools in a real attack s
 - [Slides](https://speakerdeck.com/tophertimzen)
 - [Tools](https://github.com/GrayKernel "GitHub")
 
+### 2016
+
 ##### Reverse Engineering and Attacking .NET Applications - ToorCamp 2016
 
 <p class="tab">This talk will demonstrate reverse engineering and attacking .NET applications. I will start by discussing reverse engineering as it pertains to .NET and show how to get a glimpse into a binaries code base. Moving forward I will show how to modify running applications with advanced .NET and assembly level attacks using open source tools I developed. By discussing internal framework structures you will leave understanding why and how these attacks work. You will also be able to implement defense and attack scenarios in test cases.</p>
@@ -39,6 +43,8 @@ This presentation gives an overview of how to use these tools in a real attack s
 <p class="tab">You will leave with an overview of how to use reverse engineering to discover weaknesses in .NET applications and how to leverage those as an attacker.</p>
 
 - [Slides](https://speakerdeck.com/tophertimzen/toorcamp-2016-reverse-engineering-and-attacking-net-applications)
+
+### 2017
 
 ##### The Trials and Tribulations of Building Your Own CTF and Shooting Gallery - BSidesPDX 2017
 
