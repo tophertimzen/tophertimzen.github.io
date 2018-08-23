@@ -66,3 +66,9 @@ Lastly we will also discuss modern TEEs such as ARM TrustZone, and Intel SGX and
 provide secure code isolation. We will engage with the audience to showcase the usage of TPMs and TEEs by going
 over their history, their applicability and showing how both are used in hardware, platform firmware and on
 operating system security features. </p>
+
+# Projects
+
+##### [Shooting Gallery](https://github.com/intel/ctf-infrastructure)
+
+<p class="tab">Automation to support a CTF in the style of PWK developed for Intel as part of a Shooting Gallery for offensive security practice.</p>
