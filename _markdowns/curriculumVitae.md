@@ -74,7 +74,7 @@ operating system security features. </p>
 
 ##### BSidesPDX Presents OMSI CTF
 
-<p class="tab"> Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com/)</p>
+Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [OMSI-CTF-2018](https://github.com/BSidesPDX/OMSI-CTF-2018)
 
