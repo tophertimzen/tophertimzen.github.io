@@ -32,6 +32,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 - [Hijacking Arbitrary .NET Application Control Flow](/resources/grayStorm/HijackingArbitraryDotnetApplicationControlFlow.pdf)
 - [Slides](https://speakerdeck.com/tophertimzen)
 - [Tools](https://github.com/GrayKernel "GitHub")
+- [DEF CON 23 Video](https://www.youtube.com/watch?v=gatYe_oriJw) [SecTor Video](http://2015.video.sector.ca/video/144542659)
 
 ### 2016
 
@@ -54,6 +55,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 <p class="tab">It is said that “the best defense is a good offense” which means organizations and defenders need to think offensively in order to detect and evade threats. A good method for instilling an offensive mindset into defenders is to place them in offensive scenarios. This is where the CTF and Shooting Gallery concepts comes into play. By creating an internal shooting gallery in your organization, you can have an isolated playground for anyone to practice offensive security techniques. Furthermore, Capture The Flag (CTF) events are becoming increasingly popular at security conferences and inside of organizations. Unfortunately, there is a barrier of entry for those that have never played CTF before and occasionally individuals feel overwhelmed with all there is to know about participating, creating or hosting one. Over the last 2 years Topher has put together several CTF events - each being hosted in a drastically different way. This talk will cover the basics of building a shooting gallery, CTF challenges along with hosting and deploying them in order to increase organizational effectiveness and knowledge.</p>
 
 - [Slides](https://speakerdeck.com/tophertimzen/the-trials-and-tribulations-of-building-your-own-ctf-and-shooting-gallery)
+- [YouTube Video](https://www.youtube.com/watch?v=80JX0vVlCHo)
 
 ##### [Trusted Platform Modules and Their Applicability to Hardware and Software Security Mitigations - IEEE HOST](https://www.computer.org/csdl/proceedings/host/2017/3929/00/07951728.pdf)
  
