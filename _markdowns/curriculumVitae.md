@@ -32,7 +32,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 - [Hijacking Arbitrary .NET Application Control Flow](/resources/grayStorm/HijackingArbitraryDotnetApplicationControlFlow.pdf)
 - [Slides](https://speakerdeck.com/tophertimzen)
 - [Tools](https://github.com/GrayKernel "GitHub")
-- [DEF CON 23 Video](https://www.youtube.com/watch?v=gatYe_oriJw) [SecTor Video](http://2015.video.sector.ca/video/144542659)
+- [DEF CON 23 Video](https://www.youtube.com/watch?v=gatYe_oriJw) && [SecTor Video](http://2015.video.sector.ca/video/144542659)
 
 ### 2016
 
