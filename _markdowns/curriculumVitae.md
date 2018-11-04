@@ -80,6 +80,10 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [OMSI-CTF-2018](https://github.com/BSidesPDX/OMSI-CTF-2018)
 
+##### BSidesPDX CTF 
+
+- [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
+
 # Projects
 
 ##### [Gray Kernel](https://github.com/GrayKernel/)
