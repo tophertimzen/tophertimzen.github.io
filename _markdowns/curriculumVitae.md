@@ -84,6 +84,18 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
 
+### 2019
+
+##### [Attack Infrastructure for the Modern Red-Team - CanSecWest](https://cansecwest.com/speakers.html)
+
+<p class="tab">While active hacking is the sexy part of red teaming, everybody knows that there is a lot of unsexy prep work prior to an engagement. A robust attack infrastructure is a complicated, yet critical, part of that prep work. . As Red Teams continue to grow in maturity, a successful engagement relies on infrastructure that is suitable for covert activities such as attack modeling and adversarial emulation while also being suitable for overt games. High quality attacks require high quality infrastructure. A single opsec failure could set an operation back days or even weeks, and in some cases might result in having to scrap the op entirely (or worse). Needing a repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements, the authors have created an easy to use deployment system with recipes so you, too, can have robustness without being tied down by deployment readiness! This presentation will provide all the tooling and automation to make these deployments simple and repeatable. Your Red Team will now be able to deploy infrastructure per engagement, providing you with opsec safety to keep your engagement rolling before the blue team hunts you down. Learn it, love it, live it.</p>
+
+- [Slides](https://speakerdeck.com/tophertimzen/attack-infrastructure-for-the-modern-red-team)
+
+##### A History of the BSidesPDX CTF - HackBoatPDX
+
+- [Slides](https://speakerdeck.com/tophertimzen/a-history-of-the-bsidespdx-ctf)
+
 # Projects
 
 ##### [Gray Kernel](https://github.com/GrayKernel/)
@@ -93,3 +105,7 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 ##### [Shooting Gallery](https://github.com/intel/ctf-infrastructure)
 
 <p class="tab">Automation to support a CTF in the style of PWK developed for Intel as part of a Shooting Gallery for offensive security practice.</p>
+
+##### [Red Team Attack Infrastructure](https://github.com/redteaminfra/redteam-infra)
+
+<p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
