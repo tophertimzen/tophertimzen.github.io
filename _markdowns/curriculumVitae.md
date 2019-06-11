@@ -6,6 +6,8 @@ permalink: /curriculumVitae/
 
 # Instructor
 
+### 2015
+
 ##### [ CS407 Forensics III / Memory Forensics](/cs407/) - 10 week course at Southern Oregon University Spring Quarter (March - June)
 
 Topics included: Windows Kernel structures, malware techniques, malware analysis, shellcode construction, and parsing several key elements out of memory for digital forensics and incident response utilizing Volatility.
@@ -14,7 +16,7 @@ Topics included: Windows Kernel structures, malware techniques, malware analysis
 
 This class covered attack techniques against .NET applications with a focus on Reverse Engineering and memory Hijacking. Hands-On scenarios were conducted allowing students to modify applications at Runtime and on Disk. Students left with the building blocks of developing .NET attacks.
 
-# Presentations, Publications and Community Involvement 
+# Presentations, Publications and Community Involvement
 
 ### 2015
 
@@ -46,7 +48,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 
 ### 2017
 
-##### BSidesPDX CTF 
+##### BSidesPDX CTF
 
 - [BSidesPDX CTF 2017](https://github.com/BSidesPDX/CTF-2017)
 
@@ -58,7 +60,7 @@ This presentation gives an overview of how to use these tools in a real attack s
 - [YouTube Video](https://www.youtube.com/watch?v=80JX0vVlCHo)
 
 ##### [Trusted Platform Modules and Their Applicability to Hardware and Software Security Mitigations - IEEE HOST](https://www.computer.org/csdl/proceedings/host/2017/3929/00/07951728.pdf)
- 
+
 <p class="tab">This tutorial seeks to showcase the use of Trusted Platform Modules (TPM) and Trusted Execution Environments
 (TEE) as they pertain to providing isolated security environments and metrics usable by every major component of a
 platform. Hardware security implementations, modern operating systems including some of their software and
@@ -80,7 +82,7 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [OMSI-CTF-2018](https://github.com/BSidesPDX/OMSI-CTF-2018)
 
-##### BSidesPDX CTF 
+##### BSidesPDX CTF
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
 
