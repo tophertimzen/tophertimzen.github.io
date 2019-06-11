@@ -15,7 +15,7 @@ The [bsides-ctf-framework](https://github.com/tophertimzen/bsides-ctf-framework)
 
 Pulled from my [2017](https://www.tophertimzen.com/blog/BSidesPDXCTF2017/) blog post
 
-> Around the time DEF CON rolled around, I was sitting at a Cabana at the Flamingo and ran into [CornflakeSavage](https://twitter.com/CornflakeSavage). I had previously seen what he and his team had done for the [BSidesSF CTF](https://github.com/BSidesSF/ctf-2017-release) and was inspired by the infrastructure decisions. He also authored a great blog article explaining some challenges of Docker and k8s for CTF which is viewable [here](https://hackernoon.com/capturing-all-the-flags-in-bsidessf-ctf-by-pwning-our-infrastructure-3570b99b4dd0). The TLDR of that blog article is that Docker did not necessarily work that well in the model as intended due to the fact we are giving competitors Remote Code Execution (RCE) vulnerabilities that are expected to grant them a shell in the container.  
+> Around the time DEF CON rolled around, I was sitting at a Cabana at the Flamingo and ran into [CornflakeSavage](https://twitter.com/CornfaltkeSavage). I had previously seen what he and his team had done for the [BSidesSF CTF](https://github.com/BSidesSF/ctf-2017-release) and was inspired by the infrastructure decisions. He also authored a great blog article explaining some challenges of Docker and k8s for CTF which is viewable [here](https://hackernoon.com/capturing-all-the-flags-in-bsidessf-ctf-by-pwning-our-infrastructure-3570b99b4dd0). The TLDR of that blog article is that Docker did not necessarily work that well in the model as intended due to the fact we are giving competitors Remote Code Execution (RCE) vulnerabilities that are expected to grant them a shell in the container.  
 
 We will be creating all of our challenges using `docker` and they must be deployable locally with `docker compose` as well as to an arbitrary cloud provider using `k8s`. 
 
@@ -279,7 +279,7 @@ The following steps were taken above and will be done for all challenges, with s
 1. Write the challenge README with the structure from [here](https://github.com/BSidesPDX/bsides-ctf-framework/blob/master/example/README.md)
 1. If applicable, place your docker information into the `docker-compose.yml` 
 1. If applicable, invoke the `Makefile` for your challenge in the top level `Makefile`
-1. Fill in the `deployment` and `deployment/cloud` fields as seen below
+1. Fill in the `deployment` and `deployment/cloud` fields as seen above
 1. Finished! 
 
 # Conclusion
