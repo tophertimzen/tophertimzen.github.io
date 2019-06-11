@@ -70,7 +70,6 @@ These files are
 
 - [concepts.txt](https://github.com/BSidesPDX/CTF-2018/blob/master/concepts.txt): The intent of the CTF challenges as well as tracking progress on each one. They are tracked by category and then by `symbol` `point value` - `challenge name` with the symbols being `* = complete with solution, `+ = challenge written, needs solution/writeup`. 
 
-
 You're going to want to add each dockerfile that gets committed to the compose yml in order to stand up all docker images locally for local deployment as well as testing. Some challenges will also need to be built, so add those to the Makefile as well. Look at the [2018](https://github.com/BSidesPDX/CTF-2018) CTF for how this looks. I'll explain more below. 
 
 # Writing a Challenge
@@ -187,7 +186,7 @@ I made my own shell, it's very secure.
 flag: BSidesPDX{ayy_lma0_my_5h3ll_i5_n0t_v3ry_s3cur3}
 ```
 
-We also need a solution for it as well as a full write up. Make sure your challenge can be solved automatically with a script, and if not what steps need to be done to solve it in the README. See [here](https://github.com/tophertimzen/bsides-ctf-framework/tree/master/pwn/200-secureshell/solution) for an example of pwn200.
+We also need a solution for it as well as a full write up. Make sure your challenge can be solved automatically with a script, and if not what steps need to be done to solve it in the README. See [here](https://github.com/BSidesPDX/bsides-ctf-framework/tree/master/pwn/200-secureshell/solution) for an example of pwn200.
 
 Once you've confirmed the challenge is working in your `Dockerfile` and is solvable we need to add it to the `docker-compose.yml` back at the top level directory. Also, we have a Makefile to build our pwn200 binary and that needs to be added to the top level `Makefile`
 
@@ -220,11 +219,13 @@ pwn:
 { bsides-ctf-framework } master > 
 {% endhighlight %}
 
+Once that is done, you have essentially completed writing a challenge for our framework. With all of this said, some challenge categories will omit certain steps. For example, an RE challenge probably won't have a `Dockerfile` or be deployed to the cloud as we only hand out a binary in `distFiles`. 
+
 # Deploying to the Cloud
 
-WIP
+A lot of this section is an exercise to the organizer as you will need a Dockerhub account and an account on a cloud service with access to the k8s APIs for `kubectl`.
 
-Lastly, let's make a `deployment` folder for the challenge and make sure it works in `k8s`. This is more for the challenge organizer to take care of, but the deployment files are <HERE> and are easily changed challenge by challenge. 
+Lastly, let's make a `deployment` folder for the challenge and make sure it works in `k8s`. This is more for the challenge organizer to take care of, but the deployment files are [here](https://github.com/BSidesPDX/bsides-ctf-framework/tree/master/pwn/200-secureshell/deployment) and are easily changed challenge by challenge. 
 
 You will need to adjust the following in the `Makefile`
 
@@ -246,11 +247,48 @@ You will need to adjust the following in the `service.yaml`
 
 - app: the name of the app
 
+Once these are changed, deploying the app to the cloud is as easy as running the `Makefile`. You will need
+
+1. A dockerhub account that is logged in with a session in your terminal
+1. Access to a cloud hosting API for kubectl to work properly
+
+With those setup, you should just be able to run `Make` in each challenge categories `deployment` folder. This will
+
+1. Create the docker container from `src`
+1. Push the docker container to dockerhub
+1. Create a k8s pod with your challenge 
+1. Serve your k8s pod
+
+The `Makefile` also has the ability to delete a k8s pod for redeployment.
+
+Once that is done and your challenge is in the cloud, you will want to put the following to the scoreboard
+
+1. The challenge description in the challenges `README.md`
+1. The flag from the challenge as described in the `README.md`
+1. The FQDN and port of the challenge, if applicable
+1. Any files the user needs from `distFiles`
+
+# Writing a Challenge Steps
+
+The following steps were taken above and will be done for all challenges, with some items potentially omitted with *
+
+1. Write challenge idea to `concepts.txt` and get approval by CTF lead such as exampled [here](https://github.com/BSidesPDX/bsides-ctf-framework/blob/master/concepts.txt)
+1. Set up your directory structure for the challenge as shown [here](https://github.com/BSidesPDX/bsides-ctf-framework/tree/master/example)
+1. Write the challenge. This could require creation of a `Dockerfile`, a `Makefile` and more source materials. Place all required source in `src`
+1. Write a walkthrough and build a solution script for the challenge
+1. Write the challenge README with the structure from [here](https://github.com/BSidesPDX/bsides-ctf-framework/blob/master/example/README.md)
+1. If applicable, place your docker information into the `docker-compose.yml` 
+1. If applicable, invoke the `Makefile` for your challenge in the top level `Makefile`
+1. Fill in the `deployment` and `deployment/cloud` fields as seen below
+1. Finished! 
+
 # Conclusion
 
-WIP
+Hopefully this blog post has helped you learn more about the framework we use at BSidesPDX to run the CTF and gives you more insight into it. The best way to figure it out is really to walk through building a challenge, mapping the directory structure and ensuring that the challenge is deployable both locally and in the cloud. If there are any questions on building a challenge or what steps need to be done, please reach out to either myself at [@ttimzen](https://twitter.com/ttimzen).  or [@aagallag](https://twitter.com/aagallag). 
 
 # Links
+
+These links are to 3 open source CTFs that we have ran as an organization and are intended to be viewed to get an idea of how we utilize the above framework. 
 
 [2018 CTF](https://github.com/BSidesPDX/CTF-2018)
 
