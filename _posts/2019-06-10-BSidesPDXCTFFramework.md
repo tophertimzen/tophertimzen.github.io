@@ -46,6 +46,8 @@ The optional folders are
 
 - deployment: If this challenge runs with `docker` and will be deployed to `k8s`, it needs a `Makefile` and a `service.yml` and a `deploy.yml` that will be used. 
 
+[pwn/200-secureshell](https://github.com/BSidesPDX/bsides-ctf-framework/tree/master/pwn/200-secureshell) is a good example from the 2018 CTF of how to implement the above.
+
 ## Directory Structure for Hosting
 
 ```
@@ -64,7 +66,7 @@ These files are
 
 - LICENSE: Apache2 source license
 
-- README.md: A README to describe the CTF, show the challenges in table form, give kudos, talk about local deployment and how to do it, as well as deploy to the cloud. 
+- [README.md](https://github.com/BSidesPDX/bsides-ctf-framework/blob/master/README.md): A README to describe the CTF, show the challenges in table form, give kudos, talk about local deployment and how to do it, as well as deploy to the cloud. 
 
 - [docker-compose.yml](https://github.com/BSidesPDX/CTF-2018/blob/master/docker-compose.yml): Used during `docker-compose build && docker-compose up -d` to deploy all of your docker containers
 
