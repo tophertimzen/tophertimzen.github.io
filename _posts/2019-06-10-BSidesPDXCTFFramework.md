@@ -19,7 +19,7 @@ Pulled from my [2017](https://www.tophertimzen.com/blog/BSidesPDXCTF2017/) blog 
 
 We will be creating all of our challenges using `docker` and they must be deployable locally with `docker compose` as well as to an arbitrary cloud provider using `k8s`. 
 
-## Directory Structure for challenge creators
+## Directory Structure for Challenge Creators
 
 Each challenge will contain the following. Note that * are optional, depending on the challenge.
 
@@ -46,7 +46,7 @@ The optional folders are
 
 - deployment: If this challenge runs with `docker` and will be deployed to `k8s`, it needs a `Makefile` and a `service.yml` and a `deploy.yml` that will be used. 
 
-## Directory Structure for hosting
+## Directory Structure for Hosting
 
 ```
 Challenge Category
@@ -73,7 +73,7 @@ These files are
 
 You're going to want to add each dockerfile that gets committed to the compose yml in order to stand up all docker images locally for local deployment as well as testing. Some challenges will also need to be built, so add those to the Makefile as well. Look at the [2018](https://github.com/BSidesPDX/CTF-2018) CTF for how this looks. I'll explain more below. 
 
-# Writing a challenge
+# Writing a Challenge
 
 So, you want to write a challenge? The first step is to write your challenge idea in `concepts.txt`, which will be used to track if the challenge is completed or not, and approved by the CTF hosts. An example of this fully filled out is in `https://github.com/BSidesPDX/CTF-2018/blob/master/concepts.txt`
 
@@ -220,7 +220,7 @@ pwn:
 { bsides-ctf-framework } master > 
 {% endhighlight %}
 
-# Deploying to the cloud
+# Deploying to the Cloud
 
 WIP
 
