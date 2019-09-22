@@ -98,6 +98,13 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [Slides](https://speakerdeck.com/tophertimzen/a-history-of-the-bsidespdx-ctf)
 
+##### EDR Is Coming; Hide Yo Sh!t - DEF CON 27
+
+<p class="tab">There’s a new, largely unaddressed threat in the security industry today, Endpoint Detection and Response (EDR), which aims to stop threat actors in their tracks. The scenario plays out like this... At first your campaign is going well and your attacker objectives are being met. Then, your lovingly crafted payloads become analyst samples, you’re evicted from the environment and you lose your persistence. You and the analyst are now having a bad time. You may feel this is just fear mongering, but we assure you, the risk is real.Fortunately, we have a few new tricks up our sleeves to keep this nightmare scenario at bay. While many would have you believe that we live in a measured and signed boot Utopia on modern systems, we will show you the seedy underbelly of this Brave New World. By abusing early boot mechanisms and UEFI platform firmware, we are able to evade common detection. By showing up early to the fight, we sucker punch EDR, leaving it in a daze unable to see our malicious activities. We put a new twist on old code injection techniques and maintain persistence in UEFI firmware, making an effective invisibility cloak. By leveraging these two techniques, you and the analyst can have a happy and relaxing evening. From that point on - the good ol’ days are back again! Plunder away!</p>
+
+- [Slides](https://speakerdeck.com/tophertimzen/edr-is-coming-hide-yo-sh-t)
+
+
 # Projects
 
 ##### [Gray Kernel](https://github.com/GrayKernel/)
