@@ -13,7 +13,7 @@ Topher currently holds the following professional certifications:
 - [Offensive Security Certified Professional (OSCP)](https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/)
 - [Offensive Security Certified Expert (OSCE)](https://www.offensive-security.com/information-security-certifications/osce-offensive-security-certified-expert/)
 
-Topher is also an active contributor to the community and ran the [BsidesPDX](https://bsidespdx.org/) CTF from 2016 to 2018. He also helped to create a CTF framework that was used for BSidesPDX and it is found at (https://github.com/BSidesPDX/bsides-ctf-framework)[https://github.com/BSidesPDX/bsides-ctf-framework].
+Topher is also an active contributor to the community and ran the [BsidesPDX](https://bsidespdx.org/) CTF from 2016 to 2018. He also helped to create a CTF framework that was used for BSidesPDX and it is found at [https://github.com/BSidesPDX/bsides-ctf-framework](https://github.com/BSidesPDX/bsides-ctf-framework).
 
 Outside of working on research or course material Topher enjoys hiking, mountain biking, playing guitar and discovering new music.
 
