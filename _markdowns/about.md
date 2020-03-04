@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Topher is currently a Principal Vulnerability Enthusiast at a Fortune 100 Red Team and enjoys causing constructive mischief. Coming from an offensive security background, he has a research emphasis on reverse engineering, malware, exploitation development, and live memory hacking. He has spoken at various security conferences including DEF CON, SecTor, CanSecWest, ToorCamp and BSides PDX, to name a few. Some of his presentations can be found on [Speaker Deck](https://speakerdeck.com/tophertimzen) and is CV is [here](https://www.tophertimzen.com/curriculumVitae/).
+Topher is currently a Principal Vulnerability Enthusiast at a Fortune 100 Red Team and enjoys causing constructive mischief. Coming from an offensive security background, he has a research emphasis on reverse engineering, malware, exploitation development, and live memory hacking. He has spoken at various security conferences including DEF CON, SecTor, CanSecWest, ToorCamp and BSides PDX, to name a few. Some of his presentations can be found on [Speaker Deck](https://speakerdeck.com/tophertimzen) and his CV is [here](https://www.tophertimzen.com/curriculumVitae/).
 
 He holds a bachelors in Computer Science with an emphasis in Security and Information Assurance from [Southern Oregon University](https://www.sou.edu). Graduating Summa Cum Laude, Topher instructed courses on malware analysis and memory forensics while also managing the SOU cybersecurity research lab. Mainly focusing on .NET memory hijacking during his studies at university, he has produced tools that allow for new post exploitation attack sequences.
 
