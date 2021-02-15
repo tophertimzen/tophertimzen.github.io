@@ -70,7 +70,7 @@ These files are
 
 - [docker-compose.yml](https://github.com/BSidesPDX/CTF-2018/blob/master/docker-compose.yml): Used during `docker-compose build && docker-compose up -d` to deploy all of your docker containers
 
-- [concepts.txt](https://github.com/BSidesPDX/CTF-2018/blob/master/concepts.txt): The intent of the CTF challenges as well as tracking progress on each one. They are tracked by category and then by `symbol` `point value` - `challenge name` with the symbols being `* = complete with solution, `+ = challenge written, needs solution/writeup`. eibcccjfcdcrdjifvjddidhkukkgbtgfceknjdfufjrk
+- [concepts.txt](https://github.com/BSidesPDX/CTF-2018/blob/master/concepts.txt): The intent of the CTF challenges as well as tracking progress on each one. They are tracked by category and then by `symbol` `point value` - `challenge name` with the symbols being `* = complete with solution, `+ = challenge written, needs solution/writeup`.
 
 
 You're going to want to add each dockerfile that gets committed to the compose yml in order to stand up all docker images locally for local deployment as well as testing. Some challenges will also need to be built, so add those to the Makefile as well. Look at the [2018](https://github.com/BSidesPDX/CTF-2018) CTF for how this looks. I'll explain more below. 
