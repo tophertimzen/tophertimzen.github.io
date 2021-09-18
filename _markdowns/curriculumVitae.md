@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Curriculum Vitae
-permalink: /curriculumVitae/
+permalink: /cv/
 ---
 
 # Instructor
