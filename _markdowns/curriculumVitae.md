@@ -104,6 +104,9 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [Slides](https://speakerdeck.com/tophertimzen/edr-is-coming-hide-yo-sh-t)
 
+### 2023
+
+##### When EDR Is Stupid; You Don't Need to be Smart - HushCon
 
 # Projects
 
