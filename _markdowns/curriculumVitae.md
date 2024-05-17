@@ -108,6 +108,10 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [Slides](https://speakerdeck.com/tophertimzen/edr-is-coming-hide-yo-sh-t)
 
+### 2011
+
+##### Remote Red Teaming Panel (Panel Moderator) - Undisclosed
+
 ### 2022
 
 ##### Red Team Reporting and Remediation Panel (Panel Moderator) - Undisclosed
