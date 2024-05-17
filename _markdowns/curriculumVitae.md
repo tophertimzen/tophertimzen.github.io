@@ -86,7 +86,7 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
 
-##### Red Vs Blue - Undisclosed
+##### Playing With Your Food (Red Vs Blue) - Undisclosed
 
 ### 2019
 
