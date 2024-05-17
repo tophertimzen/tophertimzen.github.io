@@ -110,7 +110,7 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 ### 2022
 
-#### Red Team Reporting and Remediation Panel (Panel Moderator) - Undisclosed
+##### Red Team Reporting and Remediation Panel (Panel Moderator) - Undisclosed
 
 ### 2023
 
@@ -118,9 +118,9 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 ### 2024
 
-#### Red Team Infrastructure Panel (Panelist) - Undisclosed
+##### Red Team Infrastructure Panel (Panelist) - Undisclosed
 
-#### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Undisclosed
+##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Undisclosed
 
 # Projects
 
