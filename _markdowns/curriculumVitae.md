@@ -74,6 +74,8 @@ provide secure code isolation. We will engage with the audience to showcase the 
 over their history, their applicability and showing how both are used in hardware, platform firmware and on
 operating system security features. </p>
 
+##### Red Vs Blue - Undisclosed
+
 ### 2018
 
 ##### BSidesPDX Presents OMSI CTF
@@ -85,6 +87,8 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 ##### BSidesPDX CTF
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
+
+##### Red Team Infrastructure Panel (Panelist) - Undisclosed
 
 ### 2019
 
@@ -104,9 +108,19 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [Slides](https://speakerdeck.com/tophertimzen/edr-is-coming-hide-yo-sh-t)
 
+### 2022
+
+#### Red Team Reporting and Remediation Panel (Panel Moderator) - Undisclosed
+
 ### 2023
 
-##### When EDR Is Stupid; You Don't Need to be Smart - HushCon
+##### When EDR Is Stupid; You Don't Need to be Smart - HushCon / Undisclosed
+
+### 2024
+
+#### Red Team Infrastructure Panel (Panelist) - Undisclosed
+
+#### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Undisclosed
 
 # Projects
 
