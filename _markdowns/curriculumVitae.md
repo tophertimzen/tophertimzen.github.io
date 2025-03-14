@@ -126,6 +126,10 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 ##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Undisclosed
 
+### 2025
+
+##### Turning Sh*t Burgers into Gold Nuggets - Undisclosed
+
 # Projects
 
 ##### [Gray Kernel](https://github.com/GrayKernel/)
