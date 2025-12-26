@@ -142,7 +142,7 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 
 ##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Red Team Summit
 
-<p class="tab">Institutionalization is the antithesis of Red Teaming - a Red Team needs to be able to conduct their mission without being swallowed whole by the organization. This panel will discuss how Red Teams across the cabal keep their mission, or fail to keep it, on track with an ever growing list of demands from an organization. All Red Teams are at the behest of their organization and their organizations needs/demands, but often times a Red Team needs to be enabled to choose their own path for engagements and workload.  Panelists will share their experiences leading Red Teams and how they handle balancing business demand against the team choosing their adventure.</p>
+<p class="tab">Institutionalization is the antithesis of Red Teaming - a Red Team needs to be able to conduct their mission without being swallowed whole by the organization. This panel will discuss how Red Teams across the industry keep their mission, or fail to keep it, on track with an ever growing list of demands from an organization. All Red Teams are at the behest of their organization and their organizations needs/demands, but often times a Red Team needs to be enabled to choose their own path for engagements and workload.  Panelists will share their experiences leading Red Teams and how they handle balancing business demand against the team choosing their adventure.</p>
 
 ### 2025
 
@@ -165,4 +165,5 @@ This talk will discuss the dynamic between Red Teams and organizational prioriti
 ##### [Red Team Attack Infrastructure](https://github.com/redteaminfra/redteam-infra)
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
+
 
