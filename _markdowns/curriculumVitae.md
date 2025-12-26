@@ -184,7 +184,7 @@ Member of the review board for the annual BSidesPDX conference.
 
 <p class="tab">This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
 
-# Organizationall Involvement 
+# Organizational Involvement 
 
 ##### BSidesPDX 501(c)3 Board
 
@@ -213,3 +213,4 @@ Completed in July 2021
 ##### SpecterOps Adversary Tactics: Red Team Operations
 
 Completed in 2018
+
