@@ -86,7 +86,7 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
 
-##### Playing With Your Food (Red Vs Blue) - Undisclosed
+##### Playing With Your Food (Red Vs Blue) - Red Team Summit
 
 ### 2019
 
@@ -106,29 +106,29 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 - [Slides](https://speakerdeck.com/tophertimzen/edr-is-coming-hide-yo-sh-t)
 
-##### Red Team Infrastructure Panel (Panelist) - Undisclosed
+##### Red Team Infrastructure Panel (Panelist) - Red Team Summit
 
 ### 2021
 
-##### Remote Red Teaming Panel (Panel Moderator) - Undisclosed
+##### Remote Red Teaming Panel (Panel Moderator) - Red Team Summit
 
 ### 2022
 
-##### Red Team Reporting and Remediation Panel (Panel Moderator) - Undisclosed
+##### Red Team Reporting and Remediation Panel (Panel Moderator) - Red Team Summit
 
 ### 2023
 
-##### When EDR Is Stupid; You Don't Need to be Smart - HushCon / Undisclosed
+##### When EDR Is Stupid; You Don't Need to be Smart - HushCon / Red Team Summit
 
 ### 2024
 
-##### Red Team Infrastructure Panel (Panelist) - Undisclosed
+##### Red Team Infrastructure Panel (Panelist) - Red Team Summit
 
-##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Undisclosed
+##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Red Team Summit
 
 ### 2025
 
-##### Turning Sh*t Burgers into Gold Nuggets - Undisclosed
+##### Turning Sh*t Burgers into Gold Nuggets - Red Team Summit
 
 # Projects
 
