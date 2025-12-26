@@ -88,6 +88,8 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 ##### Playing With Your Food (Red Vs Blue) - Red Team Summit
 
+This presentation will cover the Red Blue Games program that the Red Team has built. Attendees will learn about the program and the various benefits it provides to the blue and red teams including increased organizational effectiveness, prioritized focused areas, and security infrastructure enhancements. 
+
 ### 2019
 
 ##### [Attack Infrastructure for the Modern Red-Team - CanSecWest](https://cansecwest.com/speakers.html)
@@ -97,6 +99,8 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 - [Slides](https://speakerdeck.com/tophertimzen/attack-infrastructure-for-the-modern-red-team)
 
 ##### A History of the BSidesPDX CTF - HackBoatPDX
+
+<p class="tab">The Capture The Flag (CTF) competition has become a cornerstone of BSidesPDX, challenging and inspiring both seasoned professionals and newcomers to test their CTF skills. This talk delves into the history of the BSidesPDX CTF, exploring its origins, growth, and evolving design.</p>
 
 - [Slides](https://speakerdeck.com/tophertimzen/a-history-of-the-bsidespdx-ctf)
 
@@ -108,27 +112,45 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 
 ##### Red Team Infrastructure Panel (Panelist) - Red Team Summit
 
+<p class="tab">The discussion will begin with an exploration of the initial stages of infrastructure development, emphasizing the importance of creating versatile and realistic environments that can mimic a variety of threat actors and attack scenarios. Panelists will share their experiences and best practices in setting up infrastructure that not only challenges existing security measures but also adheres to legal and ethical standards. Panelists will discuss the challenges of keeping the infrastructure covert and resilient against defensive measures, while also ensuring it remains effective and relevant to current threat landscapes. This panel is not just an informative session, but a catalyst for dialogue among red teams. It aims to foster a deeper understanding of the strategic and operational aspects of red team infrastructure. Attendees will leave with valuable insights and practical knowledge to enhance their organizations' red team operations.</p>
+
 ### 2021
 
 ##### Remote Red Teaming Panel (Panel Moderator) - Red Team Summit
+
+<p class="tab">The global pandemic forced rapid and unprecedented shifts in how Red Team engagements are performed, accelerating the adoption of remote red teaming. This panel explores the challenges, innovations, and lessons learned from conducting red team operations in a fully remote environment. Industry experts will discuss evolving threat landscapes, operational security, collaboration across distributed teams, and tooling adaptations.</p>
 
 ### 2022
 
 ##### Red Team Reporting and Remediation Panel (Panel Moderator) - Red Team Summit
 
+<p class="tab">There are few discussions within Red Teams across the industry that come up time and time again; how to conduct reporting, obtain engagement buy-in, and the handling of findings. This panel serves to showcase how 5 different organizations, ranging from newly formed to mature, handle these program related areas.</p>
+
 ### 2023
 
 ##### When EDR Is Stupid; You Don't Need to be Smart - HushCon / Red Team Summit
+
+<p class="tab">The majority of Red Teams are now going up against Endpoint Detection and Response (EDR) tooling which aims to stop threat actors in their tracks. The scenario plays out like this... At first your engagement is going well and your attacker objectives are being met. Then, your lovingly crafted payloads become analyst samples, you’re evicted from the environment and you lose your persistence. You and the analyst are now having a bad time.</p>
+
+<p class="tab">What if I told you there were numerous ways that EDR is significantly lacking and you don't need to worry about it? Having looked at several EDR platforms in the last year, many succumb to the same limitations, lack of detective capability, and blatantly ignore off the shelf TTPs! In this talk I will go over several ways that EDR completely falls apart, how to bypass it, and how you can avoid your payload becoming an analysts sample.</p>
 
 ### 2024
 
 ##### Red Team Infrastructure Panel (Panelist) - Red Team Summit
 
+<p class="tab">The discussion will begin with an exploration of the initial stages of infrastructure development, emphasizing the importance of creating versatile and realistic environments that can mimic a variety of threat actors and attack scenarios. Panelists will share their experiences and best practices in setting up infrastructure that not only challenges existing security measures but also adheres to legal and ethical standards. Panelists will discuss the challenges of keeping the infrastructure covert and resilient against defensive measures, while also ensuring it remains effective and relevant to current threat landscapes. This panel is not just an informative session, but a catalyst for dialogue among red teams. It aims to foster a deeper understanding of the strategic and operational aspects of red team infrastructure. Attendees will leave with valuable insights and practical knowledge to enhance their organizations' red team operations.</p>
+
 ##### Keeping the Red Team Mission on Track Panel (Panel Moderator) - Red Team Summit
+
+<p class="tab">Institutionalization is the antithesis of Red Teaming - a Red Team needs to be able to conduct their mission without being swallowed whole by the organization. This panel will discuss how Red Teams across the cabal keep their mission, or fail to keep it, on track with an ever growing list of demands from an organization. All Red Teams are at the behest of their organization and their organizations needs/demands, but often times a Red Team needs to be enabled to choose their own path for engagements and workload.  Panelists will share their experiences leading Red Teams and how they handle balancing business demand against the team choosing their adventure.</p>
 
 ### 2025
 
 ##### Turning Sh*t Burgers into Gold Nuggets - Red Team Summit
+
+<p class="tab">What do you do when your executive leadership comes to your team and asks you to do what seems like an impossible task, in a tight timeframe, or a task that is not necessarily within your teams limited, but always expanding scope? Well, you say yes of course, and you eat that burger. It happens all at once, the layers of crud just keep piling on up, and you're just gonna have to eat it. While Sh!t Burgers may seem like a curse, they often have tremendous value for the organization. 
+
+This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
 
 # Projects
 
@@ -143,3 +165,4 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 ##### [Red Team Attack Infrastructure](https://github.com/redteaminfra/redteam-infra)
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
+
