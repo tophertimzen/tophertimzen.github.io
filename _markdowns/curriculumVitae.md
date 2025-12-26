@@ -148,9 +148,9 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 
 ##### Turning Sh*t Burgers into Gold Nuggets - Red Team Summit
 
-<p class="tab">What do you do when your executive leadership comes to your team and asks you to do what seems like an impossible task, in a tight timeframe, or a task that is not necessarily within your teams limited, but always expanding scope? Well, you say yes of course, and you eat that burger. It happens all at once, the layers of crud just keep piling on up, and you're just gonna have to eat it. While Sh!t Burgers may seem like a curse, they often have tremendous value for the organization. 
+<p class="tab">What do you do when your executive leadership comes to your team and asks you to do what seems like an impossible task, in a tight timeframe, or a task that is not necessarily within your teams limited, but always expanding scope? Well, you say yes of course, and you eat that burger. It happens all at once, the layers of crud just keep piling on up, and you're just gonna have to eat it. While Sh!t Burgers may seem like a curse, they often have tremendous value for the organization.</p>
 
-This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
+<p class="tab">This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
 
 # Projects
 
@@ -165,5 +165,6 @@ This talk will discuss the dynamic between Red Teams and organizational prioriti
 ##### [Red Team Attack Infrastructure](https://github.com/redteaminfra/redteam-infra)
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
+
 
 
