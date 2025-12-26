@@ -204,6 +204,12 @@ Treasurer of the BSides Portland 501(c)3 board from 2018-2022.
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
 
+# Course Work
 
+##### SANS SEC760: Advanced Exploit Development for Penetration Testers
 
+Completed in July 2021
 
+##### SpecterOps Adversary Tactics: Red Team Operations
+
+Completed in 2018
