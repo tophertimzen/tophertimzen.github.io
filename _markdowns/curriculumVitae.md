@@ -38,6 +38,10 @@ This presentation gives an overview of how to use these tools in a real attack s
 
 ### 2016
 
+##### BSidesPDX CTF
+
+Ran the annual Capture the Flag (CTF) at BSidesPDX. Wrote challenges, coordinated other challenge writers, managed the infrastructure, and ensured integrity of the event. 
+
 ##### Reverse Engineering and Attacking .NET Applications - ToorCamp
 
 <p class="tab">This talk will demonstrate reverse engineering and attacking .NET applications. I will start by discussing reverse engineering as it pertains to .NET and show how to get a glimpse into a binaries code base. Moving forward I will show how to modify running applications with advanced .NET and assembly level attacks using open source tools I developed. By discussing internal framework structures you will leave understanding why and how these attacks work. You will also be able to implement defense and attack scenarios in test cases.</p>
@@ -49,6 +53,8 @@ This presentation gives an overview of how to use these tools in a real attack s
 ### 2017
 
 ##### BSidesPDX CTF
+
+Ran the annual Capture the Flag (CTF) at BSidesPDX. Wrote challenges, coordinated other challenge writers, managed the infrastructure, and ensured integrity of the event. 
 
 - [BSidesPDX CTF 2017](https://github.com/BSidesPDX/CTF-2017)
 
@@ -76,6 +82,10 @@ operating system security features. </p>
 
 ### 2018
 
+##### BSidesPDX CFP Review Board
+
+Co-chair of the review board for the annual BSidesPDX conference. 
+
 ##### BSidesPDX Presents OMSI CTF
 
 Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
@@ -83,6 +93,8 @@ Invited to run a CTF at the [OMSI Maker Faire](https://portland.makerfaire.com)
 - [OMSI-CTF-2018](https://github.com/BSidesPDX/OMSI-CTF-2018)
 
 ##### BSidesPDX CTF
+
+Ran the annual Capture the Flag (CTF) at BSidesPDX. Wrote challenges, coordinated other challenge writers, managed the infrastructure, and ensured integrity of the event. 
 
 - [BSidesPDX CTF 2018](https://github.com/BSidesPDX/CTF-2018)
 
@@ -104,6 +116,16 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 
 - [Slides](https://speakerdeck.com/tophertimzen/a-history-of-the-bsidespdx-ctf)
 
+##### BSidesPDX CTF Framework
+
+Framework published to the BSidesPDX GitHub repo to streamline CTF challenge creation as well as passing the torch of leadership over to the next individuals. 
+
+- [BSidesPDX CTF Framework](https://github.com/BSidesPDX/bsides-ctf-framework)
+
+##### BSidesPDX CFP Review Board
+
+Chair of the review board for the annual BSidesPDX conference. 
+
 ##### EDR Is Coming; Hide Yo Sh!t - [DEF CON 27](https://www.defcon.org/html/defcon-27/dc-27-speakers.html#Leibowitz) / ToorCon 21
 
 <p class="tab">There’s a new, largely unaddressed threat in the security industry today, Endpoint Detection and Response (EDR), which aims to stop threat actors in their tracks. The scenario plays out like this... At first your campaign is going well and your attacker objectives are being met. Then, your lovingly crafted payloads become analyst samples, you’re evicted from the environment and you lose your persistence. You and the analyst are now having a bad time. You may feel this is just fear mongering, but we assure you, the risk is real.Fortunately, we have a few new tricks up our sleeves to keep this nightmare scenario at bay. While many would have you believe that we live in a measured and signed boot Utopia on modern systems, we will show you the seedy underbelly of this Brave New World. By abusing early boot mechanisms and UEFI platform firmware, we are able to evade common detection. By showing up early to the fight, we sucker punch EDR, leaving it in a daze unable to see our malicious activities. We put a new twist on old code injection techniques and maintain persistence in UEFI firmware, making an effective invisibility cloak. By leveraging these two techniques, you and the analyst can have a happy and relaxing evening. From that point on - the good ol’ days are back again! Plunder away!</p>
@@ -113,6 +135,12 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 ##### Red Team Infrastructure Panel (Panelist) - Red Team Summit
 
 <p class="tab">The discussion will begin with an exploration of the initial stages of infrastructure development, emphasizing the importance of creating versatile and realistic environments that can mimic a variety of threat actors and attack scenarios. Panelists will share their experiences and best practices in setting up infrastructure that not only challenges existing security measures but also adheres to legal and ethical standards. Panelists will discuss the challenges of keeping the infrastructure covert and resilient against defensive measures, while also ensuring it remains effective and relevant to current threat landscapes. This panel is not just an informative session, but a catalyst for dialogue among red teams. It aims to foster a deeper understanding of the strategic and operational aspects of red team infrastructure. Attendees will leave with valuable insights and practical knowledge to enhance their organizations' red team operations.</p>
+
+### 2020
+
+##### BSidesPDX CFP Review Board
+
+Member of the review board for the annual BSidesPDX conference. 
 
 ### 2021
 
@@ -125,6 +153,10 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 ##### Red Team Reporting and Remediation Panel (Panel Moderator) - Red Team Summit
 
 <p class="tab">There are few discussions within Red Teams across the industry that come up time and time again; how to conduct reporting, obtain engagement buy-in, and the handling of findings. This panel serves to showcase how 5 different organizations, ranging from newly formed to mature, handle these program related areas.</p>
+
+##### BSidesPDX CFP Review Board
+
+Member of the review board for the annual BSidesPDX conference. 
 
 ### 2023
 
@@ -152,6 +184,12 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 
 <p class="tab">This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
 
+# Organizationall Involvement 
+
+##### BSidesPDX 501(c)3 Board
+
+Treasurer of the BSides Portland 501(c)3 board from 2018-2022. 
+
 # Projects
 
 ##### [Gray Kernel](https://github.com/GrayKernel/)
@@ -165,6 +203,7 @@ This presentation will cover the Red Blue Games program that the Red Team has bu
 ##### [Red Team Attack Infrastructure](https://github.com/redteaminfra/redteam-infra)
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
+
 
 
 
