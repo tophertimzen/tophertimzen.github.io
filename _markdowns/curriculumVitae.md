@@ -184,6 +184,8 @@ Member of the review board for the annual BSidesPDX conference.
 
 <p class="tab">This talk will discuss the dynamic between Red Teams and organizational priorities, and discuss engagements that shed light on how a Red Team can be impactful after organizational shifts, while telling the story of empowerment, change in ICs mindsets as a result of listening, and being a force for change.</p>
 
+### 2026
+
 # Organizational Involvement 
 
 ##### BSidesPDX 501(c)3 Board
@@ -204,6 +206,16 @@ Treasurer of the BSides Portland 501(c)3 board from 2018-2022.
 
 <p class="tab">Repeatable, modular, auditable, secure and automatic infrastructure for Red Team engagements.</p>
 
+# Certifications
+
+#### Offensive Security Certified Professional (OSCP)
+
+Issued May 2016
+
+#### Offensive Security Certified Expert (OSCE)
+
+Issued December 2017
+
 # Course Work
 
 ##### SANS SEC760: Advanced Exploit Development for Penetration Testers
@@ -213,4 +225,3 @@ Completed in July 2021
 ##### SpecterOps Adversary Tactics: Red Team Operations
 
 Completed in 2018
-
