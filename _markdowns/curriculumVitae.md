@@ -192,6 +192,10 @@ Member of the review board for the annual BSidesPDX conference.
 
 # Organizational Involvement 
 
+##### Red Team Cabal
+
+Supporting an invitation-only international community of professional red teamers. Helps to facilitate knowledge exchange, collaboration, and network-building opportunities among peers. His role as an administrator for this global community of more than 1,000 security professionals reflects the trust, credibility, and respect he has earned across the cybersecurity industry.
+
 ##### BSidesPDX 501(c)3 Board
 
 Treasurer of the BSides Portland 501(c)3 board from 2018-2022. 
