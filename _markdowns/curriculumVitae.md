@@ -186,6 +186,10 @@ Member of the review board for the annual BSidesPDX conference.
 
 ### 2026
 
+##### Moving from IC To Manger - The Biggest ________ of my Career (Panelist) - Red Team Summit
+
+<p class="tab">Panel focused on the transition from individual contributor to manager or lead, sharing practical guidance from experience and helping others understand the expectations, challenges, and mindset shifts required for leadership roles.</p>
+
 # Organizational Involvement 
 
 ##### BSidesPDX 501(c)3 Board
