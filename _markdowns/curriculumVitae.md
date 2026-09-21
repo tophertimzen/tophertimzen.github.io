@@ -148,6 +148,12 @@ Member of the review board for the annual BSidesPDX conference.
 
 <p class="tab">The global pandemic forced rapid and unprecedented shifts in how Red Team engagements are performed, accelerating the adoption of remote red teaming. This panel explores the challenges, innovations, and lessons learned from conducting red team operations in a fully remote environment. Industry experts will discuss evolving threat landscapes, operational security, collaboration across distributed teams, and tooling adaptations.</p>
 
+##### The Official OffSec Podcast: Red Teamers from Oracle
+
+<p class="tab">In this episode, our host, FalconSpy, sits down with Topher Timzen (@ttimzen) and Michael Leibowitz (@r00tkillah), two red teamers from Oracle. They discuss a number of topics, including Topher’s and Michael’s DEFCON 27 presentation. They dive into how they got into the infosec field and what makes them so passionate about it. Find out their answer to the age-old question: what's the difference between red teaming and pentesting? Plus, get their take on certifications and what you really need these days to be successful. Finally, as BSides Portland organizers, Topher and Michael give you a rundown on the process of developing a security conference.</p>
+
+- [Podcast](https://open.spotify.com/episode/6NMAbCkx8vI3mgVClxsIfB?si=ca-cPOqxQtGfHgGqcwYpxw&utm_source=copy-link)
+
 ### 2022
 
 ##### Red Team Reporting and Remediation Panel (Panel Moderator) - Red Team Summit
