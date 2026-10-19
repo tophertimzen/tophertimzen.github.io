@@ -6,8 +6,6 @@ permalink: /about/
 
 Topher Timzen was a Senior Principal Security Engineer and Technical Lead of the Red Team at Oracle. Topher built the Red Team program at Oracle Cloud Infrastructure which became the Red Team for the whole of Oracle. 
 
-Coming from an offensive background, he has a research emphasis on reverse engineering, malware creation, exploitation development, and live memory hacking. He has spoken at various security conferences including DEF CON, SecTor, ToorCamp and BSides.
-
 Topher enjoys asking the difficulty questions of "what keeps you up at night" and turning those nightmares into reality through objective orientated adversary emulation engagements.
 
 Topher mentors engineers into Red Team leadership roles, helps develop emerging Red Team programs across the industry, contributes to open-source Red Team infrastructure, and maintains significant industry influence through conference speaking and leadership of the 1,000+ member Red Team Cabal.
